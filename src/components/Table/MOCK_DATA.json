@@ -1,0 +1,34 @@
+[
+    {
+        "id":1234, "item_name":"3D printer",
+        "description":"ultimaker 3d printer","location":"room s112 below c1", "serial":"sd314f",
+        "notes":"Make sure filament is properly feeding before beginning print", "available":true,"serviceable":true,"is_child":false
+    },
+    {
+        "id":3412, "item_name":"Nikon S34",
+        "description":"high quality camera with detachable lens","location":"room s112", "serial":"845uu", 
+        "notes":"", "available":false,"serviceable":true,"is_child":false
+    },
+    {
+        "id": 76473, "item_name":"VR PC",
+        "description":"PC with dual 1080s for running gpu intensive VR programs","location":"blue section of s112", "serial":"260ujgs2", 
+        "notes":"dont sign out", "available":true,"serviceable":true,"is_child":false
+    },
+    {
+        "id":1234425, "item_name":"nikon lens 20mm",
+        "description":"20mm lens for Nikon s34","location":"drawer in s112", "serial":"das45", 
+        "notes":"lens shiny", "available":true,"serviceable":true,"is_child":true
+    },
+    {
+        "id":3568, "item_name":"nikon lens 40mm",
+        "description":"40mm lens for Nikon s34","location":"drawer in s112", "serial":"sg23",
+        "notes":"this lens can look really far so make sure you dont look at the sun because it might hurt your eyes and that would not be awesome",
+        "available":true,"serviceable":false,"is_child":true
+    },
+    {
+        "id":35328, "item_name":"nikon lens 60mm",
+        "description":"60mm lens for Nikon s34","location":"drawer in s112", "serial":"s23",
+        "notes":"this lens can look really far so make sure you dont look at the sun because it might hurt your eyes so bad that you cant wear sunglasses anymore because your pupils are super dilated and that would not be awesome",
+        "available":true,"serviceable":true,"is_child":true
+    }
+]

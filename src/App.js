@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+//Import dependencies
+import React            from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+//Import CSS and components
+import ContentBuilder   from './components/ContentBuilder';
+import LoginLogout      from './components/LoginLogout';
+import './styles/App.css';
+export default class App extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            auth: ''
+        };
+    };
 
-export default App;
+    render(){
+        return(
+            <div>
+                 <div className="header">
+                     Inventory App
+                     <div className="logInLogOut">
+                        <LoginLogout loginLogoutIsVisible={true}/>
+                     </div>
+                </div>
+                <ContentBuilder auth={this.state.auth}/>
+            </div>
+        );
+    };
+};
