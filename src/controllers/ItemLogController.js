@@ -34,7 +34,7 @@ class ItemLogController extends GenericController{
 
     //Creates an item log. Must have required itemLog data
     async createItemLog(itemLog) {
-        return await this.request('logs/itemLogs', {method: 'POST', body: itemLog});
+        return await this.request('logs/itemLogs', {method: 'POST', body: JSON.stringify(itemLog)});
     };
 
     //Deletes an item log by the log's Id

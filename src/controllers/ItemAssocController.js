@@ -39,7 +39,7 @@ class ItemAssocController extends GenericController{
             childId: childItemId
         };
 
-        return await this.request('itemAssoc', {method: 'POST', body: body});
+        return await this.request('itemAssoc', {method: 'POST', body: JSON.stringify(body)});
     };
 
     //Deletes an item association by composite key of parent and child Ids

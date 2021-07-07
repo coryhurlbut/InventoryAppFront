@@ -11,7 +11,8 @@ export default class UserEditControls extends React.Component {
         super(props);
 
         this.state = {
-            user: null
+            user: null,
+            modal: null
         };
 
         this.hideModal  = this.hideModal.bind(this);

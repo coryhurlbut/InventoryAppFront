@@ -1,37 +1,40 @@
 import React from 'react';
 import '@fluentui/react';
 import '../styles/App.css';
-import ContentList from './ContentList';
-import ItemLogDisplay from './ItemLogDisplay';
-import AdminLogDisplay from './AdminLogDisplay';
+import ContentList      from './ContentList';
+import ItemLogDisplay   from './ItemLogDisplay';
+import AdminLogDisplay  from './AdminLogDisplay';
+import LoginModal       from './LoginModal';
 
 //Settings for what is to be displayed based on the user's role
-const main = {
-    userContentIsVisible: false,
-    signItemInOutIsVisible: false,
-    editControlIsVisible: false,
-    allowEditNotes: false,
-    isLoggedIn: false,
-    itemLogIsVisible: false,
-    adminLogIsVisible: false
-};
-const custodian = {
-    userContentIsVisible: false,
-    signItemInOutIsVisible: true,
-    editControlIsVisible: false,
-    allowEditNotes: false,
-    isLoggedIn: true,
-    itemLogIsVisible: true,
-    adminLogIsVisible: false
-};
-const admin = {
-    userContentIsVisible: true,
-    signItemInOutIsVisible: true,
-    editControlIsVisible: true,
-    allowEditNotes: true,
-    isLoggedIn: true,
-    itemLogIsVisible: true,
-    adminLogIsVisible: true
+const displayPresets = {
+    main: {
+        userContentIsVisible:   false,
+        signItemInOutIsVisible: false,
+        editControlIsVisible:   false,
+        allowEditNotes:         false,
+        isLoggedIn:             false,
+        itemLogIsVisible:       false,
+        adminLogIsVisible:      false
+    },
+    custodian: {
+        userContentIsVisible:   false,
+        signItemInOutIsVisible: true,
+        editControlIsVisible:   false,
+        allowEditNotes:         false,
+        isLoggedIn:             true,
+        itemLogIsVisible:       true,
+        adminLogIsVisible:      false
+    },
+    admin: {
+        userContentIsVisible:   true,
+        signItemInOutIsVisible: true,
+        editControlIsVisible:   true,
+        allowEditNotes:         true,
+        isLoggedIn:             true,
+        itemLogIsVisible:       true,
+        adminLogIsVisible:      true
+    }
 };
 
 /*
@@ -42,26 +45,58 @@ export default class ContentBuilder extends React.Component {
         super(props);
         
         this.state = {
-            auth: props.auth,
-            view: admin //will assign userRole here
+            auth:           null,
+            view:           displayPresets.main,
+            isLoggedIn:     false,
+            modal:          null
+        };
+
+        this.setAuth        = this.setAuth.bind(this);
+        this.hideModal      = this.hideModal.bind(this);
+        this.loginLogout    = this.loginLogout.bind(this);
+        this.buildContent   = this.buildContent.bind(this);
+    };
+
+    setAuth(auth) {
+        this.setState({auth: auth, isLoggedIn: true, view: displayPresets[auth.userRole]});
+    };
+
+    hideModal() {
+        this.setState({modal: null});
+    };
+
+    loginLogout() {
+        if (this.state.isLoggedIn) {
+            this.setState({auth: null, isLoggedIn: false, view: displayPresets.main});
+        } else {
+            this.setState({modal: <LoginModal isOpen={true} hideModal={this.hideModal} setAuth={this.setAuth}/>});
         };
     };
 
-    render () {
-        let viewState = this.state.view;
-
+    buildContent(view) {
         return (
             <div>
+                {this.state.modal}
+                <div className="header">
+                     Inventory App
+                     <button className='logInLogOut' onClick={this.loginLogout}>
+                         {this.state.isLoggedIn ? 'Log Out': 'Log In'}
+                     </button>
+                </div>
                 <div className="body">
                     <ContentList 
-                        editControlIsVisible={viewState.editControlIsVisible} 
-                        userContentIsVisible={viewState.userContentIsVisible} 
-                        signItemInOutIsVisible={viewState.signItemInOutIsVisible}
+                        editControlIsVisible={view.editControlIsVisible} 
+                        userContentIsVisible={view.userContentIsVisible} 
+                        signItemInOutIsVisible={view.signItemInOutIsVisible}
                     />
-                    <ItemLogDisplay itemLogIsVisible={viewState.itemLogIsVisible} />
-                    <AdminLogDisplay adminLogIsVisible={viewState.adminLogIsVisible} />   
+                    <ItemLogDisplay itemLogIsVisible={view.itemLogIsVisible} />
+                    <AdminLogDisplay adminLogIsVisible={view.adminLogIsVisible} />   
                 </div>
             </div>
         );
+    };
+
+    render () {
+        return(this.buildContent(this.state.view));
     };
 };

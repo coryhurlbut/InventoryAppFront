@@ -14,6 +14,15 @@ export default class ItemLogDisplay extends React.Component {
         };
     };
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.itemLogIsVisible !== prevProps.itemLogIsVisible) {
+            
+            this.setState({
+                itemLogIsVisible: this.props.itemLogIsVisible
+            });
+        };
+    };
+
     buildItemLog () {
         if (this.state.itemLogIsVisible) {
             return(

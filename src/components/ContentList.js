@@ -7,7 +7,7 @@ import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
 // import { HybridTable }             from './Table/HybridTable';
 import { RowSelection }             from './Table/RowSelection';
-import TestComponent from './testcomponent';
+import TestComponent                from './testcomponent';
 import '../styles/App.css';
 
 //Settings for which data is displaying in the table
@@ -47,7 +47,19 @@ export default class ContentList extends React.Component {
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
         this.showUnavailableItems   =   this.showUnavailableItems.bind(this);
         this.showUsers              =   this.showUsers.bind(this);
+    };
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.userContentIsVisible     !== prevProps.userContentIsVisible ||
+            this.props.editControlIsVisible     !== prevProps.editControlIsVisible ||
+            this.props.signItemInOutIsVisible   !== prevProps.signItemInOutIsVisible) {
+            
+            this.setState({
+                userContentIsVisible:       this.props.userContentIsVisible,
+                editControlIsVisible:       this.props.editControlIsVisible,
+                signItemInOutIsVisible:     this.props.signItemInOutIsVisible
+            });
+        };
     };
 
     async componentDidMount () {
@@ -99,7 +111,7 @@ export default class ContentList extends React.Component {
             return (
                 <ItemEditControls />
             );
-        } else if (this.state.editControls === "UserEditControls") {
+        } else if (this.state.editControls === "UserEditControls" && this.state.editControlIsVisible) {
             return (
                 <UserEditControls />
             );
@@ -121,7 +133,7 @@ export default class ContentList extends React.Component {
                 {this.buildContentList()}
                 {this.buildEditControls()}
                 <SignItemInOutControls inOrOut={this.state.inOrOut} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
-                <TestComponent/>
+                {/* <TestComponent/> */}
             </div>
         );
     };

@@ -34,7 +34,7 @@ class AdminLogController extends GenericController{
 
     //Creates an admin log. Must have required adminLog data
     async createAdminLog(adminLog) {
-        return await this.request('logs/adminLogs', {method: 'POST', body: adminLog});
+        return await this.request('logs/adminLogs', {method: 'POST', body: JSON.stringify(adminLog)});
     };
 
     //Delete an admin log

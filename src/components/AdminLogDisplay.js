@@ -14,6 +14,15 @@ export default class AdminLogDisplay extends React.Component {
         };
     };
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.adminLogIsVisible !== prevProps.adminLogIsVisible) {
+            
+            this.setState({
+                adminLogIsVisible: this.props.adminLogIsVisible
+            });
+        };
+    };
+
     buildAdminLog () {
         if (this.state.adminLogIsVisible) {
             return(

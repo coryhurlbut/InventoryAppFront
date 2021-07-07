@@ -16,10 +16,8 @@ class AuthController extends GenericController{
             method: 'POST',
             body: JSON.stringify(reqBody)
         };
-        
-        let auth = await this.postRequest('auth/login', reqObj);
-        console.log(auth)
-        return auth;
+    
+        return await this.request('auth/login', reqObj).then((res) => res.json());
     };
 };
 

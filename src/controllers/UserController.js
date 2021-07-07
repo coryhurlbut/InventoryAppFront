@@ -23,7 +23,7 @@ class UserController extends GenericController{
 
     //Creates a single user. Must be given body of all required user fields
     async createUser(user) {
-        return await this.request('users', {method: 'POST', body: user});
+        return await this.request('users', {method: 'POST', body: JSON.stringify(user)});
     };
 
     //Deletes a single user by Id
@@ -33,7 +33,7 @@ class UserController extends GenericController{
 
     //Updates a single user. Must pass the user's Id and the new user data
     async updateUser(userId, user) {
-        return await this.request(`users/${userId}`, {method: 'PATCH', body: user});
+        return await this.request(`users/${userId}`, {method: 'PATCH', body: JSON.stringify(user)});
     };
 };
 

@@ -84,12 +84,13 @@ export default class TestComponent extends React.Component {
     };
 
     async deleteItem() {
-        let itemId = '60d0beedf29050d2dc316a69';
+        let itemId = '60dc800603394835d8ee3639';
         let content = await Controller.ItemController.deleteItem(itemId);
-        console.log(content)
+        console.log('deletedItem')
     };
 
     async updateItem() {
+        let itemId = "60d349da9973d477887792a4"
         let body = {
             "name":"item7",
             "description": "item 7 also child item",
@@ -101,7 +102,7 @@ export default class TestComponent extends React.Component {
             "servicable": true,
             "isChild": true
         };
-        let content = await Controller.ItemController.updateItem(body);
+        let content = await Controller.ItemController.updateItem(itemId, body);
         console.log(content)
     };
 
@@ -123,15 +124,15 @@ export default class TestComponent extends React.Component {
 
     async createUser() {
         let body = {
-            "firstName":"test",
-            "lastName":"test",
-            "userName":"testtest",
-            "password":"testtest",
+            "firstName":"michael",
+            "lastName":"james",
+            "userName":"qwerty",
+            "password":"qwerty",
             "userRole":"admin",
             "phoneNumber":"5307883532"
         };
-        let content = await Controller.UserController.createUser(JSON.stringify(body));
-        console.log(JSON.stringify(content))
+        let content = await Controller.UserController.createUser(body);
+        console.log(content)
     };
 
     async deleteUser() {
@@ -143,15 +144,15 @@ export default class TestComponent extends React.Component {
     async updateUser() {
         let userId = '60abfa44e7e61d5b300e1fe0';
         let body = {
-            "firstName":"test1",
-            "lastName":"test1",
-            "userName":"testtest1",
-            "password":"testtest1",
+            "firstName":"Peter",
+            "lastName":"Griffin",
+            "userName":"JohnnyBravo",
+            "password":"JohnnyBravo",
             "userRole":"admin",
             "phoneNumber":"5307883532"
         };
         let content = await Controller.UserController.updateUser(userId, body);
-        console.log(content)  
+        console.log(content)
     };
 
 /*

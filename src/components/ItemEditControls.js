@@ -10,7 +10,7 @@ export default class ItemEditControls extends React.Component {
         super(props);
         
         this.state = {
-            item: null,
+            item:  null,
             modal: null
         };
 

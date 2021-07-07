@@ -41,7 +41,7 @@ class ItemController extends GenericController{
 
     //Creates one item. Must have required data fields
     async createItem(item) {
-        return await this.request('items', {method: 'POST', body: item});
+        return await this.request('items', {method: 'POST', body: JSON.stringify(item)});
     };
 
     //Deletes one item by Id
@@ -51,7 +51,7 @@ class ItemController extends GenericController{
 
     //Updates one item. Must pass item Id and the data to update
     async updateItem(itemId, item) {
-        return await this.request(`items/${itemId}`, {method: 'PATCH', body: item});
+        return await this.request(`items/${itemId}`, {method: 'PATCH', body: JSON.stringify(item)});
     };
 };
 
