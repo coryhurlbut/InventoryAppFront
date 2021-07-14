@@ -12,7 +12,7 @@ import registerServiceWorker            from './registerServiceWorker';
 
 //Loads .env variables
 dotenv.config();
-
+localStorage.clear();
 //Global State
 const store = createStore(() => [], {}, applyMiddleware());
 

@@ -4,9 +4,7 @@ import ContentBuilder   from './components/ContentBuilder';
 export default class App extends React.Component {    
     render(){
         return(
-            <div>
-                <ContentBuilder/>
-            </div>
+            <ContentBuilder/>
         );
     };
 };

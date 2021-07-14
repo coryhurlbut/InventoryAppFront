@@ -1,10 +1,14 @@
 import GenericController from './GenericController';
-
 /*
 *   Controls functions calling APIs for Auth data operations
 */
 class AuthController extends GenericController{
     
+    async logout(auth) {
+        localStorage.clear();
+        return await this.request('auth/logout', {method: 'DELETE', body: JSON.stringify(auth)});
+    };
+
     //Logs in user. Must pass userName and password
     async login(userName, password) {
         const reqBody = {
@@ -16,8 +20,13 @@ class AuthController extends GenericController{
             method: 'POST',
             body: JSON.stringify(reqBody)
         };
-    
-        return await this.request('auth/login', reqObj).then((res) => res.json());
+        
+        let auth = await this.request('auth/login', reqObj).then((res) => res.json());
+        localStorage.clear();
+        localStorage.setItem('access', auth.accessToken);
+        localStorage.setItem('refresh', auth.refreshToken);
+
+        return auth
     };
 };
 

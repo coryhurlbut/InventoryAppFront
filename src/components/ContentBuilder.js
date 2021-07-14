@@ -5,6 +5,7 @@ import ContentList      from './ContentList';
 import ItemLogDisplay   from './ItemLogDisplay';
 import AdminLogDisplay  from './AdminLogDisplay';
 import LoginModal       from './LoginModal';
+import LogoutModal      from './LogoutModal';
 
 //Settings for what is to be displayed based on the user's role
 const displayPresets = {
@@ -55,10 +56,17 @@ export default class ContentBuilder extends React.Component {
         this.hideModal      = this.hideModal.bind(this);
         this.loginLogout    = this.loginLogout.bind(this);
         this.buildContent   = this.buildContent.bind(this);
+        this.clearAuth      = this.clearAuth.bind(this);
     };
 
     setAuth(auth) {
-        this.setState({auth: auth, isLoggedIn: true, view: displayPresets[auth.userRole]});
+        this.setState({auth: auth, isLoggedIn: true, view: displayPresets[auth.user.userRole]});
+        console.log(localStorage)
+    };
+
+    clearAuth() {
+        this.setState({auth: null, isLoggedIn: false, view: displayPresets.main});
+        console.log(localStorage)
     };
 
     hideModal() {
@@ -67,7 +75,7 @@ export default class ContentBuilder extends React.Component {
 
     loginLogout() {
         if (this.state.isLoggedIn) {
-            this.setState({auth: null, isLoggedIn: false, view: displayPresets.main});
+            this.setState({modal: <LogoutModal auth={this.state.auth} isOpen={true} hideModal={this.hideModal} clearAuth={this.clearAuth}/>});
         } else {
             this.setState({modal: <LoginModal isOpen={true} hideModal={this.hideModal} setAuth={this.setAuth}/>});
         };
