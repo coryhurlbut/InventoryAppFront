@@ -1,5 +1,5 @@
 /*
-*   Controller to be inherited by the other controllers. Holds main functions that will be used in all controllers.
+*   Controller to be used by the other controllers. Holds main request functions that will be used in controllers.
 */
 export default class GenericController {
     constructor(props) {
@@ -12,40 +12,21 @@ export default class GenericController {
         return process.env.REACT_APP_HOSTNAME + url;
     };
 
-    getAccessToken() {
-        return localStorage.getItem('access') || null;
-    };
-
-    getRefreshToken() {
-        return localStorage.getItem('refresh') || null;
-    }
-
-    clearLocalStorage () {
-        localStorage.clear();
-    }
-
-    async refreshToken() {
-        console.log('refreshToken')
-        return await fetch(this.buildApiUrl('/auth/refresh'), {method: 'POST', body: {refreshToken: this.getRefreshToken()}})
-    }
-
     //Custom request function to add headers
     async request (url, initObj) {
         initObj['headers'] = {
             'Accept':           'application/json',
-            'Content-Type':     'application/json',
-            'Authorization':    `Bearer ${this.getAccessToken()}` || null
+            'Content-Type':     'application/json'
         };
-        console.log(initObj)
-        try{
+
+        try {
             return await fetch(this.buildApiUrl(url), initObj)
-            
-        }catch(err){
+        } catch (err) {
             console.log(err)
-            if (err.message == 'Token Expired') {
-                this.refreshToken();
-            }
         }
     };
 };
+
+//Exports an instance of the class instead of the class
+export const genericController = new GenericController();
 

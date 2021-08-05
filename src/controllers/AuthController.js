@@ -1,35 +1,59 @@
-import GenericController from './GenericController';
 /*
-*   Controls functions calling APIs for Auth data operations
+*   Controller to be used by the other controllers. Holds main auth request functions that will be used in all controllers.
 */
-class AuthController extends GenericController{
+export default class AuthController {
+    constructor(props) {
+        this.buildApiUrl    = this.buildApiUrl.bind(this);
+        this.request        = this.requestWithAuth.bind(this);
+        this.refreshToken   = this.refreshToken.bind(this);
+    };
     
-    async logout(auth) {
-        localStorage.clear();
-        return await this.request('auth/logout', {method: 'DELETE', body: JSON.stringify(auth)});
+    //Uses the URL in the environment variable and the relative path from the controller to build the full API URL
+    buildApiUrl (url) {
+        return process.env.REACT_APP_HOSTNAME + url;
     };
 
-    //Logs in user. Must pass userName and password
-    async login(userName, password) {
-        const reqBody = {
-                userName: userName,
-                password: password
-        };
+    getAccessToken() {
+        return localStorage.getItem('access') || null;
+    };
 
-        const reqObj = {
-            method: 'POST',
-            body: JSON.stringify(reqBody)
-        };
-        
-        let auth = await this.request('auth/login', reqObj).then((res) => res.json());
+    getRefreshToken() {
+        return localStorage.getItem('refresh') || null;
+    };
+
+    clearLocalStorage () {
         localStorage.clear();
-        localStorage.setItem('access', auth.accessToken);
-        localStorage.setItem('refresh', auth.refreshToken);
+    };
 
-        return auth
+    async refreshToken() {
+        console.log('refreshToken')
+        let refreshToken = this.getRefreshToken();
+        console.log(refreshToken)
+        let auth = await this.requestWithAuth('auth/refresh', {method: 'POST', body: JSON.stringify({refreshToken: refreshToken})}).then((res) => res.json());
+        console.log(auth)
+        return auth;
+    };
+
+    //Custom request function to add headers
+    async requestWithAuth (url, initObj) {
+        initObj['headers'] = {
+            'Accept':           'application/json',
+            'Content-Type':     'application/json',
+            'Authorization':    `Bearer ${this.getAccessToken()}` || null
+        };
+        console.log(initObj)
+        try {
+            let response = await fetch(this.buildApiUrl(url), initObj).catch((err) => {console.log(err)})
+            return response;
+        } catch (err) {
+            console.log(err)
+            if (err === "jwt expired") {
+                console.log('expired')
+                this.refreshToken();
+            };
+        };
     };
 };
 
 //Exports an instance of the class instead of the class
-const authController = new AuthController();
-export default authController;
+export const authController = new AuthController();

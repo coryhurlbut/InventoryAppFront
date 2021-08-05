@@ -10,7 +10,6 @@ export default class TestComponent extends React.Component {
             content: []
         };
 
-        this.getAllItems = this.getAllItems.bind(this);
         this.getAvailableItems = this.getAvailableItems.bind(this);
         this.getUnavailableItems = this.getUnavailableItems.bind(this);
         this.getItemById = this.getItemById.bind(this);
@@ -45,11 +44,6 @@ export default class TestComponent extends React.Component {
     *   Item Functions
     *      
     */
-
-    async getAllItems() {
-        let content = await Controller.ItemController.getAllItems();
-        console.log(content)
-    };
 
     async getAvailableItems() {
         let content = await Controller.ItemController.getAvailableItems();
@@ -326,9 +320,6 @@ export default class TestComponent extends React.Component {
             <div>
                 <div>
                     Items
-                    <button onClick={this.getAllItems}>
-                        getAllItems
-                    </button>
                     <button onClick={this.getAvailableItems}>
                         getAvailableItems
                     </button>

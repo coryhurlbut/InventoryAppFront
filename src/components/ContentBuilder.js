@@ -1,11 +1,13 @@
 import React from 'react';
 import '@fluentui/react';
 import '../styles/App.css';
-import ContentList      from './ContentList';
-import ItemLogDisplay   from './ItemLogDisplay';
-import AdminLogDisplay  from './AdminLogDisplay';
-import LoginModal       from './LoginModal';
-import LogoutModal      from './LogoutModal';
+import {authController}         from '../controllers/AuthController';
+import {loginLogoutController}  from '../controllers/LoginLogoutController';
+import ContentList              from './ContentList';
+import ItemLogDisplay           from './ItemLogDisplay';
+import AdminLogDisplay          from './AdminLogDisplay';
+import LoginModal               from './LoginModal';
+import LogoutModal              from './LogoutModal';
 
 //Settings for what is to be displayed based on the user's role
 const displayPresets = {
@@ -59,14 +61,23 @@ export default class ContentBuilder extends React.Component {
         this.clearAuth      = this.clearAuth.bind(this);
     };
 
+    async componentDidMount() {
+        //Move this to controller
+        const refreshToken = await authController.getRefreshToken();
+        console.log(refreshToken)
+        if (refreshToken !== null) {
+            let auth = await authController.refreshToken(refreshToken)
+            console.log(auth)
+            this.setAuth(auth);
+        }
+    };
+
     setAuth(auth) {
-        this.setState({auth: auth, isLoggedIn: true, view: displayPresets[auth.user.userRole]});
-        console.log(localStorage)
+        this.setState({auth: auth, isLoggedIn: true, view: displayPresets[auth.user.userRole] || displayPresets.main});
     };
 
     clearAuth() {
         this.setState({auth: null, isLoggedIn: false, view: displayPresets.main});
-        console.log(localStorage)
     };
 
     hideModal() {

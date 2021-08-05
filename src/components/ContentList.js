@@ -1,5 +1,4 @@
 import React                        from 'react';
-import { DetailsList}               from '@fluentui/react';
 import ItemEditControls             from './ItemEditControls';
 import UserEditControls             from './UserEditControls';
 import SignItemInOutControls        from './SignItemInOutControls';
@@ -53,18 +52,22 @@ export default class ContentList extends React.Component {
         if (this.props.userContentIsVisible     !== prevProps.userContentIsVisible ||
             this.props.editControlIsVisible     !== prevProps.editControlIsVisible ||
             this.props.signItemInOutIsVisible   !== prevProps.signItemInOutIsVisible) {
-            
+    
             this.setState({
                 userContentIsVisible:       this.props.userContentIsVisible,
                 editControlIsVisible:       this.props.editControlIsVisible,
                 signItemInOutIsVisible:     this.props.signItemInOutIsVisible
             });
         };
+
+        //Resets content to available items after admin logout. Stops displaying users after logout if viewing as admin.
+        if (prevProps.userContentIsVisible && !this.props.userContentIsVisible) {
+            this.showAvailableItems();
+        };
     };
 
     async componentDidMount () {
-        let items = await ItemController.getAvailableItems();
-        this.setState({content: items});
+        this.showAvailableItems();
     };
 
     async showAvailableItems () {
@@ -107,11 +110,12 @@ export default class ContentList extends React.Component {
     };
 
     buildEditControls () {
-        if(this.state.editControls === "ItemEditControls" && this.state.editControlIsVisible) {
+        if (!this.state.editControlIsVisible) return
+        if(this.state.editControls === "ItemEditControls") {
             return (
                 <ItemEditControls />
             );
-        } else if (this.state.editControls === "UserEditControls" && this.state.editControlIsVisible) {
+        } else if (this.state.editControls === "UserEditControls") {
             return (
                 <UserEditControls />
             );
@@ -133,7 +137,7 @@ export default class ContentList extends React.Component {
                 {this.buildContentList()}
                 {this.buildEditControls()}
                 <SignItemInOutControls inOrOut={this.state.inOrOut} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
-                {/* <TestComponent/> */}
+                <TestComponent/>
             </div>
         );
     };

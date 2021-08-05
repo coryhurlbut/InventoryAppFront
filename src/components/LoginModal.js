@@ -1,6 +1,6 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
-import AuthController from '../controllers/AuthController';
+import {loginLogoutController} from '../controllers/LoginLogoutController';
 
 /*
 *   Modal for logging in
@@ -20,7 +20,7 @@ export default class LoginModal extends React.Component{
     };
 
     async login() {
-        await AuthController.login(this.state.userName, this.state.password)
+        await loginLogoutController.login(this.state.userName, this.state.password)
             .then((auth) => {
                 this.props.setAuth(auth)
             }

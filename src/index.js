@@ -7,12 +7,11 @@ import { Provider }                     from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 //Import components/functions
 import App                              from './App';
-import LoginModal                       from './components/LoginModal';
 import registerServiceWorker            from './registerServiceWorker';
 
 //Loads .env variables
 dotenv.config();
-localStorage.clear();
+// localStorage.clear();
 //Global State
 const store = createStore(() => [], {}, applyMiddleware());
 

@@ -1,14 +1,14 @@
-import GenericController from './GenericController';
+import AuthController from './AuthController';
 
 /*
 *   Controls functions calling APIs for ItemAssoc data operations
 */
-class ItemAssocController extends GenericController{
+class ItemAssocController extends AuthController{
 
     //Gets all item associations
     async getAllItemAssocs() {
         let itemAssocs;
-        await this.request('itemAssoc', {method: 'GET'})
+        await this.requestWithAuth('itemAssoc', {method: 'GET'})
             .then((res) => res.json())
             .then((itemAssoc) => itemAssocs = itemAssoc);
         return itemAssocs;
@@ -17,7 +17,7 @@ class ItemAssocController extends GenericController{
     //Gets item associations by the parent item's Id
     async getItemAssocByParentId(parentId) {
         let itemAssocs;
-        await this.request('itemAssoc/parent/' + parentId, {method: 'GET'})
+        await this.requestWithAuth('itemAssoc/parent/' + parentId, {method: 'GET'})
             .then((res) => res.json())
             .then((itemAssoc) => itemAssocs = itemAssoc);
         return itemAssocs;
@@ -26,7 +26,7 @@ class ItemAssocController extends GenericController{
     //Gets item associations by child item's Id 
     async getItemAssocByChildId(childId) {
         let itemAssocs;
-        await this.request('itemAssoc/child/' + childId, {method: 'GET'})
+        await this.requestWithAuth('itemAssoc/child/' + childId, {method: 'GET'})
             .then((res) => res.json())
             .then((itemAssoc) => itemAssocs = itemAssoc);
         return itemAssocs;
@@ -39,12 +39,12 @@ class ItemAssocController extends GenericController{
             childId: childItemId
         };
 
-        return await this.request('itemAssoc', {method: 'POST', body: JSON.stringify(body)});
+        return await this.requestWithAuth('itemAssoc', {method: 'POST', body: JSON.stringify(body)});
     };
 
     //Deletes an item association by composite key of parent and child Ids
     async deleteItemAssoc(parentId, childId) {
-        return await this.request(`itemAssoc/${parentId}/${childId}`, {method: 'DELETE'});
+        return await this.requestWithAuth(`itemAssoc/${parentId}/${childId}`, {method: 'DELETE'});
     };
 };
 
