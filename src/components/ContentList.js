@@ -7,6 +7,7 @@ import UserController               from '../controllers/UserController';
 // import { HybridTable }             from './Table/HybridTable';
 import { RowSelection }             from './Table/RowSelection';
 import TestComponent                from './testcomponent';
+import NewTable from './Table/NewTable';
 import '../styles/App.css';
 
 //Settings for which data is displaying in the table
@@ -46,6 +47,7 @@ export default class ContentList extends React.Component {
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
         this.showUnavailableItems   =   this.showUnavailableItems.bind(this);
         this.showUsers              =   this.showUsers.bind(this);
+        this.getSelectedItems       =   this.getSelectedItems.bind(this);
     };
 
     componentDidUpdate(prevProps, prevState) {
@@ -66,12 +68,13 @@ export default class ContentList extends React.Component {
         };
     };
 
-    async componentDidMount () {
+    componentDidMount () {
         this.showAvailableItems();
     };
 
     async showAvailableItems () {
         let items = await ItemController.getAvailableItems();  
+
         this.setState({
             content:            items,
             contentType:        availableItemsContent.contentType,
@@ -92,19 +95,25 @@ export default class ContentList extends React.Component {
 
     async showUsers () {
         let users = await UserController.getAllUsers();
+
         this.setState({
             content:            users,
             contentType:        usersContent.contentType,
             editControls:       usersContent.editControls,
+
             inOrOut:            usersContent.inOrOut
         });  
     };
+    getSelectedItems(items) {
+        console.log(items)
+        this.setState({items: items});
+    }
 
     buildContentList () {
         return(
             <div className="table">
                 {this.state.contentType}
-                <RowSelection data={this.state.content} />
+                <NewTable callback={this.getSelectedItems} data={this.state.content} />
             </div>
         );
     };
@@ -123,6 +132,10 @@ export default class ContentList extends React.Component {
     };
 
     render() {
+        // Check for content and build list if it's present.
+        // Otherwise return null
+        let contentList = this.state.content.length > 0 ? this.buildContentList() : null;
+
         return (
             <div>
                 <div>
@@ -134,7 +147,7 @@ export default class ContentList extends React.Component {
                     </button>
                     {this.state.userContentIsVisible ? <button onClick={this.showUsers}>Users</button> : null}
                 </div>
-                {this.buildContentList()}
+                {contentList}
                 {this.buildEditControls()}
                 <SignItemInOutControls inOrOut={this.state.inOrOut} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
                 <TestComponent/>
