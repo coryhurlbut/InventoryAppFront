@@ -62,14 +62,8 @@ export default class ContentBuilder extends React.Component {
     };
 
     async componentDidMount() {
-        //Move this to controller
-        const refreshToken = await authController.getRefreshToken();
-        console.log(refreshToken)
-        if (refreshToken !== null) {
-            let auth = await authController.refreshToken(refreshToken)
-            console.log(auth)
-            this.setAuth(auth);
-        }
+        let auth = await authController.checkToken();
+        this.setAuth(auth);
     };
 
     setAuth(auth) {

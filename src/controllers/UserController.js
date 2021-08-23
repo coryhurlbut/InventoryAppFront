@@ -7,18 +7,12 @@ class UserController extends AuthController{
 
     //Gets all users
     async getAllUsers() {
-        let usersList;
-        await this.requestWithAuth('users', {method: 'GET'})
-            .then((res) => res.json())
-            .then((users) => usersList = users);
-        return usersList;
+        return await this.requestWithAuth('users', {method: 'GET'});
     };
 
     //Gets a single user by Id
-    async getUserById(userId) {
-        let user = await this.requestWithAuth(`users/${userId}`, {method: 'GET'})
-            .then((res) => res.json());
-        return user;
+    async getUserById(userId) { 
+        return await this.requestWithAuth(`users/${userId}`, {method: 'GET'});
     };
 
     //Creates a single user. Must be given body of all required user fields

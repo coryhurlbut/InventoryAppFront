@@ -7,29 +7,17 @@ class ItemLogController extends AuthController{
     
     //Gets all item logs
     async getAllItemLogs() {
-        let itemLogs;
-        await this.requestWithAuth('logs/itemLogs', {method: 'GET'})
-            .then((res) => res.json())
-            .then((itemLog) => itemLogs = itemLog);
-        return itemLogs;
+        return await this.requestWithAuth('logs/itemLogs', {method: 'GET'});
     };
 
     //Gets all item logs by the item Id
     async getItemLogsByItemId(itemId) {
-        let itemLogs;
-        await this.requestWithAuth(`logs/itemLogs/item/${itemId}`, {method: 'GET'})
-            .then((res) => res.json())
-            .then((itemLog) => itemLogs = itemLog);
-        return itemLogs;
+        return await this.requestWithAuth(`logs/itemLogs/item/${itemId}`, {method: 'GET'});
     };
 
     //Gets all item logs by the user id 
     async getItemLogsByUserId(userId) {
-        let itemLogs;
-        await this.requestWithAuth(`logs/itemLogs/user/${userId}`, {method: 'GET'})
-            .then((res) => res.json())
-            .then((itemLog) => itemLogs = itemLog);
-        return itemLogs;
+        return await this.requestWithAuth(`logs/itemLogs/user/${userId}`, {method: 'GET'});
     };
 
     //Creates an item log. Must have required itemLog data

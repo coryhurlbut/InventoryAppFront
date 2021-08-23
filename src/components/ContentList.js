@@ -137,7 +137,7 @@ export default class ContentList extends React.Component {
                 {this.buildContentList()}
                 {this.buildEditControls()}
                 <SignItemInOutControls inOrOut={this.state.inOrOut} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
-                <TestComponent/>
+                {/* <TestComponent/> */}
             </div>
         );
     };

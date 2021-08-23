@@ -29,9 +29,30 @@ export default class AuthController {
         console.log('refreshToken')
         let refreshToken = this.getRefreshToken();
         console.log(refreshToken)
-        let auth = await this.requestWithAuth('auth/refresh', {method: 'POST', body: JSON.stringify({refreshToken: refreshToken})}).then((res) => res.json());
+        let auth = await this.requestWithAuth('auth/refresh', {method: 'POST', body: JSON.stringify({refreshToken: refreshToken})});
         console.log(auth)
         return auth;
+    };
+
+    async checkToken() {
+        const refreshToken = this.getRefreshToken();
+        if (refreshToken !== null) {
+            let auth = await this.refreshToken(refreshToken);
+            console.log(auth)
+            return auth;
+        };
+    };
+
+    isJSON(objToCheck) {
+        let jsonObject;
+        try {
+            jsonObject = objToCheck.json();
+            return jsonObject;
+        } catch (error) {
+            if (error.name == "TypeError") {
+                return objToCheck;
+            };
+        };
     };
 
     //Custom request function to add headers
@@ -41,12 +62,19 @@ export default class AuthController {
             'Content-Type':     'application/json',
             'Authorization':    `Bearer ${this.getAccessToken()}` || null
         };
-        console.log(initObj)
+
         try {
-            let response = await fetch(this.buildApiUrl(url), initObj).catch((err) => {console.log(err)})
+            let response = await fetch(this.buildApiUrl(url), initObj).then((res) => {
+                return this.isJSON(res);
+            });
+            
+            console.log(response);
+            if (response.status == 403) {
+                throw "jwt expired"
+            }
             return response;
         } catch (err) {
-            console.log(err)
+
             if (err === "jwt expired") {
                 console.log('expired')
                 this.refreshToken();

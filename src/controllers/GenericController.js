@@ -12,6 +12,18 @@ export default class GenericController {
         return process.env.REACT_APP_HOSTNAME + url;
     };
 
+    isJSON(objToCheck) {
+        let jsonObject;
+        try {
+            jsonObject = objToCheck.json();
+            return jsonObject;
+        } catch (error) {
+            if (error.name == "TypeError") {
+                return objToCheck;
+            };
+        };
+    };
+
     //Custom request function to add headers
     async request (url, initObj) {
         initObj['headers'] = {
@@ -20,7 +32,10 @@ export default class GenericController {
         };
 
         try {
-            return await fetch(this.buildApiUrl(url), initObj)
+            let response = await fetch(this.buildApiUrl(url), initObj).then((res) => {
+                return this.isJSON(res);
+            });
+            return response;
         } catch (err) {
             console.log(err)
         }

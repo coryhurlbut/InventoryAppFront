@@ -7,29 +7,17 @@ class ItemAssocController extends AuthController{
 
     //Gets all item associations
     async getAllItemAssocs() {
-        let itemAssocs;
-        await this.requestWithAuth('itemAssoc', {method: 'GET'})
-            .then((res) => res.json())
-            .then((itemAssoc) => itemAssocs = itemAssoc);
-        return itemAssocs;
+        return await this.requestWithAuth('itemAssoc', {method: 'GET'});
     };
 
     //Gets item associations by the parent item's Id
     async getItemAssocByParentId(parentId) {
-        let itemAssocs;
-        await this.requestWithAuth('itemAssoc/parent/' + parentId, {method: 'GET'})
-            .then((res) => res.json())
-            .then((itemAssoc) => itemAssocs = itemAssoc);
-        return itemAssocs;
+        return await this.requestWithAuth('itemAssoc/parent/' + parentId, {method: 'GET'});
     };
 
     //Gets item associations by child item's Id 
     async getItemAssocByChildId(childId) {
-        let itemAssocs;
-        await this.requestWithAuth('itemAssoc/child/' + childId, {method: 'GET'})
-            .then((res) => res.json())
-            .then((itemAssoc) => itemAssocs = itemAssoc);
-        return itemAssocs;
+        return await this.requestWithAuth('itemAssoc/child/' + childId, {method: 'GET'});
     };
 
     //Creates item association. Must have a parent item Id and a child item Id

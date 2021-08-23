@@ -7,29 +7,17 @@ class AdminLogController extends AuthController{
     
     //Gets all admin logs
     async getAllAdminLogs() {
-        let adminLogs;
-        await this.requestWithAuth('logs/adminLogs', {method: 'GET'})
-            .then((res) => res.json())
-            .then((adminLog) => adminLogs = adminLog);
-        return adminLogs;
+        return await this.requestWithAuth('logs/adminLogs', {method: 'GET'});
     };
 
     //Gets admin logs by item Id
     async getAdminLogsByItemId(itemId) {
-        let adminLogs;
-        await this.requestWithAuth(`logs/adminLogs/item/${itemId}`, {method: 'GET'})
-            .then((res) => res.json())
-            .then((adminLog) => adminLogs = adminLog);
-        return adminLogs;
+        return await this.requestWithAuth(`logs/adminLogs/item/${itemId}`, {method: 'GET'});
     };
 
     //Gets admin logs by user Id
     async getAdminLogsByUserId(userId) {
-        let adminLogs;
-        await this.requestWithAuth(`logs/adminLogs/user/${userId}`, {method: 'GET'})
-            .then((res) => res.json())
-            .then((adminLog) => adminLogs = adminLog);
-        return adminLogs;
+        return await this.requestWithAuth(`logs/adminLogs/user/${userId}`, {method: 'GET'});
     };
 
     //Creates an admin log. Must have required adminLog data

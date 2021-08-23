@@ -8,31 +8,17 @@ class ItemController extends AuthController{
 
     //Gets all available items
     async getAvailableItems() {
-        let itemsList;
-        try {
-            await genericController.request('items/available', {method: 'GET'})
-                .then((res) => res.json())
-                .then((items) => itemsList = items)
-            return itemsList;
-        } catch (error) {
-            return error.message
-        };
+        return await genericController.request('items/available', {method: 'GET'});
     };
 
     //Gets all unavailable items
     async getUnavailableItems() {
-        let itemsList;
-        await genericController.request('items/unavailable', {method: 'GET'})
-            .then((res) => res.json())
-            .then((items) => itemsList = items);
-        return itemsList;
+        return await genericController.request('items/unavailable', {method: 'GET'});
     };
 
     //Gets one item by Id
     async getItemById(itemId) {
-        let item = await this.requestWithAuth(`items/${itemId}`, {method: 'GET'})
-            .then((res) => res.json());
-        return item;
+        return await this.requestWithAuth(`items/${itemId}`, {method: 'GET'});
     };
 
     //Creates one item. Must have required data fields

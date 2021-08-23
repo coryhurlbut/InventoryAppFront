@@ -18,7 +18,7 @@ const store = createStore(() => [], {}, applyMiddleware());
 ReactDOM.render(
     <Provider store={store}>
         <Router>
-                <Route exact path="/" component={App} />
+            <Route exact path="/" component={App} />
         </Router>
     </Provider>, 
     document.querySelector('#root')
