@@ -32,7 +32,7 @@ export const COLUMNS = [
         Header: 'Notes',
         Footer: 'Notes',
         accessor: 'notes',
-    },
+    }
 ]
 
 export const GROUPED_COLUMNS = [

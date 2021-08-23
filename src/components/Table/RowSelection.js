@@ -12,6 +12,8 @@ export const RowSelection = (props) => {
     const columns = useMemo(() => COLUMNS, [])
     const data = props.data
 
+
+
     const { getTableProps,
             getTableBodyProps,
             headerGroups,
@@ -37,15 +39,28 @@ export const RowSelection = (props) => {
                         <Checkbox {...row.getToggleRowSelectedProps()} />
                     )
                     },
-                    ...columns
+                    
+                    ...columns,
+                    {
+                        Header: 'Edit',
+                        Cell: ({ row }) => (<button {...row.getToggleRowSelectedProps()}>
+                                                Edit
+                                            </button>)
+                    }
+                    
                 ]
             })
 
         }
+        
         )
 
+        
     //const firstPageRows = rows.slice(0,10)
 
+    
+    
+    
     return (
         <>
         <table {...getTableProps()}>
@@ -93,6 +108,7 @@ export const RowSelection = (props) => {
         </table>
         <pre>
             <code>
+                
                 {JSON.stringify(
                     {
                         selectedFlatRows: selectedFlatRows.map((row) => row.original),
@@ -100,8 +116,11 @@ export const RowSelection = (props) => {
                     null,
                     2
                 )}
+                
             </code>
         </pre>
         </>
     )
+                    
 }
+

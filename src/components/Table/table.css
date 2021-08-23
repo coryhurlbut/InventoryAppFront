@@ -8,6 +8,8 @@ table {
     border: 1px solid #ddd;
     padding: 4px;
     max-width: 10%;
+    word-wrap: break-word;
+    max-width: 250px;
   }
   
   table tr:nth-child(even){background-color: #f2f2f2;}
