@@ -7,7 +7,7 @@ import UserController               from '../controllers/UserController';
 // import { HybridTable }             from './Table/HybridTable';
 import { RowSelection }             from './Table/RowSelection';
 import TestComponent                from './testcomponent';
-import NewTable from './Table/NewTable';
+import NewTable from './NewTable';
 import '../styles/App.css';
 
 //Settings for which data is displaying in the table
@@ -120,11 +120,7 @@ export default class ContentList extends React.Component {
 
     buildEditControls () {
         if (!this.state.editControlIsVisible) return
-        if(this.state.editControls === "ItemEditControls") {
-            return (
-                <ItemEditControls />
-            );
-        } else if (this.state.editControls === "UserEditControls") {
+        if (this.state.editControls === "UserEditControls") {
             return (
                 <UserEditControls />
             );

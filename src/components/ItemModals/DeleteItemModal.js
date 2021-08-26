@@ -1,5 +1,6 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
+import itemController from '../../controllers/ItemController';
 
 /*
 *   Modal for deleting an item
@@ -10,15 +11,25 @@ export default class DeleteItemModal extends React.Component{
         
         this.state = {
             isOpen: props.isOpen,
-            item: null
+            item: null,
+            id: props.id
         };
 
         this.dismissModal = this.dismissModal.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
     };
 
     dismissModal() {
         this.setState({isOpen: false});
     };
+
+    async deleteItem() {
+
+        let id = this.state.id
+        let response = await itemController.deleteItem(id);
+        console.log(response);
+        this.dismissModal();
+    }
 
     render() {
         return(
@@ -26,6 +37,10 @@ export default class DeleteItemModal extends React.Component{
                 <div>
                     <div className='header'>
                         Delete Item
+                    </div>
+                    <p>Are you sure you want to delete?</p>
+                    <div>
+                        <button onClick={() => {this.deleteItem()}}>Delete</button>
                     </div>
                     <div>
                         <button onClick={this.dismissModal}>Close</button>

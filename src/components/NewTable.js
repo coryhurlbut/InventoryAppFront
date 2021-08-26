@@ -1,14 +1,21 @@
 import React, { Component } from 'react'
-import MOCK_DATA from './MOCK_DATA.json'
-import { useTable } from 'react-table'
-import './table.css'
+import './Table/table.css'
+import { AddItemModal, EditItemModal, DeleteItemModal } from './ItemModals';
 
 export default class NewTable extends Component {
     constructor(props){
         super(props)
         this.state = {
-            data: props.data
+            data: props.data,
+            item: null,
+            modal: null,
+            id: null
         }
+
+        this.hideModal  = this.hideModal.bind(this);
+        this.addItem    = this.addItem.bind(this);
+        this.editItem   = this.editItem.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
         
     }
     //Included this function, so when toggling between table types, the table actually updates with correct information Ex. Available items display by default, but without this, clicking unavailable the table didnt change
@@ -17,13 +24,34 @@ export default class NewTable extends Component {
             this.setState({ data: this.props.data });
         }
     }
+    
+
+    addItem () {
+        this.setState({modal: <AddItemModal isOpen={true} hideModal={this.hideModal}/>});
+    };
+
+    editItem () {
+        this.setState({modal: <EditItemModal isOpen={true} hideModal={this.hideModal}/>});
+    };
+
+    deleteItem () {
+        this.setState({modal: <DeleteItemModal isOpen={true} id={this.state.id} hideModal={this.hideModal}/>});
+    };
+
+    hideModal() {
+        this.setState({modal: null});
+    };
+    
+    
+
 
     renderTableData(){
         return this.state.data.map((item, index) => {
             const { _id, name, description, homeLocation, serialNumber, notes } = item
+            
             return(
                 <tr key={_id}>
-                    <input type='checkbox'>{}</input>
+                    <input type='checkbox' id={_id} onClick={() => {this.setState({id: _id})}}></input>
                     <td>{_id}</td>
                     <td>{name}</td>
                     <td>{description}</td>
@@ -34,6 +62,7 @@ export default class NewTable extends Component {
             )
         })
     }
+    
     
     render() {
         return(
@@ -53,8 +82,21 @@ export default class NewTable extends Component {
                     {this.renderTableData()}
                 </tbody>
             </table>
+            <div>
+                <button onClick={this.addItem}>
+                    Add Item
+                </button>
+                <button onClick={this.editItem}>
+                    Edit Item
+                </button>
+                <button onClick={this.deleteItem}>
+                    Delete Item
+                </button>
+                {this.state.modal}
+            </div>
             <pre></pre>
             </div>
+            
     )
 }
 
