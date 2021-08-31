@@ -67,8 +67,11 @@ export default class AddItemModal extends React.Component{
                     </input>
                     <div>Notes</div>
                         <input type='text' id='notes' name="notes" value={this.state.notes} onChange={(event) => this.setState({notes: event.target.value})}></input>
-                    <div>Location</div>
+                    <div>Home Location</div>
                         <input type='text' id='homeLocation' name="homeLocation" value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}>
+                    </input>
+                    <div>Specific Location</div>
+                    <input type='text' id='specificLocation' name="specificLocation" value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}>
                     </input>
                     <div>Is Child item</div>
                     <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onChange={(event) => this.setState({isChild: event.target.value})}>
