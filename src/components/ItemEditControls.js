@@ -11,7 +11,8 @@ export default class ItemEditControls extends React.Component {
         
         this.state = {
             item:  null,
-            modal: null
+            modal: null,
+            id: props.id
         };
 
         this.hideModal  = this.hideModal.bind(this);
@@ -19,6 +20,12 @@ export default class ItemEditControls extends React.Component {
         this.editItem   = this.editItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
     };
+
+    componentDidUpdate(prevProps, prevState){
+        if(this.props.id !== prevProps.id){
+            this.setState({ id: this.props.id });
+        }
+    }
 
     addItem () {
         this.setState({modal: <AddItemModal isOpen={true} hideModal={this.hideModal}/>});
@@ -29,7 +36,7 @@ export default class ItemEditControls extends React.Component {
     };
 
     deleteItem () {
-        this.setState({modal: <DeleteItemModal isOpen={true} hideModal={this.hideModal}/>});
+        this.setState({modal: <DeleteItemModal isOpen={true} id={this.state.id} hideModal={this.hideModal}/>});
     };
 
     hideModal() {

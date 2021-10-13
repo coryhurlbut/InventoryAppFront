@@ -5,7 +5,7 @@ import SignItemInOutControls        from './SignItemInOutControls';
 import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
 import TestComponent                from './testcomponent';
-import NewTable from './NewTable';
+import './Table/table.css';
 import '../styles/App.css';
 
 //Settings for which data is displaying in the table
@@ -39,7 +39,8 @@ export default class ContentList extends React.Component {
             contentType:                availableItemsContent.contentType,
             editControls:               availableItemsContent.editControls,
             inOrOut:                    availableItemsContent.inOrOut,
-            content:                    []
+            content:                    [],
+            id:                         null
         };
         
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
@@ -50,14 +51,13 @@ export default class ContentList extends React.Component {
 
     // Will update component props if parent props change
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.userContentIsVisible     !== prevProps.userContentIsVisible ||
-            this.props.editControlIsVisible     !== prevProps.editControlIsVisible ||
-            this.props.signItemInOutIsVisible   !== prevProps.signItemInOutIsVisible) {
+        if (this.props !== prevProps) {
     
             this.setState({
                 userContentIsVisible:       this.props.userContentIsVisible,
                 editControlIsVisible:       this.props.editControlIsVisible,
-                signItemInOutIsVisible:     this.props.signItemInOutIsVisible
+                signItemInOutIsVisible:     this.props.signItemInOutIsVisible,
+                id:                         this.props.id
             });
         };
 
@@ -110,19 +110,93 @@ export default class ContentList extends React.Component {
         return(
             <div className="table">
                 {this.state.contentType}
-                <NewTable callback={this.getSelectedItems} data={this.state.content} />
+                <h1 id='title'></h1>
+            <table id='items'>
+                    {this.renderTableHeader()}
+                <tbody>
+                    {this.renderTableData()}
+                </tbody>
+            </table>
+            <pre></pre>
             </div>
         );
     };
 
     buildEditControls () {
-        if (!this.state.editControlIsVisible) return
-        if (this.state.editControls === "UserEditControls") {
+        if(this.state.editControls === "ItemEditControls" && this.state.editControlIsVisible) {
             return (
-                <UserEditControls />
+                <ItemEditControls id={this.state.id}/>
+            );
+        } else if (this.state.editControls === "UserEditControls") {
+            return (
+                <UserEditControls id={this.state.id}/>
             );
         };
     };
+    renderTableData(){
+        
+        if(this.state.contentType === "Users"){
+            return this.state.content.map((user, index) => {
+                const { _id, firstName, lastName, userName, userRole, phoneNumber } = user
+                return(
+                    <tr key={_id}>
+                    <input type='checkbox' id={_id} onClick={() => {this.setState({id: _id})}}></input>
+                    <td>{_id}</td>
+                    <td>{firstName}</td>
+                    <td>{lastName}</td>
+                    <td>{userName}</td>
+                    <td>{userRole}</td>
+                    <td>{phoneNumber}</td>
+                </tr>
+            )})
+        }
+        else {
+            return this.state.content.map((item, index) => {
+                const { _id, name, description, homeLocation, specificLocation, serialNumber, notes } = item
+                return(
+                    
+                    <tr key={_id}>
+                    <input type='checkbox' id={_id} onClick={() => {this.setState({id: _id})}}></input>
+                    <td>{_id}</td>
+                    <td>{name}</td>
+                    <td>{description}</td>
+                    <td>{homeLocation}</td>
+                    <td>{specificLocation}</td>
+                    <td>{serialNumber}</td>
+                    <td>{notes}</td>
+                </tr>
+            )})
+        }
+    }
+    renderTableHeader() {
+        if(this.state.contentType === "Users"){
+            return(
+                <thead>
+                    <th></th>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Phone Number</th>
+                </thead>
+            )
+        }
+        else{
+            return(
+                <thead>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Item Name</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Specific Location</th>
+                    <th>Serial Number</th>
+                    <th>Notes</th>
+                </thead>
+            )
+        }
+    }
 
     render() {
         // Check for content and build list if it's present.
