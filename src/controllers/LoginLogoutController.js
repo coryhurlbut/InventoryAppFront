@@ -1,5 +1,4 @@
 import GenericController from './GenericController';
-import AuthController from './AuthController';
 /*
 *   Controls functions calling APIs for Auth data operations
 */
@@ -23,6 +22,8 @@ export default class LoginLogoutController extends GenericController{
         };
         
         let auth = await this.request('auth/login', reqObj);
+
+        // Clears to keep only one set of tokens at a time
         localStorage.clear();
         localStorage.setItem('access', auth.accessToken);
         localStorage.setItem('refresh', auth.refreshToken);

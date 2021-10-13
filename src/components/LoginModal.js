@@ -45,7 +45,7 @@ export default class LoginModal extends React.Component{
                     </div>
                     <div>
                         <div>Password: </div>
-                        <input type='text' key='password' onChange={(event) => {this.setState({password: event.target.value})}}></input>
+                        <input type='password' key='password' onChange={(event) => {this.setState({password: event.target.value})}}></input>
                     </div>
                     <button onClick={this.login}>Log in</button>
                     <button onClick={this.dismissModal}>Close</button>

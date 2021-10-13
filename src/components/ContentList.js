@@ -4,8 +4,6 @@ import UserEditControls             from './UserEditControls';
 import SignItemInOutControls        from './SignItemInOutControls';
 import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
-// import { HybridTable }             from './Table/HybridTable';
-import { RowSelection }             from './Table/RowSelection';
 import TestComponent                from './testcomponent';
 import NewTable from './NewTable';
 import '../styles/App.css';
@@ -50,6 +48,7 @@ export default class ContentList extends React.Component {
         this.getSelectedItems       =   this.getSelectedItems.bind(this);
     };
 
+    // Will update component props if parent props change
     componentDidUpdate(prevProps, prevState) {
         if (this.props.userContentIsVisible     !== prevProps.userContentIsVisible ||
             this.props.editControlIsVisible     !== prevProps.editControlIsVisible ||
@@ -73,10 +72,9 @@ export default class ContentList extends React.Component {
     };
 
     async showAvailableItems () {
-        let items = await ItemController.getAvailableItems();  
-
+        let items = await ItemController.getAvailableItems();
         this.setState({
-            content:            items,
+            content:            items || null,
             contentType:        availableItemsContent.contentType,
             editControls:       availableItemsContent.editControls,
             inOrOut:            availableItemsContent.inOrOut
@@ -86,7 +84,7 @@ export default class ContentList extends React.Component {
     async showUnavailableItems () {
         let items = await ItemController.getUnavailableItems();
         this.setState({
-            content:            items,
+            content:            items || null,
             contentType:        unavailableItemsContent.contentType,
             editControls:       unavailableItemsContent.editControls,
             inOrOut:            unavailableItemsContent.inOrOut
@@ -95,19 +93,18 @@ export default class ContentList extends React.Component {
 
     async showUsers () {
         let users = await UserController.getAllUsers();
-
+        console.log(users)
         this.setState({
-            content:            users,
+            content:            users || null,
             contentType:        usersContent.contentType,
             editControls:       usersContent.editControls,
-
             inOrOut:            usersContent.inOrOut
         });  
     };
+
     getSelectedItems(items) {
-        console.log(items)
         this.setState({items: items});
-    }
+    };
 
     buildContentList () {
         return(
@@ -130,7 +127,7 @@ export default class ContentList extends React.Component {
     render() {
         // Check for content and build list if it's present.
         // Otherwise return null
-        let contentList = this.state.content.length > 0 ? this.buildContentList() : null;
+        let contentList = this.state.content !== null ? this.buildContentList() : 'No content available.';
 
         return (
             <div>

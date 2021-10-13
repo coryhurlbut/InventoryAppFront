@@ -2,7 +2,6 @@ import React from 'react';
 import '@fluentui/react';
 import '../styles/App.css';
 import {authController}         from '../controllers/AuthController';
-import {loginLogoutController}  from '../controllers/LoginLogoutController';
 import ContentList              from './ContentList';
 import ItemLogDisplay           from './ItemLogDisplay';
 import AdminLogDisplay          from './AdminLogDisplay';
@@ -63,11 +62,16 @@ export default class ContentBuilder extends React.Component {
 
     async componentDidMount() {
         let auth = await authController.checkToken();
-        this.setAuth(auth);
+        console.log(auth)
+        if (auth === undefined) {
+            this.clearAuth();
+        } else {
+            this.setAuth(auth);
+        };
     };
 
     setAuth(auth) {
-        this.setState({auth: auth, isLoggedIn: true, view: displayPresets[auth.user.userRole] || displayPresets.main});
+        this.setState({auth: auth, isLoggedIn: true, view: displayPresets[auth.user.userRole]});
     };
 
     clearAuth() {

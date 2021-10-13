@@ -12,13 +12,16 @@ export default class GenericController {
         return process.env.REACT_APP_HOSTNAME + url;
     };
 
-    isJSON(objToCheck) {
+    // Returns JSON if it is able. Otherwise, returns what was sent to it
+    async isJSON(objToCheck) {
         let jsonObject;
         try {
-            jsonObject = objToCheck.json();
+            // Awaits .json function to get the response in JSON
+            jsonObject = await objToCheck.json();
             return jsonObject;
         } catch (error) {
-            if (error.name == "TypeError") {
+            // If .json fails, return original data
+            if (error.name === "TypeError") {
                 return objToCheck;
             };
         };
@@ -37,8 +40,9 @@ export default class GenericController {
             });
             return response;
         } catch (err) {
-            console.log(err)
-        }
+            // TODO: Add error handling
+            console.log(err);
+        };
     };
 };
 

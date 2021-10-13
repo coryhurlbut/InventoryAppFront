@@ -31,9 +31,24 @@ class ItemController extends AuthController{
         return await this.requestWithAuth(`items/${itemId}`, {method: 'DELETE'});
     };
 
+    //Deletes items by Id
+    async deleteItems(itemIds) {
+        return await this.requestWithAuth('items/delete', {method: 'DELETE', body: JSON.stringify(itemIds)});
+    };
+
     //Updates one item. Must pass item Id and the data to update
     async updateItem(itemId, item) {
         return await this.requestWithAuth(`items/${itemId}`, {method: 'PATCH', body: JSON.stringify(item)});
+    };
+
+    //Signs out items. Must pass item Ids
+    async signItemOut(itemIds) {
+        return await this.requestWithAuth('items/signout', {method: 'PATCH', body: JSON.stringify(itemIds)});
+    };
+
+    //Signs in items. Must pass item Ids
+    async signItemIn(itemIds) {
+        return await this.requestWithAuth('items/signin', {method: 'PATCH', body: JSON.stringify(itemIds)});
     };
 };
 
