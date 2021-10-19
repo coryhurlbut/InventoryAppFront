@@ -17,6 +17,7 @@ class UserController extends AuthController{
 
     //Creates a single user. Must be given body of all required user fields
     async createUser(user) {
+        console.log(user);
         return await this.requestWithAuth('users', {method: 'POST', body: JSON.stringify(user)});
     };
 

@@ -10,7 +10,8 @@ export default class AddItemModal extends React.Component{
         
         this.state = {
             isOpen: props.isOpen,
-            item: null,
+            id: props.id,
+            parents: props.parents,
             name: null,
             description: null,
             serialNumber: null,
@@ -20,8 +21,8 @@ export default class AddItemModal extends React.Component{
             available: true,
             servicable: true,
             isChild: false,
+            disabled: true
         };
-
         this.dismissModal = this.dismissModal.bind(this);
         this.addItem = this.addItem.bind(this);
     };
@@ -31,7 +32,6 @@ export default class AddItemModal extends React.Component{
     };
 
     async addItem() {
-        console.log(this.state);
         
         //add to database called upon submit
         let item = {
@@ -46,7 +46,6 @@ export default class AddItemModal extends React.Component{
             isChild:            this.state.isChild
         }
         let response = await itemController.createItem(item);
-        console.log(response);
         this.dismissModal();
     }
 
@@ -58,28 +57,44 @@ export default class AddItemModal extends React.Component{
                     <div className='header'>
                         Add Item to database
                     </div>
-                    <div>Name</div>
-                        <input type='text' id='name' name="name" value={this.state.name} onChange={(event) => this.setState({name: event.target.value})}>
-                    </input>
-                    <div>Description</div>
-                        <input type='text' id='description' name="description" value={this.state.description} onChange={(event) => this.setState({description: event.target.value})}>
-                    </input>
-                    <div>Serial Number</div>
-                        <input type='text' id='serialNumber' name="serialNumber" value={this.state.serialNumber} onChange={(event) => this.setState({serialNumber: event.target.value})}>
-                    </input>
-                    <div>Notes</div>
-                        <input type='text' id='notes' name="notes" value={this.state.notes} onChange={(event) => this.setState({notes: event.target.value})}></input>
-                    <div>Home Location</div>
-                        <input type='text' id='homeLocation' name="homeLocation" value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}>
-                    </input>
-                    <div>Specific Location</div>
-                    <input type='text' id='specificLocation' name="specificLocation" value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}>
-                    </input>
-                    <div>Is Child item</div>
-                    <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onChange={(event) => this.setState({isChild: event.target.value})}>
-                    </input>
                     <div>
-                    <button onClick={() => {this.addItem()}}>Submit</button>
+                        Name
+                    </div>
+                        <input type='text' id='name' name="name" value={this.state.name} onChange={(event) => this.setState({name: event.target.value})}></input>
+                    <div>
+                        Description
+                    </div>
+                        <input type='text' id='description' name="description" value={this.state.description} onChange={(event) => this.setState({description: event.target.value})}></input>
+                    <div>
+                        Serial Number
+                    </div>
+                        <input type='text' id='serialNumber' name="serialNumber" value={this.state.serialNumber} onChange={(event) => this.setState({serialNumber: event.target.value})}></input>
+                    <div>
+                        Notes
+                    </div>
+                        <input type='text' id='notes' name="notes" value={this.state.notes} onChange={(event) => this.setState({notes: event.target.value})}></input>
+                    <div>
+                        Home Location
+                    </div>
+                        <input type='text' id='homeLocation' name="homeLocation" value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
+                    <div>
+                        Specific Location
+                    </div>
+                        <input type='text' id='specificLocation' name="specificLocation" value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
+                    <div>
+                        Is Child item
+                    </div>
+                        <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onChange={(event) => this.setState({isChild: event.target.value, disabled: false})}></input>
+                        <div>
+                            <select id='select-parent' placeholder='Choose parent item..' disabled={this.state.disabled}>
+                                <option value=''></option>
+                                {Object.keys(this.state.parents).map((parent) => {
+                                    return (<option value={this.state.parents[parent].name}>{this.state.parents[parent].name}</option>);
+                                })}
+                            </select>
+                        </div>
+                    <div>
+                        <button onClick={() => {this.addItem()}}>Submit</button>
                     </div>
                     <input type="text" name="Name" value={this.state.name} 
                         onChange={(event) => {this.setState({name: event.target.value})}}>

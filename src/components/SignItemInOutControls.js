@@ -10,7 +10,9 @@ export default class SignItemInOutControls extends React.Component {
         super(props)
         this.state = {
             signItemInOutIsVisible: props.signItemInOutIsVisible,
-            modal: null
+            modal: null,
+            id: props.id,
+            idArray: props.idArray
         };
 
         this.hideModal      = this.hideModal.bind(this);
@@ -31,11 +33,11 @@ export default class SignItemInOutControls extends React.Component {
     };
 
     signItemIn() {
-        this.setState({modal: <SignItemInModal isOpen={true} hideModal={this.hideModal}/>})
+        this.setState({modal: <SignItemInModal isOpen={true} idArray={this.state.idArray} hideModal={this.hideModal}/>})
     };
 
     signItemOut() {
-        this.setState({modal: <SignItemOutModal isOpen={true} hideModal={this.hideModal}/>})
+        this.setState({modal: <SignItemOutModal isOpen={true} idArray={this.state.idArray} hideModal={this.hideModal}/>})
     };
 
     buildButton() {

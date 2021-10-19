@@ -11,6 +11,19 @@ class ItemController extends AuthController{
         return await genericController.request('items/available', {method: 'GET'});
     };
 
+    async getParentItems() {
+        let itemsList;
+        try{
+            await genericController.request('items/parents', {method: 'GET'})
+                .then((res) => res.json())
+                .then((items) => itemsList = items)
+                return itemsList;
+        }
+        catch (error){
+            return error.message
+        };
+    };
+
     //Gets all unavailable items
     async getUnavailableItems() {
         return await genericController.request('items/unavailable', {method: 'GET'});

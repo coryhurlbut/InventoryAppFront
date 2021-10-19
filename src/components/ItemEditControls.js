@@ -12,7 +12,9 @@ export default class ItemEditControls extends React.Component {
         this.state = {
             item:  null,
             modal: null,
-            id: props.id
+            id: props.id,
+            parents: props.parents,
+            idArray: props.idArray
         };
 
         this.hideModal  = this.hideModal.bind(this);
@@ -28,15 +30,15 @@ export default class ItemEditControls extends React.Component {
     }
 
     addItem () {
-        this.setState({modal: <AddItemModal isOpen={true} hideModal={this.hideModal}/>});
+        this.setState({modal: <AddItemModal isOpen={true} id={this.state.id} parents={this.state.parents} hideModal={this.hideModal}/>});
     };
 
     editItem () {
-        this.setState({modal: <EditItemModal isOpen={true} hideModal={this.hideModal}/>});
+        this.setState({modal: <EditItemModal isOpen={true} id={this.state.id} hideModal={this.hideModal}/>});
     };
 
     deleteItem () {
-        this.setState({modal: <DeleteItemModal isOpen={true} id={this.state.id} hideModal={this.hideModal}/>});
+        this.setState({modal: <DeleteItemModal isOpen={true} id={this.state.id} hideModal={this.hideModal} idArray={this.state.idArray}/>});
     };
 
     hideModal() {
@@ -49,7 +51,7 @@ export default class ItemEditControls extends React.Component {
                 <button onClick={this.addItem}>
                     Add Item
                 </button>
-                <button onClick={this.editItem}>
+                <button onClick={this.editItem} disabled={this.state.idArray.length > 1 ? true : false}>
                     Edit Item
                 </button>
                 <button onClick={this.deleteItem}>

@@ -10,7 +10,9 @@ export default class SignItemOutModal extends React.Component{
         
         this.state = {
             isOpen: props.isOpen,
-            item: null
+            id: props.id,
+            item: null,
+            idArray: props.idArray
         };
 
         this.dismissModal = this.dismissModal.bind(this);
@@ -26,6 +28,11 @@ export default class SignItemOutModal extends React.Component{
                 <div>
                     <div className='header'>
                         Sign Item Out                    
+                    </div>
+                    <div>You are about to sign out: </div>
+                    <div>{this.state.idArray}</div>
+                    <div>
+                        <button>Submit</button>
                     </div>
                     <div>
                         <button onClick={this.dismissModal}>Close</button>

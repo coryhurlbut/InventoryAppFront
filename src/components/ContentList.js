@@ -4,7 +4,6 @@ import UserEditControls             from './UserEditControls';
 import SignItemInOutControls        from './SignItemInOutControls';
 import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
-import TestComponent                from './testcomponent';
 import './Table/table.css';
 import '../styles/App.css';
 
@@ -40,13 +39,17 @@ export default class ContentList extends React.Component {
             editControls:               availableItemsContent.editControls,
             inOrOut:                    availableItemsContent.inOrOut,
             content:                    [],
-            id:                         null
+            id:                         null,
+            parents:                    [],
+            idArray:                    [],
+            isChecked:                  null
         };
         
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
         this.showUnavailableItems   =   this.showUnavailableItems.bind(this);
         this.showUsers              =   this.showUsers.bind(this);
-        this.getSelectedItems       =   this.getSelectedItems.bind(this);
+        this.getParentItems         =   this.getParentItems.bind(this);
+        this.checkForChecked        =   this.checkForChecked.bind(this);
     };
 
     // Will update component props if parent props change
@@ -69,6 +72,7 @@ export default class ContentList extends React.Component {
 
     componentDidMount () {
         this.showAvailableItems();
+        this.getParentItems();
     };
 
     async showAvailableItems () {
@@ -79,6 +83,12 @@ export default class ContentList extends React.Component {
             editControls:       availableItemsContent.editControls,
             inOrOut:            availableItemsContent.inOrOut
         });
+    };
+
+    async getParentItems () {
+        let parents = await ItemController.getParentItems();
+
+        this.setState({parents: parents});
     };
 
     async showUnavailableItems () {
@@ -102,10 +112,6 @@ export default class ContentList extends React.Component {
         });  
     };
 
-    getSelectedItems(items) {
-        this.setState({items: items});
-    };
-
     buildContentList () {
         return(
             <div className="table">
@@ -125,7 +131,7 @@ export default class ContentList extends React.Component {
     buildEditControls () {
         if(this.state.editControls === "ItemEditControls" && this.state.editControlIsVisible) {
             return (
-                <ItemEditControls id={this.state.id}/>
+                <ItemEditControls id={this.state.id} parents={this.state.parents} idArray={this.state.idArray}/>
             );
         } else if (this.state.editControls === "UserEditControls") {
             return (
@@ -133,6 +139,21 @@ export default class ContentList extends React.Component {
             );
         };
     };
+
+    checkForChecked (id, name){
+        if(document.getElementById(`${id}`).checked){
+            let idArr = this.state.idArray;
+            idArr.push(name);
+            this.setState({idArray: idArr});
+        }
+        if(!document.getElementById(`${id}`).checked){
+            let idArr = this.state.idArray;
+            let duplicate = idArr.indexOf(id);
+            idArr.splice(duplicate, 1);
+            this.setState({idArray: idArr});
+        }
+    }
+
     renderTableData(){
         
         if(this.state.contentType === "Users"){
@@ -140,7 +161,7 @@ export default class ContentList extends React.Component {
                 const { _id, firstName, lastName, userName, userRole, phoneNumber } = user
                 return(
                     <tr key={_id}>
-                    <input type='checkbox' id={_id} onClick={() => {this.setState({id: _id})}}></input>
+                    <input type='checkbox' id={_id} name={userName} onClick={() => {this.setState({id: _id})}}></input>
                     <td>{_id}</td>
                     <td>{firstName}</td>
                     <td>{lastName}</td>
@@ -156,7 +177,7 @@ export default class ContentList extends React.Component {
                 return(
                     
                     <tr key={_id}>
-                    <input type='checkbox' id={_id} onClick={() => {this.setState({id: _id})}}></input>
+                    <input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id, name)}}></input>
                     <td>{_id}</td>
                     <td>{name}</td>
                     <td>{description}</td>
@@ -216,8 +237,7 @@ export default class ContentList extends React.Component {
                 </div>
                 {contentList}
                 {this.buildEditControls()}
-                <SignItemInOutControls inOrOut={this.state.inOrOut} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
-                {/* <TestComponent/> */}
+                <SignItemInOutControls inOrOut={this.state.inOrOut} idArray={this.state.idArray} id={this.state.id} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
             </div>
         );
     };
