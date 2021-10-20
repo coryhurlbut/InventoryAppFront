@@ -8,6 +8,7 @@ import ItemLogController from '../controllers/ItemLogController';
 export default class ItemLogDisplay extends React.Component {
     constructor(props){
         super(props);
+        //ToDo: Build out CustodianLog functionality
         this.state = {
             itemLogIsVisible: props.itemLogIsVisible,
             content: 'ItemLog'
