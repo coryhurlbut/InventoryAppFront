@@ -112,6 +112,7 @@ export default class ContentList extends React.Component {
         });  
     };
 
+    //ToDo: Remove h1, isn't in use
     buildContentList () {
         return(
             <div className="table">
@@ -155,37 +156,35 @@ export default class ContentList extends React.Component {
     }
 
     renderTableData(){
-        
         if(this.state.contentType === "Users"){
             return this.state.content.map((user, index) => {
                 const { _id, firstName, lastName, userName, userRole, phoneNumber } = user
                 return(
                     <tr key={_id}>
-                    <input type='checkbox' id={_id} name={userName} onClick={() => {this.setState({id: _id})}}></input>
-                    <td>{_id}</td>
-                    <td>{firstName}</td>
-                    <td>{lastName}</td>
-                    <td>{userName}</td>
-                    <td>{userRole}</td>
-                    <td>{phoneNumber}</td>
-                </tr>
+                        <td><input type='checkbox' id={_id} name={userName} onClick={() => {this.setState({id: _id})}}></input></td>
+                        <td>{_id}</td>
+                        <td>{firstName}</td>
+                        <td>{lastName}</td>
+                        <td>{userName}</td>
+                        <td>{userRole}</td>
+                        <td>{phoneNumber}</td>
+                    </tr>
             )})
         }
         else {
             return this.state.content.map((item, index) => {
                 const { _id, name, description, homeLocation, specificLocation, serialNumber, notes } = item
                 return(
-                    
                     <tr key={_id}>
-                    <input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id, name)}}></input>
-                    <td>{_id}</td>
-                    <td>{name}</td>
-                    <td>{description}</td>
-                    <td>{homeLocation}</td>
-                    <td>{specificLocation}</td>
-                    <td>{serialNumber}</td>
-                    <td>{notes}</td>
-                </tr>
+                        <td><input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id, name)}}></input></td>
+                        <td>{_id}</td>
+                        <td>{name}</td>
+                        <td>{description}</td>
+                        <td>{homeLocation}</td>
+                        <td>{specificLocation}</td>
+                        <td>{serialNumber}</td>
+                        <td>{notes}</td>
+                    </tr>
             )})
         }
     }
@@ -193,27 +192,31 @@ export default class ContentList extends React.Component {
         if(this.state.contentType === "Users"){
             return(
                 <thead>
-                    <th></th>
-                    <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                    <th>Role</th>
-                    <th>Phone Number</th>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Phone Number</th>
+                    </tr>
                 </thead>
             )
         }
         else{
             return(
                 <thead>
-                    <th></th>
-                    <th>ID</th>
-                    <th>Item Name</th>
-                    <th>Description</th>
-                    <th>Location</th>
-                    <th>Specific Location</th>
-                    <th>Serial Number</th>
-                    <th>Notes</th>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Item Name</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                        <th>Specific Location</th>
+                        <th>Serial Number</th>
+                        <th>Notes</th>
+                    </tr>
                 </thead>
             )
         }

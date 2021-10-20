@@ -8,6 +8,7 @@ import AdminLogController from '../controllers/AdminLogController';
 export default class AdminLogDisplay extends React.Component {
     constructor(props){
         super(props)
+        //ToDo: Build out AdminLog functionality
         this.state = {
             adminLogIsVisible: props.adminLogIsVisible,
             content: 'AdminLog'
