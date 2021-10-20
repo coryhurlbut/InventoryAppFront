@@ -1,5 +1,6 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
+import itemController from '../../controllers/ItemController';
 
 /*
 *   Modal for signing an item in
@@ -15,7 +16,14 @@ export default class SignItemInModal extends React.Component{
         };
 
         this.dismissModal = this.dismissModal.bind(this);
+        this.signItemsIn = this.signItemsIn.bind(this);
     };
+
+    async signItemsIn(){
+        let response = await itemController.signItemIn(this.state.idArray);
+        this.dismissModal();
+    }
+
 
     dismissModal() {
         this.setState({isOpen: false});
@@ -31,7 +39,7 @@ export default class SignItemInModal extends React.Component{
                     <div>You are about to sign back in:</div>
                     <div>{this.state.idArray}</div>
                     <div>
-                        <button>Submit</button>
+                        <button onClick={this.signItemsIn}>Submit</button>
                     </div>
                     <div>
                         <button onClick={this.dismissModal}>Close</button>

@@ -143,7 +143,7 @@ export default class ContentList extends React.Component {
     checkForChecked (id, name){
         if(document.getElementById(`${id}`).checked){
             let idArr = this.state.idArray;
-            idArr.push(name);
+            idArr.push(id);
             this.setState({idArray: idArr});
         }
         if(!document.getElementById(`${id}`).checked){

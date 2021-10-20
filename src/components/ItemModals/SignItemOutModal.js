@@ -1,5 +1,6 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
+import itemController from '../../controllers/ItemController';
 
 /*
 *   Modal for signing out an item
@@ -16,7 +17,13 @@ export default class SignItemOutModal extends React.Component{
         };
 
         this.dismissModal = this.dismissModal.bind(this);
+        this.signItemsOut = this.signItemsOut.bind(this);
     };
+
+    async signItemsOut(){
+        let response = await itemController.signItemOut(this.state.idArray);
+        this.dismissModal();
+    }
 
     dismissModal() {
         this.setState({isOpen: false});
@@ -32,7 +39,7 @@ export default class SignItemOutModal extends React.Component{
                     <div>You are about to sign out: </div>
                     <div>{this.state.idArray}</div>
                     <div>
-                        <button>Submit</button>
+                        <button onClick={this.signItemsOut}>Submit</button>
                     </div>
                     <div>
                         <button onClick={this.dismissModal}>Close</button>

@@ -12,7 +12,8 @@ export default class DeleteItemModal extends React.Component{
         this.state = {
             isOpen: props.isOpen,
             item: null,
-            id: props.id
+            id: props.id,
+            idArray: props.idArray
         };
 
         this.dismissModal = this.dismissModal.bind(this);
@@ -20,15 +21,12 @@ export default class DeleteItemModal extends React.Component{
     };
 
     dismissModal() {
-        console.log(this.state);
         this.setState({isOpen: false});
     };
 
     async deleteItem() {
 
-        let id = this.state.id
-        let response = await itemController.deleteItem(id);
-        console.log(this.state.isOpen);
+        let response = await itemController.deleteItems(this.state.idArray);
         this.dismissModal();
     }
 
