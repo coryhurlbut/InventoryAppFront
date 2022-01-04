@@ -64,7 +64,6 @@ export default class EditItemModal extends React.Component{
     
 
     render() {
-        let item = this.state.item;
         return(
 
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>

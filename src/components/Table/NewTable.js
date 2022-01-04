@@ -79,20 +79,6 @@ export default class NewTable extends Component {
                 </thead>
             )
         }
-        else{
-            return(
-                <thead>
-                    <th></th>
-                    <th>ID</th>
-                    <th>Item Name</th>
-                    <th>Description</th>
-                    <th>Location</th>
-                    <th>Specific Location</th>
-                    <th>Serial Number</th>
-                    <th>Notes</th>
-                </thead>
-            )
-        }
     }
         
     
