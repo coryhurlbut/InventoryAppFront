@@ -47,7 +47,7 @@ export default class EditUserModal extends React.Component{
             userRole:    this.state.userRole,
             phoneNumber: this.state.phoneNumber
         }
-        let respone = await userController.updateUser(this.state.id, user);
+        let response = await userController.updateUser(this.state.id, user);
         this.dismissModal();
     }
 

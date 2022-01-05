@@ -60,7 +60,7 @@ export default class ContentList extends React.Component {
                 userContentIsVisible:       this.props.userContentIsVisible,
                 editControlIsVisible:       this.props.editControlIsVisible,
                 signItemInOutIsVisible:     this.props.signItemInOutIsVisible,
-                id:                         this.props.id
+                id:                         this.props.id,
             });
         };
 
@@ -81,7 +81,8 @@ export default class ContentList extends React.Component {
             content:            items || null,
             contentType:        availableItemsContent.contentType,
             editControls:       availableItemsContent.editControls,
-            inOrOut:            availableItemsContent.inOrOut
+            inOrOut:            availableItemsContent.inOrOut,
+            idArray:            this.state.idArray
         });
     };
 
@@ -176,7 +177,7 @@ export default class ContentList extends React.Component {
                 const { _id, name, description, homeLocation, specificLocation, serialNumber, notes } = item
                 return(
                     <tr key={_id}>
-                        <td><input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id, name)}}></input></td>
+                        <td><input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id, name); this.setState({id: _id})}}></input></td>
                         <td>{_id}</td>
                         <td>{name}</td>
                         <td>{description}</td>
