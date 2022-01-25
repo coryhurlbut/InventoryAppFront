@@ -13,7 +13,8 @@ export default class UserEditControls extends React.Component {
         this.state = {
             user: null,
             modal: null,
-            id: props.id
+            id: props.id,
+            idArray: props.idArray
         };
 
         this.hideModal  = this.hideModal.bind(this);
@@ -22,8 +23,8 @@ export default class UserEditControls extends React.Component {
         this.deleteUser = this.deleteUser.bind(this);
     };
     componentDidUpdate(prevProps, prevState){
-        if(this.props.id !== prevProps.id){
-            this.setState({ id: this.props.id });
+        if(prevProps !== this.props){
+            this.setState({ id: this.props.id, idArray: this.props.idArray});
         }
     }
     
@@ -36,7 +37,7 @@ export default class UserEditControls extends React.Component {
     };
 
     deleteUser () {
-        this.setState({modal: <DeleteUserModal isOpen={true} id={this.state.id} hideModal={this.hideModal}/>});
+        this.setState({modal: <DeleteUserModal isOpen={true} id={this.state.id} hideModal={this.hideModal} idArray={this.state.idArray}/>});
     };
 
     hideModal() {
@@ -49,10 +50,10 @@ export default class UserEditControls extends React.Component {
                 <button onClick={this.addUser}>
                     Add User
                 </button>
-                <button onClick={this.editUser}>
+                <button onClick={this.editUser} disabled={this.state.idArray.length === 1 ? false : true}>
                     Edit User
                 </button>
-                <button onClick={this.deleteUser}>
+                <button onClick={this.deleteUser} disabled={this.state.idArray.length > 0 ? false : true}>
                     Delete User
                 </button>
                 {this.state.modal}

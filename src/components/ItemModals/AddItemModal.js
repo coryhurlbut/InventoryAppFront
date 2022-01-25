@@ -45,7 +45,7 @@ export default class AddItemModal extends React.Component{
             servicable:         this.state.servicable,
             isChild:            this.state.isChild
         }
-        let response = await itemController.createItem(item);
+        await itemController.createItem(item);
         this.dismissModal();
     }
 
@@ -84,7 +84,7 @@ export default class AddItemModal extends React.Component{
                     <div>
                         Is Child item
                     </div>
-                        <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onChange={(event) => this.setState({isChild: event.target.value, disabled: false})}></input>
+                        <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onClick={(event) => this.setState({isChild: event.target.value, disabled: false})}></input>
                         <div>
                             <select id='select-parent' placeholder='Choose parent item..' disabled={this.state.disabled}>
                                 <option value=''></option>
@@ -96,13 +96,9 @@ export default class AddItemModal extends React.Component{
                     <div>
                         <button onClick={() => {this.addItem()}}>Submit</button>
                     </div>
-                    <input type="text" name="Name" value={this.state.name} 
-                        onChange={(event) => {this.setState({name: event.target.value})}}>
-                    </input>
                     <div>
                         <button onClick={this.dismissModal}>Close</button>
-                    </div>
-                    <button onClick={this.addItem}>Add Item</button>                    
+                    </div>        
                 </div>
                 
             </Modal>

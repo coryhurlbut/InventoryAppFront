@@ -82,7 +82,7 @@ export default class ContentList extends React.Component {
             contentType:        availableItemsContent.contentType,
             editControls:       availableItemsContent.editControls,
             inOrOut:            availableItemsContent.inOrOut,
-            idArray:            this.state.idArray
+            idArray:            []
         });
     };
 
@@ -98,7 +98,8 @@ export default class ContentList extends React.Component {
             content:            items || null,
             contentType:        unavailableItemsContent.contentType,
             editControls:       unavailableItemsContent.editControls,
-            inOrOut:            unavailableItemsContent.inOrOut
+            inOrOut:            unavailableItemsContent.inOrOut,
+            idArray:            []
         }); 
     };
 
@@ -109,7 +110,8 @@ export default class ContentList extends React.Component {
             content:            users || null,
             contentType:        usersContent.contentType,
             editControls:       usersContent.editControls,
-            inOrOut:            usersContent.inOrOut
+            inOrOut:            usersContent.inOrOut,
+            idArray:            []
         });  
     };
 
@@ -137,12 +139,12 @@ export default class ContentList extends React.Component {
             );
         } else if (this.state.editControls === "UserEditControls") {
             return (
-                <UserEditControls id={this.state.id}/>
+                <UserEditControls id={this.state.id} idArray={this.state.idArray}/>
             );
         };
     };
 
-    checkForChecked (id, name){
+    checkForChecked (id){
         if(document.getElementById(`${id}`).checked){
             let idArr = this.state.idArray;
             idArr.push(id);
@@ -162,7 +164,7 @@ export default class ContentList extends React.Component {
                 const { _id, firstName, lastName, userName, userRole, phoneNumber } = user
                 return(
                     <tr key={_id}>
-                        <td><input type='checkbox' id={_id} name={userName} onClick={() => {this.setState({id: _id})}}></input></td>
+                        <td><input type='checkbox' id={_id} name={userName} onClick={() => {this.checkForChecked(_id); this.setState({id: _id})}}></input></td>
                         <td>{_id}</td>
                         <td>{firstName}</td>
                         <td>{lastName}</td>
@@ -177,7 +179,7 @@ export default class ContentList extends React.Component {
                 const { _id, name, description, homeLocation, specificLocation, serialNumber, notes } = item
                 return(
                     <tr key={_id}>
-                        <td><input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id, name); this.setState({id: _id})}}></input></td>
+                        <td><input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id); this.setState({id: _id})}}></input></td>
                         <td>{_id}</td>
                         <td>{name}</td>
                         <td>{description}</td>

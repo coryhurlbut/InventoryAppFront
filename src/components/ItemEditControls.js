@@ -24,8 +24,8 @@ export default class ItemEditControls extends React.Component {
     };
 
     componentDidUpdate(prevProps, prevState){
-        if(this.props.id !== prevProps.id){
-            this.setState({ id: this.props.id });
+        if(prevProps !== this.props){
+            this.setState({ id: this.props.id, idArray: this.props.idArray });
         }
     }
 
@@ -51,10 +51,10 @@ export default class ItemEditControls extends React.Component {
                 <button onClick={this.addItem}>
                     Add Item
                 </button>
-                <button onClick={this.editItem} disabled={this.state.idArray.length > 1 ? true : false}>
+                <button onClick={this.editItem} disabled={this.state.idArray.length === 1 ? false : true}>
                     Edit Item
                 </button>
-                <button onClick={this.deleteItem}>
+                <button onClick={this.deleteItem} disabled={this.state.idArray.length > 0 ? false : true}>
                     Delete Item
                 </button>
                 {this.state.modal}

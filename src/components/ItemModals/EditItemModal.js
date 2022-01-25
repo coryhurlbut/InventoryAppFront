@@ -57,7 +57,7 @@ export default class EditItemModal extends React.Component{
             isChild:            this.state.isChild
         }
 
-        let response = await itemController.updateItem(this.state.id, item);
+        await itemController.updateItem(this.state.id, item);
         this.dismissModal();
     }
 

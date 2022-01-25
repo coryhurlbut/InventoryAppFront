@@ -26,6 +26,9 @@ export default class SignItemInOutControls extends React.Component {
         if (this.props.signItemInOutIsVisible !== prevProps.signItemInOutIsVisible) {
             this.setState({ signItemInOutIsVisible: this.props.signItemInOutIsVisible });
         };
+        if(prevProps !== this.props){
+            this.setState({ idArray: this.props.idArray })
+        }
     };
 
     hideModal() {
@@ -42,9 +45,9 @@ export default class SignItemInOutControls extends React.Component {
 
     buildButton() {
         if (this.props.inOrOut == 'Sign Item In') {
-            return <button onClick={this.signItemIn}>{this.props.inOrOut}</button>
+            return <button onClick={this.signItemIn} disabled={this.state.idArray.length > 0 ? false : true}>{this.props.inOrOut}</button>
         } else if (this.props.inOrOut == 'Sign Item Out') {
-            return <button onClick={this.signItemOut}>{this.props.inOrOut}</button>
+            return <button onClick={this.signItemOut} disabled={this.state.idArray.length > 0 ? false : true}>{this.props.inOrOut}</button>
         } else {
             return null;
         };
