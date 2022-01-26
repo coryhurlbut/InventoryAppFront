@@ -44,9 +44,9 @@ export default class SignItemInOutControls extends React.Component {
     };
 
     buildButton() {
-        if (this.props.inOrOut == 'Sign Item In') {
+        if (this.props.inOrOut === 'Sign Item In') {
             return <button onClick={this.signItemIn} disabled={this.state.idArray.length > 0 ? false : true}>{this.props.inOrOut}</button>
-        } else if (this.props.inOrOut == 'Sign Item Out') {
+        } else if (this.props.inOrOut === 'Sign Item Out') {
             return <button onClick={this.signItemOut} disabled={this.state.idArray.length > 0 ? false : true}>{this.props.inOrOut}</button>
         } else {
             return null;

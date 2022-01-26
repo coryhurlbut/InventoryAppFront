@@ -46,7 +46,9 @@ export default class AddItemModal extends React.Component{
             isChild:            this.state.isChild
         }
         await itemController.createItem(item);
+        window.location.reload(false);
         this.dismissModal();
+
     }
 
     render() {

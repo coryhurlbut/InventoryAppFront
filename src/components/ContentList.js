@@ -120,7 +120,6 @@ export default class ContentList extends React.Component {
         return(
             <div className="table">
                 {this.state.contentType}
-                <h1 id='title'></h1>
             <table id='items'>
                     {this.renderTableHeader()}
                 <tbody>

@@ -58,6 +58,7 @@ export default class EditItemModal extends React.Component{
         }
 
         await itemController.updateItem(this.state.id, item);
+        window.location.reload(false);
         this.dismissModal();
     }
 
@@ -74,17 +75,17 @@ export default class EditItemModal extends React.Component{
                     <div>Name</div>
                         <input type='text' id='name' name="name" value={this.state.name} onChange={(event) => this.setState({name: event.target.value})}></input>
                     <div>Description</div>
-                        <input type='text' id='description' name="description" value={this.state.description} onChange={(event) => this.setState({name: event.target.value})}></input>
+                        <input type='text' id='description' name="description" value={this.state.description} onChange={(event) => this.setState({description: event.target.value})}></input>
                     <div>Serial Number</div>
-                        <input type='text' id='serialNumber' name="serialNumber" value={this.state.serialNumber} onChange={(event) => this.setState({name: event.target.value})}></input>
+                        <input type='text' id='serialNumber' name="serialNumber" value={this.state.serialNumber} onChange={(event) => this.setState({serialNumber: event.target.value})}></input>
                     <div>Notes</div>
-                        <input type='text' id='notes' name="notes" value={this.state.notes} onChange={(event) => this.setState({name: event.target.value})}></input>
+                        <input type='text' id='notes' name="notes" value={this.state.notes} onChange={(event) => this.setState({notes: event.target.value})}></input>
                     <div>Home Location</div>
-                        <input type='text' id='homeLocation' name="homeLocation" value={this.state.homeLocation} onChange={(event) => this.setState({name: event.target.value})}></input>
+                        <input type='text' id='homeLocation' name="homeLocation" value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
                     <div>Specific Location</div>
-                        <input type='text' id='specificLocation' name="specificLocation" value={this.state.specificLocation} onChange={(event) => this.setState({name: event.target.value})}></input>
+                        <input type='text' id='specificLocation' name="specificLocation" value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
                     <div>Is Child item</div>
-                        <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onChange={(event) => this.setState({name: event.target.value})}></input>
+                        <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onChange={(event) => this.setState({isChild: event.target.value})}></input>
                     <div>
                         <button onClick={() => {this.editItem()}}>Submit</button>
                     </div>

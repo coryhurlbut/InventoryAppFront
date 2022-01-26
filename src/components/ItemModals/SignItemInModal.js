@@ -20,7 +20,8 @@ export default class SignItemInModal extends React.Component{
     };
 
     async signItemsIn(){
-        let response = await itemController.signItemIn(this.state.idArray);
+        await itemController.signItemIn(this.state.idArray);
+        window.location.reload(false);
         this.dismissModal();
     }
 

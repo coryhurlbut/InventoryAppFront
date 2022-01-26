@@ -21,7 +21,8 @@ export default class SignItemOutModal extends React.Component{
     };
 
     async signItemsOut(){
-        let response = await itemController.signItemOut(this.state.idArray);
+        await itemController.signItemOut(this.state.idArray);
+        window.location.reload(false);
         this.dismissModal();
     }
 
