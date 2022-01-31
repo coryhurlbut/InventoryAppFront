@@ -12,20 +12,20 @@ export default class GenericController {
         return process.env.REACT_APP_HOSTNAME + url;
     };
 
-    // Returns JSON if it is able. Otherwise, returns what was sent to it
-    async isJSON(objToCheck) {
-        let jsonObject;
-        try {
-            // Awaits .json function to get the response in JSON
-            jsonObject = await objToCheck.json();
-            return jsonObject;
-        } catch (error) {
-            // If .json fails, return original data
-            if (error.name === "TypeError") {
-                return objToCheck;
-            };
-        };
-    };
+    // // Returns JSON if it is able. Otherwise, returns what was sent to it
+    // async isJSON(objToCheck) {
+    //     let jsonObject;
+    //     try {
+    //         // Awaits .json function to get the response in JSON
+    //         jsonObject = await objToCheck.json();
+    //         return jsonObject;
+    //     } catch (error) {
+    //         // If .json fails, return original data
+    //         if (error.name === "TypeError") {
+    //             return objToCheck;
+    //         };
+    //     };
+    // };
 
     //Custom request function to add headers
     async request (url, initObj) {
@@ -35,13 +35,15 @@ export default class GenericController {
         };
 
         try {
-            let response = await fetch(this.buildApiUrl(url), initObj).then((res) => {
-                return this.isJSON(res);
-            });
+            let response = await fetch(this.buildApiUrl(url), initObj);
+            if (response.ok) {
+                response = await response.json();
+            } else {
+                throw response;
+            }
             return response;
         } catch (err) {
-            // TODO: Add error handling
-            console.log(err);
+            return err;
         };
     };
 };

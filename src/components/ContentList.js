@@ -72,7 +72,7 @@ export default class ContentList extends React.Component {
 
     componentDidMount () {
         this.showAvailableItems();
-        this.getParentItems();
+        // this.getParentItems();
     };
 
     async showAvailableItems () {
@@ -105,7 +105,6 @@ export default class ContentList extends React.Component {
 
     async showUsers () {
         let users = await UserController.getAllUsers();
-        console.log(users)
         this.setState({
             content:            users || null,
             contentType:        usersContent.contentType,
@@ -115,7 +114,6 @@ export default class ContentList extends React.Component {
         });  
     };
 
-    //ToDo: Remove h1, isn't in use
     buildContentList () {
         return(
             <div className="table">
@@ -155,7 +153,7 @@ export default class ContentList extends React.Component {
             idArr.splice(duplicate, 1);
             this.setState({idArray: idArr});
         }
-    }
+    };
 
     renderTableData(){
         if(this.state.contentType === "Users"){
@@ -189,7 +187,8 @@ export default class ContentList extends React.Component {
                     </tr>
             )})
         }
-    }
+    };
+
     renderTableHeader() {
         if(this.state.contentType === "Users"){
             return(
@@ -222,7 +221,7 @@ export default class ContentList extends React.Component {
                 </thead>
             )
         }
-    }
+    };
 
     render() {
         // Check for content and build list if it's present.

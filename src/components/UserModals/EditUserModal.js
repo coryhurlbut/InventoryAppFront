@@ -12,12 +12,12 @@ export default class EditUserModal extends React.Component{
         this.state = {
             isOpen: props.isOpen,
             id: props.id,
-            firstName: null,
-            lastName: null,
-            userName: null,
-            password: null,
-            userRole: null,
-            phoneNumber: null
+            firstName: '',
+            lastName: '',
+            userName: '',
+            password: '',
+            userRole: '',
+            phoneNumber: ''
         };
 
         this.dismissModal = this.dismissModal.bind(this);
@@ -26,13 +26,15 @@ export default class EditUserModal extends React.Component{
     async componentDidMount(){
         let thisUser = await userController.getUserById(this.state.id);
 
-        this.setState({firstName:   thisUser.firstName});
-        this.setState({lastName:    thisUser.lastName});
-        this.setState({userName:    thisUser.userName});
-        this.setState({password:    thisUser.password});
-        this.setState({userRole:    thisUser.userRole});
-        this.setState({phoneNumber: thisUser.phoneNumber});
-    }
+        this.setState({
+            firstName:   thisUser.firstName, 
+            lastName:    thisUser.lastName,
+            userName:    thisUser.userName,
+            password:    thisUser.password,
+            userRole:    thisUser.userRole,
+            phoneNumber: thisUser.phoneNumber
+        });
+    };
 
     dismissModal() {
         this.setState({isOpen: false});
@@ -50,7 +52,7 @@ export default class EditUserModal extends React.Component{
         await userController.updateUser(this.state.id, user);
         window.location.reload();
         this.dismissModal();
-    }
+    };
 
     render() {
         return(

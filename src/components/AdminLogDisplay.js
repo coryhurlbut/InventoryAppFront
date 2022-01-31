@@ -1,6 +1,6 @@
 import React from 'react';
 import '@fluentui/react';
-import AdminLogController from '../controllers/AdminLogController';
+// import AdminLogController from '../controllers/AdminLogController';
 
 /*
 *   Displays log of admin actions (add, edit, delete of items and users)

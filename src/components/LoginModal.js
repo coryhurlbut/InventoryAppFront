@@ -21,10 +21,13 @@ export default class LoginModal extends React.Component{
 
     async login() {
         await loginLogoutController.login(this.state.userName, this.state.password)
-            .then((auth) => {
-                this.props.setAuth(auth)
-            }
-        );
+        .then((auth) => {
+            this.props.setAuth(auth)
+        })
+        .catch((err) => {
+            console.log(err)
+            this.setState({userName: null, password: null});
+        })
         this.dismissModal();
     };
 

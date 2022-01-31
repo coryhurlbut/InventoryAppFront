@@ -25,12 +25,10 @@ export default class DeleteItemModal extends React.Component{
     };
 
     async deleteItem() {
-
         await itemController.deleteItems(this.state.idArray);
-
         window.location.reload(false);
         this.dismissModal();
-    }
+    };
 
     render() {
         return(

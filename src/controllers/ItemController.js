@@ -31,7 +31,7 @@ class ItemController extends AuthController{
 
     //Gets one item by Id
     async getItemById(itemId) {
-        return await this.requestWithAuth(`items/${itemId}`, {method: 'GET'});
+        return await this.requestWithAuth(`items/item/${itemId}`, {method: 'GET'});
     };
 
     //Creates one item. Must have required data fields

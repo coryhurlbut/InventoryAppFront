@@ -28,7 +28,7 @@ export default class DeleteUserModal extends React.Component{
         await UserController.deleteUser(id);
         window.location.reload();
         this.dismissModal();
-    }
+    };
 
     render() {
         return(

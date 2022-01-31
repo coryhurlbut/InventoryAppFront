@@ -12,12 +12,12 @@ export default class AddUserModal extends React.Component{
         this.state = {
             isOpen: props.isOpen,
             user: null,
-            firstName: null,
-            lastName: null,
-            userName: null,
-            password: null,
-            userRole: null,
-            phoneNumber: null
+            firstName: '',
+            lastName: '',
+            userName: '',
+            password: '',
+            userRole: '',
+            phoneNumber: ''
         };
         this.dismissModal = this.dismissModal.bind(this);
     };
@@ -38,7 +38,7 @@ export default class AddUserModal extends React.Component{
         await UserController.createUser(user);
         window.location.reload();
         this.dismissModal();
-    }
+    };
 
     render() {
         return(

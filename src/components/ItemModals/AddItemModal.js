@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import itemController from '../../controllers/ItemController';
+
 /*
 *   Modal for adding an item
 */
@@ -32,7 +33,6 @@ export default class AddItemModal extends React.Component{
     };
 
     async addItem() {
-        
         //add to database called upon submit
         let item = {
             name:               this.state.name,
@@ -44,15 +44,14 @@ export default class AddItemModal extends React.Component{
             available:          this.state.available,
             servicable:         this.state.servicable,
             isChild:            this.state.isChild
-        }
+        };
+
         await itemController.createItem(item);
         window.location.reload(false);
         this.dismissModal();
-
-    }
+    };
 
     render() {
-        
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 <div>

@@ -23,8 +23,7 @@ export default class SignItemInModal extends React.Component{
         await itemController.signItemIn(this.state.idArray);
         window.location.reload(false);
         this.dismissModal();
-    }
-
+    };
 
     dismissModal() {
         this.setState({isOpen: false});

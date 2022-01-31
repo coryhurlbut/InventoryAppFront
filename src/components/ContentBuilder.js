@@ -50,8 +50,11 @@ export default class ContentBuilder extends React.Component {
             auth:           null,
             view:           displayPresets.main,
             isLoggedIn:     false,
-            modal:          null
+            modal:          null,
+            err:            null
         };
+
+        this.error = null;
 
         this.setAuth        = this.setAuth.bind(this);
         this.hideModal      = this.hideModal.bind(this);
@@ -62,9 +65,11 @@ export default class ContentBuilder extends React.Component {
 
     async componentDidMount() {
         let auth = await authController.checkToken();
-        console.log(auth)
-        if (auth === undefined) {
+
+        if (auth === undefined || auth.error !== undefined) {
             this.clearAuth();
+        } else if (typeof auth === 'string' && auth.split(' ')[0] === 'TypeError:') {
+            this.error = auth;
         } else {
             this.setAuth(auth);
         };
@@ -114,6 +119,7 @@ export default class ContentBuilder extends React.Component {
     };
 
     render () {
+        if (this.error) {throw this.error};
         return(this.buildContent(this.state.view));
     };
 };

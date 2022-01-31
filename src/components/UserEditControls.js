@@ -22,11 +22,12 @@ export default class UserEditControls extends React.Component {
         this.editUser   = this.editUser.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
     };
+
     componentDidUpdate(prevProps, prevState){
         if(prevProps !== this.props){
             this.setState({ id: this.props.id, idArray: this.props.idArray});
-        }
-    }
+        };
+    };
     
     addUser () {
         this.setState({modal: <AddUserModal isOpen={true} hideModal={this.hideModal}/>});

@@ -17,12 +17,12 @@ export default class AuthController {
 
     // Gets accessToken from localStorage
     getAccessToken() {
-        return localStorage.getItem('access') || null;
+        return localStorage.getItem('access') || undefined;
     };
 
     // Gets refreshToken from localStorage
     getRefreshToken() {
-        return localStorage.getItem('refresh') || null;
+        return localStorage.getItem('refresh') || undefined;
     };
 
     // Clears localStorage
@@ -45,10 +45,11 @@ export default class AuthController {
         };
 
         // Makes request to refresh, gets the response in json, then takes the data out and stores in auth
-        await fetch(this.buildApiUrl('auth/refresh'), initObj).then(res => res.json()).then(data => auth = data);
+        await fetch(this.buildApiUrl('auth/refresh'), initObj).then(res => res.json()).then(data => auth = data).catch(err => auth = new Error(err));
 
+        if (auth.message && auth.message.split(' ')[0] === 'TypeError:') {return auth.message};
         // If no auth data or incorrect token, return undefined 
-        if (auth === undefined || auth.message === "No matching token") {return undefined};
+        if (auth === undefined || auth.message !== undefined) {return undefined};
 
         localStorage.setItem('access', auth.accessToken);
 
@@ -59,15 +60,12 @@ export default class AuthController {
     checkTokenExpiration(token) {
         // jwtDecode is an imported library. It decodes the payload but can't verify or decode the signed secret on the token
         let decodedToken = jwtDecode(token);
-        console.log("Decoded Token", decodedToken);
         let currentDate = new Date();
       
         // decodedToken.exp is in seconds, current.getTime returns milliseconds 
         if (decodedToken.exp * 1000 < currentDate.getTime()) {
-          console.log("Token expired.");
           return false;
-        } else {
-          console.log("Valid token");   
+        } else {  
           return true;
         };
     };
@@ -77,10 +75,9 @@ export default class AuthController {
     async checkToken() {
         let auth;
         const refreshToken = this.getRefreshToken();
-        console.log(refreshToken);
+        
         if (refreshToken !== undefined) {
             auth = await this.refreshToken(refreshToken);
-            console.log(auth);
             return auth;
         }else{
             return undefined;
@@ -104,8 +101,6 @@ export default class AuthController {
 
     // Custom request function to add headers for authenticated requests
     async requestWithAuth (url, initObj) {
-        let resData;
-
         // Checks if access token is expired. If it is, refreshes token before making request.
         if (!this.checkTokenExpiration(this.getAccessToken())) {
             await this.refreshToken();
@@ -120,18 +115,16 @@ export default class AuthController {
 
         try {
             // Make request with given API path and method
-            await fetch(this.buildApiUrl(url), initObj)
-            .then(response => {
-                // Takes the JSON from the response
-                return response.json();
-            }).then((data) => {
-                // Takes the data from the JSON response
-                resData = data;
-            });
-            return resData;
+            let response = await fetch(this.buildApiUrl(url), initObj)
+            if (response.ok) {
+                response = await response.json();
+            } else {
+                throw response;
+            }
+            return response;
         } catch (err) {
             // TODO: Implement error handling
-            console.log(err);
+            return err;
         };
     };
 };

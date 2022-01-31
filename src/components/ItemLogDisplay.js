@@ -1,6 +1,6 @@
 import React from 'react';
 import '@fluentui/react';
-import ItemLogController from '../controllers/ItemLogController';
+// import ItemLogController from '../controllers/ItemLogController';
 
 /*
 *   Displays log of items signed in and out

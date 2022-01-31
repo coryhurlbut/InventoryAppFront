@@ -12,17 +12,18 @@ export default class EditItemModal extends React.Component{
         this.state = {
             isOpen: props.isOpen,
             id: props.id,
-            name: null,
-            description: null,
-            serialNumber: null,
-            notes: null,
-            homeLocation: null,
-            specificLocation: null,
+            name: '',
+            description: '',
+            serialNumber: '',
+            notes: '',
+            homeLocation: '',
+            specificLocation: '',
             available: true,
             servicable: true,
             isChild: false
             
         };
+
         this.dismissModal = this.dismissModal.bind(this);
     };
 
@@ -38,7 +39,7 @@ export default class EditItemModal extends React.Component{
         this.setState({available:        thisItem.available});
         this.setState({servicable:       thisItem.servicable});
         this.setState({isChild:          thisItem.isChild});
-    }
+    };
 
     dismissModal() {
         this.setState({isOpen: false});
@@ -55,18 +56,15 @@ export default class EditItemModal extends React.Component{
             available:          this.state.available,
             servicable:         this.state.servicable,
             isChild:            this.state.isChild
-        }
+        };
 
         await itemController.updateItem(this.state.id, item);
         window.location.reload(false);
         this.dismissModal();
-    }
-
-    
+    };
 
     render() {
         return(
-
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 <div>
                     <div className='header'>
