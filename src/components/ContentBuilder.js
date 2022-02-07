@@ -65,7 +65,7 @@ export default class ContentBuilder extends React.Component {
 
     async componentDidMount() {
         let auth = await authController.checkToken();
-
+        
         if (auth === undefined || auth.error !== undefined) {
             this.clearAuth();
         } else if (typeof auth === 'string' && auth.split(' ')[0] === 'TypeError:') {
@@ -76,7 +76,12 @@ export default class ContentBuilder extends React.Component {
     };
 
     setAuth(auth) {
-        this.setState({auth: auth, isLoggedIn: true, view: displayPresets[auth.user.userRole]});
+        if (auth.user.userRole === 'admin' || auth.user.userRole === 'custodian') {
+            this.setState({auth: auth, isLoggedIn: true, view: displayPresets[auth.user.userRole]});
+        } else {
+            this.clearAuth();
+            return;
+        };
     };
 
     clearAuth() {

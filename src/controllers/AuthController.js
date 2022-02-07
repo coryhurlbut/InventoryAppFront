@@ -37,8 +37,8 @@ export default class AuthController {
         let refreshToken = this.getRefreshToken();
         let initObj = {
             headers: {
-            "Accept":           "application/json",
-            "Content-Type":     "application/json"
+                "Accept":           "application/json",
+                "Content-Type":     "application/json"
             }, 
             method: 'POST', 
             body: JSON.stringify({refreshToken: refreshToken})
@@ -75,7 +75,7 @@ export default class AuthController {
     async checkToken() {
         let auth;
         const refreshToken = this.getRefreshToken();
-        
+
         if (refreshToken !== undefined) {
             auth = await this.refreshToken(refreshToken);
             return auth;
@@ -84,20 +84,20 @@ export default class AuthController {
         };
     };
 
-    // Returns JSON if it is able. Otherwise, returns what was sent to it
-    async isJSON(objToCheck) {
-        let jsonObject;
-        try {
-            // Awaits .json function to get the response in JSON
-            jsonObject = await objToCheck.json();
-            return jsonObject;
-        } catch (error) {
-            // If .json fails, return original data
-            if (error.name === "TypeError") {
-                return objToCheck;
-            };
-        };
-    };
+    // // Returns JSON if it is able. Otherwise, returns what was sent to it
+    // async isJSON(objToCheck) {
+    //     let jsonObject;
+    //     try {
+    //         // Awaits .json function to get the response in JSON
+    //         jsonObject = await objToCheck.json();
+    //         return jsonObject;
+    //     } catch (error) {
+    //         // If .json fails, return original data
+    //         if (error.name === "TypeError") {
+    //             return objToCheck;
+    //         };
+    //     };
+    // };
 
     // Custom request function to add headers for authenticated requests
     async requestWithAuth (url, initObj) {
