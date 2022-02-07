@@ -23,14 +23,21 @@ export default class LoginLogoutController extends GenericController {
             method: 'POST',
             body: JSON.stringify(reqBody)
         };
-        let auth = await this.request('auth/login', reqObj);
-        console.log(auth)
-        // Clears to keep only one set of tokens at a time
-        localStorage.clear();
-        localStorage.setItem('access', auth.accessToken);
-        localStorage.setItem('refresh', auth.refreshToken);
 
-        return auth;
+        try {
+            let response = await this.request('auth/login', reqObj);
+            if (response.ok !== undefined) {
+                throw response;
+            };
+
+            // Clears to keep only one set of tokens at a time
+            localStorage.clear();
+            localStorage.setItem('access', response.accessToken);
+            localStorage.setItem('refresh', response.refreshToken);
+            return response;
+        } catch (error) {
+            return error;
+        };
     };
 };
 

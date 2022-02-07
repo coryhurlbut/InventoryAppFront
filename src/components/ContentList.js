@@ -72,7 +72,7 @@ export default class ContentList extends React.Component {
 
     componentDidMount () {
         this.showAvailableItems();
-        // this.getParentItems();
+        this.getParentItems();
     };
 
     async showAvailableItems () {

@@ -36,12 +36,11 @@ export default class GenericController {
 
         try {
             let response = await fetch(this.buildApiUrl(url), initObj);
+            console.log(response);
             if (response.ok) {
-                response = await response.json();
-            } else {
-                throw response;
-            }
-            return response;
+                return await response.json();
+            };
+            throw response;
         } catch (err) {
             return err;
         };

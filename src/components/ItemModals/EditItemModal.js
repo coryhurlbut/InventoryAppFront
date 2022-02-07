@@ -21,7 +21,6 @@ export default class EditItemModal extends React.Component{
             available: true,
             servicable: true,
             isChild: false
-            
         };
 
         this.dismissModal = this.dismissModal.bind(this);
