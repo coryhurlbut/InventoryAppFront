@@ -1,24 +1,28 @@
-/* Centers main content */
-.body {
-    text-align: center;
-}
-  
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
 /* Creates centered header */
 .header {
-    background-color: #F1F1F1;
-    text-align: center;
-    margin: 30px;
+    /*margin: 30px;*/
     padding: 10px;
+    background-color: #F1F1F1;
+
+    text-align: left;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 /* Floats loginLogout button to the right */
 .logInLogOut {
     float: right;
+}
+
+/* Centers main content */
+.body {
+    text-align: center;
+    margin: 25px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
 }
