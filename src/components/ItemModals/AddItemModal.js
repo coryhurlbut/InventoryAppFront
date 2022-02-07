@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal} from '@fluentui/react';
+import {Checkbox, Modal} from '@fluentui/react';
 import itemController from '../../controllers/ItemController';
 
 /*
@@ -47,9 +47,25 @@ export default class AddItemModal extends React.Component{
         };
 
         await itemController.createItem(item);
-        window.location.reload(false);
+        window.location.reload();
         this.dismissModal();
     };
+
+    popSelect(){
+        if(document.getElementById('isChild').checked){
+        this.setState({ disabled: false });
+
+        let select = document.getElementById("select-parent"),
+            arr = this.state.parents.name;
+
+        for( let i = 0; i < this.state.parents.length; i++){
+            let option = document.createElement("OPTION"),
+                txt = document.createTextNode(arr[i].name);
+            option.appendChild(txt);
+            select.insertBefore(option, select.lastChild);
+        }
+        }
+    }
 
     render() {
         return(
@@ -58,18 +74,19 @@ export default class AddItemModal extends React.Component{
                     <div className='header'>
                         Add Item to database
                     </div>
+                    <form name= 'test' onSubmit={(Event) => {Event.preventDefault(); this.addItem();}}>
                     <div>
                         Name
                     </div>
-                        <input type='text' id='name' name="name" value={this.state.name} onChange={(event) => this.setState({name: event.target.value})}></input>
+                        <input type='text' id='name' name="name" required value={this.state.name} onChange={(event) => this.setState({name: event.target.value})}></input>
                     <div>
                         Description
                     </div>
-                        <input type='text' id='description' name="description" value={this.state.description} onChange={(event) => this.setState({description: event.target.value})}></input>
+                        <input type='text' id='description' name="description" required value={this.state.description} onChange={(event) => this.setState({description: event.target.value})}></input>
                     <div>
                         Serial Number
                     </div>
-                        <input type='text' id='serialNumber' name="serialNumber" value={this.state.serialNumber} onChange={(event) => this.setState({serialNumber: event.target.value})}></input>
+                        <input type='text' id='serialNumber' name="serialNumber" required value={this.state.serialNumber} onChange={(event) => this.setState({serialNumber: event.target.value})}></input>
                     <div>
                         Notes
                     </div>
@@ -77,26 +94,24 @@ export default class AddItemModal extends React.Component{
                     <div>
                         Home Location
                     </div>
-                        <input type='text' id='homeLocation' name="homeLocation" value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
+                        <input type='text' id='homeLocation' name="homeLocation" required value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
                     <div>
                         Specific Location
                     </div>
-                        <input type='text' id='specificLocation' name="specificLocation" value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
+                        <input type='text' id='specificLocation' name="specificLocation" required value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
                     <div>
                         Is Child item
                     </div>
-                        <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onClick={(event) => this.setState({isChild: event.target.value, disabled: false})}></input>
+                        <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onClick={this.popSelect}></input>
                         <div>
-                            <select id='select-parent' placeholder='Choose parent item..' disabled={this.state.disabled}>
+                            <select name='test' id='select-parent' placeholder='Choose parent item..' disabled={this.state.disabled}>
                                 <option value=''></option>
-                                {Object.keys(this.state.parents).map((parent) => {
-                                    return (<option value={this.state.parents[parent].name}>{this.state.parents[parent].name}</option>);
-                                })}
                             </select>
                         </div>
                     <div>
-                        <button onClick={() => {this.addItem()}}>Submit</button>
+                        <input type='submit' value='Submit'></input>
                     </div>
+                    </form>
                     <div>
                         <button onClick={this.dismissModal}>Close</button>
                     </div>        

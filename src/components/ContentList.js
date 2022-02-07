@@ -4,7 +4,7 @@ import UserEditControls             from './UserEditControls';
 import SignItemInOutControls        from './SignItemInOutControls';
 import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
-import './Table/table.css';
+import '../styles/table.css';
 import '../styles/App.css';
 
 //Settings for which data is displaying in the table
@@ -142,17 +142,14 @@ export default class ContentList extends React.Component {
     };
 
     checkForChecked (id){
+        let idArr = this.state.idArray;
         if(document.getElementById(`${id}`).checked){
-            let idArr = this.state.idArray;
             idArr.push(id);
-            this.setState({idArray: idArr});
-        }
-        if(!document.getElementById(`${id}`).checked){
-            let idArr = this.state.idArray;
+        }else{
             let duplicate = idArr.indexOf(id);
             idArr.splice(duplicate, 1);
-            this.setState({idArray: idArr});
         }
+        this.setState({ idArray: idArr })
     };
 
     renderTableData(){
