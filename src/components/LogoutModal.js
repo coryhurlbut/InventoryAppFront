@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import {loginLogoutController} from '../controllers/LoginLogoutController';
+import '../styles/Modal.css';
 
 /*
 *   Modal for logging out
@@ -28,10 +29,10 @@ export default class LogoutModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div>
-                    <div className='header'>
+                <div className='modalHeader'>
                         Log Out
-                    </div>
+                </div>
+                <div className='modalFooter'>
                     <button onClick={this.logout}>Log Out</button>
                     <button onClick={this.dismissModal}>Close</button>
                 </div>

@@ -67,33 +67,31 @@ export default class EditItemModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div>
-                    <div className='header'>
-                        Edit Item
+                <div className='modalHeader'>
+                    Edit Item
+                </div>
+                <form onSubmit={(Event) => {Event.preventDefault(); this.editItem();}}>
+                    <div className='modalBody'>
+                        <div>Name</div>
+                            <input type='text' id='name' name="name" required value={this.state.name} onChange={(event) => this.setState({name: event.target.value})}></input>
+                        <div>Description</div>
+                            <input type='text' id='description' name="description" required value={this.state.description} onChange={(event) => this.setState({description: event.target.value})}></input>
+                        <div>Serial Number</div>
+                            <input type='text' id='serialNumber' name="serialNumber" required value={this.state.serialNumber} onChange={(event) => this.setState({serialNumber: event.target.value})}></input>
+                        <div>Notes</div>
+                            <input type='text' id='notes' name="notes" value={this.state.notes} onChange={(event) => this.setState({notes: event.target.value})}></input>
+                        <div>Home Location</div>
+                            <input type='text' id='homeLocation'  name="homeLocation" required value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
+                        <div>Specific Location</div>
+                            <input type='text' id='specificLocation' name="specificLocation" required value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
+                        <div>Is Child item</div>
+                            <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onChange={(event) => this.setState({isChild: event.target.value})}></input>
                     </div>
-                    <form onSubmit={(Event) => {Event.preventDefault(); this.editItem();}}>
-                    <div>Name</div>
-                        <input type='text' id='name' name="name" required value={this.state.name} onChange={(event) => this.setState({name: event.target.value})}></input>
-                    <div>Description</div>
-                        <input type='text' id='description' name="description" required value={this.state.description} onChange={(event) => this.setState({description: event.target.value})}></input>
-                    <div>Serial Number</div>
-                        <input type='text' id='serialNumber' name="serialNumber" required value={this.state.serialNumber} onChange={(event) => this.setState({serialNumber: event.target.value})}></input>
-                    <div>Notes</div>
-                        <input type='text' id='notes' name="notes" value={this.state.notes} onChange={(event) => this.setState({notes: event.target.value})}></input>
-                    <div>Home Location</div>
-                        <input type='text' id='homeLocation'  name="homeLocation" required value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
-                    <div>Specific Location</div>
-                        <input type='text' id='specificLocation' name="specificLocation" required value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
-                    <div>Is Child item</div>
-                        <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onChange={(event) => this.setState({isChild: event.target.value})}></input>
-                    <div>
+                    <div className='modalFooter'>
                         <input type='submit' value='Submit'></input>
-                    </div>
-                    </form>
-                    <div>
                         <button onClick={this.dismissModal}>Close</button>
                     </div>
-                </div>
+                </form>
             </Modal>
         );
     };

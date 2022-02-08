@@ -102,9 +102,9 @@ export default class ContentBuilder extends React.Component {
 
     buildContent(view) {
         return (
-            <div>
+            <>
                 {this.state.modal}
-                <div className="header">
+                <div className="pageHeader">
                      Inventory App
                      <button className='logInLogOut' onClick={this.loginLogout}>
                          {this.state.isLoggedIn ? 'Log Out': 'Log In'}
@@ -119,7 +119,7 @@ export default class ContentBuilder extends React.Component {
                     <ItemLogDisplay itemLogIsVisible={view.itemLogIsVisible} />
                     <AdminLogDisplay adminLogIsVisible={view.adminLogIsVisible} />   
                 </div>
-            </div>
+            </>
         );
     };
 

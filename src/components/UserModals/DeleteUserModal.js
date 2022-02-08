@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import UserController from '../../controllers/UserController';
+import '../../styles/Modal.css';
 
 /*
 *   Modal for deleting a user
@@ -33,17 +34,15 @@ export default class DeleteUserModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div>
-                    <div className='header'>
-                        Delete User
-                    </div>
+                <div className='modalHeader'>
+                    Delete User
+                </div>
+                <div className='modalBody'>
                     <p>Are you sure you want to delete?</p>
-                    <div>
-                        <button onClick={() => {this.deleteUser()}}>Delete</button>
-                    </div>
-                    <div>
-                        <button onClick={this.dismissModal}>Close</button>
-                    </div>
+                </div>
+                <div className='modalFooter'>
+                    <button onClick={() => {this.deleteUser()}}>Delete</button>
+                    <button onClick={this.dismissModal}>Close</button>
                 </div>
             </Modal>
         );

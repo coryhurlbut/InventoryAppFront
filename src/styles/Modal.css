@@ -1,0 +1,36 @@
+/*
+    This styling sheet focus the display modals:
+        Login/Logout/AddUser/EditUser/DeleteUser
+*/
+
+/*Title of Modal*/
+.modalHeader {
+    /*margin: 30px;*/
+    padding: 10px;
+    background-color: #F1F1F1;
+
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/*Handles the content of Modal*/
+.modalBody{
+    padding: 10px;
+
+    text-align: left;
+}
+.modalBody p{
+    text-align: center;
+}
+
+/*Primary handles the button styling of Modal*/
+.modalFooter{
+    padding: 10px;
+
+    text-align: center;
+}
+.modalFooter button{
+    margin: 5px;
+    display: inline-block;
+}
