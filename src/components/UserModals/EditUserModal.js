@@ -1,8 +1,6 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import userController from '../../controllers/UserController';
-import '../../styles/Modal.css';
-
 /*
 *   Modal for editing a user
 */

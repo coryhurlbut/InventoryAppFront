@@ -6,6 +6,7 @@ import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
 import '../styles/table.css';
 import '../styles/App.css';
+import '../styles/Modal.css';
 
 //Settings for which data is displaying in the table
 const availableItemsContent = {

@@ -3,7 +3,6 @@ import DeleteItemModal from './DeleteItemModal';
 import EditItemModal from './EditItemModal';
 import SignItemInModal from './SignItemInModal';
 import SignItemOutModal from './SignItemOutModal';
-import '../../styles/Modal.css';
 
 /*
 *   Allows export of all ItemModals in other components for a single import

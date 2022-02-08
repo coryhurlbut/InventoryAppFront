@@ -1,7 +1,6 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import UserController from '../../controllers/UserController';
-import '../../styles/Modal.css';
 
 /*
 *   Modal for deleting a user

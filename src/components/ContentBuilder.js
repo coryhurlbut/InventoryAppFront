@@ -5,8 +5,8 @@ import {authController}         from '../controllers/AuthController';
 import ContentList              from './ContentList';
 import ItemLogDisplay           from './ItemLogDisplay';
 import AdminLogDisplay          from './AdminLogDisplay';
-import LoginModal               from './LoginModal';
-import LogoutModal              from './LogoutModal';
+import LoginModal               from './ProfileModals/LoginModal';
+import LogoutModal              from './ProfileModals/LogoutModal';
 
 //Settings for what is to be displayed based on the user's role
 const displayPresets = {
