@@ -36,14 +36,8 @@ export default class GenericController {
 
         try {
             let response = await fetch(this.buildApiUrl(url), initObj);
-<<<<<<< Updated upstream
-            console.log(response);
-            if (response.ok) {
-                return await response.json();
-=======
             if (response.status >= 400) {
                 throw await response.json();
->>>>>>> Stashed changes
             };
             return await response.json();
         } catch (err) {
