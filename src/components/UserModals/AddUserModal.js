@@ -10,14 +10,14 @@ export default class AddUserModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen: props.isOpen,
-            user: null,
-            firstName: '',
-            lastName: '',
-            userName: '',
-            password: '',
-            userRole: '',
-            phoneNumber: ''
+            isOpen:         props.isOpen,
+            firstName:      '',
+            lastName:       '',
+            userName:       '',
+            password:       '',
+            userRole:       '',
+            phoneNumber:    '',
+            error:          ''
         };
         this.dismissModal = this.dismissModal.bind(this);
     };
@@ -28,16 +28,23 @@ export default class AddUserModal extends React.Component{
 
     async addUser(){
         let user = {
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            userName: this.state.userName,
-            password: this.state.password,
-            userRole: this.state.userRole,
-            phoneNumber: this.state.phoneNumber
+            firstName:      this.state.firstName,
+            lastName:       this.state.lastName,
+            userName:       this.state.userName,
+            password:       this.state.password,
+            userRole:       this.state.userRole,
+            phoneNumber:    this.state.phoneNumber
         }
-        await UserController.createUser(user);
-        window.location.reload();
-        this.dismissModal();
+        await UserController.createUser(user)
+        .then((auth) => {
+            if(auth.status !== undefined && auth.status >= 400) throw auth;
+            this.setState({error: ''});
+            window.location.reload();
+            this.dismissModal();
+        })
+        .catch(async (err) => {            
+            this.setState({error: err.message});
+        });
     };
 
     render() {

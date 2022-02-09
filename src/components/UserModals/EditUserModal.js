@@ -10,14 +10,15 @@ export default class EditUserModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen: props.isOpen,
-            id: props.id,
-            firstName: '',
-            lastName: '',
-            userName: '',
-            password: '',
-            userRole: '',
-            phoneNumber: ''
+            isOpen:         props.isOpen,
+            id:             props.id,
+            firstName:      '',
+            lastName:       '',
+            userName:       '',
+            password:       '',
+            userRole:       '',
+            phoneNumber:    '',
+            error:          ''
         };
 
         this.dismissModal = this.dismissModal.bind(this);
@@ -49,9 +50,16 @@ export default class EditUserModal extends React.Component{
             userRole:    this.state.userRole,
             phoneNumber: this.state.phoneNumber
         }
-        await userController.updateUser(this.state.id, user);
-        window.location.reload();
-        this.dismissModal();
+        await userController.updateUser(this.state.id, user)
+        .then((auth) => {
+            if(auth.status !== undefined && auth.status >= 400) throw auth;
+            this.setState({error: ''});
+            window.location.reload();
+            this.dismissModal();
+        })
+        .catch(async (err) => {            
+            this.setState({error: err.message});
+        });
     };
 
     render() {

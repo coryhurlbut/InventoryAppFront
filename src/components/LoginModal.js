@@ -22,18 +22,13 @@ export default class LoginModal extends React.Component{
     async login() {
         await loginLogoutController.login(this.state.userName, this.state.password)
         .then((auth) => {
-            if(auth.ok !== undefined && auth.ok === false) throw auth;
+            if(auth.status >= 400) throw auth;
             this.setState({error: ''});
             this.props.setAuth(auth);
             this.dismissModal();
         })
-        .catch(async (err) => {
-            let errorData
-            await err.json().then((data) => {
-                errorData = data;
-            });
-            
-            this.setState({error: errorData.error.message});
+        .catch(async (err) => {            
+            this.setState({error: err.message});
         })
     };
 
