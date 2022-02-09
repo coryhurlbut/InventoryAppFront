@@ -42,7 +42,9 @@ export default class ContentList extends React.Component {
             id:                         null,
             parents:                    [],
             idArray:                    [],
-            isChecked:                  null
+            isChecked:                  null,
+            currentUser:                null,
+            userSubmit:                 true
         };
         
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
@@ -50,6 +52,7 @@ export default class ContentList extends React.Component {
         this.showUsers              =   this.showUsers.bind(this);
         this.getParentItems         =   this.getParentItems.bind(this);
         this.checkForChecked        =   this.checkForChecked.bind(this);
+        this.checkForText           =   this.checkForText.bind(this);
     };
 
     // Will update component props if parent props change
@@ -220,6 +223,12 @@ export default class ContentList extends React.Component {
         }
     };
 
+    checkForText(){
+        if(this.state.currentUser === null){
+            this.setState({ userSubmit: true })
+        }else{this.setState({ userSubmit: false})}
+    }
+
     render() {
         // Check for content and build list if it's present.
         // Otherwise return null
@@ -234,7 +243,15 @@ export default class ContentList extends React.Component {
                     <button onClick={this.showUnavailableItems}>
                         Unavailable Items
                     </button>
+                    
                     {this.state.userContentIsVisible ? <button onClick={this.showUsers}>Users</button> : null}
+                    <p></p>
+                    <form>
+                    <label for='user'>Enter User: </label>
+                    <input type='text' id='user' name='user' value={this.state.currentUser} 
+                        onChange={(event) => this.setState({ currentUser: event.target.value }); this.checkForText()}></input>
+                    <input type='submit' disabled={this.state.userSubmit}></input> 
+                    </form>
                 </div>
                 {contentList}
                 {this.buildEditControls()}
