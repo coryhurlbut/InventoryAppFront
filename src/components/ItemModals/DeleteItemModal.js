@@ -33,17 +33,15 @@ export default class DeleteItemModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div>
-                    <div className='header'>
+                <div className='modalHeader'>
                         Delete Item
-                    </div>
+                </div>
+                <div className='modalBody'>
                     <p>Are you sure you want to delete?</p>
-                    <div>
-                        <button onClick={() => {this.deleteItem()}}>Delete</button>
-                    </div>
-                    <div>
-                        <button onClick={this.dismissModal}>Close</button>
-                    </div>
+                </div>
+                <div className='modalFooter'>
+                    <button onClick={() => {this.deleteItem()}}>Delete</button>
+                    <button onClick={this.dismissModal}>Close</button>
                 </div>
             </Modal>
         );

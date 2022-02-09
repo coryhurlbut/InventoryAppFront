@@ -6,6 +6,7 @@ import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
 import '../styles/table.css';
 import '../styles/App.css';
+import '../styles/Modal.css';
 
 //Settings for which data is displaying in the table
 const availableItemsContent = {
@@ -41,8 +42,7 @@ export default class ContentList extends React.Component {
             content:                    [],
             id:                         null,
             parents:                    [],
-            idArray:                    [],
-            isChecked:                  null
+            idArray:                    []
         };
         
         this.showAvailableItems     =   this.showAvailableItems.bind(this);

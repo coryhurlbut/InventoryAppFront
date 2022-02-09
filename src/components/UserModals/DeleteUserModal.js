@@ -11,7 +11,8 @@ export default class DeleteUserModal extends React.Component{
         
         this.state = {
             isOpen: props.isOpen,
-            id: props.id
+            id:     props.id,
+            error:  ''
         };
 
         this.dismissModal = this.dismissModal.bind(this);
@@ -44,12 +45,10 @@ export default class DeleteUserModal extends React.Component{
                 <div className='modalBody'>
                     {this.state.error}
                     <p>Are you sure you want to delete?</p>
-                    <div>
-                        <button onClick={() => {this.deleteUser()}}>Delete</button>
-                    </div>
-                    <div>
-                        <button onClick={this.dismissModal}>Close</button>
-                    </div>
+                </div>
+                <div className='modalFooter'>
+                    <button onClick={() => {this.deleteUser()}}>Delete</button>
+                    <button onClick={this.dismissModal}>Close</button>
                 </div>
             </Modal>
         );

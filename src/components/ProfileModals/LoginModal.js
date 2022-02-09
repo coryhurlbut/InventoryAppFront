@@ -1,6 +1,6 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
-import {loginLogoutController} from '../controllers/LoginLogoutController';
+import {loginLogoutController} from '../../controllers/LoginLogoutController';
 
 /*
 *   Modal for logging in
@@ -39,20 +39,24 @@ export default class LoginModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div className='header'>
+                <div className='modalHeader'>
                     Log In
                 </div>
-                {this.state.error || null}
-                <div>
-                    <div>Username: </div>
-                    <input type='text' key='userName' value={this.state.userName} onChange={(event) => {this.setState({userName: event.target.value})}}></input>
+                {this.state.error}
+                <div className='modalBody'>
+                    <div id='modalBody_Username'>
+                        <div>Username: </div>
+                        <input type='text' key='userName' value={this.state.userName} onChange={(event) => {this.setState({userName: event.target.value})}}></input>
+                    </div>
+                    <div id='modalBody_Password'>
+                        <div>Password: </div>
+                        <input type='password' key='password' value={this.state.password} onChange={(event) => {this.setState({password: event.target.value})}}></input>
+                    </div>
                 </div>
-                <div>
-                    <div>Password: </div>
-                    <input type='password' key='password' value={this.state.password} onChange={(event) => {this.setState({password: event.target.value})}}></input>
+                <div className='modalFooter'>
+                    <button onClick={this.login}>Log in</button>
+                    <button onClick={this.dismissModal}>Close</button>
                 </div>
-                <button onClick={this.login}>Log in</button>
-                <button onClick={this.dismissModal}>Close</button>
             </Modal>
         );
     };

@@ -1,23 +1,30 @@
-/* Creates centered header */
-.header {
+/* Creates main header styles*/
+.pageHeader {
     /*margin: 30px;*/
     padding: 10px;
     background-color: #F1F1F1;
-
     text-align: left;
     font-weight: bold;
     text-transform: uppercase;
 }
-
-/* Floats loginLogout button to the right */
-.logInLogOut {
-    float: right;
-}
-
 /* Centers main content */
 .body {
     text-align: center;
     margin: 25px;
+}
+
+/* Floats loginLogout button to the right in main header*/
+.logInLogOut {
+    float: right;
+
+    border: none;
+    background-color: transparent;
+
+    text-transform: uppercase;
+}
+.logInLogOut:hover{
+    border: black;
+    font-weight: bold;
 }
 
 /* Clear floats after the columns */

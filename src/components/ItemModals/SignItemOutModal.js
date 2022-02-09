@@ -33,18 +33,16 @@ export default class SignItemOutModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div>
-                    <div className='header'>
-                        Sign Item Out                    
-                    </div>
+                <div className='modalHeader'>
+                    Sign Item Out                    
+                </div>
+                <div className='modalBody'>
                     <div>You are about to sign out: </div>
                     <div>{this.state.idArray}</div>
-                    <div>
-                        <button onClick={this.signItemsOut}>Submit</button>
-                    </div>
-                    <div>
-                        <button onClick={this.dismissModal}>Close</button>
-                    </div>
+                </div>
+                <div className='modalFooter'>
+                    <button onClick={this.signItemsOut}>Submit</button>
+                    <button onClick={this.dismissModal}>Close</button>
                 </div>
             </Modal>
         );
