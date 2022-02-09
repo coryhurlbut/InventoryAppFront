@@ -6,6 +6,7 @@ import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
 import '../styles/table.css';
 import '../styles/App.css';
+import '../styles/Modal.css';
 
 //Settings for which data is displaying in the table
 const availableItemsContent = {
@@ -235,8 +236,8 @@ export default class ContentList extends React.Component {
         let contentList = this.state.content !== null ? this.buildContentList() : 'No content available.';
 
         return (
-            <div>
-                <div>
+            <div id='Content_Body'>
+                <div id='btn_Select_Tables'>
                     <button onClick={this.showAvailableItems}>
                         Available Items
                     </button>

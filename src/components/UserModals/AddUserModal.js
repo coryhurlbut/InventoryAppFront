@@ -43,43 +43,41 @@ export default class AddUserModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div>
-                    <div className='header'>
-                        Add User to Database
-                    </div>
-                    <form onSubmit={(Event) => {Event.preventDefault(); this.addUser();}}>
-                    <div>
-                        First Name
-                    </div>
-                        <input type='text' id='firstName'  required  value={this.state.firstName} onChange={(event) => this.setState({ firstName: event.target.value })}></input>
-                    <div>
-                        Last Name
-                    </div>
-                        <input type='text' id='lastName'  required   value={this.state.lastName} onChange={(event) => this.setState({ lastName: event.target.value })}></input>
-                    <div>
-                        Username
-                    </div>
-                        <input type='text' id='userName'  required minLength={6}   value={this.state.userName} onChange={(event) => this.setState({ userName: event.target.value })}></input>
-                    <div>
-                        Password
-                    </div>
-                        <input type='password' id='password' required minLength={6} value={this.state.password} onChange={(event) => this.setState({ password: event.target.value })}></input>
-                    <div>
-                        User's Role
-                    </div>
-                        <input type='text' id='userRole' required     value={this.state.userRole} onChange={(event) => this.setState({ userRole: event.target.value })}></input>
-                    <div>
-                        Phone Number
-                    </div>
+                <div className='modalHeader'>
+                    Add User to Database
+                </div>
+                <form onSubmit={(Event) => {Event.preventDefault(); this.addUser();}}>
+                    <div className='modalBody'>
+                        <div>
+                            First Name
+                        </div>
+                            <input type='text' id='firstName'  required  value={this.state.firstName} onChange={(event) => this.setState({ firstName: event.target.value })}></input>
+                        <div>
+                            Last Name
+                        </div>
+                            <input type='text' id='lastName'  required   value={this.state.lastName} onChange={(event) => this.setState({ lastName: event.target.value })}></input>
+                        <div>
+                            Username
+                        </div>
+                            <input type='text' id='userName'  required minLength={6}   value={this.state.userName} onChange={(event) => this.setState({ userName: event.target.value })}></input>
+                        <div>
+                            Password
+                        </div>
+                            <input type='password' id='password' required minLength={6} value={this.state.password} onChange={(event) => this.setState({ password: event.target.value })}></input>
+                        <div>
+                            User's Role
+                        </div>
+                            <input type='text' id='userRole' required     value={this.state.userRole} onChange={(event) => this.setState({ userRole: event.target.value })}></input>
+                        <div>
+                            Phone Number
+                        </div>
                         <input type='text' id='phoneNumber' required minLength={10} maxLength={10} value={this.state.phoneNumber} onChange={(event) => this.setState({ phoneNumber: event.target.value })}></input>
-                    <div>
-                        <input type='submit' value='Submit'></input>
                     </div>
-                    </form>
-                    <div>
+                    <div className='modalFooter'>
+                        <input type='submit' value='Submit'></input>
                         <button onClick={this.dismissModal}>Close</button>
                     </div>
-                </div>
+                </form>
             </Modal>
         );
     };

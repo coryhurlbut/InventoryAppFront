@@ -1,5 +1,5 @@
 import React from 'react';
-import {Checkbox, Modal} from '@fluentui/react';
+import {Modal} from '@fluentui/react';
 import itemController from '../../controllers/ItemController';
 
 /*
@@ -70,53 +70,50 @@ export default class AddItemModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div>
-                    <div className='header'>
-                        Add Item to database
-                    </div>
-                    <form name= 'test' onSubmit={(Event) => {Event.preventDefault(); this.addItem();}}>
-                    <div>
-                        Name
-                    </div>
-                        <input type='text' id='name' name="name" required value={this.state.name} onChange={(event) => this.setState({name: event.target.value})}></input>
-                    <div>
-                        Description
-                    </div>
-                        <input type='text' id='description' name="description" required value={this.state.description} onChange={(event) => this.setState({description: event.target.value})}></input>
-                    <div>
-                        Serial Number
-                    </div>
-                        <input type='text' id='serialNumber' name="serialNumber" required value={this.state.serialNumber} onChange={(event) => this.setState({serialNumber: event.target.value})}></input>
-                    <div>
-                        Notes
-                    </div>
-                        <input type='text' id='notes' name="notes" value={this.state.notes} onChange={(event) => this.setState({notes: event.target.value})}></input>
-                    <div>
-                        Home Location
-                    </div>
-                        <input type='text' id='homeLocation' name="homeLocation" required value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
-                    <div>
-                        Specific Location
-                    </div>
-                        <input type='text' id='specificLocation' name="specificLocation" required value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
-                    <div>
-                        Is Child item
-                    </div>
+                <div className='modalHeader'>
+                    Add Item to database
+                </div>
+                <form name= 'test' onSubmit={(Event) => {Event.preventDefault(); this.addItem();}}>
+                    <div className='modalBody'>
+                        <div>
+                            Name
+                        </div>
+                            <input type='text' id='name' name="name" required value={this.state.name} onChange={(event) => this.setState({name: event.target.value})}></input>
+                        <div>
+                            Description
+                        </div>
+                            <input type='text' id='description' name="description" required value={this.state.description} onChange={(event) => this.setState({description: event.target.value})}></input>
+                        <div>
+                            Serial Number
+                        </div>
+                            <input type='text' id='serialNumber' name="serialNumber" required value={this.state.serialNumber} onChange={(event) => this.setState({serialNumber: event.target.value})}></input>
+                        <div>
+                            Notes
+                        </div>
+                            <input type='text' id='notes' name="notes" value={this.state.notes} onChange={(event) => this.setState({notes: event.target.value})}></input>
+                        <div>
+                            Home Location
+                        </div>
+                            <input type='text' id='homeLocation' name="homeLocation" required value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
+                        <div>
+                            Specific Location
+                        </div>
+                            <input type='text' id='specificLocation' name="specificLocation" required value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
+                        <div>
+                            Is Child item
+                        </div>
                         <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onClick={this.popSelect}></input>
                         <div>
                             <select name='test' id='select-parent' placeholder='Choose parent item..' disabled={this.state.disabled}>
                                 <option value=''></option>
                             </select>
                         </div>
-                    <div>
-                        <input type='submit' value='Submit'></input>
                     </div>
-                    </form>
-                    <div>
+                    <div className='modalFooter'>
+                        <input type='submit' value='Submit'></input>
                         <button onClick={this.dismissModal}>Close</button>
-                    </div>        
-                </div>
-                
+                    </div> 
+                </form>
             </Modal>
         );
     };
