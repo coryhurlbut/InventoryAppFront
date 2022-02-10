@@ -1,3 +1,4 @@
+
 /* Creates main header styles*/
 .pageHeader {
     /*margin: 30px;*/
@@ -6,17 +7,22 @@
     text-align: left;
     font-weight: bold;
     text-transform: uppercase;
+
+    /*
+        For more information on flex and styling, check out:
+            https://codetheweb.blog/css-flexboxes/
+    */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-/* Centers main content */
-.body {
-    text-align: center;
-    margin: 25px;
+.pageHeader h2{
+    color: #1c3599;
+    margin: 0px;
 }
 
 /* Floats loginLogout button to the right in main header*/
 .logInLogOut {
-    float: right;
-
     border: none;
     background-color: transparent;
 
@@ -27,9 +33,22 @@
     font-weight: bold;
 }
 
+/* Centers main content */
+.body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
 /* Clear floats after the columns */
 .row:after {
     content: "";
     display: table;
     clear: both;
+}
+
+/*
+    ToDo: Figure out styling and how to display 
+*/
+.ToDo{
+    color: transparent;
+    background-color: transparent;
 }

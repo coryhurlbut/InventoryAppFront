@@ -45,16 +45,16 @@ export default class LoginModal extends React.Component{
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 <div className='modalHeader'>
-                    Log In
+                    <h3>Log In</h3>
                 </div>
                 {this.state.error || null}
                 <div className='modalBody'>
                     <div id='modalBody_Username'>
-                        <div>Username: </div>
+                        <h4>Username: </h4>
                         <input type='text' key='userName' value={this.state.userName} onChange={(event) => {this.setState({userName: event.target.value})}}></input>
                     </div>
                     <div id='modalBody_Password'>
-                        <div>Password: </div>
+                        <h4>Password: </h4>
                         <input type='password' key='password' value={this.state.password} onChange={(event) => {this.setState({password: event.target.value})}}></input>
                     </div>
                 </div>

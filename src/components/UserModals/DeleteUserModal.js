@@ -34,7 +34,7 @@ export default class DeleteUserModal extends React.Component{
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 <div className='modalHeader'>
-                    Delete User
+                    <h3>Delete User</h3>
                 </div>
                 <div className='modalBody'>
                     <p>Are you sure you want to delete?</p>

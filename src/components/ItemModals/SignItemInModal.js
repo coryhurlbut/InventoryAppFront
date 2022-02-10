@@ -33,10 +33,10 @@ export default class SignItemInModal extends React.Component{
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 <div className='modalHeader'>
-                    Sign Item In
+                    <h3>Sign Item In</h3>
                 </div>
                 <div className='modalBody'>
-                    <div>You are about to sign back in:</div>
+                    <h4>You are about to sign back in:</h4>
                     <div>{this.state.idArray}</div>
                 </div>
                 <div className='modalFooter'>

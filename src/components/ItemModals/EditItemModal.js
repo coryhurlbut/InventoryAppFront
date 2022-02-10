@@ -68,23 +68,23 @@ export default class EditItemModal extends React.Component{
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 <div className='modalHeader'>
-                    Edit Item
+                    <h3>Edit Item</h3>
                 </div>
                 <form onSubmit={(Event) => {Event.preventDefault(); this.editItem();}}>
                     <div className='modalBody'>
-                        <div>Name</div>
+                        <h4>Name</h4>
                             <input type='text' id='name' name="name" required value={this.state.name} onChange={(event) => this.setState({name: event.target.value})}></input>
-                        <div>Description</div>
+                        <h4>Description</h4>
                             <input type='text' id='description' name="description" required value={this.state.description} onChange={(event) => this.setState({description: event.target.value})}></input>
-                        <div>Serial Number</div>
+                        <h4>Serial Number</h4>
                             <input type='text' id='serialNumber' name="serialNumber" required value={this.state.serialNumber} onChange={(event) => this.setState({serialNumber: event.target.value})}></input>
-                        <div>Notes</div>
+                        <h4>Notes</h4>
                             <input type='text' id='notes' name="notes" value={this.state.notes} onChange={(event) => this.setState({notes: event.target.value})}></input>
-                        <div>Home Location</div>
+                        <h4>Home Location</h4>
                             <input type='text' id='homeLocation'  name="homeLocation" required value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
-                        <div>Specific Location</div>
+                        <h4>Specific Location</h4>
                             <input type='text' id='specificLocation' name="specificLocation" required value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
-                        <div>Is Child item</div>
+                        <h4>Is Child item</h4>
                             <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onChange={(event) => this.setState({isChild: event.target.value})}></input>
                     </div>
                     <div className='modalFooter'>

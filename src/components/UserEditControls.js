@@ -47,7 +47,7 @@ export default class UserEditControls extends React.Component {
 
     render() {
         return(
-            <div>
+            <div className='Edit_Controls'>
                 <button onClick={this.addUser}>
                     Add User
                 </button>

@@ -34,7 +34,7 @@ export default class DeleteItemModal extends React.Component{
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 <div className='modalHeader'>
-                        Delete Item
+                    <h3>Delete Item</h3>
                 </div>
                 <div className='modalBody'>
                     <p>Are you sure you want to delete?</p>

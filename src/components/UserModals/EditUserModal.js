@@ -57,34 +57,22 @@ export default class EditUserModal extends React.Component{
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 <div className='modalHeader'>
-                    Edit User in Database
+                    <h3>Edit User</h3>
                 </div>
                 <form onSubmit={(Event) => {Event.preventDefault(); this.editUser();}}>
                     <div className='modalBody'>
-                        <div>
-                            First Name
-                        </div>
+                        <h4>First Name</h4>
                             <input type='text' id='firstName' required   value={this.state.firstName} onChange={(event) => this.setState({ firstName: event.target.value })}></input>
-                        <div>
-                            Last Name
-                        </div>
+                        <h4>Last Name</h4>
                             <input type='text' id='lastName'  required   value={this.state.lastName} onChange={(event) => this.setState({ lastName: event.target.value })}></input>
-                        <div>
-                            Username
-                        </div>
+                        <h4>Username</h4>
                             <input type='text' id='userName'  required   value={this.state.userName} onChange={(event) => this.setState({ userName: event.target.value })}></input>
-                        <div>
-                            Password
-                        </div>
+                        <h4>Password</h4>
                             <input type='password' id='password' required value={this.state.password} onChange={(event) => this.setState({ password: event.target.value })}></input>
-                        <div>
-                            User's Role
-                        </div>
+                        <h4>User's Role</h4>
                             <input type='text' id='userRole'  required   value={this.state.userRole} onChange={(event) => this.setState({ userRole: event.target.value })}></input>
-                        <div>
-                            Phone Number
-                        </div>
-                        <input type='text' id='phoneNumber' required  value={this.state.phoneNumber} onChange={(event) => this.setState({ phoneNumber: event.target.value })}></input>
+                        <h4>Phone Number</h4>
+                            <input type='text' id='phoneNumber' required  value={this.state.phoneNumber} onChange={(event) => this.setState({ phoneNumber: event.target.value })}></input>
                     </div>
                     <div className='modalFooter'>
                         <input type='submit' value='Submit'></input>

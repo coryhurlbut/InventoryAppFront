@@ -13,6 +13,9 @@
     font-weight: bold;
     text-transform: uppercase;
 }
+.modalHeader h3{
+    margin: 0px;
+}
 
 /*Handles the content of Modal*/
 .modalBody{
@@ -23,6 +26,16 @@
 .modalBody p{
     text-align: center;
 }
+.modalBody h4{
+    margin: 0px;
+    padding-top: 3px;
+
+    font-weight: unset;
+}
+.modalBody div{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 
 /*Primary handles the button styling of Modal*/
 .modalFooter{
@@ -30,7 +43,16 @@
 
     text-align: center;
 }
-.modalFooter button{
+.modalFooter button, input[type=submit]{
     margin: 5px;
     display: inline-block;
+
+    background-color: #3f4f8c;
+    color: white;
+}
+.modalFooter button:hover, input[type=submit]:hover{
+    font-weight: bold;
+
+    background-color: white;
+    color: #1c3599;
 }

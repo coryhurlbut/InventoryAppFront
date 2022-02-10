@@ -1,24 +1,92 @@
-table {
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    margin: 0 auto;
-  }
-  
-  table td, table th {
-    border: 1px solid #ddd;
-    padding: 4px;
-    max-width: 10%;
-    word-wrap: break-word;
-    max-width: 250px;
-  }
-  
-  table tr:nth-child(even){background-color: #f2f2f2;}
-  
-  table tr:hover {background-color: rgb(100, 224, 116);}
-  
-  table th, tfoot td {
-    padding-top: 4px;
-    padding-bottom: 4px;
-    background-color: #04AA6D;
-    color: white;
-  }
+/*
+  Table Navigation are the available tables the user can display on screen
+*/
+#Table_Navigation{
+  padding: 10px;
+
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
+
+#Table_Navigation button{
+  border: none;
+  background-color: transparent;
+
+  font-size: 17px;
+}
+#Table_Navigation button:hover{
+  /*background-color: #F1F1F1;*/
+
+  color: #1c3599;
+  font-weight: bold;
+}
+
+/*
+  Table_Body contains the table title, actions, and the table displayed
+*/
+#Table_Body{
+  display: flex;
+  justify-content: flex-start;
+}
+#Table_Body h3{
+  margin: 0px;
+}
+
+.blackLine_Styling{
+  height: 2px;
+  padding-right: 10px;
+  padding-left: 10px;
+  background-color: black;
+  color: transparent;
+}
+
+#Table_Body button{
+  margin: 5px;
+  display: inline-block;
+
+  background-color: transparent;
+  border: transparent;
+  color: black;
+}
+#Table_Body button:hover{
+    font-weight: bold;
+
+    color: #3f4f8c;
+}
+#Table_Body button:disabled{
+  color: #cbd4f7;
+}
+
+#Table_Modification, .Edit_Controls{
+  display: flex;
+  /*justify-content: space-evenly;*/
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+table{
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 4px;
+  max-width: 10%;
+  word-wrap: break-word;
+  max-width: 250px;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #cbd4f7;}
+
+table th, tfoot td {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  background-color: #3f4f8c;
+  color: white;
+}

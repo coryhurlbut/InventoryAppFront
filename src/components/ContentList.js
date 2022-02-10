@@ -116,8 +116,13 @@ export default class ContentList extends React.Component {
 
     buildContentList () {
         return(
-            <div className="table">
-                {this.state.contentType}
+            <>
+            <div id='Table_Modification'>
+                <h3>{this.state.contentType}</h3>
+                <div className='blackLine_Styling'>{this.state.contentType}</div>
+                {this.buildEditControls()}
+                <SignItemInOutControls inOrOut={this.state.inOrOut} idArray={this.state.idArray} id={this.state.id} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
+            </div>
             <table id='items'>
                     {this.renderTableHeader()}
                 <tbody>
@@ -125,7 +130,7 @@ export default class ContentList extends React.Component {
                 </tbody>
             </table>
             <pre></pre>
-            </div>
+            </>
         );
     };
 
@@ -226,8 +231,8 @@ export default class ContentList extends React.Component {
         let contentList = this.state.content !== null ? this.buildContentList() : 'No content available.';
 
         return (
-            <div>
-                <div>
+            <div id='Content_Body'>
+                <div id='Table_Navigation'>
                     <button onClick={this.showAvailableItems}>
                         Available Items
                     </button>
@@ -236,9 +241,9 @@ export default class ContentList extends React.Component {
                     </button>
                     {this.state.userContentIsVisible ? <button onClick={this.showUsers}>Users</button> : null}
                 </div>
-                {contentList}
-                {this.buildEditControls()}
-                <SignItemInOutControls inOrOut={this.state.inOrOut} idArray={this.state.idArray} id={this.state.id} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
+                <div id='Table_Body'>
+                    {contentList}
+                </div>
             </div>
         );
     };

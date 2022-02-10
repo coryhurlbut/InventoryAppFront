@@ -47,7 +47,7 @@ export default class ItemEditControls extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className='Edit_Controls'>
                 <button onClick={this.addItem}>
                     Add Item
                 </button>
