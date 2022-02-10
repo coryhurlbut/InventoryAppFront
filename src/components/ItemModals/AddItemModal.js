@@ -12,7 +12,6 @@ export default class AddItemModal extends React.Component{
         this.state = {
             isOpen: props.isOpen,
             id: props.id,
-            parents: props.parents,
             name: '',
             description: '',
             serialNumber: '',
@@ -21,7 +20,6 @@ export default class AddItemModal extends React.Component{
             specificLocation: '',
             available: true,
             servicable: true,
-            isChild: false,
             disabled: true
         };
         this.dismissModal = this.dismissModal.bind(this);
@@ -42,30 +40,13 @@ export default class AddItemModal extends React.Component{
             homeLocation:       this.state.homeLocation,
             specificLocation:   this.state.specificLocation,
             available:          this.state.available,
-            servicable:         this.state.servicable,
-            isChild:            this.state.isChild
+            servicable:         this.state.servicable
         };
 
         await itemController.createItem(item);
         window.location.reload();
         this.dismissModal();
     };
-
-    popSelect(){
-        if(document.getElementById('isChild').checked){
-        this.setState({ disabled: false });
-
-        let select = document.getElementById("select-parent"),
-            arr = this.state.parents.name;
-
-        for( let i = 0; i < this.state.parents.length; i++){
-            let option = document.createElement("OPTION"),
-                txt = document.createTextNode(arr[i].name);
-            option.appendChild(txt);
-            select.insertBefore(option, select.lastChild);
-        }
-        }
-    }
 
     render() {
         return(
@@ -99,19 +80,10 @@ export default class AddItemModal extends React.Component{
                             Specific Location
                         </div>
                             <input type='text' id='specificLocation' name="specificLocation" required value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
-                        <div>
-                            Is Child item
-                        </div>
-                        <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onClick={this.popSelect}></input>
-                        <div>
-                            <select name='test' id='select-parent' placeholder='Choose parent item..' disabled={this.state.disabled}>
-                                <option value=''></option>
-                            </select>
-                        </div>
                     </div>
                     <div className='modalFooter'>
                         <input type='submit' value='Submit'></input>
-                        <button onClick={this.dismissModal}>Close</button>
+                        <button type="reset" onClick={this.dismissModal}>Close</button>
                     </div> 
                 </form>
             </Modal>

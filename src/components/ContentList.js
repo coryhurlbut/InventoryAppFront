@@ -1,7 +1,7 @@
 import React                        from 'react';
-import ItemEditControls             from './ItemEditControls';
-import UserEditControls             from './UserEditControls';
-import SignItemInOutControls        from './SignItemInOutControls';
+import ItemEditControls             from './Controls/ItemEditControls';
+import UserEditControls             from './Controls/UserEditControls';
+import SignItemInOutControls        from './Controls/SignItemInOutControls';
 import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
 import '../styles/table.css';
@@ -41,14 +41,12 @@ export default class ContentList extends React.Component {
             inOrOut:                    availableItemsContent.inOrOut,
             content:                    [],
             id:                         null,
-            parents:                    [],
             idArray:                    []
         };
         
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
         this.showUnavailableItems   =   this.showUnavailableItems.bind(this);
         this.showUsers              =   this.showUsers.bind(this);
-        this.getParentItems         =   this.getParentItems.bind(this);
         this.checkForChecked        =   this.checkForChecked.bind(this);
     };
 
@@ -72,7 +70,6 @@ export default class ContentList extends React.Component {
 
     componentDidMount () {
         this.showAvailableItems();
-        this.getParentItems();
     };
 
     async showAvailableItems () {
@@ -84,12 +81,6 @@ export default class ContentList extends React.Component {
             inOrOut:            availableItemsContent.inOrOut,
             idArray:            []
         });
-    };
-
-    async getParentItems () {
-        let parents = await ItemController.getParentItems();
-
-        this.setState({parents: parents});
     };
 
     async showUnavailableItems () {
@@ -132,7 +123,7 @@ export default class ContentList extends React.Component {
     buildEditControls () {
         if(this.state.editControls === "ItemEditControls" && this.state.editControlIsVisible) {
             return (
-                <ItemEditControls id={this.state.id} parents={this.state.parents} idArray={this.state.idArray}/>
+                <ItemEditControls id={this.state.id} idArray={this.state.idArray}/>
             );
         } else if (this.state.editControls === "UserEditControls") {
             return (

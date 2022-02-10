@@ -67,7 +67,7 @@ export default class EditUserModal extends React.Component{
                 <div className='modalHeader'>
                     Edit User in Database
                 </div>
-                <form onSubmit={(Event) => {Event.preventDefault(); this.editUser();}}>
+                <form onSubmit={(event) => {event.preventDefault(); this.editUser();}}>
                     <div className='modalBody'>
                         <div>
                             First Name
@@ -96,7 +96,7 @@ export default class EditUserModal extends React.Component{
                     </div>
                     <div className='modalFooter'>
                         <input type='submit' value='Submit'></input>
-                        <button onClick={this.dismissModal}>Close</button>
+                        <button type="reset" onClick={this.dismissModal}>Close</button>
                     </div>
                 </form>
             </Modal>

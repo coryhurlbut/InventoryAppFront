@@ -42,21 +42,23 @@ export default class LoginModal extends React.Component{
                 <div className='modalHeader'>
                     Log In
                 </div>
-                {this.state.error}
-                <div className='modalBody'>
-                    <div id='modalBody_Username'>
-                        <div>Username: </div>
-                        <input type='text' key='userName' value={this.state.userName} onChange={(event) => {this.setState({userName: event.target.value})}}></input>
+                <form onSubmit={(event) => {event.preventDefault(); this.login();}}>
+                    {this.state.error}
+                    <div className='modalBody'>
+                        <div id='modalBody_Username'>
+                            <div>Username: </div>
+                            <input type='text' key='userName' required value={this.state.userName} onChange={(event) => {this.setState({userName: event.target.value})}}></input>
+                        </div>
+                        <div id='modalBody_Password'>
+                            <div>Password: </div>
+                            <input type='password' key='password' required value={this.state.password} onChange={(event) => {this.setState({password: event.target.value})}}></input>
+                        </div>
                     </div>
-                    <div id='modalBody_Password'>
-                        <div>Password: </div>
-                        <input type='password' key='password' value={this.state.password} onChange={(event) => {this.setState({password: event.target.value})}}></input>
+                    <div className='modalFooter'>
+                        <button type="submit" onClick={this.login}>Log in</button>
+                        <button type="reset" onClick={this.dismissModal}>Close</button>
                     </div>
-                </div>
-                <div className='modalFooter'>
-                    <button onClick={this.login}>Log in</button>
-                    <button onClick={this.dismissModal}>Close</button>
-                </div>
+                </form>
             </Modal>
         );
     };

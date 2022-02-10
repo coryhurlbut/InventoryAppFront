@@ -19,8 +19,7 @@ export default class EditItemModal extends React.Component{
             homeLocation: '',
             specificLocation: '',
             available: true,
-            servicable: true,
-            isChild: false
+            servicable: true
         };
 
         this.dismissModal = this.dismissModal.bind(this);
@@ -37,8 +36,7 @@ export default class EditItemModal extends React.Component{
                        homeLocation:     thisItem.homeLocation,
                        specificLocation: thisItem.specificLocation,
                        available:        thisItem.available,
-                       servicable:       thisItem.servicable,
-                       isChild:          thisItem.isChild
+                       servicable:       thisItem.servicable
                     });
     };
 
@@ -55,8 +53,7 @@ export default class EditItemModal extends React.Component{
             homeLocation:       this.state.homeLocation,
             specificLocation:   this.state.specificLocation,
             available:          this.state.available,
-            servicable:         this.state.servicable,
-            isChild:            this.state.isChild
+            servicable:         this.state.servicable
         };
 
         await itemController.updateItem(this.state.id, item);
@@ -84,12 +81,10 @@ export default class EditItemModal extends React.Component{
                             <input type='text' id='homeLocation'  name="homeLocation" required value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
                         <div>Specific Location</div>
                             <input type='text' id='specificLocation' name="specificLocation" required value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
-                        <div>Is Child item</div>
-                            <input type='checkbox' id='isChild' name="isChild" value={this.state.isChild} onChange={(event) => this.setState({isChild: event.target.value})}></input>
                     </div>
                     <div className='modalFooter'>
                         <input type='submit' value='Submit'></input>
-                        <button onClick={this.dismissModal}>Close</button>
+                        <button type="reset" onClick={this.dismissModal}>Close</button>
                     </div>
                 </form>
             </Modal>

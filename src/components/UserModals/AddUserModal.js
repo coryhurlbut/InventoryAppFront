@@ -83,7 +83,7 @@ export default class AddUserModal extends React.Component{
                     </div>
                     <div className='modalFooter'>
                         <input type='submit' value='Submit'></input>
-                        <button onClick={this.dismissModal}>Close</button>
+                        <button type="reset" onClick={this.dismissModal}>Close</button>
                     </div>
                 </form>
             </Modal>
