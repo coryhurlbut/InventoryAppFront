@@ -11,8 +11,8 @@ export default class DeleteUserModal extends React.Component{
         
         this.state = {
             isOpen: props.isOpen,
-            user: null,
-            id: props.id
+            id:     props.id,
+            error:  ''
         };
 
         this.dismissModal = this.dismissModal.bind(this);
@@ -24,10 +24,16 @@ export default class DeleteUserModal extends React.Component{
     };
     
     async deleteUser() {
-        let id = this.state.id
-        await UserController.deleteUser(id);
-        window.location.reload();
-        this.dismissModal();
+        await UserController.deleteUser(this.state.id)
+        .then((auth) => {
+            if(auth.status !== undefined && auth.status >= 400) throw auth;
+            this.setState({error: ''});
+            window.location.reload();
+            this.dismissModal();
+        })
+        .catch(async (err) => {            
+            this.setState({error: err.message});
+        });
     };
 
     render() {
@@ -37,6 +43,7 @@ export default class DeleteUserModal extends React.Component{
                     <h3>Delete User</h3>
                 </div>
                 <div className='modalBody'>
+                    {this.state.error}
                     <p>Are you sure you want to delete?</p>
                 </div>
                 <div className='modalFooter'>

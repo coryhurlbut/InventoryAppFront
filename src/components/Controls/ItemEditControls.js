@@ -1,6 +1,6 @@
 import React from 'react';
 import '@fluentui/react';
-import { AddItemModal, EditItemModal, DeleteItemModal } from './ItemModals';
+import { AddItemModal, EditItemModal, DeleteItemModal } from '../ItemModals';
 
 /*
 *   Displays the buttons for adding, deleting and editing items
@@ -13,7 +13,6 @@ export default class ItemEditControls extends React.Component {
             item:  null,
             modal: null,
             id: props.id,
-            parents: props.parents,
             idArray: props.idArray
         };
 
@@ -30,7 +29,7 @@ export default class ItemEditControls extends React.Component {
     };
 
     addItem () {
-        this.setState({modal: <AddItemModal isOpen={true} id={this.state.id} parents={this.state.parents} hideModal={this.hideModal}/>});
+        this.setState({modal: <AddItemModal isOpen={true} id={this.state.id} hideModal={this.hideModal}/>});
     };
 
     editItem () {

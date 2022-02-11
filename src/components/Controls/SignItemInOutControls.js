@@ -1,6 +1,6 @@
 import React from 'react';
 import '@fluentui/react';
-import {SignItemInModal, SignItemOutModal} from './ItemModals';
+import {SignItemInModal, SignItemOutModal} from '../ItemModals';
 
 /*
 *   Displays the button to sign an item in or out. Dependent on data displayed in the table.

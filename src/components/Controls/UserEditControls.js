@@ -1,7 +1,7 @@
 import React from 'react';
 import '@fluentui/react';
 // import UserController from '../controllers/UserController';
-import { AddUserModal, DeleteUserModal, EditUserModal } from './UserModals';
+import { AddUserModal, DeleteUserModal, EditUserModal } from '..//UserModals';
 
 /*
 *   Displays the buttons for adding, deleting and editing users
@@ -11,7 +11,6 @@ export default class UserEditControls extends React.Component {
         super(props);
 
         this.state = {
-            user: null,
             modal: null,
             id: props.id,
             idArray: props.idArray

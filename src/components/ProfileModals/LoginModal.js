@@ -22,18 +22,13 @@ export default class LoginModal extends React.Component{
     async login() {
         await loginLogoutController.login(this.state.userName, this.state.password)
         .then((auth) => {
-            if(auth.ok !== undefined && auth.ok === false) throw auth;
+            if(auth.status >= 400) throw auth;
             this.setState({error: ''});
             this.props.setAuth(auth);
             this.dismissModal();
         })
-        .catch(async (err) => {
-            let errorData
-            await err.json().then((data) => {
-                errorData = data;
-            });
-            
-            this.setState({error: errorData.error.message});
+        .catch(async (err) => {            
+            this.setState({error: err.message});
         })
     };
 
@@ -47,6 +42,7 @@ export default class LoginModal extends React.Component{
                 <div className='modalHeader'>
                     <h3>Log In</h3>
                 </div>
+<<<<<<< HEAD
                 {this.state.error || null}
                 <div className='modalBody'>
                     <div id='modalBody_Username'>
@@ -56,12 +52,25 @@ export default class LoginModal extends React.Component{
                     <div id='modalBody_Password'>
                         <h4>Password: </h4>
                         <input type='password' key='password' value={this.state.password} onChange={(event) => {this.setState({password: event.target.value})}}></input>
+=======
+                <form onSubmit={(event) => {event.preventDefault(); this.login();}}>
+                    {this.state.error}
+                    <div className='modalBody'>
+                        <div id='modalBody_Username'>
+                            <div>Username: </div>
+                            <input type='text' key='userName' required value={this.state.userName} onChange={(event) => {this.setState({userName: event.target.value})}}></input>
+                        </div>
+                        <div id='modalBody_Password'>
+                            <div>Password: </div>
+                            <input type='password' key='password' required value={this.state.password} onChange={(event) => {this.setState({password: event.target.value})}}></input>
+                        </div>
                     </div>
-                </div>
-                <div className='modalFooter'>
-                    <button onClick={this.login}>Log in</button>
-                    <button onClick={this.dismissModal}>Close</button>
-                </div>
+                    <div className='modalFooter'>
+                        <button type="submit" onClick={this.login}>Log in</button>
+                        <button type="reset" onClick={this.dismissModal}>Close</button>
+>>>>>>> ad5cbc9c7315c4efbca1b0327093e8cc34e6923d
+                    </div>
+                </form>
             </Modal>
         );
     };

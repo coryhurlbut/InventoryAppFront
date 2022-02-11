@@ -116,15 +116,13 @@ export default class AuthController {
         try {
             // Make request with given API path and method
             let response = await fetch(this.buildApiUrl(url), initObj)
-            if (response.ok) {
-                response = await response.json();
-            } else {
-                throw response;
-            }
-            return response;
+            if (response.status >= 400) {
+                throw await response.json();
+            };
+            return await response.json();
         } catch (err) {
-            // TODO: Implement error handling
-            return err;
+            // Example error form to return -> {"message":"Password is incorrect","instance":"unknown","status":400}
+            return err.error;
         };
     };
 };

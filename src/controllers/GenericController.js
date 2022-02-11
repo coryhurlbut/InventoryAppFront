@@ -36,13 +36,13 @@ export default class GenericController {
 
         try {
             let response = await fetch(this.buildApiUrl(url), initObj);
-            console.log(response);
-            if (response.ok) {
-                return await response.json();
+            if (response.status >= 400) {
+                throw await response.json();
             };
-            throw response;
+            return await response.json();
         } catch (err) {
-            return err;
+            // Example error form to return -> {"message":"Password is incorrect","instance":"unknown","status":400}
+            return err.error;
         };
     };
 };

@@ -3,8 +3,8 @@ import '@fluentui/react';
 import '../styles/App.css';
 import {authController}         from '../controllers/AuthController';
 import ContentList              from './ContentList';
-import ItemLogDisplay           from './ItemLogDisplay';
-import AdminLogDisplay          from './AdminLogDisplay';
+import ItemLogDisplay           from './LogModals/ItemLogDisplay';
+import AdminLogDisplay          from './LogModals/AdminLogDisplay';
 import LoginModal               from './ProfileModals/LoginModal';
 import LogoutModal              from './ProfileModals/LogoutModal';
 

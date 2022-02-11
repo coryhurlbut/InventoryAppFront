@@ -10,14 +10,14 @@ export default class AddUserModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen: props.isOpen,
-            user: null,
-            firstName: '',
-            lastName: '',
-            userName: '',
-            password: '',
-            userRole: '',
-            phoneNumber: ''
+            isOpen:         props.isOpen,
+            firstName:      '',
+            lastName:       '',
+            userName:       '',
+            password:       '',
+            userRole:       '',
+            phoneNumber:    '',
+            error:          ''
         };
         this.dismissModal = this.dismissModal.bind(this);
     };
@@ -28,16 +28,23 @@ export default class AddUserModal extends React.Component{
 
     async addUser(){
         let user = {
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            userName: this.state.userName,
-            password: this.state.password,
-            userRole: this.state.userRole,
-            phoneNumber: this.state.phoneNumber
+            firstName:      this.state.firstName,
+            lastName:       this.state.lastName,
+            userName:       this.state.userName,
+            password:       this.state.password,
+            userRole:       this.state.userRole,
+            phoneNumber:    this.state.phoneNumber
         }
-        await UserController.createUser(user);
-        window.location.reload();
-        this.dismissModal();
+        await UserController.createUser(user)
+        .then((auth) => {
+            if(auth.status !== undefined && auth.status >= 400) throw auth;
+            this.setState({error: ''});
+            window.location.reload();
+            this.dismissModal();
+        })
+        .catch(async (err) => {            
+            this.setState({error: err.message});
+        });
     };
 
     render() {
@@ -48,7 +55,14 @@ export default class AddUserModal extends React.Component{
                 </div>
                 <form onSubmit={(Event) => {Event.preventDefault(); this.addUser();}}>
                     <div className='modalBody'>
+<<<<<<< HEAD
                         <h4>First Name</h4>
+=======
+                        {this.state.error}
+                        <div>
+                            First Name
+                        </div>
+>>>>>>> ad5cbc9c7315c4efbca1b0327093e8cc34e6923d
                             <input type='text' id='firstName'  required  value={this.state.firstName} onChange={(event) => this.setState({ firstName: event.target.value })}></input>
                         <h4>Last Name</h4>
                             <input type='text' id='lastName'  required   value={this.state.lastName} onChange={(event) => this.setState({ lastName: event.target.value })}></input>
@@ -63,7 +77,7 @@ export default class AddUserModal extends React.Component{
                     </div>
                     <div className='modalFooter'>
                         <input type='submit' value='Submit'></input>
-                        <button onClick={this.dismissModal}>Close</button>
+                        <button type="reset" onClick={this.dismissModal}>Close</button>
                     </div>
                 </form>
             </Modal>
