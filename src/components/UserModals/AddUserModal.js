@@ -55,14 +55,10 @@ export default class AddUserModal extends React.Component{
                 </div>
                 <form onSubmit={(Event) => {Event.preventDefault(); this.addUser();}}>
                     <div className='modalBody'>
-<<<<<<< HEAD
-                        <h4>First Name</h4>
-=======
                         {this.state.error}
                         <div>
                             First Name
                         </div>
->>>>>>> ad5cbc9c7315c4efbca1b0327093e8cc34e6923d
                             <input type='text' id='firstName'  required  value={this.state.firstName} onChange={(event) => this.setState({ firstName: event.target.value })}></input>
                         <h4>Last Name</h4>
                             <input type='text' id='lastName'  required   value={this.state.lastName} onChange={(event) => this.setState({ lastName: event.target.value })}></input>

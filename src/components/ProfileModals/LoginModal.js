@@ -42,17 +42,6 @@ export default class LoginModal extends React.Component{
                 <div className='modalHeader'>
                     <h3>Log In</h3>
                 </div>
-<<<<<<< HEAD
-                {this.state.error || null}
-                <div className='modalBody'>
-                    <div id='modalBody_Username'>
-                        <h4>Username: </h4>
-                        <input type='text' key='userName' value={this.state.userName} onChange={(event) => {this.setState({userName: event.target.value})}}></input>
-                    </div>
-                    <div id='modalBody_Password'>
-                        <h4>Password: </h4>
-                        <input type='password' key='password' value={this.state.password} onChange={(event) => {this.setState({password: event.target.value})}}></input>
-=======
                 <form onSubmit={(event) => {event.preventDefault(); this.login();}}>
                     {this.state.error}
                     <div className='modalBody'>
@@ -68,7 +57,6 @@ export default class LoginModal extends React.Component{
                     <div className='modalFooter'>
                         <button type="submit" onClick={this.login}>Log in</button>
                         <button type="reset" onClick={this.dismissModal}>Close</button>
->>>>>>> ad5cbc9c7315c4efbca1b0327093e8cc34e6923d
                     </div>
                 </form>
             </Modal>
