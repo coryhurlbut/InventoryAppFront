@@ -41,13 +41,17 @@ export default class ContentList extends React.Component {
             inOrOut:                    availableItemsContent.inOrOut,
             content:                    [],
             id:                         null,
-            idArray:                    []
+            idArray:                    [],
+            isChecked:                  null,
+            currentUser:                "",
+            userSubmit:                 true
         };
         
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
         this.showUnavailableItems   =   this.showUnavailableItems.bind(this);
         this.showUsers              =   this.showUsers.bind(this);
         this.checkForChecked        =   this.checkForChecked.bind(this);
+        this.checkForText           =   this.checkForText.bind(this);
     };
 
     // Will update component props if parent props change
@@ -216,6 +220,14 @@ export default class ContentList extends React.Component {
         }
     };
 
+    checkForText(event){
+        console.log(this.state.currentUser);
+        if(this.state.currentUser === ""){
+            this.setState({ userSubmit: true })
+        }else{this.setState({ userSubmit: false})}
+        
+    }
+
     render() {
         // Check for content and build list if it's present.
         // Otherwise return null
@@ -231,9 +243,21 @@ export default class ContentList extends React.Component {
                         Unavailable Items
                     </button>
                     {this.state.userContentIsVisible ? <button onClick={this.showUsers}>Users</button> : null}
+                    <br></br>
+                    
+                    
                 </div>
+                
                 <div id='Table_Body'>
                     {contentList}
+                </div>
+                <div>
+                <form>
+                    <label for='user'>Enter User: </label>
+                    <input type='text' id='user' name='user' value={this.state.currentUser} 
+                        onChange={(event) => {this.setState({ currentUser: event.target.value }); this.checkForText()}}></input>
+                    <input type='submit' disabled={this.state.userSubmit}></input> 
+                    </form>
                 </div>
             </div>
         );
