@@ -57,8 +57,7 @@ export default class SignItemOutModal extends React.Component{
                     <p>{this.state.idArray}</p>
                     <label for='users'>Choose a user: </label>
                     <select name='users' id='users' defaultValue='' required>
-                    {/* <option hidden disabled selected value> -- select an option -- </option> */}
-                    <option label='' hidden disabled selected ></option>
+                    <option label='' hidden disabled selected></option>
                         {this.state.usersList.map(user => ( 
                         <option key={user} value={user}>
                             {user}

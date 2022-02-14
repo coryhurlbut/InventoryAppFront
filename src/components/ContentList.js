@@ -147,7 +147,8 @@ export default class ContentList extends React.Component {
             let duplicate = idArr.indexOf(id);
             idArr.splice(duplicate, 1);
         }
-        this.setState({ idArray: idArr })
+        this.setState({ idArray: idArr });
+        console.log("idarray" + this.state.idArray);
     };
 
     renderTableData(){
