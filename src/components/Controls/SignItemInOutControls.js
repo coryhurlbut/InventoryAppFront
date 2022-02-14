@@ -12,7 +12,8 @@ export default class SignItemInOutControls extends React.Component {
             signItemInOutIsVisible: props.signItemInOutIsVisible,
             modal: null,
             id: props.id,
-            idArray: props.idArray
+            idArray: props.idArray,
+            usersList: props.usersList
         };
 
         this.hideModal      = this.hideModal.bind(this);

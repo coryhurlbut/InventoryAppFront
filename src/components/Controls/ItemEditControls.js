@@ -12,7 +12,6 @@ export default class ItemEditControls extends React.Component {
         this.state = {
             item:  null,
             modal: null,
-            id: props.id,
             idArray: props.idArray
         };
 
@@ -29,15 +28,15 @@ export default class ItemEditControls extends React.Component {
     };
 
     addItem () {
-        this.setState({modal: <AddItemModal isOpen={true} id={this.state.id} hideModal={this.hideModal}/>});
+        this.setState({modal: <AddItemModal isOpen={true} idArray={this.state.idArray} hideModal={this.hideModal}/>});
     };
 
     editItem () {
-        this.setState({modal: <EditItemModal isOpen={true} id={this.state.id} hideModal={this.hideModal}/>});
+        this.setState({modal: <EditItemModal isOpen={true} idArray={this.state.idArray} hideModal={this.hideModal}/>});
     };
 
     deleteItem () {
-        this.setState({modal: <DeleteItemModal isOpen={true} id={this.state.id} hideModal={this.hideModal} idArray={this.state.idArray}/>});
+        this.setState({modal: <DeleteItemModal isOpen={true} idArray={this.state.idArray} hideModal={this.hideModal} idArray={this.state.idArray}/>});
     };
 
     hideModal() {

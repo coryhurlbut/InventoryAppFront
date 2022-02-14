@@ -11,7 +11,6 @@ export default class EditItemModal extends React.Component{
         
         this.state = {
             isOpen: props.isOpen,
-            id: props.id,
             name: '',
             description: '',
             serialNumber: '',
@@ -19,14 +18,15 @@ export default class EditItemModal extends React.Component{
             homeLocation: '',
             specificLocation: '',
             available: true,
-            servicable: true
+            servicable: true,
+            idArray: props.idArray
         };
 
         this.dismissModal = this.dismissModal.bind(this);
     };
 
     async componentDidMount(){
-        let thisItem = await itemController.getItemById(this.state.id);
+        let thisItem = await itemController.getItemById(this.state.idArray);
 
         this.setState({
                        name:             thisItem.name,
@@ -56,7 +56,7 @@ export default class EditItemModal extends React.Component{
             servicable:         this.state.servicable
         };
 
-        await itemController.updateItem(this.state.id, item);
+        await itemController.updateItem(this.state.idArray, item);
         window.location.reload();
         this.dismissModal();
     };
