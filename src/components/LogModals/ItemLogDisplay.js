@@ -26,7 +26,7 @@ export default class ItemLogDisplay extends React.Component {
     buildItemLog () {
         return (
             <div>
-                {this.state.content}
+                {this.stat.content}
             </div>
         );
     };
