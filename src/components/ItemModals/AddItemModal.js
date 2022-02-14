@@ -68,14 +68,6 @@ export default class AddItemModal extends React.Component{
                             <input type='text' id='homeLocation' name="homeLocation" required value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
                         <h4>Specific Location</h4>
                             <input type='text' id='specificLocation' name="specificLocation" required value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-=======
-                        
->>>>>>> 63845ad076d6979959c04783f646cfcf5e6469c6
-=======
-                        
->>>>>>> Stashed changes
                     </div>
                     <div className='modalFooter'>
                         <input type='submit' value='Submit'></input>

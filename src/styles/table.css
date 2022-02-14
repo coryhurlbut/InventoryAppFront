@@ -9,14 +9,26 @@
   align-items: center;
 }
 
+/*Create seperation between table naviation*/
+.item_styling{
+  font-weight: bold;
+}
+
 #Table_Navigation button{
-  border: none;
+  padding: 5px;
+
+  border: transparent;
   background-color: transparent;
 
   font-size: 17px;
+
+  text-decoration: underline;
+  text-underline-offset: 5px;
 }
-#Table_Navigation button:hover{
-  /*background-color: #F1F1F1;*/
+
+#Table_Navigation button:hover, button:focus{
+  border: none;
+  background-color: transparent;
 
   color: #1c3599;
   font-weight: bold;
@@ -31,14 +43,6 @@
 }
 #Table_Body h3{
   margin: 0px;
-}
-
-.blackLine_Styling{
-  height: 2px;
-  padding-right: 10px;
-  padding-left: 10px;
-  background-color: black;
-  color: transparent;
 }
 
 #Table_Body button{
@@ -56,6 +60,12 @@
 }
 #Table_Body button:disabled{
   color: #cbd4f7;
+}
+
+#Table_Modification h3{
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 #Table_Modification, .Edit_Controls{

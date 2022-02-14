@@ -114,7 +114,6 @@ export default class ContentList extends React.Component {
             <>
             <div id='Table_Modification'>
                 <h3>{this.state.contentType}</h3>
-                <div className='blackLine_Styling'>{this.state.contentType}</div>
                 {this.buildEditControls()}
                 <SignItemInOutControls inOrOut={this.state.inOrOut} idArray={this.state.idArray} id={this.state.id} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
             </div>
@@ -239,24 +238,24 @@ export default class ContentList extends React.Component {
                     <button onClick={this.showAvailableItems}>
                         Available Items
                     </button>
+                    <div className='item_styling'>|</div>
                     <button onClick={this.showUnavailableItems}>
                         Unavailable Items
                     </button>
+                    <div className='item_styling'>|</div>
                     {this.state.userContentIsVisible ? <button onClick={this.showUsers}>Users</button> : null}
                     <br></br>
-                    
-                    
                 </div>
                 
                 <div id='Table_Body'>
                     {contentList}
                 </div>
                 <div>
-                <form>
-                    <label for='user'>Enter User: </label>
-                    <input type='text' id='user' name='user' value={this.state.currentUser} 
-                        onChange={(event) => {this.setState({ currentUser: event.target.value }); this.checkForText()}}></input>
-                    <input type='submit' disabled={this.state.userSubmit}></input> 
+                    <form>
+                        <label for='user'>Enter User: </label>
+                        <input type='text' id='user' name='user' value={this.state.currentUser} 
+                            onChange={(event) => {this.setState({ currentUser: event.target.value }); this.checkForText()}}></input>
+                        <input type='submit' disabled={this.state.userSubmit}></input> 
                     </form>
                 </div>
             </div>
