@@ -45,14 +45,22 @@
 }
 .modalFooter button, input[type=submit]{
     margin: 5px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
     display: inline-block;
 
-    background-color: #3f4f8c;
-    color: white;
-}
-.modalFooter button:hover, input[type=submit]:hover{
+    border-radius: 8px;
+    font-size: 15px;
     font-weight: bold;
 
-    background-color: white;
+    background-color: #F1F1F1;
+    color: #3f4f8c;
+
+    /*Removing User agent Stylesheet inserts*/
+    border-style: none;
+    border-color: transparent;
+}
+.modalFooter button:hover, input[type=submit]:hover{
     color: #1c3599;
 }

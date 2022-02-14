@@ -1,4 +1,5 @@
 import React from "react";
+import './styles/error.css';
 
 /*
 * Class that catches errors from any child in its component tree. 
@@ -10,22 +11,27 @@ export default class ErrorBoundary extends React.Component {
 
         this.state = { 
             hasError: false,
-            error: null
+            error: '',
+            isOpen: false
         };
-    };
-  
+
+        this.errorInfo = [];
+    }
+
+    // Update state so the next render will show the fallback UI.
     static getDerivedStateFromError(error) {
-        // Update state so the next render will show the fallback UI.
-        return { hasError: true, error: error};
-    };
-  
-    componentDidCatch(error, errorInfo) {
-        // You can also log the error to an error reporting service
-        console.log(error.message, errorInfo);
-    };
+        return { hasError: true, error: error.message};
+    }
   
     render() {
-        //TODO: Make a better error page
-        return this.state.hasError ? <h1>An error has crossed the boundary!</h1> : this.props.children;
-    };
+        if (this.state.hasError) {
+            return(
+                <div className="errorPage">
+                    An error has occurred. Please refresh or try again later.
+                </div>
+            );
+        } else {
+            return this.props.children;
+        }
+    }
 }

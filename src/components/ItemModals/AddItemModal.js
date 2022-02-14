@@ -68,7 +68,6 @@ export default class AddItemModal extends React.Component{
                             <input type='text' id='homeLocation' name="homeLocation" required value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
                         <h4>Specific Location</h4>
                             <input type='text' id='specificLocation' name="specificLocation" required value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
-                        
                     </div>
                     <div className='modalFooter'>
                         <input type='submit' value='Submit'></input>
