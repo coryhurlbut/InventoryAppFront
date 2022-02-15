@@ -1,5 +1,5 @@
 import React from "react";
-import './styles/error.css';
+import './styles/ErrorBoundary.css';
 
 /*
 * Class that catches errors from any child in its component tree. 
@@ -27,11 +27,13 @@ export default class ErrorBoundary extends React.Component {
         if (this.state.hasError) {
             return(
                 <div className="errorPage">
-                    An error has occurred. Please refresh or try again later.
+                    <h1>An error has occurred</h1>
+                    <h3>Please refresh or try again later</h3>
                 </div>
+
             );
         } else {
             return this.props.children;
-        }
+        };
     }
 }
