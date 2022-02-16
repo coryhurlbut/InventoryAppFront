@@ -67,7 +67,13 @@ export default class AddUserModal extends React.Component{
                         <h4>Password</h4>
                             <input type='password' id='password' required minLength={6} value={this.state.password} onChange={(event) => this.setState({ password: event.target.value })}></input>
                         <h4>User's Role</h4>
-                            <input type='text' id='userRole' required     value={this.state.userRole} onChange={(event) => this.setState({ userRole: event.target.value })}></input>
+                            {/* <input type='text' id='userRole' required     value={this.state.userRole} onChange={(event) => this.setState({ userRole: event.target.value })}></input> */}
+                            <select id='selectUser' required onChange={(event) => this.setState({ userRole: event.target.value })}>
+                                <option label='' hidden disabled selected></option>
+                                <option value='user'>User</option>
+                                <option value='custodian'>Custodian</option>
+                                <option value='admin'>Admin</option>
+                            </select>
                         <h4>Phone Number</h4>
                             <input type='text' id='phoneNumber' required minLength={10} maxLength={10} value={this.state.phoneNumber} onChange={(event) => this.setState({ phoneNumber: event.target.value })}></input>
                     </div>
