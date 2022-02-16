@@ -12,6 +12,7 @@ export default class LoginModal extends React.Component{
             isOpen:     props.isOpen,
             userName:   '',
             password:   '',
+            isError:    false,
             error:      ''
         };
 
@@ -24,11 +25,13 @@ export default class LoginModal extends React.Component{
         .then((auth) => {
             if(auth.status >= 400) throw auth;
             this.setState({error: ''});
+            this.setState({isError: false});
             this.props.setAuth(auth);
             this.dismissModal();
         })
         .catch(async (err) => {            
             this.setState({error: err.message});
+            this.setState({isError: true});
         })
     };
 
@@ -43,15 +46,26 @@ export default class LoginModal extends React.Component{
                     <h3>Log In</h3>
                 </div>
                 <form onSubmit={(event) => {event.preventDefault(); this.login();}}>
-                    {this.state.error}
                     <div className='modalBody'>
                         <div id='modalBody_Username'>
-                            <div>Username: </div>
-                            <input type='text' key='userName' required value={this.state.userName} onChange={(event) => {this.setState({userName: event.target.value})}}></input>
+                            <h4>Username: </h4>
+                            <input 
+                            type='text' 
+                            key='userName' 
+                            required 
+                            value={this.state.userName} 
+                            onChange={(event) => {this.setState({userName: event.target.value})}}/>
+                            {this.state.isError ? <label className='errorMessage'>{this.state.error === 'Username is incorrect' ? this.state.error : null}</label> : null}
                         </div>
                         <div id='modalBody_Password'>
-                            <div>Password: </div>
-                            <input type='password' key='password' required value={this.state.password} onChange={(event) => {this.setState({password: event.target.value})}}></input>
+                            <h4>Password: </h4>
+                            <input 
+                            type='password' 
+                            key='password' 
+                            required 
+                            value={this.state.password} 
+                            onChange={(event) => {this.setState({password: event.target.value})}}/>
+                            {this.state.isError ? <label className='errorMessage'>{this.state.error === 'Password is incorrect' ? this.state.error : null}</label> : null}
                         </div>
                     </div>
                     <div className='modalFooter'>

@@ -233,7 +233,7 @@ export default class ContentList extends React.Component {
                     <button onClick={this.showUnavailableItems}>
                         Unavailable Items
                     </button>
-                    <div className='item_styling'>|</div>
+                    {this.state.userContentIsVisible ? <div className='item_styling'>|</div> : null}
                     {this.state.userContentIsVisible ? <button onClick={this.showUsers}>Users</button> : null}
                 </div>
                 
