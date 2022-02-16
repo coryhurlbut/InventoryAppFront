@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal, ThemeSettingName} from '@fluentui/react';
 import itemController from '../../controllers/ItemController';
+import itemLogController from '../../controllers/ItemLogController';
 import userController from '../../controllers/UserController';
 
 /*
@@ -12,11 +13,11 @@ export default class SignItemOutModal extends React.Component{
         
         this.state = {
             isOpen: props.isOpen,
-            id: props.id,
             item: null,
             idArray: props.idArray,
             users: [],
-            selection: null
+            selection: null,
+            userSelected:  {}
         };
 
         this.dismissModal = this.dismissModal.bind(this);
@@ -28,26 +29,26 @@ export default class SignItemOutModal extends React.Component{
         let users = await userController.getAllUsers();
         this.setState({ users: users });
         this.assignOptionGroup();
-        
-        //console.log('usersname' + this.state.users);
-        // return this.state.users.map((users) => {
-        //     const { userName, userRole} = users;
-        //     this.setState({ userName: userName });
-        //     this.setState({ userRole: userRole });
-        //     console.log('usersname' + this.state.usersLists.userName);
-        // });
-        // let usersL = [];
-        // let usersR = [];
-        // this.state.users.map((users) => {
-        //     usersL.push(users.userName);
-        //     usersR.push(users.userRole);
-        // })
-        // this.setState({ usersRole: usersR });
-        // this.setState({ usersList: usersL });
     }
 
     async signItemsOut(){
+        for(var i = 0; i < this.state.users.length; i++){
+            if(this.state.users[i].userName === this.state.selection){
+                let user = this.state.users[i];
+                await this.setState({ userSelected: user});
+                break;
+            }
+        }
+        let info = {
+            itemId: this.state.idArray[0],
+            userId: this.state.userSelected._id,
+            custodianId: '',
+            action: 'signed out',
+            notes:  'test'
+        }
+
         await itemController.signItemOut(this.state.idArray);
+        await itemLogController.createItemLog(info);
         window.location.reload(false);
         this.dismissModal();
     }
@@ -56,6 +57,7 @@ export default class SignItemOutModal extends React.Component{
         this.setState({isOpen: false});
     }
 
+    //method that dynamically generates child option tags to grp option tags in the render 
     assignOptionGroup() {
         for (let i = 0; i < this.state.users.length; i++) {
             let option = document.createElement("option");
@@ -76,7 +78,7 @@ export default class SignItemOutModal extends React.Component{
                 <div className='modalHeader'>
                     <h3>Sign Item Out</h3>                    
                 </div>
-                <form onSubmit={(Event) => {Event.preventDefault(); this.dismissModal();}}>
+                <form onSubmit={(Event) => {Event.preventDefault(); this.signItemsOut();}}>
                 <div className='modalBody'>
                     
                     <h4>You are about to sign out: </h4>
