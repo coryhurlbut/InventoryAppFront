@@ -20,6 +20,10 @@ export default class LoginModal extends React.Component{
         this.dismissModal   = this.dismissModal.bind(this);
     };
 
+    dismissModal() {
+        this.setState({isOpen: false});
+    };
+
     async login() {
         await loginLogoutController.login(this.state.userName, this.state.password)
         .then((auth) => {
@@ -33,10 +37,6 @@ export default class LoginModal extends React.Component{
             this.setState({error: err.message});
             this.setState({isError: true});
         })
-    };
-
-    dismissModal() {
-        this.setState({isOpen: false});
     };
 
     render() {

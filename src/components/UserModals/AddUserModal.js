@@ -21,6 +21,7 @@ export default class AddUserModal extends React.Component{
             isError:        false
         };
         this.dismissModal = this.dismissModal.bind(this);
+        this.addUser = this.addUser.bind(this);
     };
 
     dismissModal() {

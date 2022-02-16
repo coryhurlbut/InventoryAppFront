@@ -10,8 +10,8 @@ export default class SignItemInModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen: props.isOpen,
-            item: null,
+            isOpen:  props.isOpen,
+            item:    null,
             idArray: props.idArray
         };
 
@@ -19,14 +19,14 @@ export default class SignItemInModal extends React.Component{
         this.signItemsIn = this.signItemsIn.bind(this);
     };
 
+    dismissModal() {
+        this.setState({isOpen: false});
+    };
+
     async signItemsIn(){
         await itemController.signItemIn(this.state.idArray);
         window.location.reload(false);
         this.dismissModal();
-    };
-
-    dismissModal() {
-        this.setState({isOpen: false});
     };
 
     render() {

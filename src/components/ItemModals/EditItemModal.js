@@ -10,34 +10,35 @@ export default class EditItemModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen: props.isOpen,
-            name: '',
-            description: '',
-            serialNumber: '',
-            notes: '',
-            homeLocation: '',
+            isOpen:           props.isOpen,
+            name:             '',
+            description:      '',
+            serialNumber:     '',
+            notes:            '',
+            homeLocation:     '',
             specificLocation: '',
-            available: true,
-            servicable: true,
-            idArray: props.idArray
+            available:        true,
+            servicable:       true,
+            idArray:          props.idArray
         };
 
         this.dismissModal = this.dismissModal.bind(this);
+        this.editItem = this.editItem.bind(this);
     };
 
     async componentDidMount(){
         let thisItem = await itemController.getItemById(this.state.idArray);
 
         this.setState({
-                       name:             thisItem.name,
-                       description:      thisItem.description,
-                       serialNumber:     thisItem.serialNumber,
-                       notes:            thisItem.notes,
-                       homeLocation:     thisItem.homeLocation,
-                       specificLocation: thisItem.specificLocation,
-                       available:        thisItem.available,
-                       servicable:       thisItem.servicable
-                    });
+            name:             thisItem.name,
+            description:      thisItem.description,
+            serialNumber:     thisItem.serialNumber,
+            notes:            thisItem.notes,
+            homeLocation:     thisItem.homeLocation,
+            specificLocation: thisItem.specificLocation,
+            available:        thisItem.available,
+            servicable:       thisItem.servicable
+        });
     };
 
     dismissModal() {
@@ -70,17 +71,54 @@ export default class EditItemModal extends React.Component{
                 <form onSubmit={(Event) => {Event.preventDefault(); this.editItem();}}>
                     <div className='modalBody'>
                         <h4>Name</h4>
-                            <input type='text' id='name' name="name" required value={this.state.name} onChange={(event) => this.setState({name: event.target.value})}></input>
+                            <input 
+                            type='text' 
+                            id='name' 
+                            name="name" 
+                            required 
+                            pattern='[a-zA-Z0-9]{1,50}'
+                            value={this.state.name} 
+                            onChange={(event) => this.setState({name: event.target.value})}/>
                         <h4>Description</h4>
-                            <input type='text' id='description' name="description" required value={this.state.description} onChange={(event) => this.setState({description: event.target.value})}></input>
+                            <input 
+                            type='text'
+                            id='description' 
+                            name="description" 
+                            required 
+                            maxLength={50}
+                            value={this.state.description} 
+                            onChange={(event) => this.setState({description: event.target.value})}/>
                         <h4>Serial Number</h4>
-                            <input type='text' id='serialNumber' name="serialNumber" required value={this.state.serialNumber} onChange={(event) => this.setState({serialNumber: event.target.value})}></input>
+                            <input 
+                            type='text' 
+                            id='serialNumber' 
+                            name="serialNumber" 
+                            required 
+                            value={this.state.serialNumber} 
+                            onChange={(event) => this.setState({serialNumber: event.target.value})}/>
                         <h4>Notes</h4>
-                            <input type='text' id='notes' name="notes" value={this.state.notes} onChange={(event) => this.setState({notes: event.target.value})}></input>
+                            <input 
+                            type='text' 
+                            id='notes' 
+                            name="notes" 
+                            value={this.state.notes} 
+                            onChange={(event) => this.setState({notes: event.target.value})}/>
                         <h4>Home Location</h4>
-                            <input type='text' id='homeLocation'  name="homeLocation" required value={this.state.homeLocation} onChange={(event) => this.setState({homeLocation: event.target.value})}></input>
+                            <input 
+                            type='text' 
+                            id='homeLocation'  
+                            name="homeLocation" 
+                            required 
+                            value={this.state.homeLocation} 
+                            onChange={(event) => this.setState({homeLocation: event.target.value})}/>
                         <h4>Specific Location</h4>
-                            <input type='text' id='specificLocation' name="specificLocation" required value={this.state.specificLocation} onChange={(event) => this.setState({specificLocation: event.target.value})}></input>
+                            <input 
+                            type='text' 
+                            id='specificLocation' 
+                            name="specificLocation" 
+                            required 
+                            value={this.state.specificLocation} 
+                            onChange={(event) => this.setState({specificLocation: event.target.value})}/>
                     </div>
                     <div className='modalFooter'>
                         <input type='submit' value='Submit'></input>
