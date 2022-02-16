@@ -22,6 +22,8 @@ class ItemLogController extends AuthController{
 
     //Creates an item log. Must have required itemLog data
     async createItemLog(itemLog) {
+        let user = this.getUserInfo();
+        itemLog.custodianId = user.user.user._id;
         return await this.requestWithAuth('logs/itemLogs', {method: 'POST', body: JSON.stringify(itemLog)});
     };
 

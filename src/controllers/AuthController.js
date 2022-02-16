@@ -57,11 +57,11 @@ export default class AuthController {
     };
 
     // Checks if accessToken is expired or not. Returns true if valid
-    checkTokenExpiration(token) {
+    checkTokenExpiration() {
         // jwtDecode is an imported library. It decodes the payload but can't verify or decode the signed secret on the token
-        let decodedToken = jwtDecode(token);
+        let decodedToken = this.getUserInfo();
         let currentDate = new Date();
-      
+
         // decodedToken.exp is in seconds, current.getTime returns milliseconds 
         if (decodedToken.exp * 1000 < currentDate.getTime()) {
           return false;
@@ -83,6 +83,11 @@ export default class AuthController {
             return undefined;
         };
     };
+    // gets current logged in user info from token
+    getUserInfo() {
+        let user = jwtDecode(this.getAccessToken());
+        return user;
+    }
 
     // // Returns JSON if it is able. Otherwise, returns what was sent to it
     // async isJSON(objToCheck) {
@@ -102,7 +107,7 @@ export default class AuthController {
     // Custom request function to add headers for authenticated requests
     async requestWithAuth (url, initObj) {
         // Checks if access token is expired. If it is, refreshes token before making request.
-        if (!this.checkTokenExpiration(this.getAccessToken())) {
+        if (!this.checkTokenExpiration()) {
             await this.refreshToken();
         };
         

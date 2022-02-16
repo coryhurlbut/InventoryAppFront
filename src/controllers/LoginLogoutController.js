@@ -32,7 +32,9 @@ export default class LoginLogoutController extends GenericController {
             localStorage.clear();
             localStorage.setItem('access', response.accessToken);
             localStorage.setItem('refresh', response.refreshToken);
+            console.log(response);
             return response;
+            
         } catch (err) {
             return err;
         };

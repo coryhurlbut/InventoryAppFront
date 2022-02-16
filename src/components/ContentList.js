@@ -97,7 +97,6 @@ export default class ContentList extends React.Component {
 
     async showUsers () {
         let users = await UserController.getAllUsers();
-        this.setState({ usersList: users });
         this.setState({
             content:            users || null,
             contentType:        usersContent.contentType,
@@ -147,7 +146,6 @@ export default class ContentList extends React.Component {
             idArr.splice(duplicate, 1);
         }
         this.setState({ idArray: idArr });
-        console.log("idarray" + this.state.idArray);
     };
 
     renderTableData(){
