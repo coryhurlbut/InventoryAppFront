@@ -43,6 +43,9 @@ export default class ContentList extends React.Component {
             id:                         null,
             idArray:                    [],
             isChecked:                  null,
+            btnAI_Active:               false,
+            btnUI_Active:               false,
+            btnU_Active:                false
         };
         
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
@@ -80,7 +83,10 @@ export default class ContentList extends React.Component {
             contentType:        availableItemsContent.contentType,
             editControls:       availableItemsContent.editControls,
             inOrOut:            availableItemsContent.inOrOut,
-            idArray:            []
+            idArray:            [],
+            btnAI_Active:       true,
+            btnUI_Active:       false,
+            btnU_Active:        false
         });
     };
 
@@ -91,8 +97,11 @@ export default class ContentList extends React.Component {
             contentType:        unavailableItemsContent.contentType,
             editControls:       unavailableItemsContent.editControls,
             inOrOut:            unavailableItemsContent.inOrOut,
-            idArray:            []
-        }); 
+            idArray:            [],
+            btnAI_Active:       false,
+            btnUI_Active:       true,
+            btnU_Active:        false
+        });
     };
 
     async showUsers () {
@@ -102,24 +111,26 @@ export default class ContentList extends React.Component {
             contentType:        usersContent.contentType,
             editControls:       usersContent.editControls,
             inOrOut:            usersContent.inOrOut,
-            idArray:            []
-        });  
+            idArray:            [],
+            btnAI_Active:       false,
+            btnUI_Active:       false,
+            btnU_Active:        true
+        });
     };
 
     buildContentList () {
         return(
             <>
-            <div id='Table_Modification'>
-                <h3>{this.state.contentType}</h3>
-                {this.buildEditControls()}
-                <SignItemInOutControls inOrOut={this.state.inOrOut} idArray={this.state.idArray} id={this.state.id} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
-            </div>
             <table id='items'>
                     {this.renderTableHeader()}
                 <tbody>
                     {this.renderTableData()}
                 </tbody>
             </table>
+            <div id='Table_Modification'>
+                {this.buildEditControls()}
+                <SignItemInOutControls inOrOut={this.state.inOrOut} idArray={this.state.idArray} id={this.state.id} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
+            </div>
             <pre></pre>
             </>
         );
@@ -224,15 +235,15 @@ export default class ContentList extends React.Component {
         return (
             <div id='Content_Body'>
                 <div id='Table_Navigation'>
-                    <button onClick={this.showAvailableItems}>
+                    <button className={ this.state.btnAI_Active ? 'btnSelected' : null} onClick={this.showAvailableItems}>
                         Available Items
                     </button>
                     <div className='item_styling'>|</div>
-                    <button onClick={this.showUnavailableItems}>
+                    <button className={ this.state.btnUI_Active ? 'btnSelected' : null} onClick={this.showUnavailableItems}>
                         Unavailable Items
                     </button>
                     {this.state.userContentIsVisible ? <div className='item_styling'>|</div> : null}
-                    {this.state.userContentIsVisible ? <button onClick={this.showUsers}>Users</button> : null}
+                    {this.state.userContentIsVisible ? <button className={ this.state.btnU_Active ? 'btnSelected' : null} onClick={this.showUsers}>Users</button> : null}
                 </div>
                 
                 <div id='Table_Body'>
