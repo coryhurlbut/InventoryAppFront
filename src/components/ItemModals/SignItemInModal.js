@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import itemController from '../../controllers/ItemController';
+import itemLogController from '../../controllers/ItemLogController';
 
 /*
 *   Modal for signing an item in
@@ -18,13 +19,24 @@ export default class SignItemInModal extends React.Component{
         this.dismissModal = this.dismissModal.bind(this);
         this.signItemsIn = this.signItemsIn.bind(this);
     };
+    
+    
 
     dismissModal() {
         this.setState({isOpen: false});
     };
 
     async signItemsIn(){
+        let info = {
+            itemId: this.state.idArray[0],
+            userId: 'test',
+            custodianId: '',
+            action: 'signed in',
+            notes: 'test'
+        }
+        
         await itemController.signItemIn(this.state.idArray);
+        await itemLogController.createItemLog(info);
         window.location.reload(false);
         this.dismissModal();
     };
