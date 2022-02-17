@@ -26,12 +26,13 @@
   text-underline-offset: 5px;
 }
 
-#Table_Navigation button:hover, button:focus{
+#Table_Navigation button:hover{
   border: none;
-  background-color: transparent;
-
-  color: #1c3599;
+  border-radius: 3px;
   font-weight: bold;
+
+  background-color: #fbfbfb;
+  color: #3f4f8c;
 }
 
 /*
@@ -51,15 +52,17 @@
 
   background-color: transparent;
   border: transparent;
-  color: black;
 }
 #Table_Body button:hover{
     font-weight: bold;
+    color: #8b0000;
 
-    color: #3f4f8c;
+    text-decoration: underline;
+    text-underline-offset: 5px;
 }
 #Table_Body button:disabled{
-  color: #cbd4f7;
+  color: #c5cadc;
+  text-decoration: none;
 }
 
 #Table_Modification h3{
@@ -90,9 +93,9 @@ table td, table th {
   max-width: 250px;
 }
 
-table tr:nth-child(even){background-color: #f2f2f2;}
+table tr:nth-child(even){background-color: #f1f1f1;}
 
-table tr:hover {background-color: #cbd4f7;}
+table tr:hover {background-color: #c5cadc;}
 
 table th, tfoot td {
   padding-top: 4px;

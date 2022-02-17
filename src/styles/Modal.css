@@ -8,6 +8,7 @@
     /*margin: 30px;*/
     padding: 10px;
     background-color: #F1F1F1;
+    color: #8b0000;
 
     text-align: center;
     font-weight: bold;
@@ -41,7 +42,7 @@
     align-items: flex-start;
     flex-direction: column;
 }
-.modalBody label{
+.errorMessage{
     color: red;
 }
 
@@ -63,12 +64,12 @@
     font-weight: bold;
 
     background-color: #F1F1F1;
-    color: #3f4f8c;
+    color: black;
 
     /*Removing User agent Stylesheet inserts*/
     border-style: none;
     border-color: transparent;
 }
 .modalFooter button:hover, input[type=submit]:hover{
-    color: #1c3599;
+    color: #8b0000;
 }

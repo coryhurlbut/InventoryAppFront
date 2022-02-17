@@ -31,6 +31,10 @@ export default class SignItemOutModal extends React.Component{
         this.assignOptionGroup();
     }
 
+    dismissModal() {
+        this.setState({isOpen: false});
+    }
+
     async signItemsOut(){
         for(var i = 0; i < this.state.users.length; i++){
             if(this.state.users[i].userName === this.state.selection){
@@ -49,12 +53,8 @@ export default class SignItemOutModal extends React.Component{
 
         await itemController.signItemOut(this.state.idArray);
         await itemLogController.createItemLog(info);
-        window.location.reload(false);
+        window.location.reload();
         this.dismissModal();
-    }
-
-    dismissModal() {
-        this.setState({isOpen: false});
     }
 
     //method that dynamically generates child option tags to grp option tags in the render 
@@ -80,7 +80,6 @@ export default class SignItemOutModal extends React.Component{
                 </div>
                 <form onSubmit={(Event) => {Event.preventDefault(); this.signItemsOut();}}>
                 <div className='modalBody'>
-                    
                     <h4>You are about to sign out: </h4>
                     <p>{this.state.idArray}</p>
                     <label for='users'>Choose a user: </label>
@@ -94,7 +93,7 @@ export default class SignItemOutModal extends React.Component{
                 </div>
                 <div className='modalFooter'>
                     <input type='submit'></input>
-                    <button onClick={this.dismissModal}>Close</button>
+                    <button type="reset" onClick={this.dismissModal}>Close</button>
                 </div>
                 </form>
             </Modal>

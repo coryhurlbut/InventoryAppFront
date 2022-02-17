@@ -119,7 +119,7 @@ export default class AddUserModal extends React.Component{
                 <div className='modalHeader'>
                     <h3>Add User to Database</h3>
                 </div>
-                {this.state.isError ? <label>{this.state.error}</label> : this.buildForm()}
+                {this.state.isError ? <label className='errorMessage'>{this.state.error}</label> : this.buildForm()}
             </Modal>
         );
     };
