@@ -139,11 +139,11 @@ export default class ContentList extends React.Component {
     buildEditControls () {
         if(this.state.editControls === "ItemEditControls" && this.state.editControlIsVisible) {
             return (
-                <ItemEditControls id={this.state.id} idArray={this.state.idArray}/>
+                <ItemEditControls idArray={this.state.idArray}/>
             );
         } else if (this.state.editControls === "UserEditControls") {
             return (
-                <UserEditControls id={this.state.id} idArray={this.state.idArray}/>
+                <UserEditControls idArray={this.state.idArray}/>
             );
         };
     };

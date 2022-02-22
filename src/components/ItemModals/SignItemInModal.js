@@ -19,8 +19,6 @@ export default class SignItemInModal extends React.Component{
         this.dismissModal = this.dismissModal.bind(this);
         this.signItemsIn = this.signItemsIn.bind(this);
     };
-    
-    
 
     dismissModal() {
         this.setState({isOpen: false});

@@ -11,7 +11,7 @@ export default class DeleteUserModal extends React.Component{
         
         this.state = {
             isOpen: props.isOpen,
-            id:     props.id,
+            idArray:     props.idArray,
             error:  ''
         };
 

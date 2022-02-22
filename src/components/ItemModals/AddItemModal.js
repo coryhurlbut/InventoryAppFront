@@ -11,7 +11,6 @@ export default class AddItemModal extends React.Component{
         
         this.state = {
             isOpen:           props.isOpen,
-            id:               props.id,
             name:             '',
             description:      '',
             serialNumber:     '',
@@ -63,7 +62,7 @@ export default class AddItemModal extends React.Component{
                             id='name' 
                             name="name" 
                             required 
-                            pattern='[a-zA-Z0-9]{1,50}'
+                            pattern='[a-zA-Z0-9\s]{1,50}'
                             value={this.state.name} 
                             onChange={(event) => this.setState({name: event.target.value})}/>
                         <h4>Description</h4>

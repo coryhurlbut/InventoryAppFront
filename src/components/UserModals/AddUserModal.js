@@ -11,13 +11,13 @@ export default class AddUserModal extends React.Component{
         
         this.state = {
             isOpen:         props.isOpen,
-            firstName:      "",
-            lastName:       "",
-            userName:       "",
-            password:       "",
-            userRole:       "",
-            phoneNumber:    "",
-            error:         "",
+            firstName:      '',
+            lastName:       '',
+            userName:       '',
+            password:       '',
+            userRole:       '',
+            phoneNumber:    '',
+            error:          '',
             isError:        false
         };
         this.dismissModal = this.dismissModal.bind(this);
@@ -61,7 +61,7 @@ export default class AddUserModal extends React.Component{
                             type='text' 
                             id='firstName' 
                             required 
-                            pattern='[a-zA-Z]{1,25}'
+                            pattern='[a-zA-Z\s]{1,25}'
                             value={this.state.firstName} 
                             onChange={(event) => this.setState({ firstName: event.target.value })}/>
                         <h4>Last Name</h4>
@@ -69,7 +69,7 @@ export default class AddUserModal extends React.Component{
                             type='text' 
                             id='lastName' 
                             required 
-                            pattern='[a-zA-Z]{1,25}'
+                            pattern='[a-zA-Z\s]{1,25}'
                             value={this.state.lastName} 
                             onChange={(event) => this.setState({ lastName: event.target.value })}/>
                         <h4>Username</h4>
