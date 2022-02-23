@@ -25,7 +25,7 @@ export default class EditUserModal extends React.Component{
     };
 
     async componentDidMount(){
-        let thisUser = await userController.getUserById(this.state.id);
+        let thisUser = await userController.getUserById(this.state.idArray[0]);
 
         this.setState({
             firstName:   thisUser.firstName, 

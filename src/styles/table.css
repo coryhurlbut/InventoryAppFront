@@ -95,7 +95,9 @@ table{
 }
 
 table td, table th {
-  border: 1px solid #ddd;
+  /*border-collapse: collapse;
+  border-bottom: 1px solid #ddd;*/
+  border: 1px solid #3f4f8c;
   padding: 4px;
   max-width: 10%;
   word-wrap: break-word;

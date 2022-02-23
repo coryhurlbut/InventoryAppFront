@@ -28,7 +28,7 @@ export default class ItemEditControls extends React.Component {
     };
 
     addItem () {
-        this.setState({modal: <AddItemModal isOpen={true} idArray={this.state.idArray} hideModal={this.hideModal}/>});
+        this.setState({modal: <AddItemModal isOpen={true} hideModal={this.hideModal}/>});
     };
 
     editItem () {

@@ -27,7 +27,7 @@ export default class EditItemModal extends React.Component{
     };
 
     async componentDidMount(){
-        let thisItem = await itemController.getItemById(this.state.idArray);
+        let thisItem = await itemController.getItemById(this.state.idArray[0]);
 
         this.setState({
             name:             thisItem.name,
