@@ -12,7 +12,6 @@ export default class DeleteItemModal extends React.Component{
         this.state = {
             isOpen: props.isOpen,
             item: null,
-            id: props.id,
             idArray: props.idArray
         };
 

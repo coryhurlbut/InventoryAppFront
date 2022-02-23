@@ -12,7 +12,6 @@ export default class UserEditControls extends React.Component {
 
         this.state = {
             modal: null,
-            id: props.id,
             idArray: props.idArray
         };
 
@@ -33,11 +32,11 @@ export default class UserEditControls extends React.Component {
     };
 
     editUser () {
-        this.setState({modal: <EditUserModal isOpen={true} id={this.state.id} hideModal={this.hideModal}/>});
+        this.setState({modal: <EditUserModal isOpen={true} hideModal={this.hideModal} idArray={this.state.idArray}/>});
     };
 
     deleteUser () {
-        this.setState({modal: <DeleteUserModal isOpen={true} id={this.state.id} hideModal={this.hideModal} idArray={this.state.idArray}/>});
+        this.setState({modal: <DeleteUserModal isOpen={true} hideModal={this.hideModal} idArray={this.state.idArray}/>});
     };
 
     hideModal() {

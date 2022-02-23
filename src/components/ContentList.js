@@ -40,9 +40,11 @@ export default class ContentList extends React.Component {
             editControls:               availableItemsContent.editControls,
             inOrOut:                    availableItemsContent.inOrOut,
             content:                    [],
-            id:                         null,
             idArray:                    [],
             isChecked:                  null,
+            btnAI_Active:               false,
+            btnUI_Active:               false,
+            btnU_Active:                false
         };
         
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
@@ -80,7 +82,10 @@ export default class ContentList extends React.Component {
             contentType:        availableItemsContent.contentType,
             editControls:       availableItemsContent.editControls,
             inOrOut:            availableItemsContent.inOrOut,
-            idArray:            []
+            idArray:            [],
+            btnAI_Active:       true,
+            btnUI_Active:       false,
+            btnU_Active:        false
         });
     };
 
@@ -91,8 +96,11 @@ export default class ContentList extends React.Component {
             contentType:        unavailableItemsContent.contentType,
             editControls:       unavailableItemsContent.editControls,
             inOrOut:            unavailableItemsContent.inOrOut,
-            idArray:            []
-        }); 
+            idArray:            [],
+            btnAI_Active:       false,
+            btnUI_Active:       true,
+            btnU_Active:        false
+        });
     };
 
     async showUsers () {
@@ -102,24 +110,26 @@ export default class ContentList extends React.Component {
             contentType:        usersContent.contentType,
             editControls:       usersContent.editControls,
             inOrOut:            usersContent.inOrOut,
-            idArray:            []
-        });  
+            idArray:            [],
+            btnAI_Active:       false,
+            btnUI_Active:       false,
+            btnU_Active:        true
+        });
     };
 
     buildContentList () {
         return(
             <>
-            <div id='Table_Modification'>
-                <h3>{this.state.contentType}</h3>
-                {this.buildEditControls()}
-                <SignItemInOutControls inOrOut={this.state.inOrOut} idArray={this.state.idArray} id={this.state.id} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
-            </div>
             <table id='items'>
                     {this.renderTableHeader()}
                 <tbody>
                     {this.renderTableData()}
                 </tbody>
             </table>
+            <div id='Table_Modification'>
+                {this.buildEditControls()}
+                <SignItemInOutControls inOrOut={this.state.inOrOut} idArray={this.state.idArray} id={this.state.id} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
+            </div>
             <pre></pre>
             </>
         );
@@ -128,11 +138,11 @@ export default class ContentList extends React.Component {
     buildEditControls () {
         if(this.state.editControls === "ItemEditControls" && this.state.editControlIsVisible) {
             return (
-                <ItemEditControls id={this.state.id} idArray={this.state.idArray}/>
+                <ItemEditControls idArray={this.state.idArray}/>
             );
         } else if (this.state.editControls === "UserEditControls") {
             return (
-                <UserEditControls id={this.state.id} idArray={this.state.idArray}/>
+                <UserEditControls idArray={this.state.idArray}/>
             );
         };
     };
@@ -146,15 +156,15 @@ export default class ContentList extends React.Component {
             idArr.splice(duplicate, 1);
         }
         this.setState({ idArray: idArr });
-    };
+    }
 
     renderTableData(){
         if(this.state.contentType === "Users"){
-            return this.state.content.map((user, index) => {
+            return this.state.content.map((user) => {
                 const { _id, firstName, lastName, userName, userRole, phoneNumber } = user
                 return(
                     <tr key={_id}>
-                        <td><input type='checkbox' id={_id} name={userName} onClick={() => {this.checkForChecked(_id); this.setState({id: _id})}}></input></td>
+                        <td><input type='checkbox' id={_id} name={userName} onClick={() => {this.checkForChecked(_id)}}></input></td>
                         <td>{_id}</td>
                         <td>{firstName}</td>
                         <td>{lastName}</td>
@@ -165,11 +175,11 @@ export default class ContentList extends React.Component {
             )})
         }
         else {
-            return this.state.content.map((item, index) => {
+            return this.state.content.map((item) => {
                 const { _id, name, description, homeLocation, specificLocation, serialNumber, notes } = item
                 return(
                     <tr key={_id}>
-                        <td><input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id); this.setState({id: _id})}}></input></td>
+                        <td><input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td>
                         <td>{_id}</td>
                         <td>{name}</td>
                         <td>{description}</td>
@@ -224,15 +234,15 @@ export default class ContentList extends React.Component {
         return (
             <div id='Content_Body'>
                 <div id='Table_Navigation'>
-                    <button onClick={this.showAvailableItems}>
+                    <button className={ this.state.btnAI_Active ? 'btnSelected' : null} onClick={this.showAvailableItems}>
                         Available Items
                     </button>
                     <div className='item_styling'>|</div>
-                    <button onClick={this.showUnavailableItems}>
+                    <button className={ this.state.btnUI_Active ? 'btnSelected' : null} onClick={this.showUnavailableItems}>
                         Unavailable Items
                     </button>
                     {this.state.userContentIsVisible ? <div className='item_styling'>|</div> : null}
-                    {this.state.userContentIsVisible ? <button onClick={this.showUsers}>Users</button> : null}
+                    {this.state.userContentIsVisible ? <button className={ this.state.btnU_Active ? 'btnSelected' : null} onClick={this.showUsers}>Users</button> : null}
                 </div>
                 
                 <div id='Table_Body'>

@@ -7,7 +7,10 @@
 .modalHeader {
     /*margin: 30px;*/
     padding: 10px;
-    background-color: #F1F1F1;
+    /* background-color: #F1F1F1; */
+    background-color: #787878;
+    /* color: #8b0000; */
+    color: #11375c;
 
     text-align: center;
     font-weight: bold;
@@ -19,7 +22,13 @@
 
 /*Handles the content of Modal*/
 .modalBody{
+    /*To avoid modal auto styling*/
+    min-height: 54px;
+
     padding: 10px;
+
+    background-color: #b3b3b3;
+    color: #11375c;
 
     text-align: left;
 }
@@ -41,14 +50,14 @@
     align-items: flex-start;
     flex-direction: column;
 }
-.modalBody label{
+.errorMessage{
     color: red;
 }
 
 /*Primary handles the button styling of Modal*/
 .modalFooter{
     padding: 10px;
-
+    background-color: #b3b3b3;
     text-align: center;
 }
 .modalFooter button, input[type=submit]{
@@ -62,13 +71,14 @@
     font-size: 15px;
     font-weight: bold;
 
-    background-color: #F1F1F1;
-    color: #3f4f8c;
+    /* background-color: #F1F1F1; */
+    background-color: #c5cadc;
+    color: black;
 
     /*Removing User agent Stylesheet inserts*/
     border-style: none;
     border-color: transparent;
 }
 .modalFooter button:hover, input[type=submit]:hover{
-    color: #1c3599;
+    color: #8b0000;
 }
