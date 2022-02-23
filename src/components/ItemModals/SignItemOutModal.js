@@ -83,8 +83,8 @@ export default class SignItemOutModal extends React.Component{
                     
                     <h4>You are about to sign out: </h4>
                     <p>{this.state.idArray}</p>
-                    <label for='users'>Choose a user: </label>
-                    <select name='users' id='users' defaultValue='' required 
+                    <label>Choose a user: </label>
+                    <select name='usersS' id='usersS' defaultValue='' required 
                     onChange={(event) => this.setState({ selection: event.target.value})}>
                         <option label='' hidden disabled selected></option>
                         <optgroup label='Users' id='userGroup'></optgroup>
