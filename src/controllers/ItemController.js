@@ -43,8 +43,12 @@ class ItemController extends AuthController{
     };
 
     //Signs out items. Must pass item Ids
-    async signItemOut(itemIds) {
-        return await this.requestWithAuth('items/signout', {method: 'PATCH', body: JSON.stringify(itemIds)});
+    async signItemOut(itemIds, user) {
+        let body = {
+            'itemIds': itemIds,
+            'user': user
+        };
+        return await this.requestWithAuth('items/signout', {method: 'PATCH', body: JSON.stringify(body)});
     };
 
     //Signs in items. Must pass item Ids

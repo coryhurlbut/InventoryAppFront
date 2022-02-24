@@ -118,6 +118,9 @@ export default class ContentList extends React.Component {
     };
 
     buildContentList () {
+        if(this.state.content.length === 0){
+            return "No content available"
+        }
         return(
             <>
             <table id='items'>
@@ -174,9 +177,26 @@ export default class ContentList extends React.Component {
                     </tr>
             )})
         }
-        else {
+        else if(this.state.contentType === 'Unavailable Items'){
             return this.state.content.map((item) => {
-                const { _id, name, description, homeLocation, specificLocation, serialNumber, notes } = item
+                const { _id, name, description, homeLocation, specificLocation, serialNumber, notes, possessedBy } = item
+                return(
+                    <tr key={_id}>
+                        <td><input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td>
+                        <td>{_id}</td>
+                        <td>{name}</td>
+                        <td>{description}</td>
+                        <td>{homeLocation}</td>
+                        <td>{specificLocation}</td>
+                        <td>{serialNumber}</td>
+                        <td>{notes}</td>
+                        <td>{possessedBy}</td>
+                    </tr>
+            )})
+        }
+        else{
+            return this.state.content.map((item) => {
+                const { _id, name, description, homeLocation, specificLocation, serialNumber, notes, possessedBy } = item
                 return(
                     <tr key={_id}>
                         <td><input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td>
@@ -190,6 +210,7 @@ export default class ContentList extends React.Component {
                     </tr>
             )})
         }
+        
     };
 
     renderTableHeader() {
@@ -208,6 +229,23 @@ export default class ContentList extends React.Component {
                 </thead>
             )
         }
+        else if(this.state.contentType === 'Unavailable Items'){
+            return(
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Item Name</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                        <th>Specific Location</th>
+                        <th>Serial Number</th>
+                        <th>Notes</th>
+                        <th>Signed out to</th>
+                    </tr>
+                </thead>
+            )
+        }
         else{
             return(
                 <thead>
@@ -222,7 +260,7 @@ export default class ContentList extends React.Component {
                         <th>Notes</th>
                     </tr>
                 </thead>
-            )
+            ) 
         }
     };
 
