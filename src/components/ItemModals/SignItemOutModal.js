@@ -51,7 +51,7 @@ export default class SignItemOutModal extends React.Component{
             notes:  'test'
         }
 
-        await itemController.signItemOut(this.state.idArray);
+        await itemController.signItemOut(this.state.idArray, this.state.selection);
         await itemLogController.createItemLog(info);
         window.location.reload();
         this.dismissModal();
@@ -69,7 +69,9 @@ export default class SignItemOutModal extends React.Component{
             } else if (this.state.users[i].userRole === 'custodian') {
                 document.getElementById('custodianGroup').append(option);
             }
+            
         }
+        
     }
 
     render() {
