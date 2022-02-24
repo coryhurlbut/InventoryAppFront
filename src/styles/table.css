@@ -12,7 +12,7 @@
 /*Create seperation between table naviation*/
 .item_styling{
   font-weight: bold;
-  color: #c5cadc;
+  color: #b3b3b3;
 }
 
 #Table_Navigation button{
@@ -29,9 +29,7 @@
   border-radius: 3px;
   font-weight: bold;
 
-  /* background-color: #fbfbfb; */
-  background-color: #c5cadc;
-  color: #11375c;
+  color: #787878;
 
   text-decoration: underline;
   text-underline-offset: 5px;
@@ -53,14 +51,14 @@
   font-size: 15px;
   font-weight: bold;
 
-  border-color: black;
+  border-color: #787878;
   border-width: thin;
   border-style: solid;
   border-radius: 5px;
 
   /* background-color: #F1F1F1; */
-  background-color: #b3b3b3;
-  color: black;
+  background-color: #929292;
+  color: #333;
 }
 #Table_Body button:hover{
   font-weight: bold;
@@ -97,7 +95,7 @@ table{
 table td, table th {
   /*border-collapse: collapse;
   border-bottom: 1px solid #ddd;*/
-  border: 1px solid #3f4f8c;
+  border: 1px solid #333;
   padding: 4px;
   max-width: 10%;
   word-wrap: break-word;
@@ -107,7 +105,7 @@ table td, table th {
 table tr:nth-child(even){background-color: #f1f1f1;}
 table tr:nth-child(odd){background-color: #fbfbfb;}*/
 table tr:nth-child(even){background-color: #787878;}
-table tr:nth-child(odd){background-color: #b3b3b3;}
+table tr:nth-child(odd){background-color: #929292;}
 
 table tr:hover {background-color: #c5cadc;}
 

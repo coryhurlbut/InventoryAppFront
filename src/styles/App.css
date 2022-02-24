@@ -10,7 +10,6 @@ html{
     padding: 10px;
     /* background-color: #F1F1F1; */
     background-color: #333;
-    text-align: left;
     font-weight: bold; 
     text-transform: uppercase;
 
@@ -24,23 +23,35 @@ html{
 }
 .pageHeader h2{
     /* color: #3f4f8c; */
-    color: #c5cadc;
+    color: #b3b3b3;
     margin: 0px;
+}
+
+#userProfile{
+    display: flex;
+    justify-content: space-evenly;
+    align-items:flex-end;          /*Allows the button to be flushed to the right*/
+    flex-direction: column;
+
+    color: #b3b3b3;
+    text-transform: capitalize;
 }
 
 /* Floats loginLogout button to the right in main header*/
 .logInLogOut {
-    border: transparent;
+    margin-top: 5px;
+    padding: 3px;
+
+    border: 1px solid #787878;
     background-color: transparent;
-    color: #b3b3b3;
+    color: #929292;
 
     text-transform: uppercase;
 }
 .logInLogOut:hover{
     font-weight: bold;
     
-    text-decoration: underline;
-    text-underline-offset: 5px;
+    color: green;
 }
 
 /* Centers main content */

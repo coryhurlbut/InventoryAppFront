@@ -106,9 +106,13 @@ export default class ContentBuilder extends React.Component {
                 {this.state.modal}
                 <div className="pageHeader">
                      <h2>Inventory App</h2>
-                     <button className='logInLogOut' onClick={this.loginLogout}>
-                         {this.state.isLoggedIn ? 'Log Out': 'Log In'}
-                     </button>
+                     <div id='userProfile'>
+                        {this.state.isLoggedIn ? <label>Profile: {this.state.auth.user.userName}</label> : null}
+                        <button className='logInLogOut' onClick={this.loginLogout}>
+                            {this.state.isLoggedIn ? 'Log Out': 'Log In'}
+                        </button>
+                     </div>
+                     
                 </div>
                 <div className="body">
                     <ContentList 
