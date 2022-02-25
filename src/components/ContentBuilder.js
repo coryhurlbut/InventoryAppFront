@@ -109,7 +109,7 @@ export default class ContentBuilder extends React.Component {
                 <div className="pageHeader">
                      <h2>Inventory App</h2>
                      <div id='userProfile'>
-                        {this.state.isLoggedIn ? <label>Profile: {this.state.auth.user.userName}</label> : null}
+                        {this.state.isLoggedIn ? <label>{this.state.auth.user.userName} : {this.state.auth.user.userRole}</label> : null}
                         <button className='logInLogOut' onClick={this.loginLogout}>
                             {this.state.isLoggedIn ? 'Log Out': 'Log In'}
                         </button>

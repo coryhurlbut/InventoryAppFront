@@ -24,7 +24,7 @@ export default class DeleteUserModal extends React.Component{
     };
     
     async deleteUser() {
-        await UserController.deleteUser(this.state.id)
+        await UserController.deleteUser(this.state.idArray[0])
         .then((auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({error: ''});
