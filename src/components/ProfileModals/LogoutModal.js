@@ -18,6 +18,7 @@ export default class LogoutModal extends React.Component{
 
     async logout() {
         await loginLogoutController.logout(this.props.auth).then(() => this.props.clearAuth())
+        window.location.reload();
         this.dismissModal();
     };
 

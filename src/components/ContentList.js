@@ -188,7 +188,7 @@ export default class ContentList extends React.Component {
                 const { _id, name, description, homeLocation, specificLocation, serialNumber, notes, possessedBy } = item
                 return(
                     <tr key={_id}>
-                        <td><input type='checkbox' className='checkbox' checked={this.state.checked} id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td>
+                        { this.state.role === null ? null : <td><input type='checkbox' className='checkbox' checked={this.state.checked} id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td> }
                         <td>{_id}</td>
                         <td>{name}</td>
                         <td>{description}</td>
@@ -205,7 +205,7 @@ export default class ContentList extends React.Component {
                 const { _id, name, description, homeLocation, specificLocation, serialNumber, notes, possessedBy } = item
                 return(
                     <tr key={_id}>
-                        <td><input type='checkbox' className='checkbox' checked={this.state.checked} id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td>
+                        { this.state.role === null ? null : <td><input type='checkbox' className='checkbox' checked={this.state.checked} id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td> }
                         <td>{_id}</td>
                         <td>{name}</td>
                         <td>{description}</td>
@@ -239,7 +239,7 @@ export default class ContentList extends React.Component {
             return(
                 <thead>
                     <tr>
-                        <th></th>
+                        { this.state.role === null ? null : <th></th> }
                         <th>ID</th>
                         <th>Item Name</th>
                         <th>Description</th>
@@ -256,7 +256,7 @@ export default class ContentList extends React.Component {
             return(
                 <thead>
                     <tr>
-                        <th></th>
+                        { this.state.role === null ? null : <th></th> }
                         <th>ID</th>
                         <th>Item Name</th>
                         <th>Description</th>
@@ -274,7 +274,7 @@ export default class ContentList extends React.Component {
         // Check for content and build list if it's present.
         // Otherwise return null
         let contentList = this.state.content !== null ? this.buildContentList() : 'No content available.';
-
+        console.log(this.state.role);
         return (
             <div id='Content_Body'>
                 <div id='Table_Navigation'>
