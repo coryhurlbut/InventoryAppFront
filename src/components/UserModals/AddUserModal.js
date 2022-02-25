@@ -62,7 +62,7 @@ export default class AddUserModal extends React.Component{
                             id='firstName' 
                             required 
                             pattern='[a-zA-Z\s]{1,25}'
-                            value={this.state.firstName} 
+                            value=''
                             onChange={(event) => this.setState({ firstName: event.target.value })}/>
                         <h4>Last Name</h4>
                             <input 
@@ -70,7 +70,7 @@ export default class AddUserModal extends React.Component{
                             id='lastName' 
                             required 
                             pattern='[a-zA-Z\s]{1,25}'
-                            value={this.state.lastName} 
+                            value=''
                             onChange={(event) => this.setState({ lastName: event.target.value })}/>
                         <h4>Username</h4>
                             <input 
@@ -78,7 +78,7 @@ export default class AddUserModal extends React.Component{
                             id='userName' 
                             required
                             pattern='[a-zA-Z0-9]{6,25}'
-                            value={this.state.userName} 
+                            value=''
                             onChange={(event) => this.setState({ userName: event.target.value })}/>
                         <h4>Password</h4>
                             <input
@@ -86,11 +86,11 @@ export default class AddUserModal extends React.Component{
                             id='password' 
                             required 
                             pattern='[a-zA-Z0-9]{6,25}'
-                            value={this.state.password} 
+                            value=''
                             onChange={(event) => this.setState({ password: event.target.value })}/>
                         <h4>User's Role</h4>
-                            <select id='selectUser' required onChange={(event) => this.setState({ userRole: event.target.value })}>
-                                <option label='' hidden disabled selected></option>
+                            <select id='selectUser' required defaultValue={''} onChange={(event) => this.setState({ userRole: event.target.value })}>
+                                <option label='' hidden disabled ></option>
                                 <option value='user'>User</option>
                                 <option value='custodian'>Custodian</option>
                                 <option value='admin'>Admin</option>
@@ -101,7 +101,7 @@ export default class AddUserModal extends React.Component{
                             id='phoneNumber' 
                             required 
                             pattern='[0-9]{10}'
-                            value={this.state.phoneNumber} 
+                            value=''
                             onChange={(event) => this.setState({ phoneNumber: event.target.value })}/>
                     </div>
                     <div className='modalFooter'>
