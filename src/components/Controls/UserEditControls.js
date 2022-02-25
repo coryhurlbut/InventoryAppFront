@@ -12,18 +12,20 @@ export default class UserEditControls extends React.Component {
 
         this.state = {
             modal: null,
-            idArray: props.idArray
+            idArray: props.idArray,
+            role: props.role
         };
 
         this.hideModal  = this.hideModal.bind(this);
         this.addUser    = this.addUser.bind(this);
         this.editUser   = this.editUser.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
+        this.buildButtons = this.buildButtons.bind(this);
     };
 
     componentDidUpdate(prevProps, prevState){
         if(prevProps !== this.props){
-            this.setState({ id: this.props.id, idArray: this.props.idArray});
+            this.setState({ role: this.props.role, idArray: this.props.idArray});
         };
     };
     
@@ -43,8 +45,18 @@ export default class UserEditControls extends React.Component {
         this.setState({modal: null});
     };
 
-    render() {
-        return(
+    buildButtons() {
+        if(this.state.role === 'custodian'){
+            return(
+            <div className='Edit_Controls'>
+                <button onClick={this.addUser}>
+                    Add User
+                </button>
+                {this.state.modal}
+            </div>
+            )
+        }else{
+            return(
             <div className='Edit_Controls'>
                 <button onClick={this.addUser}>
                     Add User
@@ -57,6 +69,17 @@ export default class UserEditControls extends React.Component {
                 </button>
                 {this.state.modal}
             </div>
+        );}
+    }
+
+    render() {
+        return(
+        <>
+        {this.buildButtons()}
+        </>
+
         );
+            
+        
     };
 };

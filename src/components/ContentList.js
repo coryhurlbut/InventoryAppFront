@@ -41,10 +41,10 @@ export default class ContentList extends React.Component {
             inOrOut:                    availableItemsContent.inOrOut,
             content:                    [],
             idArray:                    [],
-            isChecked:                  null,
             btnAI_Active:               false,
             btnUI_Active:               false,
-            btnU_Active:                false
+            btnU_Active:                false,
+            role:                       props.role
         };
         
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
@@ -56,12 +56,11 @@ export default class ContentList extends React.Component {
     // Will update component props if parent props change
     componentDidUpdate(prevProps, prevState) {
         if (this.props !== prevProps) {
-    
             this.setState({
                 userContentIsVisible:       this.props.userContentIsVisible,
                 editControlIsVisible:       this.props.editControlIsVisible,
                 signItemInOutIsVisible:     this.props.signItemInOutIsVisible,
-                id:                         this.props.id,
+                role:                       this.props.role
             });
         };
 
@@ -87,6 +86,7 @@ export default class ContentList extends React.Component {
             btnUI_Active:       false,
             btnU_Active:        false
         });
+        
     };
 
     async showUnavailableItems () {
@@ -115,7 +115,7 @@ export default class ContentList extends React.Component {
             btnUI_Active:       false,
             btnU_Active:        true
         });
-    };
+    }
 
     buildContentList () {
         if(this.state.content.length === 0){
@@ -145,10 +145,16 @@ export default class ContentList extends React.Component {
             );
         } else if (this.state.editControls === "UserEditControls") {
             return (
-                <UserEditControls idArray={this.state.idArray}/>
+                <UserEditControls idArray={this.state.idArray} role={this.state.role}/>
             );
         };
     };
+    clearChecks(){
+        let yes = document.getElementsByClassName('checkbox');
+        for (let i = 0; i < yes.length; i++) {
+            yes[i].checked = false;
+        }
+    }
 
     checkForChecked (id){
         let idArr = this.state.idArray;
@@ -167,7 +173,7 @@ export default class ContentList extends React.Component {
                 const { _id, firstName, lastName, userName, userRole, phoneNumber } = user
                 return(
                     <tr key={_id}>
-                        <td><input type='checkbox' id={_id} name={userName} onClick={() => {this.checkForChecked(_id)}}></input></td>
+                        <td><input type='checkbox' className='checkbox' checked={this.state.checked} id={_id} name={userName} onClick={() => {this.checkForChecked(_id)}}></input></td>
                         <td>{_id}</td>
                         <td>{firstName}</td>
                         <td>{lastName}</td>
@@ -182,7 +188,7 @@ export default class ContentList extends React.Component {
                 const { _id, name, description, homeLocation, specificLocation, serialNumber, notes, possessedBy } = item
                 return(
                     <tr key={_id}>
-                        <td><input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td>
+                        <td><input type='checkbox' className='checkbox' checked={this.state.checked} id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td>
                         <td>{_id}</td>
                         <td>{name}</td>
                         <td>{description}</td>
@@ -199,7 +205,7 @@ export default class ContentList extends React.Component {
                 const { _id, name, description, homeLocation, specificLocation, serialNumber, notes, possessedBy } = item
                 return(
                     <tr key={_id}>
-                        <td><input type='checkbox' id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td>
+                        <td><input type='checkbox' className='checkbox' checked={this.state.checked} id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td>
                         <td>{_id}</td>
                         <td>{name}</td>
                         <td>{description}</td>
@@ -272,15 +278,18 @@ export default class ContentList extends React.Component {
         return (
             <div id='Content_Body'>
                 <div id='Table_Navigation'>
-                    <button className={ this.state.btnAI_Active ? 'btnSelected' : null} onClick={this.showAvailableItems}>
+                    <button className={ this.state.btnAI_Active ? 'btnSelected' : null} onClick={
+                        () => {this.showAvailableItems(); this.clearChecks();}}>
                         Available Items
                     </button>
                     <div className='item_styling'>|</div>
-                    <button className={ this.state.btnUI_Active ? 'btnSelected' : null} onClick={this.showUnavailableItems}>
+                    <button className={ this.state.btnUI_Active ? 'btnSelected' : null} onClick={
+                        () => {this.showUnavailableItems(); this.clearChecks();}}>
                         Unavailable Items
                     </button>
                     {this.state.userContentIsVisible ? <div className='item_styling'>|</div> : null}
-                    {this.state.userContentIsVisible ? <button className={ this.state.btnU_Active ? 'btnSelected' : null} onClick={this.showUsers}>Users</button> : null}
+                    {this.state.userContentIsVisible ? <button className={ this.state.btnU_Active ? 'btnSelected' : null} 
+                        onClick={() => {this.showUsers(); this.clearChecks();}}>Users</button> : null}
                 </div>
                 
                 <div id='Table_Body'>

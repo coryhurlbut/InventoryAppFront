@@ -20,7 +20,7 @@ const displayPresets = {
         adminLogIsVisible:      false
     },
     custodian: {
-        userContentIsVisible:   false,
+        userContentIsVisible:   true,
         signItemInOutIsVisible: true,
         editControlIsVisible:   false,
         allowEditNotes:         false,
@@ -51,7 +51,8 @@ export default class ContentBuilder extends React.Component {
             view:           displayPresets.main,
             isLoggedIn:     false,
             modal:          null,
-            err:            null
+            err:            null,
+            role:           null
         };
 
         this.error = null;
@@ -82,6 +83,7 @@ export default class ContentBuilder extends React.Component {
             this.clearAuth();
             return;
         };
+        this.setState({ role: auth.user.userRole });
     };
 
     clearAuth() {
@@ -116,6 +118,7 @@ export default class ContentBuilder extends React.Component {
                 </div>
                 <div className="body">
                     <ContentList 
+                        role={this.state.role}
                         editControlIsVisible={view.editControlIsVisible} 
                         userContentIsVisible={view.userContentIsVisible} 
                         signItemInOutIsVisible={view.signItemInOutIsVisible}
