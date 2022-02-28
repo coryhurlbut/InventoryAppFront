@@ -202,7 +202,7 @@ export default class ContentList extends React.Component {
         }
         else{
             return this.state.content.map((item) => {
-                const { _id, name, description, homeLocation, specificLocation, serialNumber, notes, possessedBy } = item
+                const { _id, name, description, homeLocation, specificLocation, serialNumber, notes } = item
                 return(
                     <tr key={_id}>
                         { this.state.role === null ? null : <td><input type='checkbox' className='checkbox' checked={this.state.checked} id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td> }

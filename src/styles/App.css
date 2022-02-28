@@ -51,7 +51,7 @@ html{
 .logInLogOut:hover{
     font-weight: bold;
     
-    color: green;
+    color: rgb(0, 211, 28);
 }
 
 /* Centers main content */
