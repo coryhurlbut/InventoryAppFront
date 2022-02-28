@@ -274,7 +274,7 @@ export default class ContentList extends React.Component {
         // Check for content and build list if it's present.
         // Otherwise return null
         let contentList = this.state.content !== null ? this.buildContentList() : 'No content available.';
-        console.log(this.state.role);
+        
         return (
             <div id='Content_Body'>
                 <div id='Table_Navigation'>

@@ -10,9 +10,9 @@ export default class DeleteUserModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen: props.isOpen,
-            idArray:     props.idArray,
-            error:  ''
+            isOpen:   props.isOpen,
+            idArray:  props.idArray,
+            error:    ''
         };
 
         this.dismissModal = this.dismissModal.bind(this);
@@ -36,6 +36,16 @@ export default class DeleteUserModal extends React.Component{
         });
     };
 
+    /* Loops through the array of items and displays them as a list */
+    displayArray(idArray){
+        const displayID = idArray.map(
+            (idArray) => <li key={ idArray.toString() } > { idArray } </li>);
+
+        return(
+            <ul> { displayID } </ul>
+        );
+    };
+
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
@@ -44,7 +54,8 @@ export default class DeleteUserModal extends React.Component{
                 </div>
                 <div className='modalBody'>
                     {this.state.error}
-                    <p>Are you sure you want to delete?</p>
+                    <h4>You are about to delete the following:</h4>
+                    {this.displayArray(this.state.idArray)}
                 </div>
                 <div className='modalFooter'>
                     <button onClick={() => {this.deleteUser()}}>Delete</button>
