@@ -26,17 +26,27 @@ export default class SignItemInModal extends React.Component{
 
     async signItemsIn(){
         let info = {
-            itemId: this.state.idArray[0],
-            userId: 'test',
+            itemId:      this.state.idArray[0],
+            userId:      'test',
             custodianId: '',
-            action: 'signed in',
-            notes: 'test'
+            action:      'signed in',
+            notes:       'test'
         }
         
         await itemController.signItemIn(this.state.idArray);
         await itemLogController.createItemLog(info);
         window.location.reload(false);
         this.dismissModal();
+    };
+
+    /* Loops through the array of items and displays them as a list */
+    displayArray(idArray){
+        const displayID = idArray.map(
+            (idArray) => <li key={ idArray.toString() } > { idArray } </li>);
+
+        return(
+            <ul> { displayID } </ul>
+        );
     };
 
     render() {
@@ -47,7 +57,7 @@ export default class SignItemInModal extends React.Component{
                 </div>
                 <div className='modalBody'>
                     <h4>You are about to sign back in:</h4>
-                    <div>{this.state.idArray}</div>
+                    {this.displayArray(this.state.idArray)}
                 </div>
                 <div className='modalFooter'>
                     <button onClick={this.signItemsIn}>Submit</button>

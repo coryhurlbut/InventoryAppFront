@@ -12,11 +12,11 @@ export default class SignItemOutModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen: props.isOpen,
-            item: null,
-            idArray: props.idArray,
-            users: [],
-            selection: null,
+            isOpen:        props.isOpen,
+            item:          null,
+            idArray:       props.idArray,
+            users:         [],
+            selection:     null,
             userSelected:  {}
         };
 
@@ -44,11 +44,11 @@ export default class SignItemOutModal extends React.Component{
             }
         }
         let info = {
-            itemId: this.state.idArray[0],
-            userId: this.state.userSelected._id,
+            itemId:      this.state.idArray[0],
+            userId:      this.state.userSelected._id,
             custodianId: '',
-            action: 'signed out',
-            notes:  'test'
+            action:      'signed out',
+            notes:       'test'
         }
 
         await itemController.signItemOut(this.state.idArray, this.state.selection);
@@ -74,6 +74,16 @@ export default class SignItemOutModal extends React.Component{
         
     }
 
+    /* Loops through the array of items and displays them as a list */
+    displayArray(idArray){
+        const displayID = idArray.map(
+            (idArray) => <li key={ idArray.toString() } > { idArray } </li>);
+
+        return(
+            <ul> { displayID } </ul>
+        );
+    };
+
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
@@ -83,7 +93,7 @@ export default class SignItemOutModal extends React.Component{
                 <form onSubmit={(Event) => {Event.preventDefault(); this.signItemsOut();}}>
                 <div className='modalBody'>
                     <h4>You are about to sign out: </h4>
-                    <p>{this.state.idArray}</p>
+                    {this.displayArray(this.state.idArray)}
                     <label>Choose a user: </label>
                     <select name='usersS' id='usersS' defaultValue={''} required 
                     onChange={(event) => this.setState({ selection: event.target.value})}>
