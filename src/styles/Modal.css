@@ -79,7 +79,9 @@
     /*Removing User agent Stylesheet inserts*/
     border-style: none;
     border-color: transparent;
+    
 }
 .modalFooter button:hover, input[type=submit]:hover{
-    color: #8b0000;
+    color: #11375c;
+    background-color: #929292;
 }

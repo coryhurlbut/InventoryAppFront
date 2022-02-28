@@ -1,17 +1,24 @@
 /* Dark Mode for SSgt Glass*/
 html{
-    background-color: #333;
+    background-color: #000000;
     /*background-color: #4d4d4d;*/
 }
-
+body {
+    margin: 0px !important;
+}
+.body{
+    padding-top: 10px;
+}
 /* Creates main header styles*/
-.pageHeader {
+.IA_ph {
     /*margin: 30px;*/
-    padding: 10px;
+    padding: 5px;
     /* background-color: #F1F1F1; */
-    background-color: #333;
+    background-color: rgb(26, 26, 26);
     font-weight: bold; 
     text-transform: uppercase;
+    margin: 0px !important;
+    border-bottom: 4px dotted #363636;
 
     /*
         For more information on flex and styling, check out:
@@ -21,10 +28,10 @@ html{
     justify-content: space-between;
     align-items: center;
 }
-.pageHeader h2{
+.IA_ph h2{
     /* color: #3f4f8c; */
-    color: #b3b3b3;
-    margin: 0px;
+    color: #787878;
+    margin: 4px;
 }
 
 #userProfile{
@@ -32,8 +39,8 @@ html{
     justify-content: space-evenly;
     align-items:flex-end;          /*Allows the button to be flushed to the right*/
     flex-direction: column;
-
-    color: #b3b3b3;
+    margin: 4px;
+    color: #787878;
     text-transform: capitalize;
 }
 
@@ -44,14 +51,14 @@ html{
 
     border: 1px solid #787878;
     background-color: transparent;
-    color: #929292;
+    color: #787878;
 
     text-transform: uppercase;
 }
 .logInLogOut:hover{
     font-weight: bold;
-    
-    color: rgb(0, 211, 28);
+    border: 1px solid rgb(41, 179, 71);
+    color: rgb(41, 179, 71);
 }
 
 /* Centers main content */

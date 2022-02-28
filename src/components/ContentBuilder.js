@@ -106,7 +106,7 @@ export default class ContentBuilder extends React.Component {
         return (
             <>
                 {this.state.modal}
-                <div className="pageHeader">
+                <div className="IA_ph">
                      <h2>Inventory App</h2>
                      <div id='userProfile'>
                         {this.state.isLoggedIn ? <label>{this.state.auth.user.userName} : {this.state.auth.user.userRole}</label> : null}

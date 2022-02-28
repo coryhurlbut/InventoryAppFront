@@ -50,23 +50,28 @@
   display: inline-block;
   font-size: 15px;
   font-weight: bold;
-
-  border-color: #787878;
+  
+  border: transparent;
+  /* border-color: #787878;
   border-width: thin;
   border-style: solid;
-  border-radius: 5px;
+  border-radius: 5px; */
 
   /* background-color: #F1F1F1; */
-  background-color: #929292;
-  color: #333;
+  background-color: transparent;
+  color: #787878;
 }
 #Table_Body button:hover{
   font-weight: bold;
-  color: #8b0000;
+  color: #a8f5feb6;
+  background-color: transparent;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 #Table_Body button:disabled{
   /* color: #c5cadc; */
-  color: #787878;
+  color: #1f1f1f;
   text-decoration: none;
   border:transparent;
   background-color: transparent;
@@ -90,6 +95,9 @@ table{
   border-collapse: collapse;
   margin: 0 auto;
   padding: 10px;
+  max-height: 450px;
+  overflow: auto;
+  display: block;
 }
 
 table td, table th {
@@ -100,6 +108,7 @@ table td, table th {
   max-width: 10%;
   word-wrap: break-word;
   max-width: 250px;
+  text-align: center;
 }
 /*
 table tr:nth-child(even){background-color: #f1f1f1;}
@@ -107,11 +116,11 @@ table tr:nth-child(odd){background-color: #fbfbfb;}*/
 table tr:nth-child(even){background-color: #787878;}
 table tr:nth-child(odd){background-color: #929292;}
 
-table tr:hover {background-color: #c5cadc;}
+table tr:hover {background-color: #a8f5feb6;}
 
 table th, tfoot td {
   padding-top: 4px;
   padding-bottom: 4px;
-  background-color: #11375C;
+  background-color: rgb(1, 62, 68);
   color: #b3b3b3;
 }
