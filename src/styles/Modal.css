@@ -23,9 +23,8 @@
 /*Handles the content of Modal*/
 .modalBody{
     /*To avoid modal auto styling*/
-    min-height: 54px;
-
     padding: 10px;
+    min-height: 54px;
 
     background-color: #b3b3b3;
     color: #11375c;
@@ -58,6 +57,7 @@
 /*Primary handles the button styling of Modal*/
 .modalFooter{
     padding: 10px;
+    
     background-color: #b3b3b3;
     text-align: center;
 }

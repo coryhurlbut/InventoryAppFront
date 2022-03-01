@@ -48,6 +48,7 @@
 #Table_Body button{
   margin: 5px;
   display: inline-block;
+
   font-size: 15px;
   font-weight: bold;
   
@@ -62,9 +63,10 @@
   color: #787878;
 }
 #Table_Body button:hover{
-  font-weight: bold;
+  font-weight: bolder;
   color: #a8f5feb6;
   background-color: transparent;
+
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
@@ -85,17 +87,19 @@
 
 #Table_Modification{
   margin-top: 8px;
+
   display: flex;
   justify-content:center;
   align-items: center;
 }
 
 table{
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
   margin: 0 auto;
   padding: 10px;
   max-height: 450px;
+
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
   overflow: auto;
   display: block;
 }
@@ -106,8 +110,9 @@ table td, table th {
   border: 1px solid #333;
   padding: 4px;
   max-width: 10%;
-  word-wrap: break-word;
   max-width: 250px;
+
+  word-wrap: break-word;
   text-align: center;
 }
 /*
@@ -121,6 +126,7 @@ table tr:hover {background-color: #a8f5feb6;}
 table th, tfoot td {
   padding-top: 4px;
   padding-bottom: 4px;
-  background-color: rgb(1, 62, 68);
+
+  background-color: #013e44;
   color: #b3b3b3;
 }

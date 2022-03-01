@@ -3,21 +3,26 @@ html{
     background-color: #000000;
     /*background-color: #4d4d4d;*/
 }
+/* working around user agent stylesheet */
 body {
     margin: 0px !important;
 }
-.body{
+
+.pageBody{
     padding-top: 10px;
+
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 /* Creates main header styles*/
-.IA_ph {
+.pageHeader {
     /*margin: 30px;*/
     padding: 5px;
+
     /* background-color: #F1F1F1; */
-    background-color: rgb(26, 26, 26);
+    background-color: #1a1a1a;
     font-weight: bold; 
     text-transform: uppercase;
-    margin: 0px !important;
+
     border-bottom: 4px dotted #363636;
 
     /*
@@ -28,20 +33,22 @@ body {
     justify-content: space-between;
     align-items: center;
 }
-.IA_ph h2{
+.pageHeader h2{
     /* color: #3f4f8c; */
     color: #787878;
     margin: 4px;
 }
 
 #userProfile{
+    margin: 4px;
+
+    color: #787878;
+    text-transform: capitalize;
+
     display: flex;
     justify-content: space-evenly;
     align-items:flex-end;          /*Allows the button to be flushed to the right*/
     flex-direction: column;
-    margin: 4px;
-    color: #787878;
-    text-transform: capitalize;
 }
 
 /* Floats loginLogout button to the right in main header*/
@@ -50,22 +57,17 @@ body {
     padding: 3px;
 
     border: 1px solid #787878;
+
     background-color: transparent;
     color: #787878;
-
     text-transform: uppercase;
 }
 .logInLogOut:hover{
+    border: 1px solid #29b347;
+
     font-weight: bold;
-    border: 1px solid rgb(41, 179, 71);
-    color: rgb(41, 179, 71);
+    color: #29b347;
 }
-
-/* Centers main content */
-.body {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-}
-
 
 /* Clear floats after the columns */
 .row:after {
