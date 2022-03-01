@@ -101,11 +101,11 @@ export default class EditUserModal extends React.Component{
                         value={this.state.password} 
                         onChange={(event) => this.setState({ password: event.target.value })}/>
                     <h4>User's Role</h4>
-                        <select id='selectUser' required defaultValue={'user'} onChange={(event) => this.setState({ userRole: event.target.value })}>
+                        <select id='selectUser' required value={this.state.userRole} onChange={(event) => this.setState({ userRole: event.target.value })}>
                             <option label='' hidden disabled ></option>
-                            <option value='user'>User</option>
-                            <option value='custodian'>Custodian</option>
-                            <option value='admin'>Admin</option>
+                            <option value='user' >User</option>
+                            <option value='custodian' >Custodian</option>
+                            <option value='admin' >Admin</option>
                         </select>
                     <h4>Phone Number</h4>
                         <input 
