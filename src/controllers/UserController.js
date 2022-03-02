@@ -21,8 +21,8 @@ class UserController extends AuthController{
     };
 
     //Deletes a single user by Id
-    async deleteUser(userId) {
-        return await this.requestWithAuth(`users/${userId}`, {method: 'DELETE'});
+    async deleteUsers(userIds) {
+        return await this.requestWithAuth(`users/delete`, {method: 'DELETE', body: JSON.stringify(userIds)});
     };
 
     //Updates a single user. Must pass the user's Id and the new user data
