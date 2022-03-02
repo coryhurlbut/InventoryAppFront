@@ -106,7 +106,7 @@ export default class ContentBuilder extends React.Component {
         return (
             <>
                 {this.state.modal}
-                <div className="IA_ph">
+                <div className="pageHeader">
                      <h2>Inventory App</h2>
                      <div id='userProfile'>
                         {this.state.isLoggedIn ? <label>{this.state.auth.user.userName} : {this.state.auth.user.userRole}</label> : null}
@@ -116,7 +116,7 @@ export default class ContentBuilder extends React.Component {
                      </div>
                      
                 </div>
-                <div className="body">
+                <div className="pageBody">
                     <ContentList 
                         role={this.state.role}
                         editControlIsVisible={view.editControlIsVisible} 
