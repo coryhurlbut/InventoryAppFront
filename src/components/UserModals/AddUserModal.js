@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, values} from '@fluentui/react';
+import {Modal} from '@fluentui/react';
 import UserController from '../../controllers/UserController';
 
 /*
@@ -18,10 +18,10 @@ export default class AddUserModal extends React.Component{
             userRole:       '',
             phoneNumber:    '',
             error:          '',
-            isError:        false
+            isError:        false,
+            pwDisabled:     true,
+            pwRequired:     false
         };
-        this.dismissModal = this.dismissModal.bind(this);
-        this.addUser = this.addUser.bind(this);
     };
 
     dismissModal() {
@@ -40,37 +40,53 @@ export default class AddUserModal extends React.Component{
         await UserController.createUser(user)
         .then((auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
-            this.setState({error: ''});
-            this.setState({ isError: false });
+            this.setState({error: '', isError: false });
             window.location.reload();
             this.dismissModal();
         })
         .catch(async (err) => {            
-            this.setState({error: err.message});
-            this.setState({ isError: true });
+            this.setState({error: err.message, isError: true });
         });
     };
+
+    enablePasswordEdit(event) {
+        if (event.target.value === 'user') {
+            this.setState({
+                pwDisabled: true, 
+                pwRequired: false, 
+                password: '', 
+                userRole: event.target.value
+            });
+        } else {
+            this.setState({
+                pwDisabled: false, 
+                pwRequired: true, 
+                userRole: event.target.value
+            });
+        };
+    }
 
     buildForm(){
         return(
             <>
                 <form onSubmit={(Event) => {Event.preventDefault(); this.addUser();}}>
                     <div className='modalBody'>
+                        {this.state.isError ? <label className='errorMessage'>{this.state.error}</label> : null}
                         <h4>First Name</h4>
                             <input 
                             type='text' 
                             id='firstName' 
                             required 
-                            pattern='[a-zA-Z\s]{1,25}'
-                            value=''
+                            pattern='[a-zA-Z-\s]{1,25}'
+                            value={this.state.firstName} 
                             onChange={(event) => this.setState({ firstName: event.target.value })}/>
                         <h4>Last Name</h4>
                             <input 
                             type='text' 
                             id='lastName' 
                             required 
-                            pattern='[a-zA-Z\s]{1,25}'
-                            value=''
+                            pattern='[a-zA-Z-\s]{1,25}'
+                            value={this.state.lastName}
                             onChange={(event) => this.setState({ lastName: event.target.value })}/>
                         <h4>Username</h4>
                             <input 
@@ -78,35 +94,37 @@ export default class AddUserModal extends React.Component{
                             id='userName' 
                             required
                             pattern='[a-zA-Z0-9]{6,25}'
-                            value=''
+                            value={this.state.userName}
                             onChange={(event) => this.setState({ userName: event.target.value })}/>
-                        <h4>Password</h4>
-                            <input
-                            type='password'
-                            id='password' 
-                            required 
-                            pattern='[a-zA-Z0-9]{6,25}'
-                            value=''
-                            onChange={(event) => this.setState({ password: event.target.value })}/>
+                        
                         <h4>User's Role</h4>
-                            <select id='selectUser' required defaultValue={''} onChange={(event) => this.setState({ userRole: event.target.value })}>
-                                <option label='' hidden disabled ></option>
+                            <select id='selectUser' required onChange={(event) => this.enablePasswordEdit(event)}>
+                                <option label='' hidden disabled selected></option>
                                 <option value='user'>User</option>
                                 <option value='custodian'>Custodian</option>
                                 <option value='admin'>Admin</option>
                             </select>
+                        <h4>Password</h4>
+                            <input
+                            type='password'
+                            id='password'
+                            disabled={this.state.pwDisabled}
+                            required={this.state.pwRequired}
+                            pattern='[a-zA-Z0-9]{6,25}'
+                            value={this.state.password} 
+                            onChange={(event) => this.setState({password: event.target.value})}/>
                         <h4>Phone Number</h4>
                             <input
                             type='text' 
                             id='phoneNumber' 
                             required 
                             pattern='[0-9]{10}'
-                            value=''
+                            value={this.state.phoneNumber}
                             onChange={(event) => this.setState({ phoneNumber: event.target.value })}/>
                     </div>
                     <div className='modalFooter'>
                         <input type='submit' value='Submit'/>
-                        <button type="reset" onClick={this.dismissModal}>Close</button>
+                        <button type="reset" onClick={() => this.dismissModal()}>Close</button>
                     </div>
                 </form>
             </>
@@ -119,7 +137,7 @@ export default class AddUserModal extends React.Component{
                 <div className='modalHeader'>
                     <h3>Add User to Database</h3>
                 </div>
-                {this.state.isError ? <label className='errorMessage'>{this.state.error}</label> : this.buildForm()}
+                {this.buildForm()}
             </Modal>
         );
     };

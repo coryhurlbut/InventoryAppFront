@@ -3,8 +3,8 @@ import '@fluentui/react';
 import '../styles/App.css';
 import {authController}         from '../controllers/AuthController';
 import ContentList              from './ContentList';
-import ItemLogDisplay           from './LogModals/ItemLogDisplay';
-import AdminLogDisplay          from './LogModals/AdminLogDisplay';
+import ItemLogModal             from './LogModals/ItemLogModal';
+import AdminLogModal            from './LogModals/AdminLogModal';
 import LoginModal               from './ProfileModals/LoginModal';
 import LogoutModal              from './ProfileModals/LogoutModal';
 
@@ -62,7 +62,6 @@ export default class ContentBuilder extends React.Component {
         this.loginLogout    = this.loginLogout.bind(this);
         this.buildContent   = this.buildContent.bind(this);
         this.clearAuth      = this.clearAuth.bind(this);
-        this.showLogModal   = this.showLogModal.bind(this);
     };
 
     async componentDidMount() {
@@ -103,15 +102,19 @@ export default class ContentBuilder extends React.Component {
         };
     };
 
-    showLogModal(){
-        this.setState({ modal: <ItemLogDisplay isOpen={true} hideModal={this.hideModal} /> });
+    showItemLogModal(){
+        this.setState({ modal: <ItemLogModal isOpen={true} hideModal={this.hideModal} /> });
+    }
+
+    showAdminLogModal() {
+        this.setState({ modal: <AdminLogModal isOpen={true} hideModal={this.hideModal}/>  })
     }
 
     buildContent(view) {
         return (
             <>
                 {this.state.modal}
-                <div className="IA_ph">
+                <div className="pageHeader">
                      <h2>Inventory App</h2>
                      <div id='userProfile'>
                         {this.state.isLoggedIn ? <label>{this.state.auth.user.userName} : {this.state.auth.user.userRole}</label> : null}
@@ -121,7 +124,7 @@ export default class ContentBuilder extends React.Component {
                      </div>
                      
                 </div>
-                <div className="body">
+                <div className="pageBody">
                     <ContentList 
                         role={this.state.role}
                         editControlIsVisible={view.editControlIsVisible} 
@@ -129,10 +132,9 @@ export default class ContentBuilder extends React.Component {
                         signItemInOutIsVisible={view.signItemInOutIsVisible}
                     />
                     <div className='logDisplay'>
-                        <button hidden={!view.itemLogIsVisible} onClick={this.showLogModal}>Item Logs</button>
-                        <ItemLogDisplay itemLogIsVisible={view.itemLogIsVisible}/>
-                        <AdminLogDisplay adminLogIsVisible={view.adminLogIsVisible} />  
-                    </div>
+                        <button hidden={!view.itemLogIsVisible} onClick={() => this.showItemLogModal()}>Show Item Logs</button>
+                        <button hidden={!view.adminLogIsVisible} onClick={() => this.showAdminLogModal()}>Show Admin Logs</button>
+                    </div> 
                 </div>
             </>
         );

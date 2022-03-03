@@ -18,7 +18,6 @@ export default class AddItemModal extends React.Component{
             homeLocation:     '',
             specificLocation: '',
             available:        true,
-            servicable:       true,
             disabled:         true,
         };
 
@@ -39,8 +38,7 @@ export default class AddItemModal extends React.Component{
             notes:              this.state.notes,
             homeLocation:       this.state.homeLocation,
             specificLocation:   this.state.specificLocation,
-            available:          this.state.available,
-            servicable:         this.state.servicable
+            available:          this.state.available
         };
 
         await itemController.createItem(item);

@@ -18,27 +18,39 @@ export default class EditUserModal extends React.Component{
             userRole:       '',
             phoneNumber:    '',
             error:          '',
-            isError:        false
+            isError:        false,
+            pwDisabled:     true,
+            pwRequired:     false,
+            hasPassword:    false,
+            resetBtn:       false,
         };
-
-        this.dismissModal = this.dismissModal.bind(this);
     };
 
     async componentDidMount(){
         let thisUser = await userController.getUserById(this.state.idArray[0]);
 
+        //Sets the userRole select tag to the user's role
+        let select = document.getElementById('selectUser');
+        select.value = thisUser.userRole;
+
+        /* Will set password reset button to show and track that 
+            the user has a password already if they were originally
+            a custodian or admin.*/
+        if (thisUser.userRole !== 'user') {
+            this.setState({ resetBtn: true, hasPassword: true });
+        };
+
         this.setState({
             firstName:   thisUser.firstName, 
             lastName:    thisUser.lastName,
             userName:    thisUser.userName,
-            password:    thisUser.password,
             userRole:    thisUser.userRole,
             phoneNumber: thisUser.phoneNumber
         });
     };
 
     dismissModal() {
-        this.setState({isOpen: false});
+        this.setState({ isOpen: false });
     };
 
     async editUser() {
@@ -48,27 +60,63 @@ export default class EditUserModal extends React.Component{
             userName:    this.state.userName,
             password:    this.state.password,
             userRole:    this.state.userRole,
-            phoneNumber: this.state.phoneNumber
+            phoneNumber: this.state.phoneNumber,
+            hasPassword: this.state.hasPassword
         }
-        await userController.updateUser(this.state.id, user)
+        await userController.updateUser(this.state.idArray[0], user)
         .then((auth) => {
-            if(auth.status !== undefined && auth.status >= 400) throw auth;
-            this.setState({error: ''});
-            this.setState({ isError : false});
+            if ( auth.status !== undefined && auth.status >= 400 ) throw auth;
+            this.setState({ error: '', isError: false });
             window.location.reload();
             this.dismissModal();
         })
         .catch(async (err) => {            
-            this.setState({error: err.message});
-            this.setState({ isError : true });
+            this.setState({ error: err.message, isError : true });
         });
     };
+
+    handleUserRoleChange(event) {
+        if (event.target.value === 'user') {
+            this.setState({ 
+                password: '', 
+                userRole: event.target.value, 
+                pwRequired: false, 
+                pwDisabled: true, 
+                resetBtn: false 
+            });
+        } else if (event.target.value !== 'user' && !this.state.hasPassword){
+            this.setState({ 
+                password: '', 
+                userRole: event.target.value, 
+                pwRequired: true, 
+                pwDisabled: false, 
+                resetBtn: false 
+            });
+        } else {
+            this.setState({
+                password: '', 
+                userRole: event.target.value, 
+                pwRequired: false, 
+                pwDisabled: true, 
+                resetBtn: true 
+            });
+        };
+    }
+
+    allowPasswordReset() {
+        this.setState({
+            pwDisabled: false, 
+            pwRequired: true, 
+            resetBtn: false
+        });
+    }
 
     buildForm(){
         return(
             <>
             <form onSubmit={(event) => {event.preventDefault(); this.editUser();}}>
                 <div className='modalBody'>
+                    {this.state.isError ? <label className='errorMessage'>{this.state.error}</label> : null}
                     <h4>First Name</h4>
                         <input 
                         type='text' 
@@ -90,23 +138,24 @@ export default class EditUserModal extends React.Component{
                         type='text' 
                         id='userName'  
                         readOnly
-                        value={this.state.userName} 
-                        onChange={(event) => this.setState({ userName: event.target.value })}/>
+                        value={this.state.userName}/>
+                    <h4>User's Role</h4>
+                        <select id='selectUser' required  onChange={(event) => this.handleUserRoleChange(event)}>
+                            <option id="userOpt" value='user'>User</option>
+                            <option id="custodianOpt" value='custodian'>Custodian</option>
+                            <option id="adminOpt" value='admin'>Admin</option>
+                        </select>
                     <h4>Password</h4>
                         <input 
                         type='password' 
                         id='password' 
-                        required 
+                        disabled={this.state.pwDisabled}
+                        required={this.state.pwRequired}
                         pattern='[a-zA-Z0-9]{6,25}'
                         value={this.state.password} 
                         onChange={(event) => this.setState({ password: event.target.value })}/>
-                    <h4>User's Role</h4>
-                        <select id='selectUser' required defaultValue={'user'} onChange={(event) => this.setState({ userRole: event.target.value })}>
-                            <option label='' hidden disabled ></option>
-                            <option value='user'>User</option>
-                            <option value='custodian'>Custodian</option>
-                            <option value='admin'>Admin</option>
-                        </select>
+                        <span>  </span>
+                        <button hidden={!this.state.resetBtn} onClick={() => this.allowPasswordReset()}>Reset</button>
                     <h4>Phone Number</h4>
                         <input 
                         type='text' 
@@ -118,7 +167,7 @@ export default class EditUserModal extends React.Component{
                 </div>
                 <div className='modalFooter'>
                     <input type='submit' value='Submit'></input>
-                    <button type="reset" onClick={this.dismissModal}>Close</button>
+                    <button type="reset" onClick={() => {this.dismissModal()}}>Close</button>
                 </div>
             </form>
             </>
@@ -131,7 +180,7 @@ export default class EditUserModal extends React.Component{
                 <div className='modalHeader'>
                     <h3>Edit User</h3>
                 </div>
-                {this.state.isError ? <label className='errorMessage'>{this.state.error}</label> : this.buildForm()}
+                {this.buildForm()}
             </Modal>
         );
     };

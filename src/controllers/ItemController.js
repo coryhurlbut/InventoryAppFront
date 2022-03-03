@@ -33,7 +33,6 @@ class ItemController extends AuthController{
 
     //Deletes items by Id
     async deleteItems(itemIds) {
-        console.log(JSON.stringify(itemIds));
         return await this.requestWithAuth('items/delete', {method: 'DELETE', body: JSON.stringify(itemIds)});
     };
 

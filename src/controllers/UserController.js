@@ -17,13 +17,12 @@ class UserController extends AuthController{
 
     //Creates a single user. Must be given body of all required user fields
     async createUser(user) {
-        console.log(user);
         return await this.requestWithAuth('users', {method: 'POST', body: JSON.stringify(user)});
     };
 
     //Deletes a single user by Id
-    async deleteUser(userId) {
-        return await this.requestWithAuth(`users/${userId}`, {method: 'DELETE'});
+    async deleteUsers(userIds) {
+        return await this.requestWithAuth(`users/delete`, {method: 'DELETE', body: JSON.stringify(userIds)});
     };
 
     //Updates a single user. Must pass the user's Id and the new user data
