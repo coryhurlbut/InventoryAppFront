@@ -38,6 +38,11 @@ body {
     color: #787878;
     margin: 4px;
 }
+.pageFooter {
+    padding: 10px;
+    
+    text-align: center;
+}
 
 #userProfile{
     margin: 4px;
@@ -80,6 +85,5 @@ body {
     ToDo: Figure out styling and how to display 
 */
 .ToDo{
-    color: transparent;
-    background-color: transparent;
+    color: white;
 }

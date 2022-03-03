@@ -4,7 +4,7 @@ import '../styles/App.css';
 import {authController}         from '../controllers/AuthController';
 import ContentList              from './ContentList';
 import ItemLogDisplay           from './LogModals/ItemLogDisplay';
-import AdminLogDisplay          from './LogModals/AdminLogDisplay';
+import AdminLogModal            from './LogModals/AdminLogModal';
 import LoginModal               from './ProfileModals/LoginModal';
 import LogoutModal              from './ProfileModals/LogoutModal';
 
@@ -94,6 +94,10 @@ export default class ContentBuilder extends React.Component {
         this.setState({modal: null});
     };
 
+    showAdminLogModal() {
+        this.setState({ modal: <AdminLogModal isOpen={true} hideModal={this.hideModal}/>  })
+    }
+
     loginLogout() {
         if (this.state.isLoggedIn) {
             this.setState({modal: <LogoutModal auth={this.state.auth} isOpen={true} hideModal={this.hideModal} clearAuth={this.clearAuth}/>});
@@ -123,9 +127,12 @@ export default class ContentBuilder extends React.Component {
                         userContentIsVisible={view.userContentIsVisible} 
                         signItemInOutIsVisible={view.signItemInOutIsVisible}
                     />
-                    <div className='ToDo'>
+                    <div className='pageFooter'>
                         <ItemLogDisplay itemLogIsVisible={view.itemLogIsVisible} />
-                        <AdminLogDisplay adminLogIsVisible={view.adminLogIsVisible} />  
+                        {view.adminLogIsVisible ? 
+                            <button onClick={() => this.showAdminLogModal()}>Show Admin Logs</button> : 
+                            null
+                        }
                     </div>
                 </div>
             </>

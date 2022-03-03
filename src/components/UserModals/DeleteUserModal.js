@@ -12,11 +12,9 @@ export default class DeleteUserModal extends React.Component{
         this.state = {
             isOpen:   props.isOpen,
             idArray:  props.idArray,
-            error:    ''
+            error:    '',
+            isError:  false
         };
-
-        this.dismissModal = this.dismissModal.bind(this);
-        this.deleteUser = this.deleteUser.bind(this);
     };
 
     dismissModal() {
@@ -27,12 +25,12 @@ export default class DeleteUserModal extends React.Component{
         await UserController.deleteUsers(this.state.idArray)
         .then((auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
-            this.setState({error: ''});
+            this.setState({ error: '', isError: false });
             window.location.reload();
             this.dismissModal();
         })
         .catch(async (err) => {            
-            this.setState({error: err.message});
+            this.setState({ error: err.message, isError: true });
         });
     };
 
@@ -53,13 +51,17 @@ export default class DeleteUserModal extends React.Component{
                     <h3>Delete User</h3>
                 </div>
                 <div className='modalBody'>
-                    {this.state.error}
-                    <h4>You are about to delete the following:</h4>
-                    {this.displayArray(this.state.idArray)}
+                    {this.state.isError ? 
+                        this.state.error :
+                        <div>
+                            <h4>You are about to delete the following:</h4>
+                            {this.displayArray(this.state.idArray)}
+                        </div>
+                    }
                 </div>
                 <div className='modalFooter'>
-                    <button onClick={() => {this.deleteUser()}}>Delete</button>
-                    <button onClick={this.dismissModal}>Close</button>
+                    {this.state.isError ? null : <button onClick={() => {this.deleteUser()}}>Delete</button>}
+                    <button onClick={() => this.dismissModal()}>Close</button>
                 </div>
             </Modal>
         );
