@@ -62,6 +62,7 @@ export default class ContentBuilder extends React.Component {
         this.loginLogout    = this.loginLogout.bind(this);
         this.buildContent   = this.buildContent.bind(this);
         this.clearAuth      = this.clearAuth.bind(this);
+        this.showLogModal   = this.showLogModal.bind(this);
     };
 
     async componentDidMount() {
@@ -102,6 +103,10 @@ export default class ContentBuilder extends React.Component {
         };
     };
 
+    showLogModal(){
+        this.setState({ modal: <ItemLogDisplay isOpen={true} hideModal={this.hideModal} /> });
+    }
+
     buildContent(view) {
         return (
             <>
@@ -123,8 +128,9 @@ export default class ContentBuilder extends React.Component {
                         userContentIsVisible={view.userContentIsVisible} 
                         signItemInOutIsVisible={view.signItemInOutIsVisible}
                     />
-                    <div className='ToDo'>
-                        <ItemLogDisplay itemLogIsVisible={view.itemLogIsVisible} />
+                    <div className='logDisplay'>
+                        <button hidden={!view.itemLogIsVisible} onClick={this.showLogModal}>Item Logs</button>
+                        <ItemLogDisplay itemLogIsVisible={view.itemLogIsVisible}/>
                         <AdminLogDisplay adminLogIsVisible={view.adminLogIsVisible} />  
                     </div>
                 </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Modal} from '@fluentui/react';
 import '@fluentui/react';
 // import ItemLogController from '../controllers/ItemLogController';
 
@@ -10,10 +11,14 @@ export default class ItemLogDisplay extends React.Component {
         super(props);
         //ToDo: Build out CustodianLog functionality
         this.state = {
+            isOpen: props.isOpen,
+            modal: null,
             itemLogIsVisible: props.itemLogIsVisible,
             content: 'ItemLog'
-        };
-    };
+        }
+        this.dismissModal = this.dismissModal.bind(this);
+    }
+    
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.itemLogIsVisible !== prevProps.itemLogIsVisible) {
@@ -21,17 +26,19 @@ export default class ItemLogDisplay extends React.Component {
                 itemLogIsVisible: this.props.itemLogIsVisible
             });
         };
+        
     };
 
-    buildItemLog () {
-        return (
-            <div>
-                {this.state.content}
-            </div>
-        );
-    };
+    dismissModal(){
+        this.setState({isOpen: false});
+    }
+
     
     render() {
-        return(this.state.itemLogIsVisible ? this.buildItemLog() : null);
+        return (
+            <Modal isOpen={this.state.isOpen}>
+                <div>deez</div>
+            </Modal>
+        ); 
     };
 };

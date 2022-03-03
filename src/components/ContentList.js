@@ -149,6 +149,7 @@ export default class ContentList extends React.Component {
             );
         };
     };
+
     clearChecks(){
         let yes = document.getElementsByClassName('checkbox');
         for (let i = 0; i < yes.length; i++) {
