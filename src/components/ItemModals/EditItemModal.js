@@ -18,7 +18,6 @@ export default class EditItemModal extends React.Component{
             homeLocation:     '',
             specificLocation: '',
             available:        true,
-            servicable:       true,
             idArray:          props.idArray
         };
 
@@ -36,9 +35,7 @@ export default class EditItemModal extends React.Component{
             notes:            thisItem.notes,
             homeLocation:     thisItem.homeLocation,
             specificLocation: thisItem.specificLocation,
-            available:        thisItem.available,
-            servicable:       thisItem.servicable
-        });
+            available:        thisItem.available
     };
 
     dismissModal() {
@@ -53,8 +50,7 @@ export default class EditItemModal extends React.Component{
             notes:              this.state.notes,
             homeLocation:       this.state.homeLocation,
             specificLocation:   this.state.specificLocation,
-            available:          this.state.available,
-            servicable:         this.state.servicable
+            available:          this.state.available
         };
 
         await itemController.updateItem(this.state.idArray, item);
