@@ -20,9 +20,6 @@ export default class EditItemModal extends React.Component{
             available:        true,
             idArray:          props.idArray
         };
-
-        this.dismissModal = this.dismissModal.bind(this);
-        this.editItem = this.editItem.bind(this);
     };
 
     async componentDidMount(){
@@ -36,13 +33,14 @@ export default class EditItemModal extends React.Component{
             homeLocation:     thisItem.homeLocation,
             specificLocation: thisItem.specificLocation,
             available:        thisItem.available
+        });
     };
 
     dismissModal() {
         this.setState({isOpen: false});
     };
 
-    async editItem(){
+    async editItem() {
         let item = {
             name:               this.state.name,
             description:        this.state.description,
@@ -118,7 +116,7 @@ export default class EditItemModal extends React.Component{
                     </div>
                     <div className='modalFooter'>
                         <input type='submit' value='Submit'></input>
-                        <button type="reset" onClick={this.dismissModal}>Close</button>
+                        <button type="reset" onClick={() => this.dismissModal()}>Close</button>
                     </div>
                 </form>
             </Modal>
