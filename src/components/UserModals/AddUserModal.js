@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import UserController from '../../controllers/UserController';
+import adminLogController from '../../controllers/AdminLogController';
 
 /*
 *   Modal for adding a user
@@ -37,16 +38,27 @@ export default class AddUserModal extends React.Component{
             userRole:       this.state.userRole,
             phoneNumber:    this.state.phoneNumber
         }
+        let returnedUser = {};
         await UserController.createUser(user)
-        .then((auth) => {
-            if(auth.status !== undefined && auth.status >= 400) throw auth;
+        .then((data) => {
+            if(data.status !== undefined && data.status >= 400) throw data;
             this.setState({error: '', isError: false });
-            window.location.reload();
-            this.dismissModal();
+            returnedUser = data;
         })
         .catch(async (err) => {            
-            this.setState({error: err.message, isError: true });
+            this.setState({ error: err.message, isError: true });
         });
+        let log = {
+            itemId:     '',
+            userId:     returnedUser._id,
+            adminId:    '',
+            action:     'add',
+            content:    'user'
+        };
+        await adminLogController.createAdminLog(log);
+
+        window.location.reload();
+        this.dismissModal();
     };
 
     enablePasswordEdit(event) {

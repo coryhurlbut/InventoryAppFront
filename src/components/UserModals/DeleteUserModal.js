@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import UserController from '../../controllers/UserController';
+import adminLogController from '../../controllers/AdminLogController';
 
 /*
 *   Modal for deleting a user
@@ -23,9 +24,20 @@ export default class DeleteUserModal extends React.Component{
     
     async deleteUser() {
         await UserController.deleteUsers(this.state.idArray)
-        .then((auth) => {
+        .then(async(auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ error: '', isError: false });
+
+            for (let i = 0; i < this.state.idArray.length; i++) {
+                let log = {
+                    itemId:     'N/A',
+                    userId:     this.state.idArray[i],
+                    adminId:    '',
+                    action:     'delete',
+                    content:    'user'
+                };
+                await adminLogController.createAdminLog(log);
+            }
             window.location.reload();
             this.dismissModal();
         })

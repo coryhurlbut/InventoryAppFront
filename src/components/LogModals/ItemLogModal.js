@@ -32,7 +32,7 @@ const columns =
                         },
                         {
                             Header: 'Date',
-                            accessor: 'date'
+                           accessor: 'date'
                         }
     
                 ]}
@@ -68,7 +68,6 @@ export default class ItemLogModal extends React.Component {
     async componentDidMount(){
         let data = await itemLogController.getAllItemLogs();
         this.setState({ content: data });
-        console.log(this.state.content);
     }
 
     dismissModal(){

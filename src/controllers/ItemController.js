@@ -23,7 +23,7 @@ class ItemController extends AuthController{
 
     //Creates one item. Must have required data fields
     async createItem(item) {
-        return await this.requestWithAuth('items', {method: 'POST', body: JSON.stringify(item)});
+        return await this.requestWithAuth('items', {method: 'POST', body: JSON.stringify(item)}); 
     };
 
     //Deletes one item by Id

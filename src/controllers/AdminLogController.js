@@ -1,4 +1,4 @@
-import AuthController from './AuthController';
+    import AuthController from './AuthController';
 
 /*
 *   Controls functions calling APIs for AdminLog data operations
@@ -22,6 +22,8 @@ class AdminLogController extends AuthController{
 
     //Creates an admin log. Must have required adminLog data
     async createAdminLog(adminLog) {
+        let user = this.getUserInfo();
+        adminLog.adminId = user.user.user._id;
         return await this.requestWithAuth('logs/adminLogs', {method: 'POST', body: JSON.stringify(adminLog)});
     };
 

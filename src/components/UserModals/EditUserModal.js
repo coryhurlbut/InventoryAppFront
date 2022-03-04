@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import userController from '../../controllers/UserController';
+import adminLogController from '../../controllers/AdminLogController';
 /*
 *   Modal for editing a user
 */
@@ -62,11 +63,19 @@ export default class EditUserModal extends React.Component{
             userRole:    this.state.userRole,
             phoneNumber: this.state.phoneNumber,
             hasPassword: this.state.hasPassword
-        }
+        };
+        let log = {
+            itemId:     'N/A',
+            userId:     this.state.idArray[0],
+            adminId:    '',
+            action:     'edit',
+            content:    'user'
+        };
         await userController.updateUser(this.state.idArray[0], user)
-        .then((auth) => {
+        .then(async(auth) => {
             if ( auth.status !== undefined && auth.status >= 400 ) throw auth;
             this.setState({ error: '', isError: false });
+            await adminLogController.createAdminLog(log);
             window.location.reload();
             this.dismissModal();
         })

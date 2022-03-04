@@ -1,6 +1,8 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import itemController from '../../controllers/ItemController';
+import adminLogController from '../../controllers/AdminLogController';
+import itemLogController from '../../controllers/ItemLogController';
 
 /*
 *   Modal for editing an item
@@ -50,8 +52,22 @@ export default class EditItemModal extends React.Component{
             specificLocation:   this.state.specificLocation,
             available:          this.state.available
         };
-
-        await itemController.updateItem(this.state.idArray, item);
+        
+        let log = {
+            itemId:     this.state.idArray[0],
+            userId:     'N/A',
+            adminId:    '',
+            action:     'edit',
+            content:    'item'
+        };
+        try{
+             await itemController.updateItem(this.state.idArray, item);
+             await adminLogController.createAdminLog(log);}
+        catch(err){
+             err.message = 'U suck';
+             
+        }
+        
         window.location.reload();
         this.dismissModal();
     };

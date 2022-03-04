@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import itemController from '../../controllers/ItemController';
+import adminLogController from '../../controllers/AdminLogController';
 
 /*
 *   Modal for adding an item
@@ -40,8 +41,15 @@ export default class AddItemModal extends React.Component{
             specificLocation:   this.state.specificLocation,
             available:          this.state.available
         };
-
-        await itemController.createItem(item);
+        let returnedItem = await itemController.createItem(item);
+        let log = {
+            itemId:     returnedItem._id,
+            userId:     'N/A',
+            adminId:    '',
+            action:     'add',
+            content:    'item'
+        };
+        await adminLogController.createAdminLog(log);
         window.location.reload();
         this.dismissModal();
     };

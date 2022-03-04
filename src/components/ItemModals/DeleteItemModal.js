@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import itemController from '../../controllers/ItemController';
+import adminLogController from '../../controllers/AdminLogController';
 
 /*
 *   Modal for deleting an item
@@ -24,7 +25,26 @@ export default class DeleteItemModal extends React.Component{
     };
 
     async deleteItem() {
-        await itemController.deleteItems(this.state.idArray);
+        try{
+            await itemController.deleteItems(this.state.idArray);
+
+            for (let i = 0; i < this.state.idArray.length; i++) {
+            
+                 let log = {
+                    itemId:     this.state.idArray[i],
+                    userId:     '',
+                    adminId:    '',
+                    action:     'delete',
+                    content:    'item'
+            };
+            await adminLogController.createAdminLog(log);
+           }
+        }
+        catch(err){
+            err.message = ' U suck';
+        }
+        
+
         window.location.reload(false);
         this.dismissModal();
     };
