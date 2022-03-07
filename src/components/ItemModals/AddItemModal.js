@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal} from '@fluentui/react';
+import { Modal } from '@fluentui/react';
 import itemController from '../../controllers/ItemController';
 import adminLogController from '../../controllers/AdminLogController';
 
@@ -40,11 +40,11 @@ export default class AddItemModal extends React.Component{
     };
 
     dismissModal() {
-        this.setState({isOpen: false});
+        this.setState({ isOpen: false });
     };
 
     async addItem() {
-        //add to database called upon submit
+        //Makes call to add item to database and grabs the _id of the newly created item
         let item = {
             name:               this.state.name,
             description:        this.state.description,
@@ -54,7 +54,19 @@ export default class AddItemModal extends React.Component{
             specificLocation:   this.state.specificLocation,
             available:          this.state.available
         };
-        let returnedItem = await itemController.createItem(item);
+        let returnedItem = {};
+        await itemController.createItem(item)
+        .then((data) => {
+            if (data.status !== undefined && data.status >= 400) throw data;
+            
+            this.setState({error: '', isError: false });
+            returnedItem = data;
+        })
+        .catch( async (err) => {            
+            this.setState({ error: err.message, isError: true });
+        });
+
+        //Uses the new item _id to make a log to the admin log of the new item being added
         let log = {
             itemId:     returnedItem._id,
             userId:     'N/A',
@@ -63,6 +75,7 @@ export default class AddItemModal extends React.Component{
             content:    'item'
         };
         await adminLogController.createAdminLog(log);
+
         window.location.reload();
         this.dismissModal();
     };
@@ -216,7 +229,7 @@ export default class AddItemModal extends React.Component{
                 <div className='modalHeader'>
                     <h3>Add Item to database</h3>
                 </div>
-                <form onSubmit={(Event) => {Event.preventDefault(); this.addItem();}}>
+                <form onSubmit={(event) => {event.preventDefault(); this.addItem();}}>
                     <div className='modalBody'>
                         <h4>Name</h4>
                             <input 
@@ -287,7 +300,7 @@ export default class AddItemModal extends React.Component{
                     </div>
                     <div className='modalFooter'>
                         { this.isSumbitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
-                        <button type="reset" onClick={this.dismissModal}>Close</button>
+                        <button type="reset" onClick={() => this.dismissModal()}>Close</button>
                     </div> 
                 </form>
             </Modal>

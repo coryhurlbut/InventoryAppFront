@@ -1,44 +1,42 @@
 import React                    from 'react';
 import { Modal }                from '@fluentui/react';
-import { AdminLogController }   from '../../controllers';
 import '../../styles/Modal.css'
+<<<<<<< HEAD
 import adminLogController from '../../controllers/AdminLogController';
 import Table from '../Table';
+=======
+import adminLogController       from '../../controllers/AdminLogController';
+import Table                    from '../Table';
+>>>>>>> 35887e0a8a6b110b27da7281b3df7ec8f622b5c7
 
 
-const columns = 
-         [
-                {
-                    Header: '.',
-                    columns: [
-                        {
-                            Header: 'Item ID',
-                            accessor: 'itemId',
-                        },
-                        {
-                            Header: 'User ID',
-                            accessor: 'userId',
-                        },
-                        {
-                            Header: 'Admin ID',
-                            accessor: 'adminId'
-                        },
-                        {
-                            Header: 'Action taken',
-                            accessor: 'action',
-                        },
-                        {
-                            Header: 'Content',
-                            accessor: 'content'
-                        },
-                        {
-                            Header: 'Date',
-                            accessor: 'date'
-                        }
-    
-                ]}
-                
-            ]
+const columns = [
+    {
+        Header: 'Item ID',
+        accessor: 'itemId',
+    },
+    {
+        Header: 'User ID',
+        accessor: 'userId',
+    },
+    {
+        Header: 'Admin ID',
+        accessor: 'adminId'
+    },
+    {
+        Header: 'Action taken',
+        accessor: 'action',
+    },
+    {
+        Header: 'Content',
+        accessor: 'content'
+    },
+    {
+        Header: 'Date',
+        accessor: 'date'
+    }
+];
+
 /*
 *   Displays log of admin actions (add, edit, delete of items and users)
 */
@@ -48,31 +46,14 @@ export default class AdminLogDisplay extends React.Component {
 
         this.state = {
             isOpen: props.isOpen,
-            content: [],
-            modal: null,
+            content: []
         };
     };
 
     async componentDidMount() {
-        // try {
-        //     let logs = await AdminLogController.getAllAdminLogs();
-        //     console.log(logs);
-        //     this.setState({ content: logs });
-            
-        // } catch (error) {
-        //     console.log(error)
-        // };
         let logs = await adminLogController.getAllAdminLogs();
         this.setState({ content: logs });
     }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props !== prevProps) {
-            this.setState({
-                isOpen: this.props.isOpen
-            });
-        };
-    };
 
     dismissModal() {
         this.setState({ isOpen: false });
@@ -88,8 +69,6 @@ export default class AdminLogDisplay extends React.Component {
                 <div className='modalFooter'>
                     <button onClick={() => this.dismissModal()}>Close</button>
                 </div>
-                
-                
             </Modal>
         )
     };

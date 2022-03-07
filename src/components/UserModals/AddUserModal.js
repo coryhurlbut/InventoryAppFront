@@ -45,19 +45,22 @@ export default class AddUserModal extends React.Component{
             password:       this.state.password,
             userRole:       this.state.userRole,
             phoneNumber:    this.state.phoneNumber
-        }
+        };
+
         let returnedUser = {};
         await UserController.createUser(user)
         .then((data) => {
-            if(data.status !== undefined && data.status >= 400) throw data;
+            if (data.status !== undefined && data.status >= 400) throw data;
+            
             this.setState({error: '', isError: false });
             returnedUser = data;
         })
-        .catch(async (err) => {            
+        .catch( async (err) => {            
             this.setState({ error: err.message, isError: true });
         });
+
         let log = {
-            itemId:     '',
+            itemId:     'N/A',
             userId:     returnedUser._id,
             adminId:    '',
             action:     'add',

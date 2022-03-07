@@ -131,7 +131,7 @@ export default class ContentBuilder extends React.Component {
                         userContentIsVisible={view.userContentIsVisible} 
                         signItemInOutIsVisible={view.signItemInOutIsVisible}
                     />
-                    <div className='logDisplay'>
+                    <div className='pageFooter'>
                         <button hidden={!view.itemLogIsVisible} onClick={() => this.showItemLogModal()}>Show Item Logs</button>
                         <button hidden={!view.adminLogIsVisible} onClick={() => this.showAdminLogModal()}>Show Admin Logs</button>
                     </div> 

@@ -72,6 +72,7 @@ export default class EditUserModal extends React.Component{
             phoneNumber: this.state.phoneNumber,
             hasPassword: this.state.hasPassword
         };
+
         let log = {
             itemId:     'N/A',
             userId:     this.state.idArray[0],
@@ -79,11 +80,14 @@ export default class EditUserModal extends React.Component{
             action:     'edit',
             content:    'user'
         };
+
         await userController.updateUser(this.state.idArray[0], user)
-        .then(async(auth) => {
+        .then(async (auth) => {
             if ( auth.status !== undefined && auth.status >= 400 ) throw auth;
             this.setState({ error: '', isError: false });
+            
             await adminLogController.createAdminLog(log);
+
             window.location.reload();
             this.dismissModal();
         })
@@ -92,7 +96,7 @@ export default class EditUserModal extends React.Component{
         });
     };
 
-    handleUserRoleChange(event) {
+    handleUserRoleChange (event) {
         if (event.target.value === 'user') {
             this.setState({ 
                 password: '', 
