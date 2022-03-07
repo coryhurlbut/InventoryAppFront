@@ -124,8 +124,8 @@ export default class EditUserModal extends React.Component{
         };
     };
 
-    allowPasswordReset() {
-        this.setState({
+    async allowPasswordReset() {
+        await this.setState({
             pwDisabled: false, 
             pwRequired: true, 
             resetBtn: false
@@ -168,7 +168,7 @@ export default class EditUserModal extends React.Component{
 
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
-    isSumbitAvailable(){
+    isSubmitAvailable(){
         if(validateFields.validateSubmit(this.state.firstName, this.state.lastName, this.state.userName, this.state.userRole, this.state.phoneNumber, this.state.pwRequired, this.state.password) && this.state.errors.length == 0){
             return true;
         }
@@ -307,7 +307,7 @@ export default class EditUserModal extends React.Component{
     buildForm(){
         return(
             <>
-            <form onSubmit={(event) => {event.preventDefault(); this.editUser();}}>
+            <form onSubmit={(event) => { event.preventDefault(); this.editUser();}}>
                 <div className='modalBody'>
                     {this.state.isError ? <label className='errorMessage'>{this.state.error}</label> : null}
                     <h4>First Name</h4>
@@ -354,7 +354,7 @@ export default class EditUserModal extends React.Component{
                         onChange={(evt) => this.handleChange(validateFields.validatePassword, evt)}
                         onBlur={(evt) => this.handleBlur(validateFields.validatePassword, evt)}/>
                         <span>  </span>
-                        <button hidden={!this.state.resetBtn} onClick={() => this.allowPasswordReset()}>Reset</button>
+                        <button hidden={!this.state.resetBtn} onClick={(event) => {event.preventDefault(); this.allowPasswordReset()}}>Reset</button>
                         <br></br>
                         { this.displayErrorMessage('password') }
 
@@ -370,7 +370,7 @@ export default class EditUserModal extends React.Component{
                         { this.displayErrorMessage('phoneNumber') }
                 </div>
                 <div className='modalFooter'>
-                    { this.isSumbitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
+                    { this.isSubmitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
                     <button type="reset" onClick={() => {this.dismissModal()}}>Close</button>
                 </div>
             </form>
