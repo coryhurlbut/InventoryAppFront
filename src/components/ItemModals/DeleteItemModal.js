@@ -24,7 +24,7 @@ export default class DeleteItemModal extends React.Component{
     };
 
     async deleteItem() {
-        await itemController.deleteUsers(this.state.idArray)
+        await itemController.deleteItems(this.state.idArray)
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ error: '', isError: false });
