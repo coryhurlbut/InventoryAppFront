@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import '@fluentui/react';
-import Table from '/home/williamglass/inventory-app-front-end/src/components/Table.js';
+import Table from '../Table';
 import itemLogController from '../../controllers/ItemLogController';
 // import ItemLogController from '../controllers/ItemLogController';
 

@@ -67,6 +67,8 @@
   color: #a8f5feb6;
   background-color: #1a1a1a;
 
+  border-radius: 5px;
+
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;

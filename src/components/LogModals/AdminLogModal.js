@@ -3,7 +3,7 @@ import { Modal }                from '@fluentui/react';
 import { AdminLogController }   from '../../controllers';
 import '../../styles/Modal.css'
 import adminLogController from '../../controllers/AdminLogController';
-import Table from '/home/williamglass/inventory-app-front-end/src/components/Table.js';
+import Table from '../Table';
 
 
 const columns = 

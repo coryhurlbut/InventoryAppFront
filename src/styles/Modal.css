@@ -2,7 +2,13 @@
     This styling sheet focus the display modals:
         Login/Logout/AddUser/EditUser/DeleteUser
 */
-
+/* Red boarder around the input field user has made mistake */
+.invalid, .invalid:focus{
+    outline: 1px solid red;
+}
+.invalid:focus{
+    outline: 1px solid red;
+}
 /*Title of Modal*/
 .modalHeader {
     /*margin: 30px;*/
@@ -80,6 +86,10 @@
     border-style: none;
     border-color: transparent;
     
+}
+input[type=submit]:disabled {
+    background-color: #b3b3b3;
+    color: #787878;
 }
 .modalFooter button:hover, input[type=submit]:hover{
     color: #11375c;
