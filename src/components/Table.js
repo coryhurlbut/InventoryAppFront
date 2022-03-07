@@ -1,6 +1,5 @@
 import React from "react";
 import { useTable } from "react-table";
-import itemLogController from '../controllers/ItemLogController';
 
 
 

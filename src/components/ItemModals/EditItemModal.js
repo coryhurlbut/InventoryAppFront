@@ -1,8 +1,7 @@
-import React from 'react';
-import {Modal} from '@fluentui/react';
-import itemController from '../../controllers/ItemController';
-import adminLogController from '../../controllers/AdminLogController';
-import itemLogController from '../../controllers/ItemLogController';
+import React                from 'react';
+import { Modal }            from '@fluentui/react';
+import itemController       from '../../controllers/ItemController';
+import adminLogController   from '../../controllers/AdminLogController';
 
 /*
 *   Modal for editing an item
@@ -20,7 +19,9 @@ export default class EditItemModal extends React.Component{
             homeLocation:     '',
             specificLocation: '',
             available:        true,
-            idArray:          props.idArray
+            idArray:          props.idArray,
+            error:            '',
+            isError:          false
         };
     };
 
@@ -60,16 +61,20 @@ export default class EditItemModal extends React.Component{
             action:     'edit',
             content:    'item'
         };
-        try{
-             await itemController.updateItem(this.state.idArray, item);
-             await adminLogController.createAdminLog(log);}
-        catch(err){
-             err.message = 'U suck';
-             
-        }
-        
-        window.location.reload();
-        this.dismissModal();
+
+        await itemController.updateItem(this.state.idArray[0], item)
+        .then(async (auth) => {
+            if ( auth.status !== undefined && auth.status >= 400 ) throw auth;
+            this.setState({ error: '', isError: false });
+            
+            await adminLogController.createAdminLog(log);
+
+            window.location.reload();
+            this.dismissModal();
+        })
+        .catch(async (err) => {            
+            this.setState({ error: err.message, isError : true });
+        });
     };
 
     render() {
