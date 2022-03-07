@@ -23,15 +23,11 @@ export default class EditItemModal extends React.Component{
             specificLocation: '',
             available:        true,
             idArray:          props.idArray,
-<<<<<<< HEAD
             errorDetails:     {
                 field:            '',
                 errorMessage:     ''
             },
             errors:           [],
-=======
-            error:            '',
->>>>>>> 35887e0a8a6b110b27da7281b3df7ec8f622b5c7
             isError:          false
         };
     };

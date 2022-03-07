@@ -3,12 +3,7 @@ import { Modal }              from '@fluentui/react';
 import Table                from '../Table';
 import itemLogController    from '../../controllers/ItemLogController';
 import '@fluentui/react';
-<<<<<<< HEAD
-import Table from '../Table';
-import itemLogController from '../../controllers/ItemLogController';
 // import ItemLogController from '../controllers/ItemLogController';
-=======
->>>>>>> 35887e0a8a6b110b27da7281b3df7ec8f622b5c7
 
 const columns = [
     {

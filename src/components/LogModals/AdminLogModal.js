@@ -1,13 +1,8 @@
 import React                    from 'react';
 import { Modal }                from '@fluentui/react';
 import '../../styles/Modal.css'
-<<<<<<< HEAD
 import adminLogController from '../../controllers/AdminLogController';
 import Table from '../Table';
-=======
-import adminLogController       from '../../controllers/AdminLogController';
-import Table                    from '../Table';
->>>>>>> 35887e0a8a6b110b27da7281b3df7ec8f622b5c7
 
 
 const columns = [
