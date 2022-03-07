@@ -339,7 +339,7 @@ export default class EditUserModal extends React.Component{
                         readOnly
                         value={this.state.userName}/>
                     <h4>User's Role</h4>
-                        <select id='selectUser' required  onChange={(event) => this.handleUserRoleChange(event)}>
+                        <select id='selectUser'  onChange={(event) => this.handleUserRoleChange(event)}>
                             <option id="userOpt" value='user'>User</option>
                             <option id="custodianOpt" value='custodian'>Custodian</option>
                             <option id="adminOpt" value='admin'>Admin</option>
@@ -348,12 +348,16 @@ export default class EditUserModal extends React.Component{
                         <input 
                         type='password' 
                         id='password' 
+                        className={ this.displayErrorMessage('password') ? 'invalid' : ''}
                         disabled={this.state.pwDisabled}
-                        pattern='[a-zA-Z0-9]{6,25}'
                         value={this.state.password} 
-                        onChange={(event) => this.setState({ password: event.target.value })}/>
+                        onChange={(evt) => this.handleChange(validateFields.validatePassword, evt)}
+                        onBlur={(evt) => this.handleBlur(validateFields.validatePassword, evt)}/>
                         <span>  </span>
                         <button hidden={!this.state.resetBtn} onClick={() => this.allowPasswordReset()}>Reset</button>
+                        <br></br>
+                        { this.displayErrorMessage('password') }
+
                     <h4>Phone Number</h4>
                         <input
                         type='text' 

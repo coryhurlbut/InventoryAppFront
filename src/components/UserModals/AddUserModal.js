@@ -80,6 +80,14 @@ export default class AddUserModal extends React.Component{
                 password: '', 
                 userRole: event.target.value
             });
+            this.setState( prevState => ({
+                errorDetails: {
+                    ...prevState.errorDetails,
+                    field:        '',
+                    errorMessage: ''
+                }
+            }));
+            this.handleRemoveError('password');
         } else {
             this.setState({
                 pwDisabled: false, 
@@ -246,8 +254,9 @@ export default class AddUserModal extends React.Component{
             case 'userName':
                 this.setState({ userName: sanitizeData.sanitizeWhitespace(fieldVal)});
                 break;
-            case 'userRole':
+            case 'selectUser':
                 this.setState({ userRole: sanitizeData.sanitizeWhitespace(fieldVal)});
+                this.enablePasswordEdit(evt);
                 break;
             case 'password':
                 this.setState({ password: sanitizeData.sanitizeWhitespace(fieldVal)});
@@ -301,12 +310,15 @@ export default class AddUserModal extends React.Component{
                         { this.displayErrorMessage('userName') }
                     
                     <h4>User's Role</h4>
-                        <select id='selectUser' defaultValue={''}  onChange={(event) => this.enablePasswordEdit(event)}>
+                        <select id='selectUser' defaultValue={''}  onChange={(evt) => this.handleChange(validateFields.validateUserRole, evt)}>
                             <option label='' hidden disabled ></option>
                             <option value='user'>User</option>
                             <option value='custodian'>Custodian</option>
                             <option value='admin'>Admin</option>
                         </select>
+                        <br></br>
+                        { this.displayErrorMessage('selectUser') }
+
                     <h4>Password</h4>
                         <input
                         type='password'
