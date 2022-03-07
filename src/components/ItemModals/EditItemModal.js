@@ -3,7 +3,7 @@ import { Modal }            from '@fluentui/react';
 import itemController       from '../../controllers/ItemController';
 import adminLogController   from '../../controllers/AdminLogController';
 
-import { validateFields } from '../InputValidation/userValidation';
+import { validateFields } from '../InputValidation/itemValidation';
 import { sanitizeData } from '../InputValidation/sanitizeData';
 
 /*
