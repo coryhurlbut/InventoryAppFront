@@ -12,7 +12,13 @@ class UserController extends AuthController{
 
     //Gets a single user by Id
     async getUserById(userId) { 
-        return await this.requestWithAuth(`users/${userId}`, {method: 'GET'});
+        let response = await this.requestWithAuth(`users/${userId}`, {method: 'GET'});
+        
+        //Gets user info to send to editUserModal for preventing user from changing their own role.
+        let user = this.getUserInfo();
+        response.userId = user.user.user._id;
+
+        return response;
     };
 
     //Creates a single user. Must be given body of all required user fields

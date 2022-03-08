@@ -32,11 +32,18 @@ export default class EditUserModal extends React.Component{
             pwRequired:      false,
             hasPassword:     false,
             resetBtn:        false,
+            userId:          '',
+            userRoleDisabled:false
         };
     };
 
     async componentDidMount(){
         let thisUser = await userController.getUserById(this.state.idArray[0]);
+
+        //Disables userRole dropdown if the selected user is the user logged in
+        if (thisUser.userId === thisUser._id) {
+            this.setState({ userRoleDisabled: true });
+        };
 
         //Sets the userRole select tag to the user's role
         let select = document.getElementById('selectUser');
@@ -54,7 +61,8 @@ export default class EditUserModal extends React.Component{
             lastName:    thisUser.lastName,
             userName:    thisUser.userName,
             userRole:    thisUser.userRole,
-            phoneNumber: thisUser.phoneNumber
+            phoneNumber: thisUser.phoneNumber,
+            userId:      thisUser.userId
         });
     };
 
@@ -88,8 +96,8 @@ export default class EditUserModal extends React.Component{
             
             await adminLogController.createAdminLog(log);
 
-            window.location.reload();
-            this.dismissModal();
+            // window.location.reload();
+            // this.dismissModal();
         })
         .catch(async (err) => {            
             this.setState({ error: err.message, isError : true });
@@ -339,7 +347,7 @@ export default class EditUserModal extends React.Component{
                         readOnly
                         value={this.state.userName}/>
                     <h4>User's Role</h4>
-                        <select id='selectUser'  onChange={(event) => this.handleUserRoleChange(event)}>
+                        <select disabled={this.state.userRoleDisabled} id='selectUser'  onChange={(event) => this.handleUserRoleChange(event)}>
                             <option id="userOpt" value='user'>User</option>
                             <option id="custodianOpt" value='custodian'>Custodian</option>
                             <option id="adminOpt" value='admin'>Admin</option>
