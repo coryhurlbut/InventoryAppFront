@@ -4,26 +4,15 @@ import UserEditControls             from './Controls/UserEditControls';
 import SignItemInOutControls        from './Controls/SignItemInOutControls';
 import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
+import Table                        from './Table';
+import { availableItemsContent, 
+    unavailableItemsContent, 
+    usersContent }                  from './ContentPresets';
 import '../styles/table.css';
 import '../styles/App.css';
 import '../styles/Modal.css';
 
-//Settings for which data is displaying in the table
-const availableItemsContent = {
-    contentType:        "Available Items",
-    editControls:       "ItemEditControls",
-    inOrOut:            "Sign Item Out"
-};
-const unavailableItemsContent = {
-    contentType:        "Unavailable Items",
-    editControls:       "ItemEditControls",
-    inOrOut:            "Sign Item In"
-};
-const usersContent = {
-    contentType:        "Users",
-    editControls:       "UserEditControls",
-    inOrOut:            ""
-};
+
 
 /*
 *   Displays main content. Changes depending on what data is displayed. Available Items, Unavailable Items, or Users.
@@ -50,7 +39,7 @@ export default class ContentList extends React.Component {
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
         this.showUnavailableItems   =   this.showUnavailableItems.bind(this);
         this.showUsers              =   this.showUsers.bind(this);
-        this.checkForChecked        =   this.checkForChecked.bind(this);
+        this.setIdArray             =   this.setIdArray.bind(this);
     };
 
     // Will update component props if parent props change
@@ -81,6 +70,7 @@ export default class ContentList extends React.Component {
             contentType:        availableItemsContent.contentType,
             editControls:       availableItemsContent.editControls,
             inOrOut:            availableItemsContent.inOrOut,
+            columns:            availableItemsContent.columns,
             idArray:            [],
             btnAI_Active:       true,
             btnUI_Active:       false,
@@ -96,6 +86,7 @@ export default class ContentList extends React.Component {
             contentType:        unavailableItemsContent.contentType,
             editControls:       unavailableItemsContent.editControls,
             inOrOut:            unavailableItemsContent.inOrOut,
+            columns:            unavailableItemsContent.columns,
             idArray:            [],
             btnAI_Active:       false,
             btnUI_Active:       true,
@@ -110,6 +101,7 @@ export default class ContentList extends React.Component {
             contentType:        usersContent.contentType,
             editControls:       usersContent.editControls,
             inOrOut:            usersContent.inOrOut,
+            columns:            usersContent.columns,
             idArray:            [],
             btnAI_Active:       false,
             btnUI_Active:       false,
@@ -117,23 +109,39 @@ export default class ContentList extends React.Component {
         });
     }
 
+    clearChecks(){
+        this.setState({ idArray: [] });
+    }
+
+    setIdArray(id) {
+        let arr = this.state.idArray;
+        if ( arr.includes(id) ) {
+            arr = arr.filter(el => el !== id);
+        } else {
+            arr.push(id);
+        };
+
+        this.setState({ idArray: arr });
+    }
+
     buildContentList () {
         if(this.state.content.length === 0){
             return "No content available"
-        }
+        };
+
         return(
             <>
-            <table id='items'>
-                    {this.renderTableHeader()}
-                <tbody>
-                    {this.renderTableData()}
-                </tbody>
-            </table>
+            <Table 
+                columns={this.state.columns} 
+                data={this.state.content} 
+                setIdArray={this.setIdArray} 
+                userRole={this.state.role} 
+                contentType={this.state.contentType} 
+            />
             <div id='Table_Modification'>
                 {this.buildEditControls()}
                 <SignItemInOutControls inOrOut={this.state.inOrOut} idArray={this.state.idArray} id={this.state.id} signItemInOutIsVisible={this.state.signItemInOutIsVisible}/>
             </div>
-            <pre></pre>
             </>
         );
     };
@@ -150,132 +158,8 @@ export default class ContentList extends React.Component {
         };
     };
 
-    clearChecks(){
-        let yes = document.getElementsByClassName('checkbox');
-        for (let i = 0; i < yes.length; i++) {
-            yes[i].checked = false;
-        }
-    }
-
-    checkForChecked (id){
-        let idArr = this.state.idArray;
-        if(document.getElementById(`${id}`).checked){
-            idArr.push(id);
-        }else{
-            let duplicate = idArr.indexOf(id);
-            idArr.splice(duplicate, 1);
-        }
-        this.setState({ idArray: idArr });
-    }
-
-    renderTableData(){
-        if(this.state.contentType === "Users"){
-            return this.state.content.map((user) => {
-                const { _id, firstName, lastName, userName, userRole, phoneNumber } = user
-                return(
-                    <tr key={_id}>
-                        <td><input type='checkbox' className='checkbox' checked={this.state.checked} id={_id} name={userName} onClick={() => {this.checkForChecked(_id)}}></input></td>
-                        <td>{_id}</td>
-                        <td>{firstName}</td>
-                        <td>{lastName}</td>
-                        <td>{userName}</td>
-                        <td>{userRole}</td>
-                        <td>{phoneNumber}</td>
-                    </tr>
-            )})
-        }
-        else if(this.state.contentType === 'Unavailable Items'){
-            return this.state.content.map((item) => {
-                const { _id, name, description, homeLocation, specificLocation, serialNumber, notes, possessedBy } = item
-                return(
-                    <tr key={_id}>
-                        { this.state.role === null ? null : <td><input type='checkbox' className='checkbox' checked={this.state.checked} id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td> }
-                        <td>{_id}</td>
-                        <td>{name}</td>
-                        <td>{description}</td>
-                        <td>{homeLocation}</td>
-                        <td>{specificLocation}</td>
-                        <td>{serialNumber}</td>
-                        <td>{notes}</td>
-                        <td>{possessedBy}</td>
-                    </tr>
-            )})
-        }
-        else{
-            return this.state.content.map((item) => {
-                const { _id, name, description, homeLocation, specificLocation, serialNumber, notes } = item
-                return(
-                    <tr key={_id}>
-                        { this.state.role === null ? null : <td><input type='checkbox' className='checkbox' checked={this.state.checked} id={_id} name={name} onClick={() => {this.checkForChecked(_id)}}></input></td> }
-                        <td>{_id}</td>
-                        <td>{name}</td>
-                        <td>{description}</td>
-                        <td>{homeLocation}</td>
-                        <td>{specificLocation}</td>
-                        <td>{serialNumber}</td>
-                        <td>{notes}</td>
-                    </tr>
-            )})
-        }
-        
-    };
-
-    renderTableHeader() {
-        if(this.state.contentType === "Users"){
-            return(
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
-                        <th>Role</th>
-                        <th>Phone Number</th>
-                    </tr>
-                </thead>
-            )
-        }
-        else if(this.state.contentType === 'Unavailable Items'){
-            return(
-                <thead>
-                    <tr>
-                        { this.state.role === null ? null : <th></th> }
-                        <th>ID</th>
-                        <th>Item Name</th>
-                        <th>Description</th>
-                        <th>Location</th>
-                        <th>Specific Location</th>
-                        <th>Serial Number</th>
-                        <th>Notes</th>
-                        <th>Signed out to</th>
-                    </tr>
-                </thead>
-            )
-        }
-        else{
-            return(
-                <thead>
-                    <tr>
-                        { this.state.role === null ? null : <th></th> }
-                        <th>ID</th>
-                        <th>Item Name</th>
-                        <th>Description</th>
-                        <th>Location</th>
-                        <th>Specific Location</th>
-                        <th>Serial Number</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-            ) 
-        }
-    };
 
     render() {
-        // Check for content and build list if it's present.
-        // Otherwise return null
-        let contentList = this.state.content !== null ? this.buildContentList() : 'No content available.';
-        
         return (
             <div id='Content_Body'>
                 <div id='Table_Navigation'>
@@ -294,7 +178,7 @@ export default class ContentList extends React.Component {
                 </div>
                 
                 <div id='Table_Body'>
-                    {contentList}
+                    {this.buildContentList()}
                 </div>
             </div>
         );
