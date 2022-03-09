@@ -49,9 +49,10 @@ class ValidateFields{
     return false;
   }
   validateUserRole(userRole){
-    
+    console.log('validateUserRole: ' + userRole);
+
     if(userRole === ''){
-        return 'Please select which role the user will have';
+        return "Please select the user's role";
     }
     return false;
   }

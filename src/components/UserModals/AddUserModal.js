@@ -1,10 +1,11 @@
-import React from 'react';
-import {Modal} from '@fluentui/react';
-import UserController from '../../controllers/UserController';
+import React              from 'react';
+import {Modal}            from '@fluentui/react';
+import {authController}   from '../../controllers/AuthController'
+import userController     from '../../controllers/UserController';
 import adminLogController from '../../controllers/AdminLogController';
 
 import { validateFields } from '../InputValidation/userValidation';
-import { sanitizeData } from '../InputValidation/sanitizeData';
+import { sanitizeData }   from '../InputValidation/sanitizeData';
 
 /*
 *   Modal for adding a user
@@ -29,8 +30,25 @@ export default class AddUserModal extends React.Component{
             errors:          [],
             isError:         false,
             pwDisabled:      true,
-            pwRequired:      false
+            pwRequired:      false,
+            userRoleDisabled:false
         };
+    };
+
+    /* When a custodian is logged in, 
+        allow only the ability to add user roles */
+    async componentDidMount(){
+        let signedInAccount = await authController.getUserInfo();
+
+        if(signedInAccount.user.user.userRole === 'custodian'){
+            //Front end display so interaction show's user is selected
+            let select = document.getElementById('selectUser');
+            select.value = 'user';
+
+            //Backend functionality of setting the role to a user
+            this.setState({ userRoleDisabled: true,
+                            userRole: 'user'});
+        }
     };
 
     dismissModal() {
@@ -48,7 +66,7 @@ export default class AddUserModal extends React.Component{
         };
 
         let returnedUser = {};
-        await UserController.createUser(user)
+        await userController.createUser(user)
         .then((data) => {
             if (data.status !== undefined && data.status >= 400) throw data;
             
@@ -310,7 +328,12 @@ export default class AddUserModal extends React.Component{
                         { this.displayErrorMessage('userName') }
                     
                     <h4>User's Role</h4>
-                        <select id='selectUser' defaultValue={''}  onChange={(evt) => this.handleChange(validateFields.validateUserRole, evt)}>
+                        <select 
+                            disabled={this.state.userRoleDisabled} 
+                            id='selectUser' 
+                            defaultValue={''}  
+                            onBlur={(evt) => this.handleBlur(validateFields.validateUserRole, evt)}>
+
                             <option label='' hidden disabled ></option>
                             <option value='user'>User</option>
                             <option value='custodian'>Custodian</option>
