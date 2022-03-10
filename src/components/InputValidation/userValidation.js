@@ -63,6 +63,12 @@ class ValidateFields{
     }
       return false;
   }
+  validatePasswordConfirm(password, confirmPassword) {
+    if(password !== confirmPassword) {
+      return 'Passwords must match';
+    }
+    return false;
+  }
   validatePhoneNumber(phoneNumber){
       if(!validator.isMobilePhone(phoneNumber)){
         return 'Please enter associated number';
