@@ -19,6 +19,7 @@ export default class EditUserModal extends React.Component{
             lastName:        '',
             userName:        '',
             password:        '',
+            confirmPassword: '',
             userRole:        '',
             phoneNumber:     '',
             error:           '',
@@ -96,8 +97,8 @@ export default class EditUserModal extends React.Component{
             
             await adminLogController.createAdminLog(log);
 
-            // window.location.reload();
-            // this.dismissModal();
+            window.location.reload();
+            this.dismissModal();
         })
         .catch(async (err) => {            
             this.setState({ error: err.message, isError : true });
@@ -132,8 +133,8 @@ export default class EditUserModal extends React.Component{
         };
     };
 
-    async allowPasswordReset() {
-        await this.setState({
+    allowPasswordReset() {
+        this.setState({
             pwDisabled: false, 
             pwRequired: true, 
             resetBtn: false
@@ -191,25 +192,7 @@ export default class EditUserModal extends React.Component{
         const fieldVal = evt.target.value;
         const isErrorSet = this.returnErrorDetails(fieldID);
 
-        if(fieldID !== 'password' && validationFunc(fieldVal) && isErrorSet === false){
-            //To update the list of error, we need an object preset with the inform, as we can't collect from setState errorDetails
-            let errorDetail = {
-                field:        fieldID,
-                errorMessage: validationFunc(fieldVal)
-            };
-
-            this.setState( prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        fieldID,
-                    errorMessage: validationFunc(fieldVal)
-                },
-                errors: [
-                    ...prevState.errors,
-                    errorDetail
-                ]
-            }));
-        } else if(fieldID === 'password' && validationFunc(this.state.pwRequired, fieldVal) && isErrorSet === false){
+        if(fieldID === 'password' && validationFunc(this.state.pwRequired, fieldVal) && isErrorSet === false){
             let errorDetail = {
                 field:        fieldID,
                 errorMessage: validationFunc(this.state.pwRequired, fieldVal)
@@ -226,7 +209,42 @@ export default class EditUserModal extends React.Component{
                     errorDetail
                 ]
             }));
-        }
+        } else if(fieldID === 'confirmPassword' && validationFunc(this.state.password, fieldVal) && isErrorSet === false){
+            let errorDetail = {
+                field:        fieldID,
+                errorMessage: validationFunc(this.state.password, fieldVal)
+            };
+
+            this.setState( prevState => ({
+                errorDetails: {
+                    ...prevState.errorDetails,
+                    field:        fieldID,
+                    errorMessage: validationFunc(this.state.password, fieldVal)
+                },
+                errors: [
+                    ...prevState.errors,
+                    errorDetail
+                ]
+            }));
+        } else if(fieldID !== 'password' && fieldID !== 'confirmPassword' && validationFunc(fieldVal) && isErrorSet === false){
+            //To update the list of error, we need an object preset with the inform, as we can't collect from setState errorDetails
+            let errorDetail = {
+                field:        fieldID,
+                errorMessage: validationFunc(fieldVal)
+            };
+
+            this.setState( prevState => ({
+                errorDetails: {
+                    ...prevState.errorDetails,
+                    field:        fieldID,
+                    errorMessage: validationFunc(fieldVal)
+                },
+                errors: [
+                    ...prevState.errors,
+                    errorDetail
+                ]
+            }));
+        }  
         return;
     };
 
@@ -240,18 +258,17 @@ export default class EditUserModal extends React.Component{
         /* If something is returned from this function, an error occured 
             since an error was returned, set the error state
         */
-        if(fieldID !== 'password' && validationFunc(fieldVal)){
-            //To update the list of error, we need an object preset with the inform, as we can't collect from setState errorDetails
+        if(fieldID === 'confirmPassword' && validationFunc(this.state.password, fieldVal)){
             let errorDetail = {
                 field:        fieldID,
-                errorMessage: validationFunc(fieldVal)
+                errorMessage: validationFunc(this.state.password, fieldVal)
             };
-
+            
             this.setState( prevState => ({
                 errorDetails: {
                     ...prevState.errorDetails,
                     field:        fieldID,
-                    errorMessage: validationFunc(fieldVal)
+                    errorMessage: validationFunc(this.state.password, fieldVal)
                 },
                 errors: [
                     ...prevState.errors,
@@ -275,7 +292,25 @@ export default class EditUserModal extends React.Component{
                     errorDetail
                 ]
             }));
-        } else{
+        } else if(fieldID !== 'password' && fieldID !== 'confirmPassword' && validationFunc(fieldVal)){
+            //To update the list of error, we need an object preset with the inform, as we can't collect from setState errorDetails
+            let errorDetail = {
+                field:        fieldID,
+                errorMessage: validationFunc(fieldVal)
+            };
+
+            this.setState( prevState => ({
+                errorDetails: {
+                    ...prevState.errorDetails,
+                    field:        fieldID,
+                    errorMessage: validationFunc(fieldVal)
+                },
+                errors: [
+                    ...prevState.errors,
+                    errorDetail
+                ]
+            }));
+        } else {
             this.setState( prevState => ({
                 errorDetails: {
                     ...prevState.errorDetails,
@@ -302,6 +337,9 @@ export default class EditUserModal extends React.Component{
                 break;
             case 'password':
                 this.setState({ password: sanitizeData.sanitizeWhitespace(fieldVal)});
+                break;
+            case 'confirmPassword':
+                this.setState({ confirmPassword: sanitizeData.sanitizeWhitespace(fieldVal)});
                 break;
             case 'phoneNumber':
                 this.setState({ phoneNumber: sanitizeData.sanitizeWhitespace(fieldVal)});
@@ -365,7 +403,17 @@ export default class EditUserModal extends React.Component{
                         <button hidden={!this.state.resetBtn} onClick={(event) => {event.preventDefault(); this.allowPasswordReset()}}>Reset</button>
                         <br></br>
                         { this.displayErrorMessage('password') }
-
+                    <h4 hidden={this.state.pwDisabled}>Confirm Password</h4>
+                        <input 
+                        type='password' 
+                        id='confirmPassword' 
+                        className={ this.displayErrorMessage('confirmPassword') ? 'invalid' : ''}
+                        hidden={this.state.pwDisabled}
+                        value={this.state.confirmPassword} 
+                        onChange={(evt) => this.handleChange(validateFields.validatePasswordConfirm, evt)}
+                        onBlur={(evt) => this.handleBlur(validateFields.validatePasswordConfirm, evt)}/>
+                        <br hidden={this.state.pwDisabled}></br>
+                        { this.displayErrorMessage('confirmPassword') }
                     <h4>Phone Number</h4>
                         <input
                         type='text' 
