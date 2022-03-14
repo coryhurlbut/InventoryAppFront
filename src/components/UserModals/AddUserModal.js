@@ -23,17 +23,7 @@ export default class AddUserModal extends React.Component{
             confirmPassword: '',
             userRole:        '',
             phoneNumber:     '',
-<<<<<<< HEAD
-=======
             status:          'active',
-            error:           '',
-            errorDetails:    {
-                field:            '',
-                errorMessage:     ''
-            },
-            errors:          [],
-            isError:         false,
->>>>>>> a04830bed08c2b0f959f274c432ffc0c4b0f0f3a
             pwDisabled:      true,
             pwRequired:      false,
             userRoleDisabled:false,

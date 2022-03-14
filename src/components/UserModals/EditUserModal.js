@@ -53,19 +53,13 @@ export default class EditUserModal extends React.Component{
                 this.setState({ userRoleDisabled: true });
             };
 
-<<<<<<< HEAD
             //Sets the userRole select tag to the user's role
-            let select = document.getElementById('selectUser');
-            select.value = thisUser.userRole;
-=======
-        //Sets the userRole select tag to the user's role
-        let selectUserRole = document.getElementById('selectUserRole');
-        selectUserRole.value = thisUser.userRole;
+            let selectUserRole = document.getElementById('selectUserRole');
+            selectUserRole.value = thisUser.userRole;
 
-        //Sets the status select tag to the user's status
-        let selectUserStatus = document.getElementById('selectUserStatus');
-        selectUserStatus.value = thisUser.status;
->>>>>>> a04830bed08c2b0f959f274c432ffc0c4b0f0f3a
+            //Sets the status select tag to the user's status
+            let selectUserStatus = document.getElementById('selectUserStatus');
+            selectUserStatus.value = thisUser.status;
 
             /* Will set password reset button to show and track that 
                 the user has a password already if they were originally
@@ -74,14 +68,14 @@ export default class EditUserModal extends React.Component{
                 this.setState({ resetBtn: true, hasPassword: true });
             };
 
-<<<<<<< HEAD
             this.setState({
                 firstName:   thisUser.firstName, 
                 lastName:    thisUser.lastName,
                 userName:    thisUser.userName,
                 userRole:    thisUser.userRole,
                 phoneNumber: thisUser.phoneNumber,
-                userId:      thisUser.userId
+                userId:      thisUser.userId,
+                status:      thisUser.status
             });
         } catch (error) {
             //If user trys interacting with the modal before everything can properly load
@@ -89,17 +83,6 @@ export default class EditUserModal extends React.Component{
             this.setState({ isControllerError: true,
                             controllerErrorMessage: "An error occured while loading. Please refresh and try again."});
         }
-=======
-        this.setState({
-            firstName:   thisUser.firstName, 
-            lastName:    thisUser.lastName,
-            userName:    thisUser.userName,
-            userRole:    thisUser.userRole,
-            phoneNumber: thisUser.phoneNumber,
-            userId:      thisUser.userId,
-            status:      thisUser.status
-        });
->>>>>>> a04830bed08c2b0f959f274c432ffc0c4b0f0f3a
     };
 
     dismissModal() {
@@ -113,12 +96,8 @@ export default class EditUserModal extends React.Component{
             userName:    this.state.userName,
             password:    this.state.password,
             userRole:    this.state.userRole,
-<<<<<<< HEAD
             phoneNumber: sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
-=======
-            phoneNumber: this.state.phoneNumber,
             status:      this.state.status,
->>>>>>> a04830bed08c2b0f959f274c432ffc0c4b0f0f3a
             hasPassword: this.state.hasPassword
         };
 
