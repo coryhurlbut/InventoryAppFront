@@ -23,12 +23,14 @@ export default class AddItemModal extends React.Component{
             specificLocation: '',
             available:        true,
             disabled:         true,
-            errorDetails:     {
-                field:            '',
-                errorMessage:     ''
+            
+            errorDetails:           {
+                field:        '',
+                errorMessage: ''
             },
-            errors:           [],
-            isError:          false
+            errors:                 [],
+            isControllerError:      false,
+            controllerErrorMessage: ''
         };
 
         this.dismissModal = this.dismissModal.bind(this);
@@ -55,15 +57,21 @@ export default class AddItemModal extends React.Component{
             available:          this.state.available
         };
         let returnedItem = {};
+
         await itemController.createItem(item)
         .then((data) => {
             if (data.status !== undefined && data.status >= 400) throw data;
             
-            this.setState({error: '', isError: false });
+            this.setState({ isControllerError: false, 
+                            controllerErrorMessage: ''});
             returnedItem = data;
+            
+            window.location.reload();
+            this.dismissModal();
         })
         .catch( async (err) => {            
-            this.setState({ error: err.message, isError: true });
+            this.setState({ isControllerError: true, 
+                            controllerErrorMessage: err.message}); 
         });
 
         //Uses the new item _id to make a log to the admin log of the new item being added
@@ -75,9 +83,6 @@ export default class AddItemModal extends React.Component{
             content:    'item'
         };
         await adminLogController.createAdminLog(log);
-
-        window.location.reload();
-        this.dismissModal();
     };
 
 
@@ -223,86 +228,112 @@ export default class AddItemModal extends React.Component{
         }
     };
 
+    /* Builds user input form */
+    buildForm(){
+        return(
+            <>
+            <div className='modalHeader'>
+                <h3>Add Item to database</h3>
+            </div>
+            <form onSubmit={(event) => {event.preventDefault(); this.addItem();}}>
+                <div className='modalBody'>
+                    <h4>Name</h4>
+                        <input 
+                        type='text' 
+                        id='name'
+                        className={ this.displayErrorMessage('name') ? 'invalid' : ''}
+                        value={this.state.name} 
+                        onChange={(evt) => this.handleChange(validateFields.validateName, evt)}
+                        onBlur={(evt) => this.handleBlur(validateFields.validateName, evt)}/>
+                        <br></br>
+                        { this.displayErrorMessage('name') }
+
+                    <h4>Description</h4>
+                        <input 
+                        type='text' 
+                        id='description' 
+                        className={ this.displayErrorMessage('description') ? 'invalid' : ''}
+                        value={this.state.description}
+                        onChange={(evt) => this.handleChange(validateFields.validateDescription, evt)}
+                        onBlur={(evt) => this.handleBlur(validateFields.validateDescription, evt)}/>
+                        <br></br>
+                        { this.displayErrorMessage('description') }
+
+                    <h4>Serial Number</h4>
+                        <input 
+                        type='text' 
+                        id='serialNumber' 
+                        className={ this.displayErrorMessage('serialNumber') ? 'invalid' : ''}
+                        value={this.state.serialNumber} 
+                        onChange={(evt) => this.handleChange(validateFields.validateSerialNumber, evt)}
+                        onBlur={(evt) => this.handleBlur(validateFields.validateSerialNumber, evt)}/>
+                        <br></br>
+                        { this.displayErrorMessage('serialNumber') }
+
+                    <h4>Notes</h4>
+                        <input 
+                        type='text' 
+                        id='notes' 
+                        className={ this.displayErrorMessage('notes') ? 'invalid' : ''}
+                        value={this.state.notes} 
+                        onChange={(evt) => this.handleChange(validateFields.validateNotes, evt)}
+                        onBlur={(evt) => this.handleBlur(validateFields.validateNotes, evt)}/>
+                        <br></br>
+                        { this.displayErrorMessage('notes') }
+
+                    <h4>Home Location</h4>
+                        <input 
+                        type='text' 
+                        id='homeLocation' 
+                        className={ this.displayErrorMessage('homeLocation') ? 'invalid' : ''}
+                        value={this.state.homeLocation} 
+                        onChange={(evt) => this.handleChange(validateFields.validateLocation, evt)}
+                        onBlur={(evt) => this.handleBlur(validateFields.validateLocation, evt)}/>
+                        <br></br>
+                        { this.displayErrorMessage('homeLocation') }
+
+                    <h4>Specific Location</h4>
+                        <input 
+                        type='text' 
+                        id='specificLocation' 
+                        className={ this.displayErrorMessage('specificLocation') ? 'invalid' : ''}
+                        value={this.state.specificLocation} 
+                        onChange={(evt) => this.handleChange(validateFields.validateSpecificLocation, evt)}
+                        onBlur={(evt) => this.handleBlur(validateFields.validateSpecificLocation, evt)}/>
+                        <br></br>
+                        { this.displayErrorMessage('specificLocation') }
+
+                </div>
+                <div className='modalFooter'>
+                    { this.isSumbitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
+                    <button type="reset" onClick={() => this.dismissModal()}>Close</button>
+                </div> 
+            </form>
+            </>
+        );
+    };
+
+    /* If a backend issue occurs, display message to user */
+    buildErrorDisplay(){
+        return(
+            <>
+            <div className='modalHeader'>
+                <h3>Error Has Occured</h3>
+            </div>
+            <div className='modalBody'>
+                <p className='errorMesage'> {this.controllerErrorMessage} </p>
+            </div>
+            <div className='modalFooter'>
+                <button type="reset" onClick={() => this.dismissModal()}>Close</button>
+            </div>
+            </>
+        );
+    };
+
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div className='modalHeader'>
-                    <h3>Add Item to database</h3>
-                </div>
-                <form onSubmit={(event) => {event.preventDefault(); this.addItem();}}>
-                    <div className='modalBody'>
-                        <h4>Name</h4>
-                            <input 
-                            type='text' 
-                            id='name'
-                            className={ this.displayErrorMessage('name') ? 'invalid' : ''}
-                            value={this.state.name} 
-                            onChange={(evt) => this.handleChange(validateFields.validateName, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validateName, evt)}/>
-                            <br></br>
-                            { this.displayErrorMessage('name') }
-
-                        <h4>Description</h4>
-                            <input 
-                            type='text' 
-                            id='description' 
-                            className={ this.displayErrorMessage('description') ? 'invalid' : ''}
-                            value={this.state.description}
-                            onChange={(evt) => this.handleChange(validateFields.validateDescription, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validateDescription, evt)}/>
-                            <br></br>
-                            { this.displayErrorMessage('description') }
-
-                        <h4>Serial Number</h4>
-                            <input 
-                            type='text' 
-                            id='serialNumber' 
-                            className={ this.displayErrorMessage('serialNumber') ? 'invalid' : ''}
-                            value={this.state.serialNumber} 
-                            onChange={(evt) => this.handleChange(validateFields.validateSerialNumber, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validateSerialNumber, evt)}/>
-                            <br></br>
-                            { this.displayErrorMessage('serialNumber') }
-
-                        <h4>Notes</h4>
-                            <input 
-                            type='text' 
-                            id='notes' 
-                            className={ this.displayErrorMessage('notes') ? 'invalid' : ''}
-                            value={this.state.notes} 
-                            onChange={(evt) => this.handleChange(validateFields.validateNotes, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validateNotes, evt)}/>
-                            <br></br>
-                            { this.displayErrorMessage('notes') }
-
-                        <h4>Home Location</h4>
-                            <input 
-                            type='text' 
-                            id='homeLocation' 
-                            className={ this.displayErrorMessage('homeLocation') ? 'invalid' : ''}
-                            value={this.state.homeLocation} 
-                            onChange={(evt) => this.handleChange(validateFields.validateLocation, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validateLocation, evt)}/>
-                            <br></br>
-                            { this.displayErrorMessage('homeLocation') }
-
-                        <h4>Specific Location</h4>
-                            <input 
-                            type='text' 
-                            id='specificLocation' 
-                            className={ this.displayErrorMessage('specificLocation') ? 'invalid' : ''}
-                            value={this.state.specificLocation} 
-                            onChange={(evt) => this.handleChange(validateFields.validateSpecificLocation, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validateSpecificLocation, evt)}/>
-                            <br></br>
-                            { this.displayErrorMessage('specificLocation') }
-
-                    </div>
-                    <div className='modalFooter'>
-                        { this.isSumbitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
-                        <button type="reset" onClick={() => this.dismissModal()}>Close</button>
-                    </div> 
-                </form>
+                { this.isControllerError ? this.buildErrorDisplay() : this.buildForm() }
             </Modal>
         );
     };

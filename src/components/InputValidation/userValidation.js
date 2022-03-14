@@ -1,14 +1,6 @@
 import validator from "validator";
 import { sanitizeData } from "./sanitizeData"
 
-/*
-firstname
-lastname
-username
-userRole
-password
-phonenumber
-*/
 class ValidateFields{
 
   /* Validates data and produces errors*/
@@ -49,15 +41,14 @@ class ValidateFields{
     return false;
   }
   validateUserRole(userRole){
-    
     if(userRole === ''){
-        return 'Please select which role the user will have';
+        return "Please select the user's role";
     }
     return false;
   }
   validatePassword(isRequired, password){
     if(isRequired){
-        if(!validator.isStrongPassword(password, {minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1})){
+        if(!validator.isStrongPassword(password, {minLength:8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1})){
             return 'Must contain at least 1 lowercase, 1 uppercase, 1 number, 1 symbol. Minimum Length: 8';
         }
     }
@@ -70,10 +61,10 @@ class ValidateFields{
     return false;
   }
   validatePhoneNumber(phoneNumber){
-      if(!validator.isMobilePhone(phoneNumber)){
-        return 'Please enter associated number';
-      }
-      return false;
+    if(!validator.isMobilePhone(phoneNumber) || !validator.isLength(phoneNumber, {min:10, max: 14})){
+      return 'Please enter a valid number';
+    }
+    return false;
   }
 
   validateSubmit(firstName, lastName, userName, userRole, phoneNumber, isRequired, password){

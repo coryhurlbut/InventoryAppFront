@@ -16,7 +16,7 @@ export default class EditUserModal extends React.Component{
         this.state = {
             isOpen:          props.isOpen,
             idArray:         props.idArray,
-            selectedObjects: props.selectedobjects,
+            selectedObjects: props.selectedObjects,
             firstName:       '',
             lastName:        '',
             userName:        '',
@@ -25,54 +25,66 @@ export default class EditUserModal extends React.Component{
             userRole:        '',
             phoneNumber:     '',
             status:          '',
-            error:           '',
-            errorDetails:    {
-                field:            '',
-                errorMessage:     ''
-            },
-            errors:          [],
-            isError:         false,
             pwDisabled:      true,
             pwRequired:      false,
             hasPassword:     false,
             resetBtn:        false,
             userId:          '',
-            userRoleDisabled:false
+            userRoleDisabled:false,
+
+            errorDetails:           {
+                field:        '',
+                errorMessage: ''
+            },
+            errors:                 [],
+            isControllerError:      false,
+            controllerErrorMessage: ''
         };
     };
 
+    /* Logic handeling of different roles and what they are able to access:
+        -Admin userRoles cannot modify their own role
+        -displays selected user's userRole
+        -password display/reset password logic */
     async componentDidMount(){
-        let thisUser = await UserController.getUserById(this.state.idArray[0]);
+        try {
+            let thisUser = await UserController.getUserById(this.state.idArray[0]);
 
-        //Disables userRole dropdown if the selected user is the user logged in
-        if (thisUser.userId === thisUser._id) {
-            this.setState({ userRoleDisabled: true });
-        };
+            //Disables userRole dropdown if the selected user is the user logged in
+            if (thisUser.userId === thisUser._id) {
+                this.setState({ userRoleDisabled: true });
+            };
 
-        //Sets the userRole select tag to the user's role
-        let selectUserRole = document.getElementById('selectUserRole');
-        selectUserRole.value = thisUser.userRole;
+            //Sets the userRole select tag to the user's role
+            let selectUserRole = document.getElementById('selectUserRole');
+            selectUserRole.value = thisUser.userRole;
 
-        //Sets the status select tag to the user's status
-        let selectUserStatus = document.getElementById('selectUserStatus');
-        selectUserStatus.value = thisUser.status;
+            //Sets the status select tag to the user's status
+            let selectUserStatus = document.getElementById('selectUserStatus');
+            selectUserStatus.value = thisUser.status;
 
-        /* Will set password reset button to show and track that 
-            the user has a password already if they were originally
-            a custodian or admin.*/
-        if (thisUser.userRole !== 'user') {
-            this.setState({ resetBtn: true, hasPassword: true });
-        };
+            /* Will set password reset button to show and track that 
+                the user has a password already if they were originally
+                a custodian or admin.*/
+            if (thisUser.userRole !== 'user') {
+                this.setState({ resetBtn: true, hasPassword: true });
+            };
 
-        this.setState({
-            firstName:   thisUser.firstName, 
-            lastName:    thisUser.lastName,
-            userName:    thisUser.userName,
-            userRole:    thisUser.userRole,
-            phoneNumber: thisUser.phoneNumber,
-            userId:      thisUser.userId,
-            status:      thisUser.status
-        });
+            this.setState({
+                firstName:   thisUser.firstName, 
+                lastName:    thisUser.lastName,
+                userName:    thisUser.userName,
+                userRole:    thisUser.userRole,
+                phoneNumber: thisUser.phoneNumber,
+                userId:      thisUser.userId,
+                status:      thisUser.status
+            });
+        } catch (error) {
+            //If user trys interacting with the modal before everything can properly load
+            //TODO: loading page icon instead of this
+            this.setState({ isControllerError: true,
+                            controllerErrorMessage: "An error occured while loading. Please refresh and try again."});
+        }
     };
 
     dismissModal() {
@@ -86,7 +98,7 @@ export default class EditUserModal extends React.Component{
             userName:    this.state.userName,
             password:    this.state.password,
             userRole:    this.state.userRole,
-            phoneNumber: this.state.phoneNumber,
+            phoneNumber: sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
             status:      this.state.status,
             hasPassword: this.state.hasPassword
         };
@@ -116,7 +128,8 @@ export default class EditUserModal extends React.Component{
         await UserController.updateUser(this.state.idArray[0], user)
         .then(async (auth) => {
             if ( auth.status !== undefined && auth.status >= 400 ) throw auth;
-            this.setState({ error: '', isError: false });
+            this.setState({ isControllerError: false, 
+                            controllerErrorMessage: ''});
             
             await AdminLogController.createAdminLog(log);
 
@@ -124,7 +137,8 @@ export default class EditUserModal extends React.Component{
             this.dismissModal();
         })
         .catch(async (err) => {            
-            this.setState({ error: err.message, isError : true });
+            this.setState({ isControllerError: true, 
+                            controllerErrorMessage: err.message}); 
         });
     };
 
@@ -375,12 +389,15 @@ export default class EditUserModal extends React.Component{
         }
     };
 
+    /* Builds user input form */
     buildForm(){
         return(
             <>
+            <div className='modalHeader'>
+                <h3>Edit User</h3>
+            </div>
             <form onSubmit={(event) => { event.preventDefault(); this.editUser();}}>
                 <div className='modalBody'>
-                    {this.state.isError ? <label className='errorMessage'>{this.state.error}</label> : null}
                     <h4>First Name</h4>
                     <input 
                         type='text' 
@@ -464,13 +481,27 @@ export default class EditUserModal extends React.Component{
         );
     };
 
+    /* If a backend issue occurs, display message to user */
+    buildErrorDisplay(){
+        return(
+            <>
+            <div className='modalHeader'>
+                <h3>Error Has Occured</h3>
+            </div>
+            <div className='modalBody'>
+                <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
+            </div>
+            <div className='modalFooter'>
+                <button type="reset" onClick={() => this.dismissModal()}>Close</button>
+            </div>
+            </>
+        );
+    };
+
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div className='modalHeader'>
-                    <h3>Edit User</h3>
-                </div>
-                {this.buildForm()}
+                { this.state.isControllerError ? this.buildErrorDisplay() : this.buildForm() }
             </Modal>
         );
     };
