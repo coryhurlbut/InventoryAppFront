@@ -2,6 +2,7 @@ import React from "react";
 import { useTable, useRowSelect } from "react-table";
 import '../styles/table.css'
 
+
 function Table({ columns, data, ...props }) {
     const {
         getTableProps,
@@ -42,7 +43,11 @@ function Table({ columns, data, ...props }) {
                                     row.toggleRowSelected()
                                     props.setIdArray(row.original._id);
                                 }} 
-                                style={{'backgroundColor': (row.isSelected ? '#013e44' : '')}}
+                                style={ //unable to style in other file due to needing the conditional changes
+                                    row.isSelected ? 
+                                    { 'backgroundColor': (row.index % 2 === 1 ? '#76c5ceb6' : '#a8f5feb6')}
+                                    : null
+                                }
                             >
                                 {row.cells.map(cell => {
                                     return <td {...cell.getCellProps()} >{cell.render('Cell')}</td>

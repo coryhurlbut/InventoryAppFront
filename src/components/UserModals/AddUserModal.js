@@ -22,6 +22,7 @@ export default class AddUserModal extends React.Component{
             confirmPassword: '',
             userRole:        '',
             phoneNumber:     '',
+            status:          'active',
             error:           '',
             errorDetails:    {
                 field:            '',
@@ -45,7 +46,8 @@ export default class AddUserModal extends React.Component{
             userName:       this.state.userName,
             password:       this.state.password,
             userRole:       this.state.userRole,
-            phoneNumber:    this.state.phoneNumber
+            phoneNumber:    this.state.phoneNumber,
+            status:         this.state.status
         };
 
         let returnedUser = {};

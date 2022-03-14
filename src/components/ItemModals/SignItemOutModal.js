@@ -26,7 +26,7 @@ export default class SignItemOutModal extends React.Component{
     };
 
     async componentDidMount(){
-        let users = await userController.getAllUsers();
+        let users = await userController.getAllActiveUsers();
         this.setState({ users: users });
         this.assignOptionGroup();
     };

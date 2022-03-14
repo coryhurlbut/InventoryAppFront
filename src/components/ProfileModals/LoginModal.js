@@ -47,6 +47,7 @@ export default class LoginModal extends React.Component{
                 </div>
                 <form onSubmit={(event) => {event.preventDefault(); this.login();}}>
                     <div className='modalBody'>
+                    {this.state.isError ? <label className='errorMessage'>{this.state.error === 'User is not activated' ? this.state.error : null}</label> : null}
                         <div id='modalBody_Username'>
                             <h4>Username: </h4>
                             <input 

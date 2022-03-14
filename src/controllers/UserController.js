@@ -10,6 +10,11 @@ class UserController extends AuthController{
         return await this.requestWithAuth('users', {method: 'GET'});
     };
 
+    //Gets all active users
+    async getAllActiveUsers() {
+        return await this.requestWithAuth('users/active', {method: 'GET'});
+    }
+
     //Gets a single user by Id
     async getUserById(userId) { 
         let response = await this.requestWithAuth(`users/${userId}`, {method: 'GET'});
@@ -26,9 +31,19 @@ class UserController extends AuthController{
         return await this.requestWithAuth('users', {method: 'POST', body: JSON.stringify(user)});
     };
 
-    //Deletes a single user by Id
+    // //Deletes a single user by Id
     async deleteUsers(userIds) {
         return await this.requestWithAuth(`users/delete`, {method: 'DELETE', body: JSON.stringify(userIds)});
+    };
+
+    //Activates users. Must pass the user ids in a JSON array
+    async activateUsers(userIds) {
+        return await this.requestWithAuth(`users/activate`, {method: 'PATCH', body: JSON.stringify(userIds)});
+    };
+
+    //Deactivates users. Must pass the user ids in a JSON array
+    async deactivateUsers(userIds) {
+        return await this.requestWithAuth(`users/deactivate`, {method: 'PATCH', body: JSON.stringify(userIds)});
     };
 
     //Updates a single user. Must pass the user's Id and the new user data

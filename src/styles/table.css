@@ -139,10 +139,6 @@ table tr:nth-child(odd){background-color: #929292;}
 
 table tr:hover {background-color: #a8f5feb6;}
 
-table tr .selectedRow {
-  background-color: #013e44 !important;
-}
-
 table th, tfoot td {
   padding-top: 4px;
   padding-bottom: 4px;

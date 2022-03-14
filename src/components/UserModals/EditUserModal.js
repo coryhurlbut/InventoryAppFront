@@ -22,6 +22,7 @@ export default class EditUserModal extends React.Component{
             confirmPassword: '',
             userRole:        '',
             phoneNumber:     '',
+            status:          '',
             error:           '',
             errorDetails:    {
                 field:            '',
@@ -47,8 +48,12 @@ export default class EditUserModal extends React.Component{
         };
 
         //Sets the userRole select tag to the user's role
-        let select = document.getElementById('selectUser');
-        select.value = thisUser.userRole;
+        let selectUserRole = document.getElementById('selectUserRole');
+        selectUserRole.value = thisUser.userRole;
+
+        //Sets the status select tag to the user's status
+        let selectUserStatus = document.getElementById('selectUserStatus');
+        selectUserStatus.value = thisUser.status;
 
         /* Will set password reset button to show and track that 
             the user has a password already if they were originally
@@ -63,7 +68,8 @@ export default class EditUserModal extends React.Component{
             userName:    thisUser.userName,
             userRole:    thisUser.userRole,
             phoneNumber: thisUser.phoneNumber,
-            userId:      thisUser.userId
+            userId:      thisUser.userId,
+            status:      thisUser.status
         });
     };
 
@@ -79,6 +85,7 @@ export default class EditUserModal extends React.Component{
             password:    this.state.password,
             userRole:    this.state.userRole,
             phoneNumber: this.state.phoneNumber,
+            status:      this.state.status,
             hasPassword: this.state.hasPassword
         };
 
@@ -344,7 +351,9 @@ export default class EditUserModal extends React.Component{
             case 'phoneNumber':
                 this.setState({ phoneNumber: sanitizeData.sanitizeWhitespace(fieldVal)});
                 break;
-                                                                                            
+            case 'selectUserStatus':
+                this.setState({ status: fieldVal});
+                break;                                                                       
             default:
                 break;
         }
@@ -385,7 +394,7 @@ export default class EditUserModal extends React.Component{
                         readOnly
                         value={this.state.userName}/>
                     <h4>User's Role</h4>
-                        <select disabled={this.state.userRoleDisabled} id='selectUser'  onChange={(event) => this.handleUserRoleChange(event)}>
+                        <select disabled={this.state.userRoleDisabled} id='selectUserRole'  onChange={(event) => this.handleUserRoleChange(event)}>
                             <option id="userOpt" value='user'>User</option>
                             <option id="custodianOpt" value='custodian'>Custodian</option>
                             <option id="adminOpt" value='admin'>Admin</option>
@@ -424,6 +433,11 @@ export default class EditUserModal extends React.Component{
                         onBlur={(evt) => this.handleBlur(validateFields.validatePhoneNumber, evt)}/>
                         <br></br>
                         { this.displayErrorMessage('phoneNumber') }
+                    <h4>Status</h4>
+                        <select disabled={this.state.userRoleDisabled} id='selectUserStatus'  onChange={(event) => this.setState({status: event.target.value})}>
+                            <option id="activeOpt" value='active'>Active</option>
+                            <option id="inactiveOpt" value='inactive'>Inactive</option>
+                        </select>
                 </div>
                 <div className='modalFooter'>
                     { this.isSubmitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
