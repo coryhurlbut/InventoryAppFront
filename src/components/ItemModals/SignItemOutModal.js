@@ -1,8 +1,8 @@
-import React from 'react';
-import {Modal, ThemeSettingName} from '@fluentui/react';
-import itemController from '../../controllers/ItemController';
-import itemLogController from '../../controllers/ItemLogController';
-import userController from '../../controllers/UserController';
+import React                from 'react';
+import { Modal }            from '@fluentui/react';
+import { ItemController, 
+        ItemLogController,
+        UserController }    from '../../controllers';
 
 /*
 *   Modal for signing out an item
@@ -15,24 +15,21 @@ export default class SignItemOutModal extends React.Component{
             isOpen:        props.isOpen,
             item:          null,
             idArray:       props.idArray,
+            selectedObjects: props.selectedObjects,
             users:         [],
             selection:     null,
             userSelected:  {}
         };
-
-        this.dismissModal = this.dismissModal.bind(this);
-        this.signItemsOut = this.signItemsOut.bind(this);
-        this.assignOptionGroup = this.assignOptionGroup.bind(this);
     };
 
     async componentDidMount(){
-        let users = await userController.getAllActiveUsers();
+        let users = await UserController.getAllActiveUsers();
         this.setState({ users: users });
         this.assignOptionGroup();
     };
 
     dismissModal() {
-        this.setState({isOpen: false});
+        this.setState({ isOpen: false });
     };
 
     async signItemsOut(){
@@ -43,18 +40,29 @@ export default class SignItemOutModal extends React.Component{
                 break;
             }
         }
-        let info = {
-            itemId:      this.state.idArray[0],
-            userId:      this.state.userSelected._id,
-            custodianId: '',
-            action:      'signed out',
-            notes:       'test'
-        }
 
-        await itemController.signItemOut(this.state.idArray, this.state.selection);
-        await itemLogController.createItemLog(info);
-        window.location.reload();
-        this.dismissModal();
+        await ItemController.signItemOut(this.state.idArray, this.state.selection)
+        .then( async (auth) => {
+            if(auth.status !== undefined && auth.status >= 400) throw auth;
+            this.setState({ error: '', isError: false });
+
+            for (let i = 0; i < this.state.idArray.length; i++) {
+                let info = {
+                    itemId:      this.state.idArray[i],
+                    userId:      this.state.userSelected._id,
+                    custodianId: '',
+                    action:      'signed out',
+                    notes:       'test'
+                };
+                await ItemLogController.createItemLog(info);
+            };
+
+            window.location.reload();
+            this.dismissModal();
+        })
+        .catch(async (err) => {            
+            this.setState({ error: err.message, isError: true });
+        });
     };
 
     //method that dynamically generates child option tags to grp option tags in the render 
@@ -69,18 +77,16 @@ export default class SignItemOutModal extends React.Component{
             } else if (this.state.users[i].userRole === 'custodian') {
                 document.getElementById('custodianGroup').append(option);
             }
-            
         }
-        
     };
 
     /* Loops through the array of items and displays them as a list */
-    displayArray(idArray){
-        const displayID = idArray.map(
-            (item) => <li key={ item.toString() } > { item } </li>);
+    displayArray(items){
+        const displayItems = items.map(
+            (item) => <li key={ item._id } > { item.name } </li>);
 
         return(
-            <ul> { displayID } </ul>
+            <ul> { displayItems } </ul>
         );
     };
 
@@ -99,10 +105,10 @@ export default class SignItemOutModal extends React.Component{
                 <div className='modalHeader'>
                     <h3>Sign Item Out</h3>                    
                 </div>
-                <form onSubmit={(Event) => {Event.preventDefault(); this.signItemsOut();}}>
+                <form onSubmit={(event) => {event.preventDefault(); this.signItemsOut();}}>
                 <div className='modalBody'>
                     <h4>You are about to sign out: </h4>
-                    {this.displayArray(this.state.idArray)}
+                    {this.displayArray(this.state.selectedObjects)}
                     <label>Choose a user: </label>
                     <select name='usersS' id='usersS' defaultValue={''} 
                     onChange={(event) => this.setState({ selection: event.target.value})}>
@@ -114,7 +120,7 @@ export default class SignItemOutModal extends React.Component{
                 </div>
                 <div className='modalFooter'>
                     { this.isSumbitAvailable() ? <input type='submit'></input> : <input type='submit' disabled></input>}
-                    <button type="reset" onClick={this.dismissModal}>Close</button>
+                    <button type="reset" onClick={() => this.dismissModal()}>Close</button>
                 </div>
                 </form>
             </Modal>

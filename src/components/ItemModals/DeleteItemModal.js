@@ -14,6 +14,7 @@ export default class DeleteItemModal extends React.Component{
             isOpen:  props.isOpen,
             item:    null,
             idArray: props.idArray,
+            selectedObjects: props.selectedObjects,
             error:   '',
             isError: false
         };
@@ -49,12 +50,12 @@ export default class DeleteItemModal extends React.Component{
     };
 
     /* Loops through the array of items and displays them as a list */
-    displayArray(idArray){
-        const displayID = idArray.map(
-            (idArray) => <li key={ idArray.toString() } > { idArray } </li>);
+    displayArray(items){
+        const displayItem = items.map(
+            (item) => <li key={ item._id } > { item.name } </li>);
 
         return(
-            <ul> { displayID } </ul>
+            <ul> { displayItem } </ul>
         );
     };
 
@@ -66,7 +67,7 @@ export default class DeleteItemModal extends React.Component{
                 </div>
                 <div className='modalBody'>
                     <h4>You are about to delete the following:</h4>
-                    {this.displayArray(this.state.idArray)}
+                    {this.displayArray(this.state.selectedObjects)}
                 </div>
                 <div className='modalFooter'>
                     <button onClick={() => this.deleteItem()}>Delete</button>

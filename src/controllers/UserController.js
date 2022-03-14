@@ -50,6 +50,31 @@ class UserController extends AuthController{
     async updateUser(userId, user) {
         return await this.requestWithAuth(`users/${userId}`, {method: 'PATCH', body: JSON.stringify(user)});
     };
+
+    //Checks if users have items signed out to them. Called before delete or deactivating a user.
+    async checkSignouts(users, items) {
+        let res = { status: '', message: ''};
+
+        items.forEach(item => {
+            if (users.length > 1) {
+                    users.map(user => {
+                    if (item.possessedBy === user.userName) {
+                        res.status = 'error';
+                        res.message = 'Cannot delete or deactivate a user while they have an item signed out';
+                        return res;
+                    }
+                })
+            } else {
+                if (item.possessedBy === users.userName) {
+                    res.status = 'error';
+                    res.message = 'Cannot delete or deactivate a user while they have an item signed out';
+                    return res;
+                }
+            }
+        });
+        
+        return res;
+    }
 };
 
 //Exports an instance of the class instead of the class

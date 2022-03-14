@@ -1,43 +1,13 @@
 import React from 'react';
 import '@fluentui/react';
 import '../styles/App.css';
-import {authController}         from '../controllers/AuthController';
+import { authController }       from '../controllers/AuthController';
 import ContentList              from './ContentList';
 import ItemLogModal             from './LogModals/ItemLogModal';
 import AdminLogModal            from './LogModals/AdminLogModal';
 import LoginModal               from './ProfileModals/LoginModal';
 import LogoutModal              from './ProfileModals/LogoutModal';
-
-//Settings for what is to be displayed based on the user's role
-const displayPresets = {
-    main: {
-        userContentIsVisible:   false,
-        signItemInOutIsVisible: false,
-        editControlIsVisible:   false,
-        allowEditNotes:         false,
-        isLoggedIn:             false,
-        itemLogIsVisible:       false,
-        adminLogIsVisible:      false
-    },
-    custodian: {
-        userContentIsVisible:   true,
-        signItemInOutIsVisible: true,
-        editControlIsVisible:   false,
-        allowEditNotes:         false,
-        isLoggedIn:             true,
-        itemLogIsVisible:       true,
-        adminLogIsVisible:      false
-    },
-    admin: {
-        userContentIsVisible:   true,
-        signItemInOutIsVisible: true,
-        editControlIsVisible:   true,
-        allowEditNotes:         true,
-        isLoggedIn:             true,
-        itemLogIsVisible:       true,
-        adminLogIsVisible:      true
-    }
-};
+import { displayPresets }       from './ContentPresets';
 
 /*
 *   Builds the page by calling components and passing down what should be visible
@@ -51,7 +21,6 @@ export default class ContentBuilder extends React.Component {
             view:           displayPresets.main,
             isLoggedIn:     false,
             modal:          null,
-            err:            null,
             role:           null
         };
 
@@ -59,8 +28,6 @@ export default class ContentBuilder extends React.Component {
 
         this.setAuth        = this.setAuth.bind(this);
         this.hideModal      = this.hideModal.bind(this);
-        this.loginLogout    = this.loginLogout.bind(this);
-        this.buildContent   = this.buildContent.bind(this);
         this.clearAuth      = this.clearAuth.bind(this);
     };
 
@@ -78,7 +45,11 @@ export default class ContentBuilder extends React.Component {
 
     setAuth(auth) {
         if (auth.user.userRole === 'admin' || auth.user.userRole === 'custodian') {
-            this.setState({auth: auth, isLoggedIn: true, view: displayPresets[auth.user.userRole]});
+            this.setState({ 
+                auth: auth, 
+                isLoggedIn: true, 
+                view: displayPresets[auth.user.userRole]
+            });
         } else {
             this.clearAuth();
             return;
@@ -87,27 +58,54 @@ export default class ContentBuilder extends React.Component {
     };
 
     clearAuth() {
-        this.setState({auth: null, isLoggedIn: false, view: displayPresets.main});
+        this.setState({ 
+            auth: null, 
+            isLoggedIn: false, 
+            view: displayPresets.main
+        });
     };
 
     hideModal() {
-        this.setState({modal: null});
+        this.setState({ modal: null });
     };
 
     loginLogout() {
         if (this.state.isLoggedIn) {
-            this.setState({modal: <LogoutModal auth={this.state.auth} isOpen={true} hideModal={this.hideModal} clearAuth={this.clearAuth}/>});
+            this.setState({
+                modal: <LogoutModal 
+                    auth={this.state.auth} 
+                    isOpen={true} 
+                    hideModal={this.hideModal} 
+                    clearAuth={this.clearAuth}
+                />
+            });
         } else {
-            this.setState({modal: <LoginModal isOpen={true} hideModal={this.hideModal} setAuth={this.setAuth}/>});
+            this.setState({
+                modal: <LoginModal 
+                    isOpen={true} 
+                    hideModal={this.hideModal} 
+                    setAuth={this.setAuth}
+                />
+            });
         };
     };
 
     showItemLogModal(){
-        this.setState({ modal: <ItemLogModal isOpen={true} hideModal={this.hideModal} /> });
+        this.setState({ 
+            modal: <ItemLogModal 
+                isOpen={true} 
+                hideModal={this.hideModal} 
+            /> 
+        });
     }
 
     showAdminLogModal() {
-        this.setState({ modal: <AdminLogModal isOpen={true} hideModal={this.hideModal}/>  })
+        this.setState({ 
+            modal: <AdminLogModal 
+                isOpen={true} 
+                hideModal={this.hideModal}
+            />  
+        });
     }
 
     buildContent(view) {
@@ -118,7 +116,7 @@ export default class ContentBuilder extends React.Component {
                      <h2>Inventory App</h2>
                      <div id='userProfile'>
                         {this.state.isLoggedIn ? <label>{this.state.auth.user.userName} : {this.state.auth.user.userRole}</label> : null}
-                        <button className='logInLogOut' onClick={this.loginLogout}>
+                        <button className='logInLogOut' onClick={() => this.loginLogout()}>
                             {this.state.isLoggedIn ? 'Log Out': 'Log In'}
                         </button>
                      </div>

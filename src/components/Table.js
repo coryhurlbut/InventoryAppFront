@@ -41,7 +41,7 @@ function Table({ columns, data, ...props }) {
                                 onClick={                            
                                     () => {
                                     row.toggleRowSelected()
-                                    props.setIdArray(row.original._id);
+                                    props.setParentState(row.original);
                                 }} 
                                 style={ //unable to style in other file due to needing the conditional changes
                                     row.isSelected ? 

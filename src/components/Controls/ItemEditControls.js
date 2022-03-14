@@ -10,15 +10,10 @@ export default class ItemEditControls extends React.Component {
         super(props);
         
         this.state = {
-            item:  null,
             modal: null,
-            idArray: props.idArray
+            idArray: props.idArray,
+            selectedObjects: props.selectedObjects
         };
-
-        this.hideModal  = this.hideModal.bind(this);
-        this.addItem    = this.addItem.bind(this);
-        this.editItem   = this.editItem.bind(this);
-        this.deleteItem = this.deleteItem.bind(this);
     };
 
     componentDidUpdate(prevProps, prevState){
@@ -28,31 +23,50 @@ export default class ItemEditControls extends React.Component {
     };
 
     addItem () {
-        this.setState({modal: <AddItemModal isOpen={true} hideModal={this.hideModal}/>});
+        this.setState({
+            modal: <AddItemModal 
+                isOpen={true} 
+                hideModal={() => this.hideModal()}
+            />
+        });
     };
 
     editItem () {
-        this.setState({modal: <EditItemModal isOpen={true} idArray={this.state.idArray} hideModal={this.hideModal}/>});
+        this.setState({
+            modal: <EditItemModal 
+                isOpen={true} 
+                idArray={this.state.idArray} 
+                hideModal={() => this.hideModal()}
+                selectedObjects={this.state.selectedObjects}
+            />
+        });
     };
 
     deleteItem () {
-        this.setState({modal: <DeleteItemModal isOpen={true} idArray={this.state.idArray} hideModal={this.hideModal}/>});
+        this.setState({
+            modal: <DeleteItemModal 
+                isOpen={true} 
+                idArray={this.state.idArray} 
+                hideModal={() => this.hideModal()}
+                selectedObjects={this.state.selectedObjects}
+            />
+        });
     };
 
     hideModal() {
-        this.setState({modal: null});
+        this.setState({ modal: null });
     };
 
     render() {
         return (
             <div className='Edit_Controls'>
-                <button onClick={this.addItem}>
+                <button onClick={() => this.addItem()}>
                     Add Item
                 </button>
-                <button onClick={this.editItem} disabled={this.state.idArray.length === 1 ? false : true}>
+                <button onClick={() => this.editItem()} disabled={this.state.idArray.length === 1 ? false : true}>
                     Edit Item
                 </button>
-                <button onClick={this.deleteItem} disabled={this.state.idArray.length > 0 ? false : true}>
+                <button onClick={() => this.deleteItem()} disabled={this.state.idArray.length > 0 ? false : true}>
                     Delete Item
                 </button>
                 {this.state.modal}

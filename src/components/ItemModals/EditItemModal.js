@@ -23,6 +23,7 @@ export default class EditItemModal extends React.Component{
             specificLocation: '',
             available:        true,
             idArray:          props.idArray,
+            selectedObjects:  props.selectedObjects,
             errorDetails:     {
                 field:            '',
                 errorMessage:     ''
@@ -47,7 +48,7 @@ export default class EditItemModal extends React.Component{
     };
 
     dismissModal() {
-        this.setState({isOpen: false});
+        this.setState({ isOpen: false });
     };
 
     async editItem() {
@@ -100,7 +101,7 @@ export default class EditItemModal extends React.Component{
     /* When an errorDetail is no longer present, remove from errors list */
     handleRemoveError(fieldID){
         const updatedErrors = this.state.errors.filter(errorDetails => errorDetails.field !== fieldID);
-        this.setState({ errors: updatedErrors});
+        this.setState({ errors: updatedErrors });
     };
 
     /* Loops through the errors list

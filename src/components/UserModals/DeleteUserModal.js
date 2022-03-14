@@ -1,7 +1,8 @@
 import React                from 'react';
 import { Modal }            from '@fluentui/react';
-import UserController       from '../../controllers/UserController';
-import adminLogController   from '../../controllers/AdminLogController';
+import { UserController, 
+    AdminLogController, 
+    ItemController }        from '../../controllers';
 
 /*
 *   Modal for deleting a user
@@ -11,10 +12,11 @@ export default class DeleteUserModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen:   props.isOpen,
-            idArray:  props.idArray,
-            error:    '',
-            isError:  false
+            isOpen:         props.isOpen,
+            idArray:        props.idArray,
+            selectedObjects:  props.selectedObjects,
+            error:          '',
+            isError:        false
         };
     };
 
@@ -23,6 +25,17 @@ export default class DeleteUserModal extends React.Component{
     };
     
     async deleteUser() {
+        let unavailableItems = await ItemController.getUnavailableItems();
+        
+        //Checks if any user that is going to get deleted has any items signed out
+        let res = await UserController.checkSignouts(this.state.selectedObjects, unavailableItems);
+        if (res.status === 'error') {
+            this.setState({ isError: true, error: res.message });
+            return;
+        } else {
+            this.setState({ isError: false, error: '' });
+        };
+
         await UserController.deleteUsers(this.state.idArray)
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
@@ -36,7 +49,7 @@ export default class DeleteUserModal extends React.Component{
                     action:     'delete',
                     content:    'user'
                 };
-                await adminLogController.createAdminLog(log);
+                await AdminLogController.createAdminLog(log);
             };
 
             window.location.reload();
@@ -48,12 +61,12 @@ export default class DeleteUserModal extends React.Component{
     };
 
     /* Loops through the array of items and displays them as a list */
-    displayArray(idArray){
-        const displayID = idArray.map(
-            (idArray) => <li key={ idArray.toString() } > { idArray } </li>);
+    displayArray(users){
+        const displayUsers = users.map(
+            (user) => <li key={ user._id } > { user.userName } </li>);
 
         return(
-            <ul> { displayID } </ul>
+            <ul> { displayUsers } </ul>
         );
     };
 
@@ -68,7 +81,7 @@ export default class DeleteUserModal extends React.Component{
                         this.state.error :
                         <div>
                             <h4>You are about to delete the following:</h4>
-                            {this.displayArray(this.state.idArray)}
+                            {this.displayArray(this.state.selectedObjects)}
                         </div>
                     }
                 </div>
