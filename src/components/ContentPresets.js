@@ -78,6 +78,10 @@ const usersColumns = [
     {
         Header: 'Phone Number',
         accessor: 'phoneNumber'
+    },
+    {
+        Header: 'Status',
+        accessor: 'status'
     }
 ];
 

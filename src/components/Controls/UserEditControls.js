@@ -17,9 +17,6 @@ export default class UserEditControls extends React.Component {
         };
 
         this.hideModal  = this.hideModal.bind(this);
-        this.addUser    = this.addUser.bind(this);
-        this.editUser   = this.editUser.bind(this);
-        this.deleteUser = this.deleteUser.bind(this);
         this.buildButtons = this.buildButtons.bind(this);
     };
 
@@ -49,7 +46,7 @@ export default class UserEditControls extends React.Component {
         if(this.state.role === 'custodian'){
             return(
             <div className='Edit_Controls'>
-                <button onClick={this.addUser}>
+                <button onClick={() => this.addUser()}>
                     Add User
                 </button>
                 {this.state.modal}
@@ -58,13 +55,13 @@ export default class UserEditControls extends React.Component {
         }else{
             return(
             <div className='Edit_Controls'>
-                <button onClick={this.addUser}>
+                <button onClick={() => this.addUser()}>
                     Add User
                 </button>
-                <button onClick={this.editUser} disabled={this.state.idArray.length === 1 ? false : true}>
+                <button onClick={() => this.editUser()} disabled={this.state.idArray.length === 1 ? false : true}>
                     Edit User
                 </button>
-                <button onClick={this.deleteUser} disabled={this.state.idArray.length > 0 ? false : true}>
+                <button onClick={() => this.deleteUser()} disabled={this.state.idArray.length > 0 ? false : true}>
                     Delete User
                 </button>
                 {this.state.modal}
@@ -73,13 +70,6 @@ export default class UserEditControls extends React.Component {
     }
 
     render() {
-        return(
-        <>
-        {this.buildButtons()}
-        </>
-
-        );
-            
-        
+        return(this.buildButtons());
     };
 };
