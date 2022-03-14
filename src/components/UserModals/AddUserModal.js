@@ -23,33 +23,42 @@ export default class AddUserModal extends React.Component{
             confirmPassword: '',
             userRole:        '',
             phoneNumber:     '',
-            error:           '',
-            errorDetails:    {
-                field:            '',
-                errorMessage:     ''
-            },
-            errors:          [],
-            isError:         false,
             pwDisabled:      true,
             pwRequired:      false,
-            userRoleDisabled:false
+            userRoleDisabled:false,
+            
+            errorDetails:           {
+                field:        '',
+                errorMessage: ''
+            },
+            errors:                 [],
+            isControllerError:      false,
+            controllerErrorMessage: ''
         };
     };
 
     /* When a custodian is logged in, 
         allow only the ability to add user roles */
     async componentDidMount(){
-        let signedInAccount = await authController.getUserInfo();
+        try {
+            let signedInAccount = await authController.getUserInfo();
 
-        if(signedInAccount.user.user.userRole === 'custodian'){
-            //Front end display so interaction show's user is selected
-            let select = document.getElementById('selectUser');
-            select.value = 'user';
+            if(signedInAccount.user.user.userRole === 'custodian'){
+                //Front end display so it show's user is selected
+                let select = document.getElementById('selectUser');
+                select.value = 'user';
 
-            //Backend functionality of setting the role to a user
-            this.setState({ userRoleDisabled: true,
-                            userRole: 'user'});
+                //Backend functionality of setting the role to a user
+                this.setState({ userRoleDisabled: true,
+                                userRole: 'user'});
+            }
+        } catch (error) {
+            //If user trys interacting with the modal before everything can properly load
+            //TODO: loading page icon instead of this
+            this.setState({ isControllerError: true,
+                            controllerErrorMessage: "An error occured while loading. Please refresh and try again."});
         }
+        
     };
 
     dismissModal() {
@@ -63,7 +72,7 @@ export default class AddUserModal extends React.Component{
             userName:       this.state.userName,
             password:       this.state.password,
             userRole:       this.state.userRole,
-            phoneNumber:    this.state.phoneNumber
+            phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
         };
 
         let returnedUser = {};
@@ -71,11 +80,16 @@ export default class AddUserModal extends React.Component{
         .then((data) => {
             if (data.status !== undefined && data.status >= 400) throw data;
             
-            this.setState({error: '', isError: false });
+            this.setState({ isControllerError: false, 
+                            controllerErrorMessage: ''});
             returnedUser = data;
+
+            window.location.reload();
+            this.dismissModal();
         })
-        .catch( async (err) => {            
-            this.setState({ error: err.message, isError: true });
+        .catch( async (err) => {  
+            this.setState({ isControllerError: true, 
+                            controllerErrorMessage: err.message});          
         });
 
         let log = {
@@ -86,9 +100,6 @@ export default class AddUserModal extends React.Component{
             content:    'user'
         };
         await adminLogController.createAdminLog(log);
-
-        window.location.reload();
-        this.dismissModal();
     };
 
     enablePasswordEdit(event) {
@@ -326,12 +337,15 @@ export default class AddUserModal extends React.Component{
         }
     };
 
+    /* Builds user input form */
     buildForm(){
         return(
             <>
+            <div className='modalHeader'>
+                <h3>Add User to Database</h3>
+            </div>
             <form onSubmit={(Event) => {Event.preventDefault(); this.addUser();}}>
                 <div className='modalBody'>
-                    {this.state.isError ? <label className='errorMessage'>{this.state.error}</label> : null}
                     <h4>First Name</h4>
                         <input 
                         type='text' 
@@ -370,6 +384,7 @@ export default class AddUserModal extends React.Component{
                             disabled={this.state.userRoleDisabled} 
                             id='selectUser' 
                             defaultValue={''}  
+                            onChange={(evt) => this.handleChange(validateFields.validateUserRole, evt)}
                             onBlur={(evt) => this.handleBlur(validateFields.validateUserRole, evt)}>
 
                             <option label='' hidden disabled ></option>
@@ -417,7 +432,7 @@ export default class AddUserModal extends React.Component{
                     
                 </div>
                 <div className='modalFooter'>
-                    { this.isSumbitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
+                    {this.isSumbitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
                     <button type="reset" onClick={() => this.dismissModal()}>Close</button>
                 </div>
             </form>
@@ -425,13 +440,27 @@ export default class AddUserModal extends React.Component{
         );
     }
 
+    /* If a backend issue occurs, display message to user */
+    buildErrorDisplay(){
+        return(
+            <>
+            <div className='modalHeader'>
+                <h3>Error Has Occured</h3>
+            </div>
+            <div className='modalBody'>
+                <p className='errorMesage'> {this.controllerErrorMessage} </p>
+            </div>
+            <div className='modalFooter'>
+                <button type="reset" onClick={() => this.dismissModal()}>Close</button>
+            </div>
+            </>
+        );
+    };
+
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div className='modalHeader'>
-                    <h3>Add User to Database</h3>
-                </div>
-                {this.buildForm()}
+                { this.isControllerError ? this.buildErrorDisplay() : this.buildForm() }
             </Modal>
         );
     };

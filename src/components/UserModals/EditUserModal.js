@@ -22,49 +22,61 @@ export default class EditUserModal extends React.Component{
             confirmPassword: '',
             userRole:        '',
             phoneNumber:     '',
-            error:           '',
-            errorDetails:    {
-                field:            '',
-                errorMessage:     ''
-            },
-            errors:          [],
-            isError:         false,
             pwDisabled:      true,
             pwRequired:      false,
             hasPassword:     false,
             resetBtn:        false,
             userId:          '',
-            userRoleDisabled:false
+            userRoleDisabled:false,
+
+            errorDetails:           {
+                field:        '',
+                errorMessage: ''
+            },
+            errors:                 [],
+            isControllerError:      false,
+            controllerErrorMessage: ''
         };
     };
 
+    /* Logic handeling of different roles and what they are able to access:
+        -Admin userRoles cannot modify their own role
+        -displays selected user's userRole
+        -password display/reset password logic */
     async componentDidMount(){
-        let thisUser = await userController.getUserById(this.state.idArray[0]);
+        try {
+            let thisUser = await userController.getUserById(this.state.idArray[0]);
 
-        //Disables userRole dropdown if the selected user is the user logged in
-        if (thisUser.userId === thisUser._id) {
-            this.setState({ userRoleDisabled: true });
-        };
+            //Disables userRole dropdown if the selected user is the user logged in
+            if (thisUser.userId === thisUser._id) {
+                this.setState({ userRoleDisabled: true });
+            };
 
-        //Sets the userRole select tag to the user's role
-        let select = document.getElementById('selectUser');
-        select.value = thisUser.userRole;
+            //Sets the userRole select tag to the user's role
+            let select = document.getElementById('selectUser');
+            select.value = thisUser.userRole;
 
-        /* Will set password reset button to show and track that 
-            the user has a password already if they were originally
-            a custodian or admin.*/
-        if (thisUser.userRole !== 'user') {
-            this.setState({ resetBtn: true, hasPassword: true });
-        };
+            /* Will set password reset button to show and track that 
+                the user has a password already if they were originally
+                a custodian or admin.*/
+            if (thisUser.userRole !== 'user') {
+                this.setState({ resetBtn: true, hasPassword: true });
+            };
 
-        this.setState({
-            firstName:   thisUser.firstName, 
-            lastName:    thisUser.lastName,
-            userName:    thisUser.userName,
-            userRole:    thisUser.userRole,
-            phoneNumber: thisUser.phoneNumber,
-            userId:      thisUser.userId
-        });
+            this.setState({
+                firstName:   thisUser.firstName, 
+                lastName:    thisUser.lastName,
+                userName:    thisUser.userName,
+                userRole:    thisUser.userRole,
+                phoneNumber: thisUser.phoneNumber,
+                userId:      thisUser.userId
+            });
+        } catch (error) {
+            //If user trys interacting with the modal before everything can properly load
+            //TODO: loading page icon instead of this
+            this.setState({ isControllerError: true,
+                            controllerErrorMessage: "An error occured while loading. Please refresh and try again."});
+        }
     };
 
     dismissModal() {
@@ -78,7 +90,7 @@ export default class EditUserModal extends React.Component{
             userName:    this.state.userName,
             password:    this.state.password,
             userRole:    this.state.userRole,
-            phoneNumber: this.state.phoneNumber,
+            phoneNumber: sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
             hasPassword: this.state.hasPassword
         };
 
@@ -93,15 +105,19 @@ export default class EditUserModal extends React.Component{
         await userController.updateUser(this.state.idArray[0], user)
         .then(async (auth) => {
             if ( auth.status !== undefined && auth.status >= 400 ) throw auth;
-            this.setState({ error: '', isError: false });
+            this.setState({ isControllerError: false, 
+                            controllerErrorMessage: ''});
             
             await adminLogController.createAdminLog(log);
 
-            window.location.reload();
+            //window.location.reload();
+            
+            window.location.reload(true);
             this.dismissModal();
         })
         .catch(async (err) => {            
-            this.setState({ error: err.message, isError : true });
+            this.setState({ isControllerError: true, 
+                            controllerErrorMessage: err.message}); 
         });
     };
 
@@ -350,12 +366,15 @@ export default class EditUserModal extends React.Component{
         }
     };
 
+    /* Builds user input form */
     buildForm(){
         return(
             <>
+            <div className='modalHeader'>
+                <h3>Edit User</h3>
+            </div>
             <form onSubmit={(event) => { event.preventDefault(); this.editUser();}}>
                 <div className='modalBody'>
-                    {this.state.isError ? <label className='errorMessage'>{this.state.error}</label> : null}
                     <h4>First Name</h4>
                     <input 
                         type='text' 
@@ -434,13 +453,27 @@ export default class EditUserModal extends React.Component{
         );
     };
 
+    /* If a backend issue occurs, display message to user */
+    buildErrorDisplay(){
+        return(
+            <>
+            <div className='modalHeader'>
+                <h3>Error Has Occured</h3>
+            </div>
+            <div className='modalBody'>
+                <p className='errorMesage'> {this.controllerErrorMessage} </p>
+            </div>
+            <div className='modalFooter'>
+                <button type="reset" onClick={() => this.dismissModal()}>Close</button>
+            </div>
+            </>
+        );
+    };
+
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div className='modalHeader'>
-                    <h3>Edit User</h3>
-                </div>
-                {this.buildForm()}
+                { this.isControllerError ? this.buildErrorDisplay() : this.buildForm() }
             </Modal>
         );
     };

@@ -62,7 +62,7 @@ export default class LoginModal extends React.Component{
                             <input 
                             type='password' 
                             key='password' 
-                            required 
+                            required
                             value={this.state.password} 
                             onChange={(event) => {this.setState({password: event.target.value})}}/>
                             {this.state.isError ? <label className='errorMessage'>{this.state.error === 'Password is incorrect' ? this.state.error : null}</label> : null}

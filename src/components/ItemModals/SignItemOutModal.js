@@ -17,7 +17,10 @@ export default class SignItemOutModal extends React.Component{
             idArray:       props.idArray,
             users:         [],
             selection:     null,
-            userSelected:  {}
+            userSelected:  {},
+
+            isControllerError:      false,
+            controllerErrorMessage: ''
         };
 
         this.dismissModal = this.dismissModal.bind(this);
@@ -26,9 +29,16 @@ export default class SignItemOutModal extends React.Component{
     };
 
     async componentDidMount(){
-        let users = await userController.getAllUsers();
-        this.setState({ users: users });
-        this.assignOptionGroup();
+        try {
+            let users = await userController.getAllUsers();
+            this.setState({ users: users });
+            this.assignOptionGroup();
+        } catch (error) {
+            //If user trys interacting with the modal before everything can properly load
+            //TODO: loading page icon instead of this
+            this.setState({ isControllerError: true,
+                            controllerErrorMessage: "An error occured while loading. Please refresh and try again."});
+        }
     };
 
     dismissModal() {
@@ -36,25 +46,33 @@ export default class SignItemOutModal extends React.Component{
     };
 
     async signItemsOut(){
-        for(var i = 0; i < this.state.users.length; i++){
-            if(this.state.users[i].userName === this.state.selection){
-                let user = this.state.users[i];
-                await this.setState({ userSelected: user});
-                break;
+        try {
+            for(var i = 0; i < this.state.users.length; i++){
+                if(this.state.users[i].userName === this.state.selection){
+                    let user = this.state.users[i];
+                    await this.setState({ userSelected: user});
+                    break;
+                }
             }
+            let info = {
+                itemId:      this.state.idArray[0],
+                userId:      this.state.userSelected._id,
+                custodianId: '',
+                action:      'signed out',
+                notes:       'test'
+            }
+    
+            await itemController.signItemOut(this.state.idArray, this.state.selection);
+            await itemLogController.createItemLog(info);
+            window.location.reload();
+            this.dismissModal();
+        } catch (error) {
+            //If user trys interacting with the modal before everything can properly load
+            //TODO: loading page icon instead of this
+            this.setState({ isControllerError: true,
+                            controllerErrorMessage: error.message });
         }
-        let info = {
-            itemId:      this.state.idArray[0],
-            userId:      this.state.userSelected._id,
-            custodianId: '',
-            action:      'signed out',
-            notes:       'test'
-        }
-
-        await itemController.signItemOut(this.state.idArray, this.state.selection);
-        await itemLogController.createItemLog(info);
-        window.location.reload();
-        this.dismissModal();
+        
     };
 
     //method that dynamically generates child option tags to grp option tags in the render 
@@ -93,30 +111,56 @@ export default class SignItemOutModal extends React.Component{
         return false;
     };
 
+    /* Builds display for deleting items */
+    buildSignOutNotification(){
+        return(
+            <>
+            <div className='modalHeader'>
+                <h3>Sign Item Out</h3>                    
+            </div>
+            <form onSubmit={(Event) => {Event.preventDefault(); this.signItemsOut();}}>
+            <div className='modalBody'>
+                <h4>You are about to sign out: </h4>
+                {this.displayArray(this.state.idArray)}
+                <label>Choose a user: </label>
+                <select name='usersS' id='usersS' defaultValue={''} 
+                onChange={(event) => this.setState({ selection: event.target.value})}>
+                    <option label='' hidden disabled ></option>
+                    <optgroup label='Users' id='userGroup'></optgroup>
+                    <optgroup label='Custodians' id='custodianGroup'></optgroup>
+                    <optgroup label='Admins' id='adminGroup'></optgroup>
+                </select>
+            </div>
+            <div className='modalFooter'>
+                { this.isSumbitAvailable() ? <input type='submit'></input> : <input type='submit' disabled></input>}
+                <button type="reset" onClick={this.dismissModal}>Close</button>
+            </div>
+            </form>
+            </>
+        );
+    };
+
+    /* If a backend issue occurs, display message to user */
+    buildErrorDisplay(){
+        return(
+            <>
+            <div className='modalHeader'>
+                <h3>Error Has Occured</h3>
+            </div>
+            <div className='modalBody'>
+                <p className='errorMesage'> {this.controllerErrorMessage} </p>
+            </div>
+            <div className='modalFooter'>
+                <button type="reset" onClick={() => this.dismissModal()}>Close</button>
+            </div>
+            </>
+        );
+    };
+
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div className='modalHeader'>
-                    <h3>Sign Item Out</h3>                    
-                </div>
-                <form onSubmit={(Event) => {Event.preventDefault(); this.signItemsOut();}}>
-                <div className='modalBody'>
-                    <h4>You are about to sign out: </h4>
-                    {this.displayArray(this.state.idArray)}
-                    <label>Choose a user: </label>
-                    <select name='usersS' id='usersS' defaultValue={''} 
-                    onChange={(event) => this.setState({ selection: event.target.value})}>
-                        <option label='' hidden disabled ></option>
-                        <optgroup label='Users' id='userGroup'></optgroup>
-                        <optgroup label='Custodians' id='custodianGroup'></optgroup>
-                        <optgroup label='Admins' id='adminGroup'></optgroup>
-                    </select>
-                </div>
-                <div className='modalFooter'>
-                    { this.isSumbitAvailable() ? <input type='submit'></input> : <input type='submit' disabled></input>}
-                    <button type="reset" onClick={this.dismissModal}>Close</button>
-                </div>
-                </form>
+                { this.isControllerError ? this.buildErrorDisplay() : this.buildSignOutNotification() }
             </Modal>
         );
     }

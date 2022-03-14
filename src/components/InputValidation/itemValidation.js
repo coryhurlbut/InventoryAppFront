@@ -19,8 +19,8 @@ class ValidateFields{
       return 'Please provide a name';
     } else if (!validator.isAlphanumeric(santizedName, 'en-US', {ignore: '[\s-]'})) {
       return '-_- letters and numbers only';
-    } else if(!validator.isLength(santizedName, {min:1, max:50})){
-      return 'Name cannot exceed 50 characters'
+    } else if(!validator.isLength(santizedName, {min:1, max:25})){
+      return 'Name cannot exceed 25 characters'
     }
     return false;
   }
@@ -30,7 +30,35 @@ class ValidateFields{
 
     if (validator.isEmpty(santizedDescription)) {
       return 'Please provide a description';
-    } else if (!validator.isAlphanumeric(santizedDescription, 'en-US', {ignore: '[\s-]'})) {
+    } else if (!validator.isAlphanumeric(santizedDescription, 'en-US', {ignore: "[\s-']"})) {
+      return '-_- letters and numbers only';
+    } else if(!validator.isLength(santizedDescription, {min:1, max:25})){
+      return 'Description cannot exceed 25 characters'
+    }
+    return false;
+  }
+
+  validateSerialNumber(serialNumber){
+    let santizedSerialNum = sanitizeData.sanitizeWhitespace(serialNumber);
+
+    if (validator.isEmpty(santizedSerialNum)) {
+      return 'Please provide a Serial Number';
+    } else if (!validator.isAlphanumeric(santizedSerialNum, 'en-US', {ignore: '[\s-]'})) {
+      return '-_- letters and numbers only';
+    } else if(!validator.isLength(santizedSerialNum, {min:1, max:25})){
+      return 'Serial Number cannot exceed 25 characters'
+    }
+    return false;
+  }
+
+  validateNotes(notes){
+    let santizedNotes = sanitizeData.sanitizeWhitespace(notes);
+
+    //Notes isn't a required field, so if empty, return no error
+    if(validator.isEmpty(santizedNotes)){
+      return false;
+    }
+    else if (!validator.isAlphanumeric(santizedNotes, 'en-US', {ignore: '[\s-]'})) {
       return '-_- letters and numbers only';
     }
     return false;
@@ -43,6 +71,8 @@ class ValidateFields{
       return 'Please provide a location';
     } else if (!validator.isAlphanumeric(santizedHomeLoc, 'en-US', {ignore: '[\s-]'})) {
       return '-_- letters and numbers only';
+    } else if(!validator.isLength(santizedHomeLoc, {min:1, max:15})){
+      return 'Home Location cannot exceed 15 characters'
     }
     return false;
   }
@@ -54,30 +84,8 @@ class ValidateFields{
       return 'Please provide a specific location ';
     } else if (!validator.isAlphanumeric(santizedLocation, 'en-US', {ignore: '[\s-]'})) {
       return '-_- letters and numbers only';
-    }
-    return false;
-  }
-
-  validateSerialNumber(serialNumber){
-    let santizedSerialNum = sanitizeData.sanitizeWhitespace(serialNumber);
-
-    if (validator.isEmpty(santizedSerialNum)) {
-      return 'Please provide a Serial Number';
-    } else if (!validator.isAlphanumeric(santizedSerialNum, 'en-US', {ignore: '[\s-]'})) {
-      return '-_- letters and numbers only';
-    }
-    return false;
-  }
-  
-  validateNotes(notes){
-    let santizedNotes = sanitizeData.sanitizeWhitespace(notes);
-
-    //Notes isn't a required field, so if empty, return no error
-    if(validator.isEmpty(santizedNotes)){
-      return false;
-    }
-    else if (!validator.isAlphanumeric(santizedNotes, 'en-US', {ignore: '[\s-]'})) {
-      return '-_- letters and numbers only';
+    } else if(!validator.isLength(santizedLocation, {min:1, max:15})){
+      return 'Specific Location cannot exceed 15 characters'
     }
     return false;
   }
