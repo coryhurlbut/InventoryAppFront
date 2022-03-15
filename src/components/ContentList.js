@@ -114,7 +114,7 @@ export default class ContentList extends React.Component {
     }
 
     clearChecks(){
-        this.setState({ idArray: [], selectedUsers: [] });
+        this.setState({ idArray: [], selectedObjects: [] });
     }
 
     //Callback function passed to table component. Bound to ContentList state to update this state when called by child component.

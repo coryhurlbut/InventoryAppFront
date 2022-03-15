@@ -18,8 +18,11 @@ export default class ItemEditControls extends React.Component {
 
     componentDidUpdate(prevProps, prevState){
         if(prevProps !== this.props){
-            this.setState({ idArray: this.props.idArray });
-        }
+            this.setState({ 
+                idArray: this.props.idArray, 
+                selectedObjects: this.props.selectedObjects
+            });
+        };
     };
 
     addItem () {

@@ -106,14 +106,16 @@ export default class EditUserModal extends React.Component{
         //Checks if items are signed out to user if admin is trying to deactivate the account.
         if(user.status === 'inactive') {
             let unavailableItems = await ItemController.getUnavailableItems();
-        
+
             //Checks if any user that is going to get deleted has any items signed out
             let res = await UserController.checkSignouts(user, unavailableItems);
             if (res.status === 'error') {
-                this.setState({ isError: true, error: res.message });
+                this.setState({ isControllerError: true, 
+                                controllerErrorMessage: res.message });
                 return;
             } else {
-                this.setState({ isError: false, error: '' });
+                this.setState({ isControllerError: false,
+                                controllerErrorMessage: '' });
             };
         };
 

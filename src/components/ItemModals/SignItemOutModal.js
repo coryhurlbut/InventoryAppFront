@@ -12,11 +12,12 @@ export default class SignItemOutModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen:        props.isOpen,
-            idArray:       props.idArray,
-            selectedObjects: props.selectedObjects,
-            users:         [],
-            selection:     '',
+            isOpen:                 props.isOpen,
+            idArray:                props.idArray,
+            selectedObjects:        props.selectedObjects,
+            users:                  [],
+            userId:                 null,
+            userName:               '',
 
             isControllerError:      false,
             controllerErrorMessage: ''
@@ -41,7 +42,7 @@ export default class SignItemOutModal extends React.Component{
     };
 
     async signItemsOut(){
-        await ItemController.signItemOut(this.state.idArray, this.state.selection)
+        await ItemController.signItemOut(this.state.idArray, this.state.userName)
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ controllerErrorMessage: '', isControllerError: false });
@@ -49,7 +50,7 @@ export default class SignItemOutModal extends React.Component{
             for (let i = 0; i < this.state.idArray.length; i++) {
                 let info = {
                     itemId:      this.state.idArray[i],
-                    userId:      this.state.selection,
+                    userId:      this.state.userId,
                     custodianId: '',
                     action:      'signed out',
                     notes:       'test'
@@ -74,7 +75,7 @@ export default class SignItemOutModal extends React.Component{
         for (let i = 0; i < this.state.users.length; i++) {
             let option = document.createElement("option");
                 option.append(this.state.users[i].userName);
-                option.key = this.state.users[i]._id;
+                option.setAttribute('key', this.state.users[i]._id)
             if (this.state.users[i].userRole === 'user') {
                 document.getElementById('userGroup').append(option);
             } else if (this.state.users[i].userRole === 'admin') {
@@ -98,7 +99,7 @@ export default class SignItemOutModal extends React.Component{
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
     isSumbitAvailable(){
-        if(this.state.selection){
+        if(this.state.userId !== null){
             return true;
         }
         return false;
@@ -117,7 +118,12 @@ export default class SignItemOutModal extends React.Component{
                 {this.displayArray(this.state.selectedObjects)}
                 <label>Choose a user: </label>
                 <select name='usersS' id='usersS' defaultValue={''} 
-                onChange={(event) => this.setState({ selection: event.target.key})}>
+                onChange={(event) => {
+                    this.setState({ 
+                        userName: event.target.value, 
+                        userId: event.target.options[event.target.options.selectedIndex].attributes.key.value
+                    })/*This grabs the key attribute from the selected option*/ }}
+                > 
                     <option label='' hidden disabled ></option>
                     <optgroup label='Users' id='userGroup'></optgroup>
                     <optgroup label='Custodians' id='custodianGroup'></optgroup>
