@@ -121,10 +121,9 @@ export default class ContentList extends React.Component {
     setParentState(user) {
         let arr = this.state.idArray;
         let selectedObjects = this.state.selectedObjects;
-
         if ( arr.includes(user._id) ) {
             arr = arr.filter(el => el !== user._id);
-            selectedObjects.filter(body => body._id !== user._id);
+            selectedObjects = selectedObjects.filter(object => object._id !== user._id);
         } else {
             arr.push(user._id);
             selectedObjects.push(user);
