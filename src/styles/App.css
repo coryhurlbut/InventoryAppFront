@@ -38,27 +38,82 @@ body {
     color: #787878;
     margin: 4px;
 }
-.pageFooter {
-    padding: 10px;
-    
-    text-align: center;
+
+/* User Profile icon with navigation dropdown menu*/
+.profileContainer.Main{
+    position: relative;
+    padding-right: 5px;
+}
+.profileContainer.Main button{
+    color: #787878;
+    background-color: transparent;
+    border: none;
+}
+.profileContainer.Main img{
+    height:50px; 
+    border-radius: 50%; 
+    border: 2px solid #013e44;
+
+    mix-blend-mode: overlay;
 }
 
-#userProfile{
-    margin: 4px;
+/* Dropdown is only visible when profileIcon is hovered over*/
+.profileContainer.Main:hover .profileContainer.DropDown{
+    display: flex;
+}
 
+/* What does the profileDropDown actually look like*/
+.profileContainer.DropDown{
+    min-width: 100%;
+    right: 0;
+    border-radius: 5px;
+
+    position: absolute;
+    background-color: #1a1a1a;
     color: #787878;
-    text-transform: capitalize;
 
+    display: none;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    flex-direction: column;
+}
+.profileContainer.DropDown button:hover{
+    color: #414141;
+
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: #013e44;
+    text-underline-offset: 3px;
+}
+.profileContainer.DropDown button{
+    background-color: transparent;
+    border: none;
+    font-weight: bold;
+    color: #787878;
+}
+/* Display the information text differently and make it background complementary */
+.contentContainer.Text{
+    color: #414141;
+}
+.contentContainer{
     display: flex;
     justify-content: space-evenly;
-    align-items:flex-end;          /*Allows the button to be flushed to the right*/
+    align-items: flex-start;
     flex-direction: column;
+
+    padding: 10px;
+}
+/* Fancy line breaker...IDK how else to do this */
+.contentDivider{
+    height: 1px;
+    width: 100%;
+
+    background-color: #787878;
 }
 
 /* Floats loginLogout button to the right in main header*/
 .logInLogOut {
-    margin-top: 5px;
+    margin: 10px;
     padding: 3px;
 
     border: 1px solid #787878;
@@ -68,10 +123,10 @@ body {
     text-transform: uppercase;
 }
 .logInLogOut:hover{
-    border: 1px solid #29b347;
+    border: 1px solid #013e44;
 
     font-weight: bold;
-    color: #29b347;
+    color: #013e44;
 }
 
 /* Clear floats after the columns */
@@ -79,11 +134,4 @@ body {
     content: "";
     display: table;
     clear: both;
-}
-
-/*
-    ToDo: Figure out styling and how to display 
-*/
-.ToDo{
-    color: white;
 }

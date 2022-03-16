@@ -7,6 +7,7 @@ import ItemLogModal             from './LogModals/ItemLogModal';
 import AdminLogModal            from './LogModals/AdminLogModal';
 import LoginModal               from './ProfileModals/LoginModal';
 import LogoutModal              from './ProfileModals/LogoutModal';
+import profileIcon              from '../styles/profile_icon_25x25.jpg';
 
 //Settings for what is to be displayed based on the user's role
 const displayPresets = {
@@ -47,12 +48,13 @@ export default class ContentBuilder extends React.Component {
         super(props);
         
         this.state = {
-            auth:           null,
-            view:           displayPresets.main,
-            isLoggedIn:     false,
-            modal:          null,
-            err:            null,
-            role:           null
+            auth:             null,
+            view:             displayPresets.main,
+            isLoggedIn:       false,
+            modal:            null,
+            err:              null,
+            role:             null,
+            isDropdownActive: false
         };
 
         this.error = null;
@@ -116,13 +118,26 @@ export default class ContentBuilder extends React.Component {
                 {this.state.modal}
                 <div className="pageHeader">
                      <h2>Inventory App</h2>
-                     <div id='userProfile'>
-                        {this.state.isLoggedIn ? <label>{this.state.auth.user.userName} : {this.state.auth.user.userRole}</label> : null}
-                        <button className='logInLogOut' onClick={this.loginLogout}>
-                            {this.state.isLoggedIn ? 'Log Out': 'Log In'}
-                        </button>
-                     </div>
-                     
+                     { this.state.isLoggedIn ? 
+                        <div className='profileContainer Main'>
+                            <button onClick={ () => { this.setState({ isDropdownActive : true}) } }><img src={ profileIcon } alt='My Profile'/></button>
+                            <div className='profileContainer DropDown'>
+                                <div className='contentContainer Text'>
+                                    <label>Account:</label>
+                                    <label>{ this.state.auth.user.userName }</label>
+                                </div>
+                                <div className='contentDivider'></div>
+                                <div className='contentContainer Action'>
+                                    <button hidden={ !view.itemLogIsVisible } onClick={ () => this.showItemLogModal() }>Item Logs</button>
+                                    <button hidden={ !view.adminLogIsVisible } onClick={ () => this.showAdminLogModal() }>Admin Logs</button>
+                                </div>
+                                <div className='contentDivider'></div>
+                                <div className='contentContainer Action'>
+                                    <button onClick={ () => this.loginLogout() }>Logout</button>
+                                </div>
+                            </div>
+                        </div> : 
+                        <button className='logInLogOut' onClick={ () => this.loginLogout() }>Login</button> }
                 </div>
                 <div className="pageBody">
                     <ContentList 
@@ -131,10 +146,6 @@ export default class ContentBuilder extends React.Component {
                         userContentIsVisible={view.userContentIsVisible} 
                         signItemInOutIsVisible={view.signItemInOutIsVisible}
                     />
-                    <div className='pageFooter'>
-                        <button hidden={!view.itemLogIsVisible} onClick={() => this.showItemLogModal()}>Show Item Logs</button>
-                        <button hidden={!view.adminLogIsVisible} onClick={() => this.showAdminLogModal()}>Show Admin Logs</button>
-                    </div> 
                 </div>
             </>
         );

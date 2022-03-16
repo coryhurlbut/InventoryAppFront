@@ -6,8 +6,8 @@ import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
 import Table                        from './Table';
 import { availableItemsContent, 
-    unavailableItemsContent, 
-    usersContent }                  from './ContentPresets';
+         unavailableItemsContent, 
+         usersContent }             from './ContentPresets';
 import '../styles/table.css';
 import '../styles/App.css';
 import '../styles/Modal.css';
@@ -126,7 +126,11 @@ export default class ContentList extends React.Component {
 
     buildContentList () {
         if(this.state.content.length === 0){
-            return "No content available"
+            return(
+                <>
+                <p>"No content available"</p>
+                </>
+            );
         };
 
         return(
