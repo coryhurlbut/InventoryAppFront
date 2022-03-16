@@ -1,10 +1,11 @@
-import React from 'react';
-import {Modal} from '@fluentui/react';
-import userController from '../../controllers/UserController';
-import adminLogController from '../../controllers/AdminLogController';
+import React                    from 'react';
+import { Modal }                from '@fluentui/react';
+import { UserController,
+        ItemController, 
+        AdminLogController }    from '../../controllers';
 
-import { validateFields } from '../InputValidation/userValidation';
-import { sanitizeData } from '../InputValidation/sanitizeData';
+import { validateFields }       from '../InputValidation/userValidation';
+import { sanitizeData }         from '../InputValidation/sanitizeData';
 /*
 *   Modal for editing a user
 */
@@ -15,6 +16,7 @@ export default class EditUserModal extends React.Component{
         this.state = {
             isOpen:          props.isOpen,
             idArray:         props.idArray,
+            selectedObjects: props.selectedObjects,
             firstName:       '',
             lastName:        '',
             userName:        '',
@@ -46,7 +48,7 @@ export default class EditUserModal extends React.Component{
         -password display/reset password logic */
     async componentDidMount(){
         try {
-            let thisUser = await userController.getUserById(this.state.idArray[0]);
+            let thisUser = await UserController.getUserById(this.state.idArray[0]);
 
             //Disables userRole dropdown if the selected user is the user logged in
             if (thisUser.userId === thisUser._id) {
@@ -101,6 +103,22 @@ export default class EditUserModal extends React.Component{
             hasPassword: this.state.hasPassword
         };
 
+        //Checks if items are signed out to user if admin is trying to deactivate the account.
+        if(user.status === 'inactive') {
+            let unavailableItems = await ItemController.getUnavailableItems();
+
+            //Checks if any user that is going to get deleted has any items signed out
+            let res = await UserController.checkSignouts(user, unavailableItems);
+            if (res.status === 'error') {
+                this.setState({ isControllerError: true, 
+                                controllerErrorMessage: res.message });
+                return;
+            } else {
+                this.setState({ isControllerError: false,
+                                controllerErrorMessage: '' });
+            };
+        };
+
         let log = {
             itemId:     'N/A',
             userId:     this.state.idArray[0],
@@ -109,17 +127,15 @@ export default class EditUserModal extends React.Component{
             content:    'user'
         };
 
-        await userController.updateUser(this.state.idArray[0], user)
+        await UserController.updateUser(this.state.idArray[0], user)
         .then(async (auth) => {
             if ( auth.status !== undefined && auth.status >= 400 ) throw auth;
             this.setState({ isControllerError: false, 
                             controllerErrorMessage: ''});
             
-            await adminLogController.createAdminLog(log);
+            await AdminLogController.createAdminLog(log);
 
-            //window.location.reload();
-            
-            window.location.reload(true);
+            window.location.reload();
             this.dismissModal();
         })
         .catch(async (err) => {            
@@ -180,7 +196,7 @@ export default class EditUserModal extends React.Component{
     /* When an errorDetail is no longer present, remove from errors list */
     handleRemoveError(fieldID){
         const updatedErrors = this.state.errors.filter(errorDetails => errorDetails.field !== fieldID);
-        this.setState({ errors: updatedErrors});
+        this.setState({ errors: updatedErrors });
     };
 
     /* Loops through the errors list
@@ -475,7 +491,7 @@ export default class EditUserModal extends React.Component{
                 <h3>Error Has Occured</h3>
             </div>
             <div className='modalBody'>
-                <p className='errorMesage'> {this.controllerErrorMessage} </p>
+                <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
             </div>
             <div className='modalFooter'>
                 <button type="reset" onClick={() => this.dismissModal()}>Close</button>
@@ -487,7 +503,7 @@ export default class EditUserModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.isControllerError ? this.buildErrorDisplay() : this.buildForm() }
+                { this.state.isControllerError ? this.buildErrorDisplay() : this.buildForm() }
             </Modal>
         );
     };

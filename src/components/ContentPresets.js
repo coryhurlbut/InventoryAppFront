@@ -104,3 +104,33 @@ export const usersContent = {
     columns:            usersColumns
 };
 
+//Settings for what is to be displayed in ContentBuilder based on the user's role
+export const displayPresets = {
+    main: {
+        userContentIsVisible:   false,
+        signItemInOutIsVisible: false,
+        editControlIsVisible:   false,
+        allowEditNotes:         false,
+        isLoggedIn:             false,
+        itemLogIsVisible:       false,
+        adminLogIsVisible:      false
+    },
+    custodian: {
+        userContentIsVisible:   true,
+        signItemInOutIsVisible: true,
+        editControlIsVisible:   false,
+        allowEditNotes:         false,
+        isLoggedIn:             true,
+        itemLogIsVisible:       true,
+        adminLogIsVisible:      false
+    },
+    admin: {
+        userContentIsVisible:   true,
+        signItemInOutIsVisible: true,
+        editControlIsVisible:   true,
+        allowEditNotes:         true,
+        isLoggedIn:             true,
+        itemLogIsVisible:       true,
+        adminLogIsVisible:      true
+    }
+};

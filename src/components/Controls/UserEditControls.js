@@ -1,6 +1,5 @@
 import React from 'react';
 import '@fluentui/react';
-// import UserController from '../controllers/UserController';
 import { AddUserModal, DeleteUserModal, EditUserModal } from '..//UserModals';
 
 /*
@@ -13,33 +12,56 @@ export default class UserEditControls extends React.Component {
         this.state = {
             modal: null,
             idArray: props.idArray,
+            selectedObjects: props.selectedObjects,
             role: props.role
         };
 
         this.hideModal  = this.hideModal.bind(this);
-        this.buildButtons = this.buildButtons.bind(this);
     };
 
     componentDidUpdate(prevProps, prevState){
         if(prevProps !== this.props){
-            this.setState({ role: this.props.role, idArray: this.props.idArray});
+            this.setState({ 
+                role: this.props.role, 
+                idArray: this.props.idArray, 
+                selectedObjects: this.props.selectedObjects
+            });
         };
     };
     
     addUser () {
-        this.setState({modal: <AddUserModal isOpen={true} hideModal={this.hideModal}/>});
+        this.setState({
+            modal: <AddUserModal 
+                isOpen={true} 
+                hideModal={this.hideModal}
+                />
+        });
     };
 
     editUser () {
-        this.setState({modal: <EditUserModal isOpen={true} hideModal={this.hideModal} idArray={this.state.idArray}/>});
+        this.setState({
+            modal: <EditUserModal 
+                isOpen={true} 
+                hideModal={this.hideModal} 
+                idArray={this.state.idArray} 
+                selectedObjects={this.state.selectedObjects} 
+            />
+        });
     };
 
     deleteUser () {
-        this.setState({modal: <DeleteUserModal isOpen={true} hideModal={this.hideModal} idArray={this.state.idArray}/>});
+        this.setState({
+            modal: <DeleteUserModal 
+                isOpen={true} 
+                hideModal={this.hideModal} 
+                idArray={this.state.idArray} 
+                selectedObjects={this.state.selectedObjects} 
+            />
+        });
     };
 
     hideModal() {
-        this.setState({modal: null});
+        this.setState({ modal: null });
     };
 
     buildButtons() {

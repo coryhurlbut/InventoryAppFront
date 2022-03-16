@@ -1,7 +1,7 @@
-import React from 'react';
-import {Modal} from '@fluentui/react';
-import itemController from '../../controllers/ItemController';
-import itemLogController from '../../controllers/ItemLogController';
+import React                from 'react';
+import { Modal }            from '@fluentui/react';
+import { ItemController, 
+        ItemLogController } from '../../controllers'
 
 /*
 *   Modal for signing an item in
@@ -12,49 +12,52 @@ export default class SignItemInModal extends React.Component{
         
         this.state = {
             isOpen:  props.isOpen,
-            item:    null,
             idArray: props.idArray,
-
+            selectedObjects: props.selectedObjects,
             isControllerError:      false,
             controllerErrorMessage: ''
         };
-
-        this.dismissModal = this.dismissModal.bind(this);
-        this.signItemsIn = this.signItemsIn.bind(this);
     };
 
     dismissModal() {
-        this.setState({isOpen: false});
+        this.setState({ isOpen: false });
     };
 
     async signItemsIn(){
-        let info = {
-            itemId:      this.state.idArray[0],
-            userId:      'test',
-            custodianId: '',
-            action:      'signed in',
-            notes:       'test'
-        }
-        try {
-            await itemController.signItemIn(this.state.idArray);
-            await itemLogController.createItemLog(info);
-            window.location.reload(false);
+        await ItemController.signItemIn(this.state.idArray)
+        .then( async (auth) => {
+            if(auth.status !== undefined && auth.status >= 400) throw auth;
+            this.setState({ controllerErrorMessage: '', isControllerError: false });
+
+            for (let i = 0; i < this.state.idArray.length; i++) {
+                let info = {
+                    itemId:      this.state.idArray[0],
+                    userId:      'test',
+                    custodianId: '',
+                    action:      'signed in',
+                    notes:       'test'
+                };
+                await ItemLogController.createItemLog(info);
+            };
+
+            window.location.reload();
             this.dismissModal();
-        } catch (error) {
+        })
+        .catch(async (err) => {            
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
             this.setState({ isControllerError: true,
-                            controllerErrorMessage: "An error occured while loading. Please refresh and try again."});
-        }
+                controllerErrorMessage: "An error occured while loading. Please refresh and try again."});
+        });
     };
 
     /* Loops through the array of items and displays them as a list */
-    displayArray(idArray){
-        const displayID = idArray.map(
-            (idArray) => <li key={ idArray.toString() } > { idArray } </li>);
+    displayArray(items){
+        const displayItem = items.map(
+            (item) => <li key={ item._id } > { item.name } </li>);
 
         return(
-            <ul> { displayID } </ul>
+            <ul> { displayItem } </ul>
         );
     };
 
@@ -67,11 +70,11 @@ export default class SignItemInModal extends React.Component{
             </div>
             <div className='modalBody'>
                 <h4>You are about to sign back in:</h4>
-                {this.displayArray(this.state.idArray)}
+                {this.displayArray(this.state.selectedObjects)}
             </div>
             <div className='modalFooter'>
-                <button onClick={this.signItemsIn}>Submit</button>
-                <button onClick={this.dismissModal}>Close</button>
+                <button onClick={() => this.signItemsIn()}>Submit</button>
+                <button onClick={() => this.dismissModal()}>Close</button>
             </div>
             </>
         );
@@ -85,7 +88,7 @@ export default class SignItemInModal extends React.Component{
                 <h3>Error Has Occured</h3>
             </div>
             <div className='modalBody'>
-                <p className='errorMesage'> {this.controllerErrorMessage} </p>
+                <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
             </div>
             <div className='modalFooter'>
                 <button type="reset" onClick={() => this.dismissModal()}>Close</button>
@@ -97,7 +100,7 @@ export default class SignItemInModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.isControllerError ? this.buildErrorDisplay() : this.buildSignInNotification() }
+                { this.state.isControllerError ? this.buildErrorDisplay() : this.buildSignInNotification() }
             </Modal>
         );
     };

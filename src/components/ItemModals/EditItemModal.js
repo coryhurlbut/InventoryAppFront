@@ -23,10 +23,10 @@ export default class EditItemModal extends React.Component{
             specificLocation: '',
             available:        true,
             idArray:          props.idArray,
-            
-            errorDetails:           {
-                field:        '',
-                errorMessage: ''
+            selectedObjects:  props.selectedObjects,
+            errorDetails:     {
+                field:            '',
+                errorMessage:     ''
             },
             errors:                 [],
             isControllerError:      false,
@@ -56,7 +56,7 @@ export default class EditItemModal extends React.Component{
     };
 
     dismissModal() {
-        this.setState({isOpen: false});
+        this.setState({ isOpen: false });
     };
 
     async editItem() {
@@ -111,7 +111,7 @@ export default class EditItemModal extends React.Component{
     /* When an errorDetail is no longer present, remove from errors list */
     handleRemoveError(fieldID){
         const updatedErrors = this.state.errors.filter(errorDetails => errorDetails.field !== fieldID);
-        this.setState({ errors: updatedErrors});
+        this.setState({ errors: updatedErrors });
     };
 
     /* Loops through the errors list
@@ -330,7 +330,7 @@ export default class EditItemModal extends React.Component{
                 <h3>Error Has Occured</h3>
             </div>
             <div className='modalBody'>
-                <p className='errorMesage'> {this.controllerErrorMessage} </p>
+                <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
             </div>
             <div className='modalFooter'>
                 <button type="reset" onClick={() => this.dismissModal()}>Close</button>
@@ -342,7 +342,7 @@ export default class EditItemModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.isControllerError ? this.buildErrorDisplay() : this.buildForm() }
+                { this.state.isControllerError ? this.buildErrorDisplay() : this.buildForm() }
             </Modal>
         );
     };

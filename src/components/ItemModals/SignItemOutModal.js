@@ -1,8 +1,8 @@
-import React from 'react';
-import {Modal, ThemeSettingName} from '@fluentui/react';
-import itemController from '../../controllers/ItemController';
-import itemLogController from '../../controllers/ItemLogController';
-import userController from '../../controllers/UserController';
+import React                from 'react';
+import { Modal }            from '@fluentui/react';
+import { ItemController, 
+        ItemLogController,
+        UserController }    from '../../controllers';
 
 /*
 *   Modal for signing out an item
@@ -12,25 +12,21 @@ export default class SignItemOutModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen:        props.isOpen,
-            item:          null,
-            idArray:       props.idArray,
-            users:         [],
-            selection:     null,
-            userSelected:  {},
+            isOpen:                 props.isOpen,
+            idArray:                props.idArray,
+            selectedObjects:        props.selectedObjects,
+            users:                  [],
+            userId:                 null,
+            userName:               '',
 
             isControllerError:      false,
             controllerErrorMessage: ''
         };
-
-        this.dismissModal = this.dismissModal.bind(this);
-        this.signItemsOut = this.signItemsOut.bind(this);
-        this.assignOptionGroup = this.assignOptionGroup.bind(this);
     };
 
     async componentDidMount(){
         try {
-            let users = await userController.getAllUsers();
+            let users = await UserController.getAllActiveUsers();
             this.setState({ users: users });
             this.assignOptionGroup();
         } catch (error) {
@@ -42,36 +38,35 @@ export default class SignItemOutModal extends React.Component{
     };
 
     dismissModal() {
-        this.setState({isOpen: false});
+        this.setState({ isOpen: false });
     };
 
     async signItemsOut(){
-        try {
-            for(var i = 0; i < this.state.users.length; i++){
-                if(this.state.users[i].userName === this.state.selection){
-                    let user = this.state.users[i];
-                    await this.setState({ userSelected: user});
-                    break;
-                }
-            }
-            let info = {
-                itemId:      this.state.idArray[0],
-                userId:      this.state.userSelected._id,
-                custodianId: '',
-                action:      'signed out',
-                notes:       'test'
-            }
-    
-            await itemController.signItemOut(this.state.idArray, this.state.selection);
-            await itemLogController.createItemLog(info);
+        await ItemController.signItemOut(this.state.idArray, this.state.userName)
+        .then( async (auth) => {
+            if(auth.status !== undefined && auth.status >= 400) throw auth;
+            this.setState({ controllerErrorMessage: '', isControllerError: false });
+
+            for (let i = 0; i < this.state.idArray.length; i++) {
+                let info = {
+                    itemId:      this.state.idArray[i],
+                    userId:      this.state.userId,
+                    custodianId: '',
+                    action:      'signed out',
+                    notes:       'test'
+                };
+                await ItemLogController.createItemLog(info);
+            };
+
             window.location.reload();
             this.dismissModal();
-        } catch (error) {
+        })
+        .catch((error) => {            
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
             this.setState({ isControllerError: true,
-                            controllerErrorMessage: error.message });
-        }
+                controllerErrorMessage: error.message });
+        });
         
     };
 
@@ -80,6 +75,7 @@ export default class SignItemOutModal extends React.Component{
         for (let i = 0; i < this.state.users.length; i++) {
             let option = document.createElement("option");
                 option.append(this.state.users[i].userName);
+                option.setAttribute('key', this.state.users[i]._id)
             if (this.state.users[i].userRole === 'user') {
                 document.getElementById('userGroup').append(option);
             } else if (this.state.users[i].userRole === 'admin') {
@@ -87,25 +83,23 @@ export default class SignItemOutModal extends React.Component{
             } else if (this.state.users[i].userRole === 'custodian') {
                 document.getElementById('custodianGroup').append(option);
             }
-            
         }
-        
     };
 
     /* Loops through the array of items and displays them as a list */
-    displayArray(idArray){
-        const displayID = idArray.map(
-            (item) => <li key={ item.toString() } > { item } </li>);
+    displayArray(items){
+        const displayItems = items.map(
+            (item) => <li key={ item._id } > { item.name } </li>);
 
         return(
-            <ul> { displayID } </ul>
+            <ul> { displayItems } </ul>
         );
     };
 
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
     isSumbitAvailable(){
-        if(this.state.selection){
+        if(this.state.userId !== null){
             return true;
         }
         return false;
@@ -118,13 +112,18 @@ export default class SignItemOutModal extends React.Component{
             <div className='modalHeader'>
                 <h3>Sign Item Out</h3>                    
             </div>
-            <form onSubmit={(Event) => {Event.preventDefault(); this.signItemsOut();}}>
+            <form onSubmit={(event) => {event.preventDefault(); this.signItemsOut();}}>
             <div className='modalBody'>
                 <h4>You are about to sign out: </h4>
-                {this.displayArray(this.state.idArray)}
+                {this.displayArray(this.state.selectedObjects)}
                 <label>Choose a user: </label>
                 <select name='usersS' id='usersS' defaultValue={''} 
-                onChange={(event) => this.setState({ selection: event.target.value})}>
+                onChange={(event) => {
+                    this.setState({ 
+                        userName: event.target.value, 
+                        userId: event.target.options[event.target.options.selectedIndex].attributes.key.value
+                    })/*This grabs the key attribute from the selected option*/ }}
+                > 
                     <option label='' hidden disabled ></option>
                     <optgroup label='Users' id='userGroup'></optgroup>
                     <optgroup label='Custodians' id='custodianGroup'></optgroup>
@@ -133,7 +132,7 @@ export default class SignItemOutModal extends React.Component{
             </div>
             <div className='modalFooter'>
                 { this.isSumbitAvailable() ? <input type='submit'></input> : <input type='submit' disabled></input>}
-                <button type="reset" onClick={this.dismissModal}>Close</button>
+                <button type="reset" onClick={() => this.dismissModal()}>Close</button>
             </div>
             </form>
             </>
@@ -148,7 +147,7 @@ export default class SignItemOutModal extends React.Component{
                 <h3>Error Has Occured</h3>
             </div>
             <div className='modalBody'>
-                <p className='errorMesage'> {this.controllerErrorMessage} </p>
+                <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
             </div>
             <div className='modalFooter'>
                 <button type="reset" onClick={() => this.dismissModal()}>Close</button>
@@ -160,7 +159,7 @@ export default class SignItemOutModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.isControllerError ? this.buildErrorDisplay() : this.buildSignOutNotification() }
+                { this.state.isControllerError ? this.buildErrorDisplay() : this.buildSignOutNotification() }
             </Modal>
         );
     }

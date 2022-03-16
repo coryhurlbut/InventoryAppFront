@@ -14,14 +14,14 @@ export default class DeleteItemModal extends React.Component{
             isOpen:  props.isOpen,
             item:    null,
             idArray: props.idArray,
-            
+            selectedObjects: props.selectedObjects,
             isControllerError:      false,
             controllerErrorMessage: ''
         };
     };
 
     dismissModal() {
-        this.setState({isOpen: false});
+        this.setState({ isOpen: false });
     };
 
     async deleteItem() {
@@ -52,12 +52,12 @@ export default class DeleteItemModal extends React.Component{
     };
 
     /* Loops through the array of items and displays them as a list */
-    displayArray(idArray){
-        const displayID = idArray.map(
-            (idArray) => <li key={ idArray.toString() } > { idArray } </li>);
+    displayArray(items){
+        const displayItem = items.map(
+            (item) => <li key={ item._id } > { item.name } </li>);
 
         return(
-            <ul> { displayID } </ul>
+            <ul> { displayItem } </ul>
         );
     };
 
@@ -70,7 +70,7 @@ export default class DeleteItemModal extends React.Component{
             </div>
             <div className='modalBody'>
                 <h4>You are about to delete the following:</h4>
-                {this.displayArray(this.state.idArray)}
+                {this.displayArray(this.state.selectedObjects)}
             </div>
             <div className='modalFooter'>
                 <button onClick={() => this.deleteItem()}>Delete</button>
@@ -88,7 +88,7 @@ export default class DeleteItemModal extends React.Component{
                 <h3>Error Has Occured</h3>
             </div>
             <div className='modalBody'>
-                <p className='errorMesage'> {this.controllerErrorMessage} </p>
+                <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
             </div>
             <div className='modalFooter'>
                 <button type="reset" onClick={() => this.dismissModal()}>Close</button>
@@ -100,7 +100,7 @@ export default class DeleteItemModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.isControllerError ? this.buildErrorDisplay() : this.buildDeleteNotification() }
+                { this.state.isControllerError ? this.buildErrorDisplay() : this.buildDeleteNotification() }
             </Modal>
         );
     };
