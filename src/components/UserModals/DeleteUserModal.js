@@ -65,7 +65,7 @@ export default class DeleteUserModal extends React.Component{
     /* Loops through the array of items and displays them as a list */
     displayArray(users){
         const displayUsers = users.map(
-            (user) => <li key={ user._id } > { user.userName } </li>);
+            (user) => <li className='arrayObject' key={ user._id } > { user.userName } </li>);
 
         return(
             <ul> { displayUsers } </ul>

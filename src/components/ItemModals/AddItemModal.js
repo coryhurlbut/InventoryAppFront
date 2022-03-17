@@ -96,7 +96,7 @@ export default class AddItemModal extends React.Component{
                 <label className='errorMessage'> { errorDetail.errorMessage} </label>
             );
         }
-        return null;
+        return <label className='emptyLabel'>This is filler</label>;
     };
 
     /* When an errorDetail is no longer present, remove from errors list */
@@ -237,66 +237,66 @@ export default class AddItemModal extends React.Component{
             </div>
             <form onSubmit={(event) => {event.preventDefault(); this.addItem();}}>
                 <div className='modalBody'>
-                    <h4>Name</h4>
+                    <h4 className='inputTitle'>Name</h4>
                         <input 
                         type='text' 
                         id='name'
-                        className={ this.displayErrorMessage('name') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('name') ? 'invalid' : 'valid'}
                         value={this.state.name} 
                         onChange={(evt) => this.handleChange(validateFields.validateName, evt)}
                         onBlur={(evt) => this.handleBlur(validateFields.validateName, evt)}/>
                         <br></br>
                         { this.displayErrorMessage('name') }
 
-                    <h4>Description</h4>
+                    <h4 className='inputTitle'>Description</h4>
                         <input 
                         type='text' 
                         id='description' 
-                        className={ this.displayErrorMessage('description') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('description') ? 'invalid' : 'valid'}
                         value={this.state.description}
                         onChange={(evt) => this.handleChange(validateFields.validateDescription, evt)}
                         onBlur={(evt) => this.handleBlur(validateFields.validateDescription, evt)}/>
                         <br></br>
                         { this.displayErrorMessage('description') }
 
-                    <h4>Serial Number</h4>
+                    <h4 className='inputTitle'>Serial Number</h4>
                         <input 
                         type='text' 
                         id='serialNumber' 
-                        className={ this.displayErrorMessage('serialNumber') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('serialNumber') ? 'invalid' : 'valid'}
                         value={this.state.serialNumber} 
                         onChange={(evt) => this.handleChange(validateFields.validateSerialNumber, evt)}
                         onBlur={(evt) => this.handleBlur(validateFields.validateSerialNumber, evt)}/>
                         <br></br>
                         { this.displayErrorMessage('serialNumber') }
 
-                    <h4>Notes</h4>
+                    <h4 className='inputTitle'>Notes</h4>
                         <input 
                         type='text' 
                         id='notes' 
-                        className={ this.displayErrorMessage('notes') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('notes') ? 'invalid' : 'valid'}
                         value={this.state.notes} 
                         onChange={(evt) => this.handleChange(validateFields.validateNotes, evt)}
                         onBlur={(evt) => this.handleBlur(validateFields.validateNotes, evt)}/>
                         <br></br>
                         { this.displayErrorMessage('notes') }
 
-                    <h4>Home Location</h4>
+                    <h4 className='inputTitle'>Home Location</h4>
                         <input 
                         type='text' 
                         id='homeLocation' 
-                        className={ this.displayErrorMessage('homeLocation') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('homeLocation') ? 'invalid' : 'valid'}
                         value={this.state.homeLocation} 
                         onChange={(evt) => this.handleChange(validateFields.validateLocation, evt)}
                         onBlur={(evt) => this.handleBlur(validateFields.validateLocation, evt)}/>
                         <br></br>
                         { this.displayErrorMessage('homeLocation') }
 
-                    <h4>Specific Location</h4>
+                    <h4 className='inputTitle'>Specific Location</h4>
                         <input 
                         type='text' 
                         id='specificLocation' 
-                        className={ this.displayErrorMessage('specificLocation') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('specificLocation') ? 'invalid' : 'valid'}
                         value={this.state.specificLocation} 
                         onChange={(evt) => this.handleChange(validateFields.validateSpecificLocation, evt)}
                         onBlur={(evt) => this.handleBlur(validateFields.validateSpecificLocation, evt)}/>

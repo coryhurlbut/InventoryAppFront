@@ -3,12 +3,34 @@
         Login/Logout/AddUser/EditUser/DeleteUser
 */
 /* Red boarder around the input field user has made mistake */
-.invalid, .invalid:focus{
-    outline: 1px solid red;
+.invalid{
+    outline: 1px solid #ec314a;
+    border: 1px solid #787878;
 }
 .invalid:focus{
-    outline: 1px solid red;
+    border: 1.5px solid #787878;
 }
+.valid, select{
+    outline: .5px solid #787878;
+    border: 1px solid #787878;
+}
+.valid:focus, select:focus{
+    border: 1.5px solid #333333;
+}
+input:disabled{
+    outline-style: revert;
+    border-style: revert;
+    border-color: rgba(118, 118, 118, 0.3);
+}
+.emptyLabel{
+    color: transparent;
+    font-size: small;
+}
+.errorMessage{
+    color: #ec314a;
+    font-size: small;
+}
+
 /*Title of Modal*/
 .modalHeader {
     /*margin: 30px;*/
@@ -29,7 +51,7 @@
 /*Handles the content of Modal*/
 .modalBody{
     /*To avoid modal auto styling*/
-    padding: 10px;
+    padding: 15px;
     min-height: 57px;
 
     background-color: #b3b3b3;
@@ -37,32 +59,52 @@
 
     text-align: left;
 }
+.modalBody input, .modalBody select, .modalBody button{
+    background-color: #c7c7c7;
+}
 .modalBody p{
     text-align: center;
 }
+.modalBody .arrayObject{
+    font-weight: bold;
+}
+.modalBody .inputTitle{
+    margin: 0px;
+
+    font-weight: bold;
+}
 .modalBody h4{
     margin: 0px;
-    padding-top: 3px;
-
-    font-weight: unset;
+    font-weight: normal;
 }
-.modalBody div{
-    padding-top: 5px;
-    padding-bottom: 5px;
+.modalBody button{    /*Reset button styling*/
+    padding: 2px 8px;
 
+    color: #11375c;
+
+    font-weight: bold;
+
+    border-radius: 5px;
+}
+.modalBody button:hover{
+    color: #c7c7c7;
+    background-color: #11375c;
+}
+/* Have select dropdowns side by side*/
+.sideBySide{
     display: flex;
-    justify-content:space-evenly;
-    align-items: flex-start;
-    flex-direction: column;
-}
+    justify-content: flex-start;
+    align-items: center;
 
-.errorMessage{
-    color: red;
+    margin-top: 10px;
+}
+.userRole{
+    margin-right: 13px;
 }
 
 /*Primary handles the button styling of Modal*/
 .modalFooter{
-    padding: 10px;
+    padding-bottom: 10px;
     
     background-color: #b3b3b3;
     text-align: center;

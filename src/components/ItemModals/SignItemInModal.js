@@ -54,7 +54,7 @@ export default class SignItemInModal extends React.Component{
     /* Loops through the array of items and displays them as a list */
     displayArray(items){
         const displayItem = items.map(
-            (item) => <li key={ item._id } > { item.name } </li>);
+            (item) => <li className='arrayObject' key={ item._id } > { item.name } </li>);
 
         return(
             <ul> { displayItem } </ul>

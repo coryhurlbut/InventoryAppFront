@@ -61,7 +61,9 @@ class ValidateFields{
     return false;
   }
   validatePhoneNumber(phoneNumber){
-    if(!validator.isMobilePhone(phoneNumber) || !validator.isLength(phoneNumber, {min:10, max: 14})){
+    const validateNumber = new RegExp(/(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/);
+    
+    if(!validateNumber.test(phoneNumber) || !validator.isLength(phoneNumber, {min:10, max: 14})){
       return 'Please enter a valid number';
     }
     return false;

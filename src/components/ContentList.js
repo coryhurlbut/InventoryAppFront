@@ -78,7 +78,6 @@ export default class ContentList extends React.Component {
             btnUI_Active:       false,
             btnU_Active:        false
         });
-        
     };
 
     async showUnavailableItems () {
@@ -117,7 +116,8 @@ export default class ContentList extends React.Component {
         this.setState({ idArray: [], selectedObjects: [] });
     }
 
-    //Callback function passed to table component. Bound to ContentList state to update this state when called by child component.
+    //Callback function passed to table component.
+    //Bound to ContentList state to update this state when called by child component.
     setParentState(user) {
         let arr = this.state.idArray;
         let selectedObjects = this.state.selectedObjects;
@@ -133,36 +133,35 @@ export default class ContentList extends React.Component {
     }
 
     buildContentList () {
-        if(this.state.content.length === 0){
+        if(this.state.content.length !== 0){
             return(
                 <>
-                <p>"No content available"</p>
+                <div id='Table_Modification'>
+                    {this.buildEditControls()}
+                    {this.state.signItemInOutIsVisible ? 
+                        <SignItemInOutControls 
+                            inOrOut={this.state.inOrOut} 
+                            idArray={this.state.idArray} 
+                            selectedObjects={this.state.selectedObjects} 
+                            id={this.state.id} 
+                        /> : null
+                    }            
+                </div>
+                <Table 
+                    columns={this.state.columns} 
+                    data={this.state.content} 
+                    setParentState={this.setParentState} 
+                    userRole={this.state.role} 
+                    contentType={this.state.contentType} />
                 </>
             );
-        };
-
-        return(
-            <>
-            <Table 
-                columns={this.state.columns} 
-                data={this.state.content} 
-                setParentState={this.setParentState} 
-                userRole={this.state.role} 
-                contentType={this.state.contentType} 
-            />
-            <div id='Table_Modification'>
-                {this.buildEditControls()}
-                {this.state.signItemInOutIsVisible ? 
-                    <SignItemInOutControls 
-                        inOrOut={this.state.inOrOut} 
-                        idArray={this.state.idArray} 
-                        selectedObjects={this.state.selectedObjects} 
-                        id={this.state.id} 
-                    /> : null
-                }            
-            </div>
-            </>
-        );
+        } else{
+            return(
+                <>
+                <p id='noContent'>No content available</p>
+                </>
+            );
+        }
     };
 
     buildEditControls () {

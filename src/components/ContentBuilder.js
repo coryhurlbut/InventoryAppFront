@@ -8,6 +8,7 @@ import AdminLogModal            from './LogModals/AdminLogModal';
 import LoginModal               from './ProfileModals/LoginModal';
 import LogoutModal              from './ProfileModals/LogoutModal';
 import { displayPresets }       from './ContentPresets';
+import profileIcon              from '../styles/profile_icon_25x25.jpg';
 
 /*
 *   Builds the page by calling components and passing down what should be visible

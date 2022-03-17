@@ -5,7 +5,7 @@
   padding: 10px;
 
   display: flex;
-  justify-content:center;
+  justify-content:flex-start;
   align-items: center;
 }
 
@@ -46,54 +46,43 @@
   
 }
 
-#Table_Body button{
-  margin: 5px;
-  display: inline-block;
-
-  font-size: 15px;
-  font-weight: bold;
-  
-  border: transparent;
-  /* border-color: #787878;
-  border-width: thin;
-  border-style: solid;
-  border-radius: 5px; */
-
-  /* background-color: #F1F1F1; */
-  background-color: transparent;
+#noContent{
   color: #787878;
-}
-#Table_Body button:hover{
-  font-weight: bolder;
-  color: #a8f5feb6;
-  background-color: #1a1a1a;
-
-  border-radius: 5px;
-
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-}
-#Table_Body button:disabled{
-  /* color: #c5cadc; */
-  color: #1f1f1f;
-  text-decoration: none;
-  border:transparent;
-  background-color: transparent;
-}
-
-#Table_Modification h3{
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
 }
 
 #Table_Modification{
-  margin-top: 8px;
-
   display: flex;
   justify-content:center;
   align-items: center;
+
+  background-color: transparent;
+}
+#Table_Modification button{
+  padding: 5px 10px;
+  margin: 5px 10px;
+
+  font-size: 15px;
+  font-weight: bold;
+  color: #787878;
+  
+  border: none;
+  background-color: transparent;
+}
+#Table_Modification button:hover{
+  font-weight: bolder;
+  color: #026c76;
+
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-decoration-color: #013e44;
+  text-underline-offset: 3px;
+}
+#Table_Modification button:disabled{
+  /* color: #c5cadc; */
+  color: #222121;
+  text-decoration: none;
+  border:transparent;
+  background-color: transparent;
 }
 
 table{

@@ -120,6 +120,7 @@ export default class AddUserModal extends React.Component{
                 }
             }));
             this.handleRemoveError('password');
+            this.handleRemoveError('selectUser');
         } else {
             this.setState({
                 pwDisabled: false, 
@@ -139,7 +140,7 @@ export default class AddUserModal extends React.Component{
                 <label className='errorMessage'> { errorDetail.errorMessage} </label>
             );
         }
-        return null;
+        return <label className='emptyLabel'>This is filler</label>;
     };
 
     /* When an errorDetail is no longer present, remove from errors list */
@@ -348,40 +349,40 @@ export default class AddUserModal extends React.Component{
             </div>
             <form onSubmit={(Event) => {Event.preventDefault(); this.addUser();}}>
                 <div className='modalBody'>
-                    <h4>First Name</h4>
+                    <h4 className='inputTitle'>First Name</h4>
                         <input 
                         type='text' 
                         id='firstName' 
-                        className={ this.displayErrorMessage('firstName') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('firstName') ? 'invalid' : 'valid'}
                         value={this.state.firstName} 
                         onChange={(evt) => this.handleChange(validateFields.validateFirstName, evt)}
                         onBlur={(evt) => this.handleBlur(validateFields.validateFirstName, evt)}/>
                         <br></br>
                         { this.displayErrorMessage('firstName') }
 
-                    <h4>Last Name</h4>
+                    <h4 className='inputTitle'>Last Name</h4>
                         <input 
                         type='text' 
                         id='lastName' 
-                        className={ this.displayErrorMessage('lastName') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('lastName') ? 'invalid' : 'valid'}
                         value={this.state.lastName}
                         onChange={(evt) => this.handleChange(validateFields.validateLastName, evt)}
                         onBlur={(evt) => this.handleBlur(validateFields.validateLastName, evt)}/>
                         <br></br>
                         { this.displayErrorMessage('lastName') }
 
-                    <h4>Username</h4>
+                    <h4 className='inputTitle'>Username</h4>
                         <input 
                         type='text' 
                         id='userName' 
-                        className={ this.displayErrorMessage('userName') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('userName') ? 'invalid' : 'valid'}
                         value={this.state.userName}
                         onChange={(evt) => this.handleChange(validateFields.validateUserName, evt)}
                         onBlur={(evt) => this.handleBlur(validateFields.validateUserName, evt)}/>
                         <br></br>
                         { this.displayErrorMessage('userName') }
                     
-                    <h4>User's Role</h4>
+                    <h4 className='inputTitle'>User's Role</h4>
                         <select 
                             disabled={this.state.userRoleDisabled} 
                             id='selectUser' 
@@ -397,11 +398,11 @@ export default class AddUserModal extends React.Component{
                         <br></br>
                         { this.displayErrorMessage('selectUser') }
 
-                    <h4>Password</h4>
+                    <h4 className='inputTitle'>Password</h4>
                         <input
                         type='password'
                         id='password'
-                        className={ this.displayErrorMessage('password') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('password') ? 'invalid' : 'valid'}
                         disabled={this.state.pwDisabled}
                         value={this.state.password} 
                         onChange={(evt) => this.handleChange(validateFields.validatePassword, evt)}
@@ -409,11 +410,11 @@ export default class AddUserModal extends React.Component{
                         <br></br>
                         { this.displayErrorMessage('password') }
                     
-                    <h4 hidden={this.state.pwDisabled}>Confirm Password</h4>
+                    <h4 className='inputTitle' hidden={this.state.pwDisabled}>Confirm Password</h4>
                         <input 
                         type='password' 
                         id='confirmPassword' 
-                        className={ this.displayErrorMessage('confirmPassword') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('confirmPassword') ? 'invalid' : 'valid'}
                         hidden={this.state.pwDisabled}
                         value={this.state.confirmPassword} 
                         onChange={(evt) => this.handleChange(validateFields.validatePasswordConfirm, evt)}
@@ -421,11 +422,11 @@ export default class AddUserModal extends React.Component{
                         <br hidden={this.state.pwDisabled}></br>
                         { this.displayErrorMessage('confirmPassword') }
                     
-                    <h4>Phone Number</h4>
+                    <h4 className='inputTitle'>Phone Number</h4>
                         <input
                         type='text' 
                         id='phoneNumber' 
-                        className={ this.displayErrorMessage('phoneNumber') ? 'invalid' : ''}
+                        className={ this.returnErrorDetails('phoneNumber') ? 'invalid' : 'valid'}
                         value={this.state.phoneNumber}
                         onChange={(evt) => this.handleChange(validateFields.validatePhoneNumber, evt)}
                         onBlur={(evt) => this.handleBlur(validateFields.validatePhoneNumber, evt)}/>
