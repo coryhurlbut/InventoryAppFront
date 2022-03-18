@@ -1,6 +1,11 @@
 /*
   Table Navigation are the available tables the user can display on screen
 */
+#userControls{
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+}
 #Table_Navigation{
   padding: 10px;
 
@@ -68,7 +73,7 @@
   border: none;
   background-color: transparent;
 }
-#Table_Modification button:hover{
+#Table_Modification button:hover, #Table_Modification button:disabled:hover{
   font-weight: bolder;
   color: #026c76;
 
@@ -87,15 +92,18 @@
 
 table{
   margin: 0 auto;
-  padding: 10px;
   max-height: 450px;
 
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: block;
 }
-
+table thead {
+  color: #b3b3b3;
+  background-color: #013e44;
+}
 table td, table th {
   /* border-collapse: collapse;
   border-bottom: 1px solid #ddd;
@@ -105,20 +113,27 @@ table td, table th {
   padding: 7px;
   padding-right: 15px;
   max-width: 150px;
-
+  min-width: 150px;                 /* fixing shifting issue effecting Action taken and Content columns */
 
   word-wrap: break-word;
   text-align: left;
 }
-
+table th:first-child, table td:first-child {
+  border-left: 1px solid #828282;
+}
 table th {
+  /*
+  position: sticky;
+  top: 0;*/
+
+  border-top: 1px solid #828282;
+  border-bottom: 1px solid #828282;
   border-left: 1px solid #828282;
-  border-top: 1px solid #828282
+
+
+  background-color: #013e44;
 }
 
-table td:first-child {
-  border-left: 1px solid #828282;
-}
 
 /*
 table tr:nth-child(even){background-color: #f1f1f1;}
@@ -126,13 +141,45 @@ table tr:nth-child(odd){background-color: #fbfbfb;}*/
 table tr:nth-child(even){background-color: #787878;}
 table tr:nth-child(odd){background-color: #929292;}
 
-table tr:hover {background-color: #a8f5feb6;}
+.dataRow:hover {background-color: #a8f5feb6;}
 
-table th, tfoot td {
-  padding-top: 4px;
-  padding-bottom: 4px;
-  
-
-  background-color: #013e44;
-  color: #b3b3b3;
+/* Styling the scroll bar when visible*/
+table::-webkit-scrollbar{
+  background-color: transparent;
 }
+
+table::-webkit-scrollbar-thumb{
+  background-color: #5f5f5f;
+  
+  background-clip: padding-box;
+  border: 0.05em solid #5f5f5f;
+}
+/* Buttons on Scrollbar*/
+::-webkit-scrollbar-button:single-button {
+  background-color: transparent;
+  display: block;
+  border-style: solid;
+  height: 13px;
+  width: 16px;
+}
+/* Up */
+::-webkit-scrollbar-button:single-button:vertical:decrement {
+  border-width: 0 8px 8px 8px;
+  border-color: transparent transparent #5f5f5f transparent;
+}
+::-webkit-scrollbar-button:single-button:vertical:decrement:hover {
+  border-color: transparent transparent #777777 transparent;
+}
+/* Down */
+::-webkit-scrollbar-button:single-button:vertical:increment {
+  border-width: 8px 8px 0 8px;
+  border-color: #5f5f5f transparent transparent transparent;
+}
+::-webkit-scrollbar-button:vertical:single-button:increment:hover {
+  border-color: #777777 transparent transparent transparent;
+}
+/**
+table::-webkit-scrollbar-thumb:window-inactive, ::-webkit-scrollbar-button:single-button:window-inactive{
+  background-color: transparent;
+  border: transparent;
+}*/

@@ -11,6 +11,7 @@ import { availableItemsContent,
 import '../styles/table.css';
 import '../styles/App.css';
 import '../styles/Modal.css';
+import ToggleSwitch from './ToggleSwitch';
 
 
 
@@ -41,6 +42,10 @@ export default class ContentList extends React.Component {
         this.showUnavailableItems   =   this.showUnavailableItems.bind(this);
         this.showUsers              =   this.showUsers.bind(this);
         this.setParentState             =   this.setParentState.bind(this);
+    };
+
+    componentWillMount () {
+        this.showAvailableItems();
     };
 
     // Will update component props if parent props change
@@ -187,19 +192,22 @@ export default class ContentList extends React.Component {
     render() {
         return (
             <div id='Content_Body'>
-                <div id='Table_Navigation'>
-                    <button className={ this.state.btnAI_Active ? 'btnSelected' : null} onClick={
-                        () => {this.showAvailableItems(); this.clearChecks();}}>
-                        Available Items
-                    </button>
-                    <div className='item_styling'>|</div>
-                    <button className={ this.state.btnUI_Active ? 'btnSelected' : null} onClick={
-                        () => {this.showUnavailableItems(); this.clearChecks();}}>
-                        Unavailable Items
-                    </button>
-                    {this.state.userContentIsVisible ? <div className='item_styling'>|</div> : null}
-                    {this.state.userContentIsVisible ? <button className={ this.state.btnU_Active ? 'btnSelected' : null} 
-                        onClick={() => {this.showUsers(); this.clearChecks();}}>Users</button> : null}
+                <div id='userControls'>
+                    <div id='Table_Navigation'>
+                        <button className={ this.state.btnAI_Active ? 'btnSelected' : null} onClick={
+                            () => {this.showAvailableItems(); this.clearChecks();}}>
+                            Available Items
+                        </button>
+                        <div className='item_styling'>|</div>
+                        <button className={ this.state.btnUI_Active ? 'btnSelected' : null} onClick={
+                            () => {this.showUnavailableItems(); this.clearChecks();}}>
+                            Unavailable Items
+                        </button>
+                        {this.state.userContentIsVisible ? <div className='item_styling'>|</div> : null}
+                        {this.state.userContentIsVisible ? <button className={ this.state.btnU_Active ? 'btnSelected' : null} 
+                            onClick={() => {this.showUsers(); this.clearChecks();}}>Users</button> : null}
+                    </div>
+                    <ToggleSwitch/>
                 </div>
                 
                 <div id='Table_Body'>

@@ -43,6 +43,7 @@ function Table({ columns, data, ...props }) {
                                     row.toggleRowSelected()
                                     props.setParentState(row.original);
                                 }} 
+                                className="dataRow"
                                 style={ //unable to style in other file due to needing the conditional changes
                                     row.isSelected ? 
                                     { 'backgroundColor': (row.index % 2 === 1 ? '#76c5ceb6' : '#a8f5feb6')}
