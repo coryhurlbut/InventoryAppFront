@@ -117,13 +117,15 @@ export default class SignItemOutModal extends React.Component{
                 <h4>You are about to sign out: </h4>
                 {this.displayArray(this.state.selectedObjects)}
                 <label>Choose a user: </label>
-                <select name='usersS' id='usersS' defaultValue={''} 
-                onChange={(event) => {
-                    this.setState({ 
-                        userName: event.target.value, 
-                        userId: event.target.options[event.target.options.selectedIndex].attributes.key.value
-                    })/*This grabs the key attribute from the selected option*/ }}
-                > 
+                <select 
+                    name='usersS' 
+                    id='usersS' 
+                    defaultValue={''} 
+                    onChange={(event) => {
+                        this.setState({ 
+                            userName: event.target.value, 
+                            userId: event.target.options[event.target.options.selectedIndex].attributes.key.value
+                        })/*This grabs the key attribute from the selected option*/ }}> 
                     <option label='' hidden disabled ></option>
                     <optgroup label='Users' id='userGroup'></optgroup>
                     <optgroup label='Custodians' id='custodianGroup'></optgroup>

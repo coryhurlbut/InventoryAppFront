@@ -49,7 +49,7 @@ class ValidateFields{
   validatePassword(isRequired, password){
     if(isRequired){
         if(!validator.isStrongPassword(password, {minLength:8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1})){
-            return 'Must contain at least 1 lowercase, 1 uppercase, 1 number, 1 symbol. Minimum Length: 8';
+            return 'Invalid Password. Minimum Length: 8';
         }
     }
       return false;

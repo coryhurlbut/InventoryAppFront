@@ -2,35 +2,6 @@
     This styling sheet focus the display modals:
         Login/Logout/AddUser/EditUser/DeleteUser
 */
-/* Red boarder around the input field user has made mistake */
-.invalid{
-    outline: 1px solid #ec314a;
-    border: 1px solid #787878;
-}
-.invalid:focus{
-    border: 1.5px solid #787878;
-}
-.valid, select{
-    outline: .5px solid #787878;
-    border: 1px solid #787878;
-}
-.valid:focus, select:focus{
-    border: 1.5px solid #333333;
-}
-input:disabled{
-    outline-style: revert;
-    border-style: revert;
-    border-color: rgba(118, 118, 118, 0.3);
-}
-.emptyLabel{
-    color: transparent;
-    font-size: small;
-}
-.errorMessage{
-    color: #ec314a;
-    font-size: small;
-}
-
 /*Title of Modal*/
 .modalHeader {
     /*margin: 30px;*/
@@ -51,36 +22,66 @@ input:disabled{
 /*Handles the content of Modal*/
 .modalBody{
     /*To avoid modal auto styling*/
-    padding: 15px;
-    min-height: 57px;
+    padding-top: 10px;
+    padding-left: 25px;
+    padding-right: 10px;
+
+    min-height: 75px;
 
     background-color: #b3b3b3;
     color: #11375c;
 
     text-align: left;
 }
-.modalBody input, .modalBody select, .modalBody button{
-    background-color: #c7c7c7;
+.modalBody fieldset{
+    display: flex;
+    justify-content:space-evenly;
+    align-items: left;
+    flex-direction: column;
+
+    margin: 0;
+    border: 0;
+    padding: 0;
 }
+
+.inputTitle{
+    font-weight: bold!important;
+}
+.modalBody h4{
+    margin: 0;
+    font-weight: normal;
+}
+
+.modalBody input{
+    width: 75%;
+    height: 23px;
+    background-color: #c7c7c7;   
+}
+.userRole select, .userStatus select{
+    width: 100%!important;
+    
+}
+.modalBody select{
+    width: 35%;
+    background-color: #c7c7c7;
+    outline: 1px solid #787878;
+    border: 1px solid #929292;
+}
+
 .modalBody p{
     text-align: center;
 }
+
 .modalBody .arrayObject{
     font-weight: bold;
 }
-.modalBody .inputTitle{
-    margin: 0px;
 
-    font-weight: bold;
-}
-.modalBody h4{
-    margin: 0px;
-    font-weight: normal;
-}
 .modalBody button{    /*Reset button styling*/
     padding: 2px 8px;
+    margin-left: 3px;
 
     color: #11375c;
+    background-color: #c7c7c7;
 
     font-weight: bold;
 
@@ -90,6 +91,50 @@ input:disabled{
     color: #c7c7c7;
     background-color: #11375c;
 }
+
+/* Handle valid state appearence*/
+.valid{
+    outline: 1px solid #787878;
+    border: 1px solid #929292;
+}
+.valid:focus{
+    outline: 1px solid #333333;
+}
+
+/* Handle invalid state appearence*/
+.invalid{
+    outline: 1px solid #ec314a;
+    border: 1px solid #ec314a;
+}
+.invalid:focus{
+    outline: 1px solid #ec314a;
+    border: 1px solid #333333;
+}
+
+/* Handles how disabled information is viewed*/
+.valid:disabled, .invalid:disabled, input:disabled{
+    outline: none;
+    border: none;
+
+    color: #787878;
+}
+
+/* Create space for displayed error message/handle the error message*/
+.emptyLabel{
+    color: transparent;
+    font-size: small;
+}
+.errorMessage{
+    color: #ec314a;
+    font-size: small;
+}
+.passwordRequirements{
+    color: #787878;
+    font-size: small;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
 /* Have select dropdowns side by side*/
 .sideBySide{
     display: flex;
@@ -105,6 +150,7 @@ input:disabled{
 /*Primary handles the button styling of Modal*/
 .modalFooter{
     padding-bottom: 10px;
+    padding-top: 10px;
     
     background-color: #b3b3b3;
     text-align: center;
