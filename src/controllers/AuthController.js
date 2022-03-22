@@ -114,7 +114,6 @@ export class AuthController {
     getUserInfo() {
         try {
             let user = jwtDecode(this.getAccessToken());
-            console.log(user)
             return user;
         } catch (error) {
             return {
