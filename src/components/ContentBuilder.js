@@ -1,7 +1,7 @@
 import React from 'react';
 import '@fluentui/react';
 import '../styles/App.css';
-import { authController }       from '../controllers/AuthController';
+import { AuthController }       from '../controllers';
 import ContentList              from './ContentList';
 import ItemLogModal             from './LogModals/ItemLogModal';
 import AdminLogModal            from './LogModals/AdminLogModal';
@@ -34,7 +34,7 @@ export default class ContentBuilder extends React.Component {
     };
 
     async componentDidMount() {
-        let auth = await authController.checkToken();
+        let auth = await AuthController.checkToken();
         
         if (auth === undefined || auth.error !== undefined) {
             this.clearAuth();
