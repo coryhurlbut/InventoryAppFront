@@ -48,7 +48,6 @@
   justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
-  
 }
 
 #noContent{
@@ -112,7 +111,7 @@ table td, table th {
  
   padding: 7px;
   padding-right: 15px;
-  max-width: 150px;
+  /*max-width: 150px;
   min-width: 150px;                 /* fixing shifting issue effecting Action taken and Content columns */
 
   word-wrap: break-word;
@@ -122,9 +121,8 @@ table th:first-child, table td:first-child {
   border-left: 1px solid #828282;
 }
 table th {
-  /*
   position: sticky;
-  top: 0;*/
+  top: 0;
 
   border-top: 1px solid #828282;
   border-bottom: 1px solid #828282;
@@ -178,8 +176,8 @@ table::-webkit-scrollbar-thumb{
 ::-webkit-scrollbar-button:vertical:single-button:increment:hover {
   border-color: #777777 transparent transparent transparent;
 }
-/**
+/* Inactive */
 table::-webkit-scrollbar-thumb:window-inactive, ::-webkit-scrollbar-button:single-button:window-inactive{
   background-color: transparent;
   border: transparent;
-}*/
+}
