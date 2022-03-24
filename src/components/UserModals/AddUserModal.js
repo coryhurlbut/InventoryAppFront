@@ -1,8 +1,8 @@
 import React              from 'react';
 import {Modal}            from '@fluentui/react';
-import {authController}   from '../../controllers/AuthController'
-import userController     from '../../controllers/UserController';
-import adminLogController from '../../controllers/AdminLogController';
+import { AuthController,
+    UserController,
+    AdminLogController }  from '../../controllers'
 
 import { validateFields } from '../InputValidation/userValidation';
 import { sanitizeData }   from '../InputValidation/sanitizeData';
@@ -42,7 +42,7 @@ export default class AddUserModal extends React.Component{
         allow only the ability to add user roles */
     async componentDidMount(){
         try {
-            let signedInAccount = await authController.getUserInfo();
+            let signedInAccount = await AuthController.getUserInfo();
 
             if(signedInAccount.user.user.userRole === 'custodian'){
                 //Front end display so it show's user is selected
@@ -78,7 +78,7 @@ export default class AddUserModal extends React.Component{
         };
 
         let returnedUser = {};
-        await userController.createUser(user)
+        await UserController.createUser(user)
         .then((data) => {
             if (data.status !== undefined && data.status >= 400) throw data;
             
@@ -101,7 +101,7 @@ export default class AddUserModal extends React.Component{
             action:     'add',
             content:    'user'
         };
-        await adminLogController.createAdminLog(log);
+        await AdminLogController.createAdminLog(log);
     };
 
     enablePasswordEdit(event) {

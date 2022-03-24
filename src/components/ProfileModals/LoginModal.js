@@ -28,14 +28,12 @@ export default class LoginModal extends React.Component{
         await loginLogoutController.login(this.state.userName, this.state.password)
         .then((auth) => {
             if(auth.status >= 400) throw auth;
-            this.setState({error: ''});
-            this.setState({isError: false});
+            this.setState({error: '', isError: false});
             this.props.setAuth(auth);
             this.dismissModal();
         })
-        .catch(async (err) => {            
-            this.setState({error: err.message});
-            this.setState({isError: true});
+        .catch(async (err) => {    
+            this.setState({error: err.message, isError: true});
         })
     };
 

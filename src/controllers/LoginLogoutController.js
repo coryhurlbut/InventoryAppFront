@@ -1,4 +1,5 @@
 import GenericController from './GenericController';
+import { AuthController } from '../controllers';
 /*
  *   Controls functions calling APIs for Auth data operations
  */
@@ -28,12 +29,10 @@ export default class LoginLogoutController extends GenericController {
             let response = await this.request('auth/login', reqObj);
             if (response.status >= 400) throw response;
 
-            // Clears to keep only one set of tokens at a time
-            localStorage.clear();
-            localStorage.setItem('access', response.accessToken);
-            localStorage.setItem('refresh', response.refreshToken);
+            AuthController.setAccessTokenCookie(response.accessToken);
+            AuthController.setRefreshTokenCookie(response.refreshToken);
+
             return response;
-            
         } catch (err) {
             return err;
         };

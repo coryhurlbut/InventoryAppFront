@@ -3,7 +3,7 @@ import jwtDecode from "jwt-decode";
 /*
 *   Controller to be used by the other controllers. Holds main auth request functions that will be used in most controllers.
 */
-export default class AuthController {
+export class AuthController {
     constructor(props) {
         this.buildApiUrl    = this.buildApiUrl.bind(this);
         this.request        = this.requestWithAuth.bind(this);
@@ -15,20 +15,46 @@ export default class AuthController {
         return process.env.REACT_APP_HOSTNAME + url;
     };
 
-    // Gets accessToken from localStorage
+    // Gets accessToken from the cookies
     getAccessToken() {
-        return localStorage.getItem('access') || undefined;
+        let returnValue = null;
+        let cookies = document.cookie;
+
+        //Cookies saved as "name1=value1;name2=value2"
+        cookies.split('; ').map(cookie => {
+            if (cookie.split('=')[0] === 'accessToken') {
+                returnValue = decodeURIComponent(cookie.split('=')[1]);
+            };
+        });
+        return returnValue;
     };
 
-    // Gets refreshToken from localStorage
+    // Gets refreshToken from the cookies
     getRefreshToken() {
-        return localStorage.getItem('refresh') || undefined;
+        let cookies = document.cookie;
+        let returnValue = null;
+
+        //Cookies saved as "name1=value1;name2=value2"
+        cookies.split('; ').map(cookie => {
+            if (cookie.split('=')[0] === 'refreshToken') {
+                returnValue = decodeURIComponent(cookie.split('=')[1]);
+            };
+        });
+
+        return returnValue;
     };
 
-    // Clears localStorage
-    clearLocalStorage () {
-        localStorage.clear();
-    };
+    //Sets refresh token into a cookie
+    setRefreshTokenCookie(refreshToken) {
+        document.cookie = `refreshToken=${encodeURIComponent(refreshToken)}; Secure`;
+    }
+
+    //Sets access token into a cookie with expiration
+    setAccessTokenCookie(accessToken) {
+        document.cookie = `accessToken=${encodeURIComponent(accessToken)}; Secure`;
+    }
+
+
 
     // Refreshes the accessToken using the refreshToken. Returns accessToken and user info
     async refreshToken() {
@@ -41,7 +67,7 @@ export default class AuthController {
                 "Content-Type":     "application/json"
             }, 
             method: 'POST', 
-            body: JSON.stringify({refreshToken: refreshToken})
+            body: JSON.stringify({ refreshToken: refreshToken })
         };
 
         // Makes request to refresh, gets the response in json, then takes the data out and stores in auth
@@ -51,7 +77,7 @@ export default class AuthController {
         // If no auth data or incorrect token, return undefined 
         if (auth === undefined || auth.message !== undefined) {return undefined};
 
-        localStorage.setItem('access', auth.accessToken);
+        this.setAccessTokenCookie(auth.accessToken);
 
         return auth;
     };
@@ -83,26 +109,20 @@ export default class AuthController {
             return undefined;
         };
     };
+
     // gets current logged in user info from token
     getUserInfo() {
-        let user = jwtDecode(this.getAccessToken());
-        return user;
+        try {
+            let user = jwtDecode(this.getAccessToken());
+            return user;
+        } catch (error) {
+            return {
+                ...error,
+                status: 500,
+                message: 'Expired Token'
+            }
+        }
     }
-
-    // // Returns JSON if it is able. Otherwise, returns what was sent to it
-    // async isJSON(objToCheck) {
-    //     let jsonObject;
-    //     try {
-    //         // Awaits .json function to get the response in JSON
-    //         jsonObject = await objToCheck.json();
-    //         return jsonObject;
-    //     } catch (error) {
-    //         // If .json fails, return original data
-    //         if (error.name === "TypeError") {
-    //             return objToCheck;
-    //         };
-    //     };
-    // };
 
     // Custom request function to add headers for authenticated requests
     async requestWithAuth (url, initObj) {
@@ -132,5 +152,6 @@ export default class AuthController {
     };
 };
 
-// Exports an instance of the class instead of the class
-export const authController = new AuthController();
+//Exports an instance of the class instead of the class
+const authController = new AuthController();
+export default authController;
