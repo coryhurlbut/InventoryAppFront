@@ -1,16 +1,598 @@
-https://www.jondjones.com/frontend/react/react-tutorials/react-coding-standards-and-practices-to-level-up-your-code/
+Sources: 
+    > https://www.jondjones.com/frontend/react/react-tutorials/react-coding-standards-and-practices-to-level-up-your-code/
 
-https://airbnb.io/javascript/react/
+    > https://airbnb.io/javascript/react/
 
-https://www.loginradius.com/blog/async/guest-post/react-best-coding-practices/
+    > https://www.loginradius.com/blog/async/guest-post/react-best-coding-practices/
 
-https://github.com/pillarstudio/standards/blob/master/reactjs-guidelines.md
+    > https://github.com/pillarstudio/standards/blob/master/reactjs-guidelines.md
 
-https://engineering.hmn.md/standards/style/react/
+    https://engineering.hmn.md/standards/style/react/
 
-https://betterprogramming.pub/21-best-practices-for-a-clean-react-project-df788a682fb
+    https://betterprogramming.pub/21-best-practices-for-a-clean-react-project-df788a682fb
 
-https://www.tatvasoft.com/blog/reactjs-best-practices/
+    https://www.tatvasoft.com/blog/reactjs-best-practices/
 
-https://reactjs.org/docs/design-principles.html
+    https://reactjs.org/docs/design-principles.html
+    TOOLS:
+        ESLint - a static code analysis tool for identifying problematic patterns found in JavaScript code. Rules in ESLint are configurable, and customized rules can be defined and loaded. ESLint covers both code quality and coding style issues 
+        JEST and ENZYMES - React test frameworks
 
+React Coding Standards:
+    1. NAMING CONVENTIONS:
+        1.1 Component’s names should be written using pascal case: 
+            Header.js
+            HeroBanner.js
+            CookieBanner.js
+            BlogListing.js
+            1.1.1 Component Naming: Use the filename as the component name. 
+                For example, ReservationCard.jsx should have a reference name of ReservationCard. 
+                However, for root components of a directory, use index.jsx as the filename and use the directory name as the component name:
+                    // bad
+                        import Footer from './Footer/Footer';
+
+                    // bad
+                        import Footer from './Footer/index';
+
+                    // good
+                        import Footer from './Footer';
+        1.2 Non-components should be written using camel case:
+            myUtilityFile.js
+            cookieHelper.js
+            fetchApi.js
+        1.3 Unit test files should use the same name as its corresponding file:
+            CookieBanner.js
+            CookieBanner.test.js
+
+            fetchData.js
+            fetchData.test.js
+        1.4 Attribute name should be camel case:
+            className
+            onClick
+        1.5 Variable names should be camel case. Variable names can contain number and special characters:
+            const variable = 'test';
+            let variableBoolean = true;
+        1.6 CSS files should be named the same as the component:
+            CookieBanner.css
+            Header.css
+        1.7 If a component requires multiple files (css, test) locate all files within component a folder
+        1.8 Use .jsx or .tsx extension a for React components
+        1.9 Reference Naming: Use PascalCase for React components and camelCase for their instances.
+            eslint: react/jsx-pascal-case
+                // bad
+                    import reservationCard from './ReservationCard';
+
+                // good
+                    import ReservationCard from './ReservationCard';
+
+                // bad
+                    const ReservationItem = <ReservationCard />;
+
+                // good
+                    const reservationItem = <ReservationCard />;
+        1.10 Props Naming: Avoid using DOM component prop names for different purposes.
+            Why? People expect props like style and className to mean one specific thing. Varying this API for a subset of your app makes the code less readable and less maintainable, and may cause bugs
+
+            // bad
+                <MyComponent style="fancy" />
+
+            // bad
+                <MyComponent className="fancy" />
+
+            // good
+                <MyComponent variant="fancy" />
+        1.11 Prefixing none React methods
+            1.11.1 Prefix all none React methods within a component with an underscore.
+                class Foo extends React.Component {
+
+                    componentDidMount() {
+                        this._update();
+                    }
+                    
+                    _update() {
+                        // e.g. update position
+                    }
+                    
+                    render() {
+                        return (
+                            <div>foo</div>
+                        );
+                    }
+                }   
+        1.12 Prefixing component wide variables
+            1.12.1 In the exception that you do not want to place a component wide variables on the state, you have to prefix it with an underscore.
+                class Foo extends React.Component {
+
+                    componentDidMount() {
+                        this._el = React.FindDOMNode(this.refs.foo);
+                    }
+                    
+                    render() {
+                        return (
+                            <div>foo</div>
+                        );
+                    }
+                }  
+
+    2. ARCHITECTURE & CLEAN CODE  /* Directory Structure: https://www.taniarascia.com/react-architecture-directory-structure/ */
+        2.1 No DRY [Don't Repeat Yourself] violations. Create utility files to avoid duplicate code
+
+        2.2 Follow the component/presentation pattern where appropriate. Components should follow the single responsibility principle
+
+        2.3 Use Higher Order Components where appropriate
+
+        2.4 Split code into respective files, JavaScript, test, and CSS
+
+        2.5 Create a index.js within each folder for exporting. This will reduce repeating names on the imports
+            import {Nav} from './Nav.js';
+            import {CookieBanner} from './CookieBanner.js';
+
+            export {Nav, CookieBanner}
+        2.6 Only include one React component per file
+
+        2.7 Favour functionless components
+
+        2.8 Do not use mixins
+            Why? Mixins introduce implicit dependencies, cause name clashes, and cause snowballing complexity. 
+            Most use cases for mixins can be accomplished in better ways via components, higher-order components, 
+            or utility modules.
+
+        2.9 No unneeded comments
+
+        2.10 Methods that are longer than the screen should be refactored into smaller units
+
+        2.11 Commented out code should be deleted, not committed
+        2.12 Class vs React.createClass vs stateless
+            2.12.1 If you have internal state and/or refs, prefer:
+             class extends React.Component over React.createClass. 
+                eslint: react/prefer-es6-class react/prefer-stateless-function
+
+                // bad
+                    const Listing = React.createClass({
+                        // ...
+                        render() {
+                            return <div>{this.state.hello}</div>;
+                        }
+                    });
+
+                // good
+                    class Listing extends React.Component {
+                        // ...
+                        render() {
+                            return <div>{this.state.hello}</div>;
+                        }
+                    }
+            2.12.2 And if you don’t have state or refs, prefer normal functions (not arrow functions) over classes:
+
+                // bad
+                class Listing extends React.Component {
+                    render() {
+                        return <div>{this.props.hello}</div>;
+                    }
+                }
+
+                // bad (relying on function name inference is discouraged)
+                const Listing = ({ hello }) => (
+                    <div>{hello}</div>
+                );
+
+                // good
+                function Listing({ hello }) {
+                    return <div>{hello}</div>;
+                }
+        2.13 Alignment
+            Follow these alignment styles for JSX syntax. 
+                eslint: react/jsx-closing-bracket-location react/jsx-closing-tag-location
+
+            // bad
+                <Foo superLongParam="bar"
+                     anotherSuperLongParam="baz" />
+
+            // good
+                <Foo
+                    superLongParam="bar"
+                    anotherSuperLongParam="baz"
+                />
+
+            // if props fit in one line then keep it on the same line
+                <Foo bar="bar" />
+
+            // children get indented normally
+                <Foo
+                    superLongParam="bar"
+                    anotherSuperLongParam="baz"
+                >
+                    <Quux />
+                </Foo>
+        2.14 Quotes
+            Always use double quotes (") for JSX attributes, but single quotes (') for all other JS. 
+                eslint: jsx-quotes
+                Why? Regular HTML attributes also typically use double quotes instead of single, so JSX attributes mirror this convention.
+
+            // bad
+                <Foo bar='bar' />
+
+            // good
+                <Foo bar="bar" />
+
+            // bad
+                <Foo style={{ left: "20px" }} />
+
+            // good
+                <Foo style={{ left: '20px' }} />
+        2.15 Spacing
+            2.15.1 Always include a single space in your self-closing tag. eslint: no-multi-spaces, react/jsx-tag-spacing
+                // bad
+                    <Foo/>
+
+                // very bad
+                    <Foo                 />
+
+                // bad
+                    <Foo
+                />
+
+                // good
+                    <Foo />
+            2.15.2 Do not pad JSX curly braces with spaces. eslint: react/jsx-curly-spacing
+                // bad
+                    <Foo bar={ baz } />
+
+                // good
+                    <Foo bar={baz} />
+        2.16 Props
+            2.16.1 Always use camelCase for prop names.
+                // bad
+                    <Foo
+                        UserName="hello"
+                        phone_number={12345678}
+                    />
+
+                // good
+                    <Foo
+                        userName="hello"
+                        phoneNumber={12345678}
+                    />
+            2.16.2 Omit the value of the prop when it is explicitly true. 
+                eslint: react/jsx-boolean-value
+                    // bad
+                        <Foo
+                            hidden={true}
+                        />
+
+                    // good
+                        <Foo
+                            hidden
+                        />
+
+                    // good
+                        <Foo hidden />
+            2.16.3 Always include an alt prop on <img> tags. 
+                If the image is presentational, alt can be an empty string or the <img> must have role="presentation". 
+                eslint: jsx-a11y/alt-text
+                    // bad
+                        <img src="hello.jpg" />
+
+                    // good
+                        <img src="hello.jpg" alt="Me waving hello" />
+
+                    // good
+                        <img src="hello.jpg" alt="" />
+
+                    // good
+                        <img src="hello.jpg" role="presentation" />
+            2.16.4 Do not use words like “image”, “photo”, or “picture” in <img> alt props.
+                eslint: jsx-a11y/img-redundant-alt
+                Why? Screenreaders already announce img elements as images, so there is no need to include this information in the alt text.
+                    // bad
+                        <img src="hello.jpg" alt="Picture of me waving hello" />
+
+                    // good
+                        <img src="hello.jpg" alt="Me waving hello" />
+            2.16.5 Do not use accessKey on elements. 
+                eslint: jsx-a11y/no-access-key
+                Why? Inconsistencies between keyboard shortcuts and keyboard commands used by people using screenreaders and keyboards complicate accessibility.
+                    // bad
+                        <div accessKey="h" />
+
+                    // good
+                        <div />
+            2.16.6 Avoid using an array index as key prop, prefer a unique ID.
+                // bad
+                    {todos.map((todo, index) =>
+                        <Todo
+                            {...todo}
+                            key={index}
+                        />
+                    )}
+
+                // good
+                    {todos.map(todo => (
+                        <Todo
+                            {...todo}
+                            key={todo.id}
+                        />
+                    ))}
+            2.16.7 Always define explicit defaultProps for all non-required props.
+                Why? propTypes are a form of documentation, and providing defaultProps means the reader of your code doesn’t have to assume as much. In addition, it can mean that your code can omit certain type checks.
+                    // bad
+                        function SFC({ foo, bar, children }) {
+                            return <div>{foo}{bar}{children}</div>;
+                        }
+                        SFC.propTypes = {
+                            foo: PropTypes.number.isRequired,
+                            bar: PropTypes.string,
+                            children: PropTypes.node,
+                        };
+
+                    // good
+                        function SFC({ foo, bar, children }) {
+                            return <div>{foo}{bar}{children}</div>;
+                        }
+                        SFC.propTypes = {
+                            foo: PropTypes.number.isRequired,
+                            bar: PropTypes.string,
+                            children: PropTypes.node,
+                        };
+                        SFC.defaultProps = {
+                            bar: '',
+                            children: null,
+                        };
+                2.16.7.1 Setting propTypes declarations is mandatory
+                2.16.7.2 Group them into required/none-required
+                2.16.7.3 Alphabetically sort each group
+                2.16.7.4 Separate them by a new line
+                    static propTypes = {
+                        blank: React.PropTypes.bool.isRequired,
+                        block: React.PropTypes.bool.isRequired,
+                        size: React.PropTypes.string.isRequired,
+                        to: React.PropTypes.string.isRequired,
+                        disabled: React.PropTypes.bool,
+                    };
+
+            2.16.8 Use spread props sparingly.
+                Why? Otherwise you’re more likely to pass unnecessary props down to components. And for React v15.6.1 and older, you could pass invalid HTML attributes to the DOM.
+                Exceptions:
+
+                2.16.8.1 HOCs that proxy down props and hoist propTypes
+                    function HOC(WrappedComponent) {
+                        return class Proxy extends React.Component {
+                            Proxy.propTypes = {
+                                text: PropTypes.string,
+                                isLoading: PropTypes.bool
+                            };
+
+                            render() {
+                                return <WrappedComponent {...this.props} />
+                            }
+                        }
+                    }
+                2.16.8.2 Spreading objects with known, explicit props. This can be particularly useful when testing React components with Mocha’s beforeEach construct.
+                    export default function Foo {
+                        const props = {
+                            text: '',
+                            isPublished: false
+                        }
+
+                        return (<div {...props} />);
+                    }
+        2.17 Refs
+            2.17.1 Always use ref callbacks. eslint: react/no-string-refs
+                // bad
+                    <Foo
+                        ref="myRef"
+                    />
+
+                // good
+                    <Foo
+                        ref={(ref) => { this.myRef = ref; }}
+                    />
+        2.18 Parentheses
+            2.18.1 Wrap JSX tags in parentheses when they span more than one line. 
+                eslint: react/jsx-wrap-multilines
+                    // bad
+                        render() {
+                            return <MyComponent variant="long body" foo="bar">
+                                    <MyChild />
+                                    </MyComponent>;
+                        }
+
+                    // good
+                        render() {
+                            return (
+                                <MyComponent variant="long body" foo="bar">
+                                <MyChild />
+                                </MyComponent>
+                            );
+                        }
+
+                    // good, when single line
+                        render() {
+                            const body = <div>hello</div>;
+                            return <MyComponent>{body}</MyComponent>;
+                        }
+        2.19 Tags
+            2.19.1 Always self-close tags that have no children. 
+                eslint: react/self-closing-comp
+                    // bad
+                        <Foo variant="stuff"></Foo>
+
+                    // good
+                        <Foo variant="stuff" />
+            2.19.2 If your component has multi-line properties, close its tag on a new line. 
+                eslint: react/jsx-closing-bracket-location
+                    // bad
+                        <Foo
+                            bar="bar"
+                            baz="baz" />
+
+                    // good
+                        <Foo
+                            bar="bar"
+                            baz="baz"
+                        />
+        2.20 Methods
+            2.20.1 Use arrow functions to close over local variables.
+
+                function ItemList(props) {
+                    return (
+                        <ul>
+                            {props.items.map((item, index) => (
+                                <Item
+                                    key={item.key}
+                                    onClick={() => doSomethingWith(item.name, index)}
+                                />
+                            ))}
+                        </ul>
+                    );
+                }
+            2.20.2 Bind event handlers for the render method in the constructor. eslint: react/jsx-no-bind
+                Why? A bind call in the render path creates a brand new function on every single render.
+
+                // bad
+                    class extends React.Component {
+                        onClickDiv() {
+                            // do stuff
+                        }
+
+                        render() {
+                            return <div onClick={this.onClickDiv.bind(this)} />;
+                        }
+                    }
+
+                // good
+                    class extends React.Component {
+                        constructor(props) {
+                            super(props);
+
+                            this.onClickDiv = this.onClickDiv.bind(this);
+                        }
+
+                        onClickDiv() {
+                            // do stuff
+                        }
+
+                        render() {
+                            return <div onClick={this.onClickDiv} />;
+                        }
+                    }   
+
+        2.21 Ordering
+            2.21.1 Ordering for class extends React.Component:
+                Deprecated Lifecycle Methods:
+                    componentWillUpdate // getChildContext // componentWillReceiveProps 
+                 1] constructor()
+                        > you need to call super(props) method before any other statement. If you do not call super(props) method, this.props will be undefined in the constructor and can lead to bugs.
+                            Constructor(props){  
+                                super(props);  
+                            }  
+                        > It used for initializing the local state of the component by assigning an object to this.state.
+                        > It used for binding event handler methods that occur in your component.
+                        > It is not necessary to have a constructor in every component. If the component is not complex, it simply returns a node.
+                 2] optional static methods: getDerivedStateFromProps()
+                        > exists for rare use cases where the state depends on changes in props over time. For example, it might be handy for implementing a <Transition> component that compares its previous and next children to decide which of them to animate in and out.
+                 3] getChildContext() ->  https://reactjs.org/docs/context.html
+                        > Context is designed to share data that can be considered “global” for a tree of React components
+                 4] componentWillMount()
+                        https://www.pluralsight.com/guides/how-to-use-componentwillmount
+                        >lifecycle hook is primarily used to implement server-side logic before the actual rendering happens, such as making an API call to the server. 
+                 5] componentDidMount()
+                        > a hook that gets invoked right after a React component has been mounted aka after the first render() lifecycle
+                        >> use for initial data when the component mounts
+                        //Classic approach
+                            class App extends React.Component {
+
+                                componentDidMount() {
+                                    // Runs after the first render() lifecycle
+                                }
+
+                                render() {
+                                    console.log('Render lifecycle')
+                                    return <h1>Hello</h1>;
+                                }
+                            }
+                        //functional component
+                            function App() {
+                                React.useEffect(() => {
+                                    // Runs after the first render() lifecycle
+                                }, []);
+
+                                return <h1>Hello</h1>;
+                            }
+                 6] shouldComponentUpdate()
+                        >let React know if a component’s output is not affected by the current change in state or props. The default behavior is to re-render on every state change, and in the vast majority of cases you should rely on the default behavior.
+                        >exists as a performance optimization. Do not rely on it to “prevent” a rendering, as this can lead to bugs. Consider using the built-in PureComponent instead of writing shouldComponentUpdate() by hand. PureComponent performs a shallow comparison of props and state, and reduces the chance that you’ll skip a necessary update.
+                 7] componentDidUpdate()
+                        >invoked immediately after updating occurs. This method is not called for the initial render.
+                        >good place to do network requests as long as you compare the current props to previous props (e.g. a network request may not be necessary if the props have not changed).
+                 8] componentWillUnmount()
+                        >invoked immediately before a component is unmounted and destroyed. Perform any necessary cleanup in this method, such as invalidating timers, canceling network requests, or cleaning up any subscriptions that were created in componentDidMount().
+                 9] clickHandlers or eventHandlers like onClickSubmit() or onChangeDescription()
+                10] getter methods for render like getSelectReason() or getFooterContent()
+                11] optional render methods like renderNavigation() or renderProfilePicture()
+                12] render()
+            2.21.2 How to define propTypes, defaultProps, contextTypes, etc…
+                    import React from 'react';
+                    import PropTypes from 'prop-types';
+
+                    const propTypes = {
+                        id: PropTypes.number.isRequired,
+                        url: PropTypes.string.isRequired,
+                        text: PropTypes.string,
+                    };
+
+                    const defaultProps = {
+                        text: 'Hello World',
+                    };
+
+                    class Link extends React.Component {
+                        static methodsAreOk() {
+                            return true;
+                        }
+
+                        render() {
+                            return <a href={this.props.url} data-id={this.props.id}>{this.props.text}</a>;
+                        }
+                    }
+
+                    Link.propTypes = propTypes;
+                    Link.defaultProps = defaultProps;
+
+                    export default Link;
+        2.22 Comments
+            2.22.1 Use comments to explain why you did something, not how you did it
+                > Your code should be self-explanatory
+        2.23 Using Handler Methods
+            2.23.1 Name methods using '_handle' + triggering event, e.g. _handleClick
+            2.23.2 Bind handler using the ES6 arrow syntax, so inside the callback it has always the right context
+                class Foo extends React.Component {
+
+                    _handleClick = (e) => {
+                        this.setState(
+                            {
+                                clicked: true
+                            }
+                        );
+                    }
+                    
+                    render() {
+                        return (
+                            <button onClick={this._handleClick}>Submit</button>
+                        );
+                    }
+                }
+
+
+
+    3. BUG AVOIDANCE
+        3.1 Use optional chaining if things can be null
+
+        3.2 Use the guard pattern/prop types/typescript to ensure your passed in parameters are valid
+
+        3.3 Create PURE functions and avoid side-effects
+
+        3.4 Avoid mutating state when working with arrays
+
+        3.5 Remove all console.log()
+
+        3.6 Treat props as read-only. Do not try to modify them
