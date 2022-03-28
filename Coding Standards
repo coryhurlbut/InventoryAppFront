@@ -7,16 +7,19 @@ Sources:
 
     > https://github.com/pillarstudio/standards/blob/master/reactjs-guidelines.md
 
-    https://engineering.hmn.md/standards/style/react/
+    > https://engineering.hmn.md/standards/style/react/
 
-    https://betterprogramming.pub/21-best-practices-for-a-clean-react-project-df788a682fb
+    > https://betterprogramming.pub/21-best-practices-for-a-clean-react-project-df788a682fb
 
-    https://www.tatvasoft.com/blog/reactjs-best-practices/
+    Security Section: https://www.tatvasoft.com/blog/reactjs-best-practices/
 
-    https://reactjs.org/docs/design-principles.html
+    Good React Reading: https://reactjs.org/docs/design-principles.html
+    
     TOOLS:
         ESLint - a static code analysis tool for identifying problematic patterns found in JavaScript code. Rules in ESLint are configurable, and customized rules can be defined and loaded. ESLint covers both code quality and coding style issues 
+            https://eslint.org/
         JEST and ENZYMES - React test frameworks
+            https://medium.com/codeclan/testing-react-with-jest-and-enzyme-20505fec4675
 
 React Coding Standards:
     1. NAMING CONVENTIONS:
@@ -128,6 +131,29 @@ React Coding Standards:
             import {CookieBanner} from './CookieBanner.js';
 
             export {Nav, CookieBanner}
+            
+            2.5.1 Importing Order
+                > Always try to import things in a certain order. It improves code readability.
+                > The rule of thumb is to keep the import order like this:
+                    >> Built-in
+                    >> External
+                    >> Internal
+                //Bad
+                    import React from 'react';
+                    import ErrorImg from '../../assets/images/error.png';
+                    import styled from 'styled-components/native';
+                    import colors from '../../styles/colors';
+                    import { PropTypes } from 'prop-types';
+
+                //Good
+                    import React from 'react';
+
+                    import { PropTypes } from 'prop-types';
+                    import styled from 'styled-components/native';
+
+                    import ErrorImg from '../../assets/images/error.png';
+                    import colors from '../../styles/colors';
+
         2.6 Only include one React component per file
 
         2.7 Favour functionless components
@@ -142,6 +168,7 @@ React Coding Standards:
         2.10 Methods that are longer than the screen should be refactored into smaller units
 
         2.11 Commented out code should be deleted, not committed
+
         2.12 Class vs React.createClass vs stateless
             2.12.1 If you have internal state and/or refs, prefer:
              class extends React.Component over React.createClass. 
@@ -180,6 +207,7 @@ React Coding Standards:
                 function Listing({ hello }) {
                     return <div>{hello}</div>;
                 }
+
         2.13 Alignment
             Follow these alignment styles for JSX syntax. 
                 eslint: react/jsx-closing-bracket-location react/jsx-closing-tag-location
@@ -204,6 +232,7 @@ React Coding Standards:
                 >
                     <Quux />
                 </Foo>
+
         2.14 Quotes
             Always use double quotes (") for JSX attributes, but single quotes (') for all other JS. 
                 eslint: jsx-quotes
@@ -220,6 +249,7 @@ React Coding Standards:
 
             // good
                 <Foo style={{ left: '20px' }} />
+
         2.15 Spacing
             2.15.1 Always include a single space in your self-closing tag. eslint: no-multi-spaces, react/jsx-tag-spacing
                 // bad
@@ -240,6 +270,7 @@ React Coding Standards:
 
                 // good
                     <Foo bar={baz} />
+
         2.16 Props
             2.16.1 Always use camelCase for prop names.
                 // bad
@@ -431,7 +462,7 @@ React Coding Standards:
                             bar="bar"
                             baz="baz"
                         />
-        2.20 Methods
+        2.20 Methods and Functions
             2.20.1 Use arrow functions to close over local variables.
 
                 function ItemList(props) {
@@ -475,7 +506,23 @@ React Coding Standards:
                         render() {
                             return <div onClick={this.onClickDiv} />;
                         }
-                    }   
+                    } 
+            2.20.3 Don't Define a Function Inside Render
+                > Don’t define a function inside render. Try to keep the logic inside render to an absolute minimum.
+                //Bad
+                    return (
+                        <button onClick={() => dispatch(ACTION_TO_SEND_DATA)}>    // NOTICE HERE
+                            This is a bad example 
+                        </button>  
+                    )
+                //good
+                    const submitData = () => dispatch(ACTION_TO_SEND_DATA)
+
+                    return (
+                        <button onClick={submitData}>  
+                            This is a good example 
+                        </button>  
+                    )
 
         2.21 Ordering
             2.21.1 Ordering for class extends React.Component:
@@ -559,30 +606,140 @@ React Coding Standards:
                     Link.defaultProps = defaultProps;
 
                     export default Link;
-        2.22 Comments
-            2.22.1 Use comments to explain why you did something, not how you did it
-                > Your code should be self-explanatory
-        2.23 Using Handler Methods
-            2.23.1 Name methods using '_handle' + triggering event, e.g. _handleClick
-            2.23.2 Bind handler using the ES6 arrow syntax, so inside the callback it has always the right context
-                class Foo extends React.Component {
+            2.22 Comments
+                2.22.1 Use comments to explain why you did something, not how you did it
+                    > Your code should be self-explanatory
+            2.23 Using Handler Methods
+                2.23.1 Name methods using '_handle' + triggering event, e.g. _handleClick
+                2.23.2 Bind handler using the ES6 arrow syntax, so inside the callback it has always the right context
+                    class Foo extends React.Component {
 
-                    _handleClick = (e) => {
-                        this.setState(
-                            {
-                                clicked: true
-                            }
-                        );
+                        _handleClick = (e) => {
+                            this.setState(
+                                {
+                                    clicked: true
+                                }
+                            );
+                        }
+                        
+                        render() {
+                            return (
+                                <button onClick={this._handleClick}>Submit</button>
+                            );
+                        }
                     }
+        2.24 object Literals and Template Literals
+            2.24.1 Object literals can help make our code more readable. 
+                > Let’s say you want to show three types of users based on their role.
+                > You can’t use ternary because the number of options is greater than two.
+                //Bad
+                    const {role} = user
+
+                    switch(role){
+                    case ADMIN:
+                        return <AdminUser />
+                    case EMPLOYEE:
+                        return <EmployeeUser />
+                    case USER:
+                        return <NormalUser />
+                    }
+
+                //Good
+                    const {role} = user
+
+                    const components = {
+                    ADMIN: AdminUser,
+                    EMPLOYEE: EmployeeUser,
+                    USER: NormalUser
+                    };
+
+                    const Component = components[role];
+
+                    return <Componenent />;
+            2.24.2 Use Template Literals
+                > Use template literals to build large strings. Avoid using string concatenation. It’s nice and clean.
+                //Bad
+                    const userDetails = user.name + "'s profession is" + user.proffession
+
+                    return (
+                        <div> {userDetails} </div>  
+                    )
+                //Good
+                    const userDetails = `${user.name}'s profession is ${user.proffession}`
+
+                    return (
+                    <div> {userDetails} </div>  
+                    )
+
+        2.25 Use Fragments
+            2.25.1 Always use Fragment over Div. It keeps the code clean and is also beneficial for performance because one less node is created in the virtual DOM.
+                //Bad
+                    return (
+                        <div>
+                            <Component1 />
+                            <Component2 />
+                            <Component3 />
+                        </div>  
+                    )
+
+                //Good
+                    return (
+                        <>
+                            <Component1 />
+                            <Component2 />
+                            <Component3 />
+                        </>  
+                    )
+        2.26 Use Memo
+            > React.PureComponent and Memo can significantly improve the performance of your application. They help us to avoid unnecessary rendering.
+            //Bad
+                import React, { useState } from "react";
+
+                export const TestMemo = () => {
+                    const [userName, setUserName] = useState("faisal");
+                    const [count, setCount] = useState(0);
                     
-                    render() {
-                        return (
-                            <button onClick={this._handleClick}>Submit</button>
-                        );
-                    }
-                }
+                    const increment = () => setCount((count) => count + 1);
+                    
+                    return (
+                        <>
+                            <ChildrenComponent userName={userName} />
+                            <button onClick={increment}> Increment </button>
+                        </>
+                    );
+                };
 
+                const ChildrenComponent =({ userName }) => {
+                    console.log("rendered", userName);
+                    return <div> {userName} </div>;
+                };
+                    >> Although the child component should render only once because the value of count has nothing to do with the ChildComponent . But, it renders each time you click on the button.
 
+                //Good
+                    const ChildrenComponent = React.memo(({userName}) => {
+                        console.log('rendered')
+                        return <div> {userName}</div>
+                    })
+                    >> Now no matter how many times you click on the button, it will render only when necessary.
+        2.27 Use Object Destructuring
+            //Bad
+                return (
+                    <>
+                        <div> {user.name} </div>
+                        <div> {user.age} </div>
+                        <div> {user.profession} </div>
+                    </>  
+                )
+            //Good
+                const { name, age, profession } = user;
+
+                return (
+                    <>
+                        <div> {name} </div>
+                        <div> {age} </div>
+                        <div> {profession} </div>
+                    </>  
+                )
 
     3. BUG AVOIDANCE
         3.1 Use optional chaining if things can be null
@@ -596,3 +753,6 @@ React Coding Standards:
         3.5 Remove all console.log()
 
         3.6 Treat props as read-only. Do not try to modify them
+    
+    4. GIT PROCEDURES   
+        4.1 
