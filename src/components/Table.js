@@ -33,7 +33,7 @@ function Table({ columns, data, ...props }) {
             <tbody {...getTableBodyProps()}>
                 {rows.map((row, i) => {
                     prepareRow(row)
-                    if (props.userRole === 'custodian' && props.contentType !== 'Users' || props.userRole === 'admin') {
+                    if (props.userRole !== 'user' && props.contentType !== 'Users') {
                         return (
                             <tr 
                                 {...row.getRowProps()} 

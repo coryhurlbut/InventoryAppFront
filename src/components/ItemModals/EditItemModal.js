@@ -132,7 +132,7 @@ export default class EditItemModal extends React.Component{
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
     isSumbitAvailable(){
-        if(validateFields.validateSubmit(this.state.name, this.state.description, this.state.homeLocation, this.state.specificLocation, this.state.serialNumber) && this.state.errors.length == 0){
+        if(validateFields.validateSubmit(this.state.name, this.state.description, this.state.homeLocation, this.state.specificLocation, this.state.serialNumber) && this.state.errors.length === 0){
             return true;
         }
         return false;

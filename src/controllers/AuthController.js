@@ -21,10 +21,12 @@ export class AuthController {
         let cookies = document.cookie;
 
         //Cookies saved as "name1=value1;name2=value2"
-        cookies.split('; ').map(cookie => {
+            /*replaced map with forEach to remove warning error: 
+                Expected to return a value in arrow function  array-callback-return*/
+        cookies.split('; ').forEach(cookie => {
             if (cookie.split('=')[0] === 'accessToken') {
                 returnValue = decodeURIComponent(cookie.split('=')[1]);
-            };
+            }
         });
         return returnValue;
     };
@@ -35,7 +37,9 @@ export class AuthController {
         let returnValue = null;
 
         //Cookies saved as "name1=value1;name2=value2"
-        cookies.split('; ').map(cookie => {
+            /*replaced map with forEach to remove warning error: 
+                    Expected to return a value in arrow function  array-callback-return*/
+        cookies.split('; ').forEach(cookie => {
             if (cookie.split('=')[0] === 'refreshToken') {
                 returnValue = decodeURIComponent(cookie.split('=')[1]);
             };

@@ -225,7 +225,7 @@ export default class EditUserModal extends React.Component{
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
     isSubmitAvailable(){
-        if(validateFields.validateSubmit(this.state.firstName, this.state.lastName, this.state.userName, this.state.userRole, this.state.phoneNumber, this.state.pwRequired, this.state.password) && this.state.errors.length == 0){
+        if(validateFields.validateSubmit(this.state.firstName, this.state.lastName, this.state.userName, this.state.userRole, this.state.phoneNumber, this.state.pwRequired, this.state.password) && this.state.errors.length === 0){
             return true;
         }
         return false;

@@ -9,7 +9,7 @@ class ValidateFields{
     
     if (validator.isEmpty(santizedFirstName)) {
       return 'Please provide a first name';
-    } else if (!validator.isAlpha(santizedFirstName, 'en-US', {ignore: '[\s-]'})) {
+    } else if (!validator.isAlpha(santizedFirstName, 'en-US', {ignore: /[\s-]/})) {
       return '-_- letters only';
     } else if(!validator.isLength(santizedFirstName, {min:1, max:25})){
       return 'Name cannot exceed 25 characters'
@@ -21,7 +21,7 @@ class ValidateFields{
     
     if (validator.isEmpty(santizedLastName)) {
       return 'Please provide a last name';
-    } else if (!validator.isAlpha(santizedLastName, 'en-US', {ignore: '[\s-]'})) {
+    } else if (!validator.isAlpha(santizedLastName, 'en-US', {ignore: /[\s-]/})) {
       return '-_- letters only';
     } else if(!validator.isLength(santizedLastName, {min:1, max:25})){
       return 'Name cannot exceed 25 characters'
@@ -33,7 +33,7 @@ class ValidateFields{
     
     if (validator.isEmpty(santizedUserName)) {
       return 'Please provide a username';
-    } else if (!validator.isAlphanumeric(santizedUserName, 'en-US', {ignore: '[\s-_]'})) {
+    } else if (!validator.isAlphanumeric(santizedUserName, 'en-US', {ignore: /[\s-_]/})) {
       return '-_- letters and numbers only';
     } else if(!validator.isLength(santizedUserName, {min:6, max:25})){
       return 'Username must be between 6 and 25 characters'

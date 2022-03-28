@@ -49,6 +49,7 @@
 }
 .modalBody h4{
     margin: 0;
+    padding-top: 5px;
     font-weight: normal;
 }
 
@@ -69,7 +70,7 @@
 }
 
 .modalBody p{
-    text-align: center;
+    text-align: left;
 }
 
 .modalBody .arrayObject{
@@ -182,4 +183,9 @@ input[type=submit]:disabled {
 .modalFooter button:hover, input[type=submit]:hover{
     color: #11375c;
     background-color: #929292;
+}
+
+/* Login */
+#modalBody_Password, #modalBody_Username{
+    padding: 10px;
 }

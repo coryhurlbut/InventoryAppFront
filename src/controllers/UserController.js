@@ -57,7 +57,9 @@ class UserController extends AuthController{
 
         items.forEach(item => {
             if (users.length > 1) {
-                    users.map(user => {
+                /*replaced map with forEach to remove warning error: 
+                    Expected to return a value in arrow function  array-callback-return*/
+                users.forEach(user => {
                     if (item.possessedBy === user.userName) {
                         res.status = 'error';
                         res.message = 'Cannot delete or deactivate a user while they have an item signed out';

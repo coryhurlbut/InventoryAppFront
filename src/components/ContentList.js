@@ -41,11 +41,7 @@ export default class ContentList extends React.Component {
         this.showAvailableItems     =   this.showAvailableItems.bind(this);
         this.showUnavailableItems   =   this.showUnavailableItems.bind(this);
         this.showUsers              =   this.showUsers.bind(this);
-        this.setParentState             =   this.setParentState.bind(this);
-    };
-
-    componentWillMount () {
-        this.showAvailableItems();
+        this.setParentState         =   this.setParentState.bind(this);
     };
 
     // Will update component props if parent props change
