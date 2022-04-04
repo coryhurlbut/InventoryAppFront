@@ -648,9 +648,9 @@ React Coding Standards:
                     const {role} = user
 
                     const components = {
-                    ADMIN: AdminUser,
-                    EMPLOYEE: EmployeeUser,
-                    USER: NormalUser
+                        ADMIN: AdminUser,
+                        EMPLOYEE: EmployeeUser,
+                        USER: NormalUser
                     };
 
                     const Component = components[role];
@@ -668,7 +668,7 @@ React Coding Standards:
                     const userDetails = `${user.name}'s profession is ${user.proffession}`
 
                     return (
-                    <div> {userDetails} </div>  
+                        <div> {userDetails} </div>  
                     )
 
         2.25 Use Fragments
@@ -774,7 +774,7 @@ React Coding Standards:
             4.5.1 git commit -m "commit message -> what changes have you made"
             4.5.2 git commit --amend -m "commit message"
                 > When you make a commit but forget something small 
-                > doesn't create another commit history, it overrides the previous commit
+                > it overrides the previous commit
             4.5.3 git reset --hard HEAD^
                 > reverts the last made commit in the current check-out branch
             4.5.4 git push 
