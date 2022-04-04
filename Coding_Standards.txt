@@ -754,5 +754,27 @@ React Coding Standards:
 
         3.6 Treat props as read-only. Do not try to modify them
     
-    4. GIT PROCEDURES   
+    4. GIT COMMANDS   
         4.1 Do commit early and often
+        4.2 File stages:              untracked --> staged --> committed
+        4.3 The Working Tree
+            4.3.1 git status
+                > files in your Working Tree
+                > files in your Staging Area
+        4.4 The Staging Area
+            4.4.1 git add
+                > git add .  --> adds everything from your Working Tree
+                > git add -a
+                > git add -u 
+            4.2.2 git checkout file-name
+                > revert the changes of a modified file
+            4.2.3 git rm --cached file-name
+                > remove the file from the staging area
+        4.5 The Local Repository
+            4.5.1 git commit -m "commit message -> what changes have you made"
+            4.5.2 git commit --amend -m "commit message"
+                > When you make a commit but forget something small 
+                > doesn't create another commit history, it overrides the previous commit
+            4.5.3 git reset --hard HEAD^
+                > reverts the last made commit in the current check-out branch
+            4.5.4 git push 
