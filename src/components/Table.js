@@ -33,11 +33,12 @@ function Table({ columns, data, ...props }) {
             <tbody {...getTableBodyProps()}>
                 {rows.map((row, i) => {
                     prepareRow(row)
-                    if (props.userRole !== 'user' && props.contentType !== 'Users') {
+                    if (props.userRole !== undefined && props.userRole !== 'user' && props.contentType !== undefined && props.contentType !== 'Users') {
                         return (
                             <tr 
                                 {...row.getRowProps()} 
-                                {...row.getToggleRowSelectedProps()} 
+                                {...row.getToggleRowSelectedProps()}
+                                indeterminate='false' 
                                 onClick={                            
                                     () => {
                                     row.toggleRowSelected()
