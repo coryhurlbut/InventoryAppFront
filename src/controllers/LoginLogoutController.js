@@ -6,7 +6,7 @@ import { AuthController } from '../controllers';
 export default class LoginLogoutController extends GenericController {
 
     async logout(auth) {
-        localStorage.clear();
+        AuthController.deleteCookie();
         return await this.request('auth/logout', {
             method: 'DELETE',
             body: JSON.stringify(auth)

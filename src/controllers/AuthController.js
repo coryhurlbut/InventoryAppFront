@@ -58,7 +58,11 @@ export class AuthController {
         document.cookie = `accessToken=${encodeURIComponent(accessToken)}; Secure`;
     }
 
-
+    //Removes the value of the tokens in the cookies
+    deleteCookie() {
+        document.cookie = `refreshToken=${null}`;
+        document.cookie = `accessToken=${null}`;
+    }
 
     // Refreshes the accessToken using the refreshToken. Returns accessToken and user info
     async refreshToken() {
