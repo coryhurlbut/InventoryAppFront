@@ -1,6 +1,6 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
-import {loginLogoutController} from '../../Controllers/LoginLogoutController';
+import {loginLogoutController} from '../../controllers/LoginLogoutController';
 
 /*
 *   Modal for logging out

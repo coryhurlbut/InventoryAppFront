@@ -2,15 +2,15 @@ import React                        from 'react';
 import ItemEditControls             from './Controls/ItemEditControls';
 import UserEditControls             from './Controls/UserEditControls';
 import SignItemInOutControls        from './Controls/SignItemInOutControls';
-import ItemController               from '../Controllers/ItemController';
-import UserController               from '../Controllers/UserController';
+import ItemController               from '../controllers/ItemController';
+import UserController               from '../controllers/UserController';
 import Table                        from './Table';
 import { availableItemsContent, 
          unavailableItemsContent, 
          usersContent }             from './contentPresets';
-import '../Styles/Table.css';
-import '../Styles/App.css';
-import '../Styles/Modal.css';
+import '../styles/Table.css';
+import '../styles/App.css';
+import '../styles/Modal.css';
 import ToggleSwitch from './ToggleSwitch';
 
 

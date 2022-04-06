@@ -1,7 +1,7 @@
 import React                    from 'react';
 import { Modal }                from '@fluentui/react';
-import '../../Styles/Modal.css'
-import adminLogController from '../../Controllers/AdminLogController';
+import '../../styles/Modal.css'
+import adminLogController from '../../controllers/AdminLogController';
 import Table from '../Table';
 
 

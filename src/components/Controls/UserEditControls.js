@@ -1,6 +1,6 @@
 import React from 'react';
 import '@fluentui/react';
-import { AddUserModal, DeleteUserModal, EditUserModal } from '..//UserModals';
+import { AddUserModal, DeleteUserModal, EditUserModal } from '../userModals';
 
 /*
 *   Displays the buttons for adding, deleting and editing users
@@ -19,8 +19,8 @@ export default class UserEditControls extends React.Component {
         this.hideModal  = this.hideModal.bind(this);
     };
 
-    componentDidUpdate(prevProps, prevState){
-        if(prevProps !== this.props){
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps !== this.props) {
             this.setState({ 
                 role: this.props.role, 
                 idArray: this.props.idArray, 

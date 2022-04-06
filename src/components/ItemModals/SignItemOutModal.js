@@ -2,7 +2,7 @@ import React                from 'react';
 import { Modal }            from '@fluentui/react';
 import { ItemController, 
         ItemLogController,
-        UserController }    from '../../Controllers';
+        UserController }    from '../../controllers';
 
 /*
 *   Modal for signing out an item

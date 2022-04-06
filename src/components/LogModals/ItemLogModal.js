@@ -1,9 +1,9 @@
 import React                from 'react';
 import { Modal }              from '@fluentui/react';
 import Table                from '../Table';
-import itemLogController    from '../../Controllers/ItemLogController';
+import itemLogController    from '../../controllers/ItemLogController';
 import '@fluentui/react';
-// import ItemLogController from '../Controllers/ItemLogController';
+// import ItemLogController from '../controllers/ItemLogController';
 
 const columns = [
     {
