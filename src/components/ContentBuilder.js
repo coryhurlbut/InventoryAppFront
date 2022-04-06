@@ -28,16 +28,16 @@ export default class ContentBuilder extends React.Component {
 
         this.error = null;
 
-        this.setAuth        = this.setAuth.bind(this);
-        this.hideModal      = this.hideModal.bind(this);
-        this.clearAuth      = this.clearAuth.bind(this);
+        this.setAuth        = this._setAuth.bind(this);
+        this.hideModal      = this._hideModal.bind(this);
+        this.clearAuth      = this._clearAuth.bind(this);
     };
 
     async componentDidMount() {
         let auth = await AuthController.checkToken();
         
         if (auth === undefined || auth.error !== undefined) {
-            this.clearAuth();
+            this._clearAuth();
         } else if (typeof auth === 'string' && auth.split(' ')[0] === 'TypeError:') {
             this.error = auth;
         } else {
@@ -45,7 +45,7 @@ export default class ContentBuilder extends React.Component {
         };
     };
 
-    setAuth(auth) {
+    _setAuth(auth) {
         if (auth.user.userRole === 'admin' || auth.user.userRole === 'custodian') {
             this.setState({ 
                 auth: auth, 
@@ -53,13 +53,13 @@ export default class ContentBuilder extends React.Component {
                 view: displayPresets[auth.user.userRole]
             });
         } else {
-            this.clearAuth();
+            this._clearAuth();
             return;
         };
         this.setState({ role: auth.user.userRole });
     };
 
-    clearAuth() {
+    _clearAuth() {
         this.setState({ 
             auth: null, 
             isLoggedIn: false, 
@@ -67,11 +67,11 @@ export default class ContentBuilder extends React.Component {
         });
     };
 
-    hideModal() {
+    _hideModal() {
         this.setState({ modal: null });
     };
 
-    loginLogout() {
+    _loginLogout() {
         if (this.state.isLoggedIn) {
             this.setState({
                 modal: <LogoutModal 
@@ -92,7 +92,7 @@ export default class ContentBuilder extends React.Component {
         };
     };
 
-    showItemLogModal(){
+    _showItemLogModal(){
         this.setState({ 
             modal: <ItemLogModal 
                 isOpen={true} 
@@ -101,7 +101,7 @@ export default class ContentBuilder extends React.Component {
         });
     }
 
-    showAdminLogModal() {
+    _showAdminLogModal() {
         this.setState({ 
             modal: <AdminLogModal 
                 isOpen={true} 
@@ -110,7 +110,7 @@ export default class ContentBuilder extends React.Component {
         });
     }
 
-    buildContent(view) {
+    _buildContent(view) {
         return (
             <>
             {this.state.modal}
@@ -126,16 +126,16 @@ export default class ContentBuilder extends React.Component {
                             </div>
                             <div className='contentDivider'></div>
                             <div className='contentContainer Action'>
-                                <button hidden={ !view.itemLogIsVisible } onClick={ () => this.showItemLogModal() }>Item Logs</button>
-                                <button hidden={ !view.adminLogIsVisible } onClick={ () => this.showAdminLogModal() }>Admin Logs</button>
+                                <button hidden={ !view.itemLogIsVisible } onClick={ () => this._showItemLogModal() }>Item Logs</button>
+                                <button hidden={ !view.adminLogIsVisible } onClick={ () => this._showAdminLogModal() }>Admin Logs</button>
                             </div>
                             <div className='contentDivider'></div>
                             <div className='contentContainer Action'>
-                                <button onClick={ () => this.loginLogout() }>Logout</button>
+                                <button onClick={ () => this._loginLogout() }>Logout</button>
                             </div>
                         </div>
                     </div> : 
-                    <button className='logInLogOut' onClick={ () => this.loginLogout() }>Login</button> }
+                    <button className='logInLogOut' onClick={ () => this._loginLogout() }>Login</button> }
             </div>
             <div className="pageBody">
                 <ContentList 
@@ -151,6 +151,6 @@ export default class ContentBuilder extends React.Component {
 
     render () {
         if (this.error) {throw this.error};
-        return(this.buildContent(this.state.view));
+        return(this._buildContent(this.state.view));
     };
 };

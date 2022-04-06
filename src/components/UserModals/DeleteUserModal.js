@@ -20,11 +20,11 @@ export default class DeleteUserModal extends React.Component{
         };
     };
 
-    dismissModal() {
+    _dismissModal() {
         this.setState({ isOpen: false });
     };
     
-    async deleteUser() {
+    async _deleteUser() {
         let unavailableItems = await ItemController.getUnavailableItems();
         
         //Checks if any user that is going to get deleted has any items signed out
@@ -54,7 +54,7 @@ export default class DeleteUserModal extends React.Component{
             };
 
             window.location.reload();
-            this.dismissModal();
+            this._dismissModal();
         })
         .catch(async (err) => {            
             this.setState({ isControllerError: true, 
@@ -63,7 +63,7 @@ export default class DeleteUserModal extends React.Component{
     };
 
     /* Loops through the array of items and displays them as a list */
-    displayArray(users){
+    _displayArray(users){
         const displayUsers = users.map(
             (user) => <li className='arrayObject' key={ user._id } > { user.userName } </li>);
 
@@ -73,7 +73,7 @@ export default class DeleteUserModal extends React.Component{
     };
 
     /* Builds display for deleting users */
-    buildDeleteNotification(){
+    _buildDeleteNotification(){
         return(
             <>
             <div className='modalHeader'>
@@ -81,18 +81,18 @@ export default class DeleteUserModal extends React.Component{
             </div>
             <div className='modalBody'>
                 <h4>You are about to delete the following:</h4>
-                {this.displayArray(this.state.selectedObjects)}
+                {this._displayArray(this.state.selectedObjects)}
             </div>
             <div className='modalFooter'>
-                <button onClick={() => {this.deleteUser()}}>Delete</button>
-                <button onClick={() => this.dismissModal()}>Close</button>
+                <button onClick={() => this._deleteUser()}>Delete</button>
+                <button onClick={() => this._dismissModal()}>Close</button>
             </div>
             </>
         );
     };
 
     /* If a backend issue occurs, display message to user */
-    buildErrorDisplay(){
+    _buildErrorDisplay(){
         return(
             <>
             <div className='modalHeader'>
@@ -102,7 +102,7 @@ export default class DeleteUserModal extends React.Component{
                 <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
             </div>
             <div className='modalFooter'>
-                <button type="reset" onClick={() => this.dismissModal()}>Close</button>
+                <button type="reset" onClick={() => this._dismissModal()}>Close</button>
             </div>
             </>
         );
@@ -111,7 +111,7 @@ export default class DeleteUserModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.state.isControllerError ? this.buildErrorDisplay() : this.buildDeleteNotification() }
+                { this.state.isControllerError ? this._buildErrorDisplay() : this._buildDeleteNotification() }
             </Modal>
         );
     };

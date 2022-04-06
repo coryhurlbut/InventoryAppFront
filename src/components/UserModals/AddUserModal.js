@@ -62,11 +62,11 @@ export default class AddUserModal extends React.Component{
         
     };
 
-    dismissModal() {
+    _dismissModal() {
         this.setState({isOpen: false});
     };
 
-    async addUser(){
+    async _addUser(){
         let user = {
             firstName:      this.state.firstName,
             lastName:       this.state.lastName,
@@ -87,7 +87,7 @@ export default class AddUserModal extends React.Component{
             returnedUser = data;
 
             window.location.reload();
-            this.dismissModal();
+            this._dismissModal();
         })
         .catch( async (err) => {  
             this.setState({ isControllerError: true, 
@@ -104,7 +104,7 @@ export default class AddUserModal extends React.Component{
         await AdminLogController.createAdminLog(log);
     };
 
-    enablePasswordEdit(event) {
+    _enablePasswordEdit(event) {
         if (event.target.value === 'user') {
             this.setState({
                 pwDisabled: true, 
@@ -120,10 +120,10 @@ export default class AddUserModal extends React.Component{
                 }
             }));
 
-            if(this.returnErrorDetails('password')){
-                this.handleRemoveError('password');
-            } else if(this.returnErrorDetails('confirmPassword')){
-                this.handleRemoveError('confirmPassword');
+            if(this._returnErrorDetails('password')){
+                this._handleRemoveError('password');
+            } else if(this._returnErrorDetails('confirmPassword')){
+                this._handleRemoveError('confirmPassword');
             }
         } else {
             this.setState({
@@ -136,8 +136,8 @@ export default class AddUserModal extends React.Component{
 
     /* For the given field, identified by fieldID
         determine is errors has an assoicated error message to display */
-    displayErrorMessage(fieldID){
-        let errorDetail = this.returnErrorDetails(fieldID);
+    _displayErrorMessage(fieldID){
+        let errorDetail = this._returnErrorDetails(fieldID);
 
         if(errorDetail){
             if(fieldID === 'password' || fieldID === 'confirmPassword'){
@@ -156,14 +156,14 @@ export default class AddUserModal extends React.Component{
     };
 
     /* When an errorDetail is no longer present, remove from errors list */
-    handleRemoveError = (fieldID) => {
+    _handleRemoveError = (fieldID) => {
         const updatedErrors = this.state.errors.filter(errorDetails => errorDetails.field !== fieldID);
         this.setState({ errors: updatedErrors});
     };
     
     /* Loops through the errors list
         returns the errorDetail or false if it doesn't exists */
-    returnErrorDetails(fieldID){
+    _returnErrorDetails(fieldID){
         let errorList = this.state.errors;
 
         if(errorList){
@@ -178,7 +178,7 @@ export default class AddUserModal extends React.Component{
 
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
-    isSumbitAvailable(){
+    _isSumbitAvailable(){
         if(validateFields.validateSubmit(this.state.firstName, this.state.lastName, this.state.userName, this.state.userRole, this.state.phoneNumber, this.state.pwRequired, this.state.password) && this.state.errors.length === 0){
             return true;
         }
@@ -188,10 +188,10 @@ export default class AddUserModal extends React.Component{
     /* Primary purpose:
         indicate to user that field is required when user clicks off field without entering any information
         isEmpty in userValidation is triggered and error is returned for display */
-    handleBlur(validationFunc, evt) {
+    _handleBlur(validationFunc, evt) {
         const fieldID = evt.target.id;
         const fieldVal = evt.target.value;
-        const isErrorSet = this.returnErrorDetails(fieldID);
+        const isErrorSet = this._returnErrorDetails(fieldID);
 
         if(fieldID === 'password' && validationFunc(this.state.pwRequired, fieldVal) && isErrorSet === false){
             let errorDetail = {
@@ -252,7 +252,7 @@ export default class AddUserModal extends React.Component{
     /* Provide user immediate field requirement:
         check if user is producing errors -> validateOnChange is true
         updates the value of the state for that field */
-    handleChange(validationFunc, evt) {
+    _handleChange(validationFunc, evt) {
         const fieldID = evt.target.id;
         const fieldVal = evt.target.value;
 
@@ -334,7 +334,7 @@ export default class AddUserModal extends React.Component{
                                 errorMessage: ''
                             }
                         }));
-                        this.handleRemoveError(fieldID);
+                        this._handleRemoveError(fieldID);
                     }
                     break;
                 case 'confirmPassword':
@@ -346,7 +346,7 @@ export default class AddUserModal extends React.Component{
                                 errorMessage: ''
                             }
                         }));
-                        this.handleRemoveError(fieldID);
+                        this._handleRemoveError(fieldID);
                     }
                     break;
                 default:
@@ -358,7 +358,7 @@ export default class AddUserModal extends React.Component{
                                 errorMessage: ''
                             }
                         }));
-                        this.handleRemoveError(fieldID);
+                        this._handleRemoveError(fieldID);
                     }
                     break;
             }
@@ -395,103 +395,103 @@ export default class AddUserModal extends React.Component{
     };
 
     /* Builds user input form */
-    buildForm(){
+    _buildForm(){
         return(
             <>
             <div className='modalHeader'>
                 <h3>Add User to Database</h3>
             </div>
-            <form onSubmit={(Event) => {Event.preventDefault(); this.addUser();}}>
+            <form onSubmit={(Event) => {Event.preventDefault(); this._addUser();}}>
                 <div className='modalBody'>
                     <fieldset>
                         <h4 className='inputTitle'>First Name</h4>
                         <input 
                             type='text' 
                             id='firstName' 
-                            className={ this.returnErrorDetails('firstName') ? 'invalid' : 'valid'}
+                            className={ this._returnErrorDetails('firstName') ? 'invalid' : 'valid'}
                             value={this.state.firstName} 
-                            onChange={(evt) => this.handleChange(validateFields.validateFirstName, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validateFirstName, evt)}/>
-                        { this.displayErrorMessage('firstName') }
+                            onChange={(evt) => this._handleChange(validateFields.validateFirstName, evt)}
+                            onBlur={(evt) => this._handleBlur(validateFields.validateFirstName, evt)}/>
+                        { this._displayErrorMessage('firstName') }
                     </fieldset>
                     <fieldset>
                         <h4 className='inputTitle'>Last Name</h4>
                         <input 
                             type='text' 
                             id='lastName' 
-                            className={ this.returnErrorDetails('lastName') ? 'invalid' : 'valid'}
+                            className={ this._returnErrorDetails('lastName') ? 'invalid' : 'valid'}
                             value={this.state.lastName}
-                            onChange={(evt) => this.handleChange(validateFields.validateLastName, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validateLastName, evt)}/>
-                        { this.displayErrorMessage('lastName') }
+                            onChange={(evt) => this._handleChange(validateFields.validateLastName, evt)}
+                            onBlur={(evt) => this._handleBlur(validateFields.validateLastName, evt)}/>
+                        { this._displayErrorMessage('lastName') }
                     </fieldset>
                     <fieldset>
                         <h4 className='inputTitle'>Username</h4>
                         <input 
                             type='text' 
                             id='userName' 
-                            className={ this.returnErrorDetails('userName') ? 'invalid' : 'valid'}
+                            className={ this._returnErrorDetails('userName') ? 'invalid' : 'valid'}
                             value={this.state.userName}
-                            onChange={(evt) => this.handleChange(validateFields.validateUserName, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validateUserName, evt)}/>
-                        { this.displayErrorMessage('userName') }
+                            onChange={(evt) => this._handleChange(validateFields.validateUserName, evt)}
+                            onBlur={(evt) => this._handleBlur(validateFields.validateUserName, evt)}/>
+                        { this._displayErrorMessage('userName') }
                     </fieldset>
                     <fieldset>
                         <h4 className='inputTitle'>User's Role</h4>
                         <select 
                             disabled={this.state.userRoleDisabled} 
                             id='selectUser' 
-                            className={ this.returnErrorDetails('selectUser') ? 'invalid' : 'valid'}
+                            className={ this._returnErrorDetails('selectUser') ? 'invalid' : 'valid'}
                             defaultValue={''}  
-                            onChange={(evt) => this.handleChange(validateFields.validateUserRole, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validateUserRole, evt)}>
+                            onChange={(evt) => this._handleChange(validateFields.validateUserRole, evt)}
+                            onBlur={(evt) => this._handleBlur(validateFields.validateUserRole, evt)}>
 
                             <option label='' hidden disabled ></option>
                             <option value='user'>User</option>
                             <option value='custodian'>Custodian</option>
                             <option value='admin'>Admin</option>
                         </select>
-                        { this.displayErrorMessage('selectUser') }
+                        { this._displayErrorMessage('selectUser') }
                     </fieldset>
                     <fieldset>
                         <h4 className='inputTitle'>Password</h4>
                         <input
                             type='password'
                             id='password'
-                            className={ this.returnErrorDetails('password') ? 'invalid' : 'valid'}
+                            className={ this._returnErrorDetails('password') ? 'invalid' : 'valid'}
                             disabled={this.state.pwDisabled}
                             value={this.state.password} 
-                            onChange={(evt) => this.handleChange(validateFields.validatePassword, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validatePassword, evt)}/>
-                        { this.displayErrorMessage('password') }
+                            onChange={(evt) => this._handleChange(validateFields.validatePassword, evt)}
+                            onBlur={(evt) => this._handleBlur(validateFields.validatePassword, evt)}/>
+                        { this._displayErrorMessage('password') }
                     
                         <h4 className='inputTitle' hidden={this.state.pwDisabled}>Confirm Password</h4>
                         <input 
                             type='password' 
                             id='confirmPassword' 
-                            className={ this.returnErrorDetails('confirmPassword') ? 'invalid' : 'valid'}
+                            className={ this._returnErrorDetails('confirmPassword') ? 'invalid' : 'valid'}
                             hidden={this.state.pwDisabled} 
                             disabled={this.state.pwDisabled}
                             value={this.state.confirmPassword} 
-                            onChange={(evt) => this.handleChange(validateFields.validatePasswordConfirm, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validatePasswordConfirm, evt)}/>
-                        { this.displayErrorMessage('confirmPassword') }
+                            onChange={(evt) => this._handleChange(validateFields.validatePasswordConfirm, evt)}
+                            onBlur={(evt) => this._handleBlur(validateFields.validatePasswordConfirm, evt)}/>
+                        { this._displayErrorMessage('confirmPassword') }
                     </fieldset>
                     <fieldset>
                         <h4 className='inputTitle'>Phone Number</h4>
                         <input
                             type='text' 
                             id='phoneNumber' 
-                            className={ this.returnErrorDetails('phoneNumber') ? 'invalid' : 'valid'}
+                            className={ this._returnErrorDetails('phoneNumber') ? 'invalid' : 'valid'}
                             value={this.state.phoneNumber}
-                            onChange={(evt) => this.handleChange(validateFields.validatePhoneNumber, evt)}
-                            onBlur={(evt) => this.handleBlur(validateFields.validatePhoneNumber, evt)}/>
-                        { this.displayErrorMessage('phoneNumber') }
+                            onChange={(evt) => this._handleChange(validateFields.validatePhoneNumber, evt)}
+                            onBlur={(evt) => this._handleBlur(validateFields.validatePhoneNumber, evt)}/>
+                        { this._displayErrorMessage('phoneNumber') }
                     </fieldset>
                 </div>
                 <div className='modalFooter'>
-                    {this.isSumbitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
-                    <button type="reset" onClick={() => this.dismissModal()}>Close</button>
+                    {this._isSumbitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
+                    <button type="reset" onClick={() => this._dismissModal()}>Close</button>
                 </div>
             </form>
             </>
@@ -499,7 +499,7 @@ export default class AddUserModal extends React.Component{
     }
 
     /* If a backend issue occurs, display message to user */
-    buildErrorDisplay(){
+    _buildErrorDisplay(){
         return(
             <>
             <div className='modalHeader'>
@@ -509,7 +509,7 @@ export default class AddUserModal extends React.Component{
                 <p className='errorMesage'> {this.controllerErrorMessage} </p>
             </div>
             <div className='modalFooter'>
-                <button type="reset" onClick={() => this.dismissModal()}>Close</button>
+                <button type="reset" onClick={() => this._dismissModal()}>Close</button>
             </div>
             </>
         );
@@ -518,7 +518,7 @@ export default class AddUserModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.isControllerError ? this.buildErrorDisplay() : this.buildForm() }
+                { this.isControllerError ? this._buildErrorDisplay() : this._buildForm() }
             </Modal>
         );
     };

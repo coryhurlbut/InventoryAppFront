@@ -38,10 +38,10 @@ export default class ContentList extends React.Component {
             role:                       props.role
         };
         
-        this.showAvailableItems     =   this.showAvailableItems.bind(this);
-        this.showUnavailableItems   =   this.showUnavailableItems.bind(this);
-        this.showUsers              =   this.showUsers.bind(this);
-        this.setParentState         =   this.setParentState.bind(this);
+        this.showAvailableItems     =   this._showAvailableItems.bind(this);
+        this.showUnavailableItems   =   this._showUnavailableItems.bind(this);
+        this.showUsers              =   this._showUsers.bind(this);
+        this.setParentState         =   this._setParentState.bind(this);
     };
 
     // Will update component props if parent props change
@@ -57,15 +57,15 @@ export default class ContentList extends React.Component {
 
         //Resets content to available items after admin logout. Stops displaying users after logout if viewing as admin.
         if (prevProps.userContentIsVisible && !this.props.userContentIsVisible) {
-            this.showAvailableItems();
+            this._showAvailableItems();
         };
     };
 
     componentDidMount () {
-        this.showAvailableItems();
+        this._showAvailableItems();
     };
 
-    async showAvailableItems () {
+    async _showAvailableItems () {
         let items = await ItemController.getAvailableItems();
         this.setState({
             content:            items || null,
@@ -81,7 +81,7 @@ export default class ContentList extends React.Component {
         });
     };
 
-    async showUnavailableItems () {
+    async _showUnavailableItems () {
         let items = await ItemController.getUnavailableItems();
         this.setState({
             content:            items || null,
@@ -97,7 +97,7 @@ export default class ContentList extends React.Component {
         });
     };
 
-    async showUsers () {
+    async _showUsers () {
         let users = await UserController.getAllUsers();
         this.setState({
             content:            users || null,
@@ -113,13 +113,13 @@ export default class ContentList extends React.Component {
         });
     }
 
-    clearChecks(){
+    _clearChecks(){
         this.setState({ idArray: [], selectedObjects: [] });
     }
 
     //Callback function passed to table component.
     //Bound to ContentList state to update this state when called by child component.
-    setParentState(user) {
+    _setParentState(user) {
         let arr = this.state.idArray;
         let selectedObjects = this.state.selectedObjects;
         if ( arr.includes(user._id) ) {
@@ -133,12 +133,12 @@ export default class ContentList extends React.Component {
         this.setState({ idArray: arr, selectedObjects: selectedObjects });
     }
 
-    buildContentList () {
+    _buildContentList () {
         if(this.state.content.length !== 0){
             return(
                 <>
                 <div id='Table_Modification'>
-                    {this.buildEditControls()}
+                    {this._buildEditControls()}
                     {this.state.signItemInOutIsVisible ? 
                         <SignItemInOutControls 
                             inOrOut={this.state.inOrOut} 
@@ -165,7 +165,7 @@ export default class ContentList extends React.Component {
         }
     };
 
-    buildEditControls () {
+    _buildEditControls () {
         if(this.state.editControls === "ItemEditControls" && this.state.editControlIsVisible) {
             return (
                 <ItemEditControls 
@@ -191,23 +191,23 @@ export default class ContentList extends React.Component {
                 <div id='userControls'>
                     <div id='Table_Navigation'>
                         <button className={ this.state.btnAI_Active ? 'btnSelected' : null} onClick={
-                            () => {this.showAvailableItems(); this.clearChecks();}}>
+                            () => {this._showAvailableItems(); this._clearChecks();}}>
                             Available Items
                         </button>
                         <div className='item_styling'>|</div>
                         <button className={ this.state.btnUI_Active ? 'btnSelected' : null} onClick={
-                            () => {this.showUnavailableItems(); this.clearChecks();}}>
+                            () => {this._showUnavailableItems(); this._clearChecks();}}>
                             Unavailable Items
                         </button>
                         {this.state.userContentIsVisible ? <div className='item_styling'>|</div> : null}
                         {this.state.userContentIsVisible ? <button className={ this.state.btnU_Active ? 'btnSelected' : null} 
-                            onClick={() => {this.showUsers(); this.clearChecks();}}>Users</button> : null}
+                            onClick={() => {this._showUsers(); this._clearChecks();}}>Users</button> : null}
                     </div>
                     <ToggleSwitch/>
                 </div>
                 
                 <div id='Table_Body'>
-                    {this.buildContentList()}
+                    {this._buildContentList()}
                 </div>
             </div>
         );

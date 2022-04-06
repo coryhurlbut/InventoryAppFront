@@ -85,7 +85,7 @@ React Coding Standards:
             // good
                 <MyComponent variant="fancy" />
         1.11 Prefixing none React methods
-            1.11.1 Prefix all none React methods within a component with an underscore.
+            1.11.1 Prefix all none React methods within a class component with an underscore.
                 class Foo extends React.Component {
 
                     componentDidMount() {
