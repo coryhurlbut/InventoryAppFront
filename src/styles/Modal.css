@@ -27,6 +27,7 @@
     padding-right: 10px;
 
     min-height: 75px;
+    overflow: auto;              /*Prevent blank space appear given child item's margins*/
 
     background-color: #b3b3b3;
     color: #11375c;
