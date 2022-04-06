@@ -1,4 +1,5 @@
 import React                        from 'react';
+
 import ItemEditControls             from './Controls/ItemEditControls';
 import UserEditControls             from './Controls/UserEditControls';
 import SignItemInOutControls        from './Controls/SignItemInOutControls';
@@ -8,10 +9,11 @@ import Table                        from './Table';
 import { availableItemsContent, 
          unavailableItemsContent, 
          usersContent }             from './contentPresets';
+import ToggleSwitch                 from './ToggleSwitch';
 import '../styles/Table.css';
 import '../styles/App.css';
 import '../styles/Modal.css';
-import ToggleSwitch from './ToggleSwitch';
+
 
 
 

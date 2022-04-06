@@ -1,6 +1,8 @@
 import React from 'react';
+
 import '@fluentui/react';
-import '../styles/App.css';
+
+
 import { AuthController }       from '../controllers';
 import ContentList              from './ContentList';
 import ItemLogModal             from './LogModals/ItemLogModal';
@@ -9,6 +11,7 @@ import LoginModal               from './ProfileModals/LoginModal';
 import LogoutModal              from './ProfileModals/LogoutModal';
 import { displayPresets }       from './contentPresets';
 import profileIcon              from '../styles/Images/profileIcon25x25.jpg';
+import '../styles/App.css';
 
 /*
 *   Builds the page by calling components and passing down what should be visible

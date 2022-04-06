@@ -1,11 +1,12 @@
-import React              from 'react';
-import {Modal}            from '@fluentui/react';
-import { AuthController,
-    UserController,
-    AdminLogController }  from '../../controllers'
+import React                  from 'react';
 
-import { validateFields } from '../InputValidation/userValidation';
-import { sanitizeData }   from '../InputValidation/sanitizeData';
+import {Modal}                from '@fluentui/react';
+
+import { AuthController,
+         UserController,
+         AdminLogController } from '../../controllers'
+import { validateFields }     from '../InputValidation/userValidation';
+import { sanitizeData }       from '../InputValidation/sanitizeData';
 
 /*
 *   Modal for adding a user

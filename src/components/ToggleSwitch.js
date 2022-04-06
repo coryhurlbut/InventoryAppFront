@@ -1,4 +1,5 @@
 import React from "react";
+
 import "../styles/ToggleSwitch.css";
 
 const ToggleSwitch = () => {

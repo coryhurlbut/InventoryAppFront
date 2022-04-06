@@ -1,5 +1,7 @@
 import React from "react";
+
 import { useTable, useRowSelect } from "react-table";
+
 import '../styles/Table.css'
 
 

@@ -1,9 +1,10 @@
 import React                    from 'react';
-import { Modal }                from '@fluentui/react';
-import { UserController,
-        ItemController, 
-        AdminLogController }    from '../../controllers';
 
+import { Modal }                from '@fluentui/react';
+
+import { UserController,
+         ItemController, 
+         AdminLogController }   from '../../controllers';
 import { validateFields }       from '../InputValidation/userValidation';
 import { sanitizeData }         from '../InputValidation/sanitizeData';
 /*
