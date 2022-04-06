@@ -1,6 +1,6 @@
 import React from "react";
-import './styles/ErrorBoundary.css';
-import icon from './styles/Sad-programmer-and-coder.jpg';
+import './Styles/ErrorBoundary.css';
+import icon from './Styles/Images/ErrorBoundaryPage.jpg';
 
 /*
 * Class that catches errors from any child in its component tree. 

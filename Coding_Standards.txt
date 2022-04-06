@@ -23,7 +23,7 @@ Sources:
 
 React Coding Standards:
     1. NAMING CONVENTIONS:
-        1.1 Component’s names should be written using pascal case: 
+        1.1 Class's and Component’s names should be written using pascal case: 
             Header.js
             HeroBanner.js
             CookieBanner.js

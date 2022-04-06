@@ -2,7 +2,7 @@ import React                from 'react';
 import { Modal }            from '@fluentui/react';
 import { UserController, 
         AdminLogController, 
-        ItemController }    from '../../controllers';
+        ItemController }    from '../../Controllers';
 
 /*
 *   Modal for deleting a user

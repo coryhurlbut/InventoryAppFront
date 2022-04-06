@@ -1,7 +1,7 @@
 import React                from 'react';
 import { Modal }            from '@fluentui/react';
 import { ItemController, 
-        ItemLogController } from '../../controllers'
+        ItemLogController } from '../../Controllers'
 
 /*
 *   Modal for signing an item in

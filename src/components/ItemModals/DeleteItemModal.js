@@ -1,7 +1,7 @@
 import React                from 'react';
 import { Modal }            from '@fluentui/react';
-import itemController       from '../../controllers/ItemController';
-import adminLogController   from '../../controllers/AdminLogController';
+import itemController       from '../../Controllers/ItemController';
+import adminLogController   from '../../Controllers/AdminLogController';
 
 /*
 *   Modal for deleting an item

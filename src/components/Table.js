@@ -1,6 +1,6 @@
 import React from "react";
 import { useTable, useRowSelect } from "react-table";
-import '../styles/table.css'
+import '../Styles/Table.css'
 
 
 function Table({ columns, data, ...props }) {
