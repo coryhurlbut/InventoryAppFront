@@ -1,9 +1,9 @@
-import { AuthController } from "./AuthController";
+import {AuthController} from "./AuthController";
 
 /*
 *   Controls functions calling APIs for ItemLog data operations
 */
-class ItemLogController extends AuthController{
+class ItemLogController extends AuthController {
     
     //Gets all item logs
     async getAllItemLogs() {

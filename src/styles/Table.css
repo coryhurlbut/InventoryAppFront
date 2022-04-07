@@ -1,12 +1,12 @@
 /*
   Table Navigation are the available tables the user can display on screen
 */
-#userControls{
+#userControls {
   display: flex;
   justify-content:space-between;
   align-items: center;
 }
-#Table_Navigation{
+#Table_Navigation {
   padding: 10px;
 
   display: flex;
@@ -15,12 +15,12 @@
 }
 
 /*Create seperation between table naviation*/
-.item_styling{
+.item_styling {
   font-weight: bold;
   color: #b3b3b3;
 }
 
-#Table_Navigation button{
+#Table_Navigation button {
   padding: 5px;
 
   border: transparent;
@@ -29,7 +29,7 @@
 
   font-size: 17px;
 }
-#Table_Navigation button:hover, .btnSelected{
+#Table_Navigation button:hover, .btnSelected {
   border: none;
   border-radius: 3px;
   font-weight: bold;
@@ -43,25 +43,25 @@
 /*
   Table_Body contains the table title, actions, and the table displayed
 */
-#Table_Body{
+#Table_Body {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
 }
 
-#noContent{
+#noContent {
   color: #787878;
 }
 
-#Table_Modification{
+#Table_Modification {
   display: flex;
   justify-content:center;
   align-items: center;
 
   background-color: transparent;
 }
-#Table_Modification button{
+#Table_Modification button {
   padding: 5px 10px;
   margin: 5px 10px;
 
@@ -72,7 +72,7 @@
   border: none;
   background-color: transparent;
 }
-#Table_Modification button:hover, #Table_Modification button:disabled:hover{
+#Table_Modification button:hover, #Table_Modification button:disabled:hover {
   font-weight: bolder;
   color: #026c76;
 
@@ -81,7 +81,7 @@
   text-decoration-color: #013e44;
   text-underline-offset: 3px;
 }
-#Table_Modification button:disabled{
+#Table_Modification button:disabled {
   /* color: #c5cadc; */
   color: #222121;
   text-decoration: none;
@@ -89,7 +89,7 @@
   background-color: transparent;
 }
 
-table{
+table {
   margin: 0 auto;
   max-height: 450px;
 
@@ -136,17 +136,22 @@ table th {
 /*
 table tr:nth-child(even){background-color: #f1f1f1;}
 table tr:nth-child(odd){background-color: #fbfbfb;}*/
-table tr:nth-child(even){background-color: #787878;}
-table tr:nth-child(odd){background-color: #929292;}
-
-.dataRow:hover {background-color: #a8f5feb6;}
+table tr:nth-child(even) {
+  background-color: #787878;
+}
+table tr:nth-child(odd) {
+  background-color: #929292;
+}
+.dataRow:hover {
+  background-color: #a8f5feb6;
+}
 
 /* Styling the scroll bar when visible*/
-table::-webkit-scrollbar{
+table::-webkit-scrollbar {
   background-color: transparent;
 }
 
-table::-webkit-scrollbar-thumb{
+table::-webkit-scrollbar-thumb {
   background-color: #5f5f5f;
   
   background-clip: padding-box;
@@ -177,7 +182,7 @@ table::-webkit-scrollbar-thumb{
   border-color: #777777 transparent transparent transparent;
 }
 /* Inactive */
-table::-webkit-scrollbar-thumb:window-inactive, ::-webkit-scrollbar-button:single-button:window-inactive{
+table::-webkit-scrollbar-thumb:window-inactive, ::-webkit-scrollbar-button:single-button:window-inactive {
   background-color: transparent;
   border: transparent;
 }

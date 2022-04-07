@@ -3,14 +3,14 @@ import React from 'react';
 import '@fluentui/react';
 
 
-import { AuthController }       from '../controllers';
-import ContentList              from './ContentList';
-import ItemLogModal             from './LogModals/ItemLogModal';
-import AdminLogModal            from './LogModals/AdminLogModal';
-import LoginModal               from './ProfileModals/LoginModal';
-import LogoutModal              from './ProfileModals/LogoutModal';
-import { displayPresets }       from './contentPresets';
-import profileIcon              from '../styles/Images/profileIcon25x25.jpg';
+import {AuthController}       from '../controllers';
+import ContentList            from './ContentList';
+import ItemLogModal           from './LogModals/ItemLogModal';
+import AdminLogModal          from './LogModals/AdminLogModal';
+import LoginModal             from './ProfileModals/LoginModal';
+import LogoutModal            from './ProfileModals/LogoutModal';
+import {displayPresets}       from './contentPresets';
+import profileIcon            from '../styles/Images/profileIcon25x25.jpg';
 import '../styles/App.css';
 
 /*
@@ -31,15 +31,15 @@ export default class ContentBuilder extends React.Component {
 
         this.error = null;
 
-        this.setAuth        = this._setAuth.bind(this);
-        this.hideModal      = this._hideModal.bind(this);
-        this.clearAuth      = this._clearAuth.bind(this);
+        this.setAuth   = this._setAuth.bind(this);
+        this.hideModal = this._hideModal.bind(this);
+        this.clearAuth = this._clearAuth.bind(this);
     };
 
     async componentDidMount() {
         let auth = await AuthController.checkToken();
         
-        if (auth === undefined || auth.error !== undefined) {
+        if(auth === undefined || auth.error !== undefined) {
             this._clearAuth();
         } else if (typeof auth === 'string' && auth.split(' ')[0] === 'TypeError:') {
             this.error = auth;
@@ -49,7 +49,7 @@ export default class ContentBuilder extends React.Component {
     };
 
     _setAuth(auth) {
-        if (auth.user.userRole === 'admin' || auth.user.userRole === 'custodian') {
+        if(auth.user.userRole === 'admin' || auth.user.userRole === 'custodian') {
             this.setState({ 
                 auth: auth, 
                 isLoggedIn: true, 
@@ -59,7 +59,7 @@ export default class ContentBuilder extends React.Component {
             this._clearAuth();
             return;
         };
-        this.setState({ role: auth.user.userRole });
+        this.setState({role: auth.user.userRole});
     };
 
     _clearAuth() {
@@ -71,11 +71,11 @@ export default class ContentBuilder extends React.Component {
     };
 
     _hideModal() {
-        this.setState({ modal: null });
+        this.setState({modal: null});
     };
 
     _loginLogout() {
-        if (this.state.isLoggedIn) {
+        if(this.state.isLoggedIn) {
             this.setState({
                 modal: <LogoutModal 
                     auth={this.state.auth} 
@@ -95,7 +95,7 @@ export default class ContentBuilder extends React.Component {
         };
     };
 
-    _showItemLogModal(){
+    _showItemLogModal() {
         this.setState({ 
             modal: <ItemLogModal 
                 isOpen={true} 
@@ -119,26 +119,44 @@ export default class ContentBuilder extends React.Component {
             {this.state.modal}
             <div className="pageHeader">
                     <h2>Inventory App</h2>
-                    { this.state.isLoggedIn ? 
-                    <div className='profileContainer Main'>
-                        <button onClick={ () => { this.setState({ isDropdownActive : true}) } }><img src={ profileIcon } alt='My Profile'/></button>
-                        <div className='profileContainer DropDown'>
-                            <div className='contentContainer Text'>
-                                <label>Account:</label>
-                                <label>{ this.state.auth.user.userName }</label>
+                    {this.state.isLoggedIn ? 
+                        <div className='profileContainer Main'>
+                            <button onClick={ () => {this.setState({isDropdownActive : true})}}>
+                                <img src={ profileIcon } alt='My Profile'/>
+                            </button>
+                            <div className='profileContainer DropDown'>
+                                <div className='contentContainer Text'>
+                                    <label>Account:</label>
+                                    <label>{this.state.auth.user.userName}</label>
+                                </div>
+                                <div className='contentDivider'/>
+                                <div className='contentContainer Action'>
+                                    <button 
+                                        hidden={!view.itemLogIsVisible} 
+                                        onClick={() => this._showItemLogModal()}
+                                    >
+                                        Item Logs
+                                    </button>
+                                    <button 
+                                        hidden={!view.adminLogIsVisible} 
+                                        onClick={() => this._showAdminLogModal()}
+                                    >
+                                        Admin Logs
+                                    </button>
+                                </div>
+                                <div className='contentDivider'/>
+                                <div className='contentContainer Action'>
+                                    <button onClick={ () => this._loginLogout() }>Logout</button>
+                                </div>
                             </div>
-                            <div className='contentDivider'></div>
-                            <div className='contentContainer Action'>
-                                <button hidden={ !view.itemLogIsVisible } onClick={ () => this._showItemLogModal() }>Item Logs</button>
-                                <button hidden={ !view.adminLogIsVisible } onClick={ () => this._showAdminLogModal() }>Admin Logs</button>
-                            </div>
-                            <div className='contentDivider'></div>
-                            <div className='contentContainer Action'>
-                                <button onClick={ () => this._loginLogout() }>Logout</button>
-                            </div>
-                        </div>
-                    </div> : 
-                    <button className='logInLogOut' onClick={ () => this._loginLogout() }>Login</button> }
+                        </div> : 
+                        <button 
+                            className='logInLogOut' 
+                            onClick={ () => this._loginLogout() }
+                        >
+                            Login
+                        </button>
+                    }
             </div>
             <div className="pageBody">
                 <ContentList 

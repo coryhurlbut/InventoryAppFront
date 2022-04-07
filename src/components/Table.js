@@ -21,7 +21,7 @@ function Table({ columns, data, ...props }) {
         useRowSelect
     );
 
-    return (
+    return(
         <table {...getTableProps()}>
             <thead>
                 {headerGroups.map(headerGroup => (
@@ -35,33 +35,37 @@ function Table({ columns, data, ...props }) {
             <tbody {...getTableBodyProps()}>
                 {rows.map((row, i) => {
                     prepareRow(row)
-                    if (props.userRole !== undefined && props.contentType !== undefined && props.userRole === 'admin' || props.userRole === 'custodian' && props.contentType !== 'Users') {
-                        return (
+                    if(
+                        (props.userRole === 'admin' && 
+                        props.contentType !== undefined) || 
+                        (props.userRole === 'custodian' && 
+                        props.contentType !== 'Users' && 
+                        props.contentType !== undefined)
+                    ) {
+                        return(
                             <tr 
                                 {...row.getRowProps()} 
                                 {...row.getToggleRowSelectedProps()}
                                 indeterminate='false' 
-                                onClick={                            
-                                    () => {
+                                onClick={() => {
                                     row.toggleRowSelected()
                                     props.setParentState(row.original);
                                 }} 
                                 className="dataRow" 
                                 title=''
-                                style={ //unable to style in other file due to needing the conditional changes
-                                    row.isSelected ? 
-                                    { 'backgroundColor': (row.index % 2 === 1 ? '#76c5ceb6' : '#a8f5feb6')}
-                                    : null
+                                style={row.isSelected ?  //unable to style in other file due to needing the conditional changes
+                                    {'backgroundColor': (row.index % 2 === 1 ? '#76c5ceb6' : '#a8f5feb6')} : 
+                                    null
                                 }
                             >
                                 {row.cells.map(cell => {
-                                    return <td {...cell.getCellProps()} >{cell.render('Cell')}</td>
+                                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                                 })}
                             </tr>
                         )
                     } else {
                         return (
-                            <tr {...row.getRowProps()} >
+                            <tr {...row.getRowProps()}>
                                 {row.cells.map(cell => {
                                     return <td {...cell.getCellProps()} >{cell.render('Cell')}</td>
                                 })}

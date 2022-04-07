@@ -6,9 +6,9 @@ import SignItemInOutControls        from './Controls/SignItemInOutControls';
 import ItemController               from '../controllers/ItemController';
 import UserController               from '../controllers/UserController';
 import Table                        from './Table';
-import { availableItemsContent, 
-         unavailableItemsContent, 
-         usersContent }             from './contentPresets';
+import {availableItemsContent, 
+        unavailableItemsContent, 
+        usersContent }              from './contentPresets';
 import ToggleSwitch                 from './ToggleSwitch';
 import '../styles/Table.css';
 import '../styles/App.css';
@@ -48,7 +48,7 @@ export default class ContentList extends React.Component {
 
     // Will update component props if parent props change
     componentDidUpdate(prevProps, prevState) {
-        if (this.props !== prevProps) {
+        if(this.props !== prevProps) {
             this.setState({
                 userContentIsVisible:       this.props.userContentIsVisible,
                 editControlIsVisible:       this.props.editControlIsVisible,
@@ -58,16 +58,16 @@ export default class ContentList extends React.Component {
         };
 
         //Resets content to available items after admin logout. Stops displaying users after logout if viewing as admin.
-        if (prevProps.userContentIsVisible && !this.props.userContentIsVisible) {
+        if(prevProps.userContentIsVisible && !this.props.userContentIsVisible) {
             this._showAvailableItems();
         };
     };
 
-    componentDidMount () {
+    componentDidMount() {
         this._showAvailableItems();
     };
 
-    async _showAvailableItems () {
+    async _showAvailableItems() {
         let items = await ItemController.getAvailableItems();
         this.setState({
             content:            items || null,
@@ -83,7 +83,7 @@ export default class ContentList extends React.Component {
         });
     };
 
-    async _showUnavailableItems () {
+    async _showUnavailableItems() {
         let items = await ItemController.getUnavailableItems();
         this.setState({
             content:            items || null,
@@ -99,7 +99,7 @@ export default class ContentList extends React.Component {
         });
     };
 
-    async _showUsers () {
+    async _showUsers() {
         let users = await UserController.getAllUsers();
         this.setState({
             content:            users || null,
@@ -124,7 +124,7 @@ export default class ContentList extends React.Component {
     _setParentState(user) {
         let arr = this.state.idArray;
         let selectedObjects = this.state.selectedObjects;
-        if ( arr.includes(user._id) ) {
+        if(arr.includes(user._id)) {
             arr = arr.filter(el => el !== user._id);
             selectedObjects = selectedObjects.filter(object => object._id !== user._id);
         } else {
@@ -136,7 +136,7 @@ export default class ContentList extends React.Component {
     }
 
     _buildContentList () {
-        if(this.state.content.length !== 0){
+        if(this.state.content.length !== 0) {
             return(
                 <>
                 <div id='Table_Modification'>
@@ -147,7 +147,8 @@ export default class ContentList extends React.Component {
                             idArray={this.state.idArray} 
                             selectedObjects={this.state.selectedObjects} 
                             id={this.state.id} 
-                        /> : null
+                        /> : 
+                        null
                     }            
                 </div>
                 <Table 
@@ -155,7 +156,8 @@ export default class ContentList extends React.Component {
                     data={this.state.content} 
                     setParentState={this.setParentState} 
                     userRole={this.state.role} 
-                    contentType={this.state.contentType} />
+                    contentType={this.state.contentType}
+                />
                 </>
             );
         } else{
@@ -168,15 +170,17 @@ export default class ContentList extends React.Component {
     };
 
     _buildEditControls () {
-        if(this.state.editControls === "ItemEditControls" && this.state.editControlIsVisible) {
-            return (
+        if(this.state.editControls === "ItemEditControls" && 
+            this.state.editControlIsVisible
+        ) {
+            return(
                 <ItemEditControls 
                     idArray={this.state.idArray} 
                     selectedObjects={this.state.selectedObjects} 
                 />
             );
-        } else if (this.state.editControls === "UserEditControls") {
-            return (
+        } else if(this.state.editControls === "UserEditControls") {
+            return(
                 <UserEditControls 
                     idArray={this.state.idArray} 
                     selectedObjects={this.state.selectedObjects} 
@@ -192,22 +196,32 @@ export default class ContentList extends React.Component {
             <div id='Content_Body'>
                 <div id='userControls'>
                     <div id='Table_Navigation'>
-                        <button className={ this.state.btnAI_Active ? 'btnSelected' : null} onClick={
-                            () => {this._showAvailableItems(); this._clearChecks();}}>
+                        <button 
+                            className={this.state.btnAI_Active ? 'btnSelected' : null} 
+                            onClick={() => {this._showAvailableItems(); this._clearChecks();}}
+                        >
                             Available Items
                         </button>
                         <div className='item_styling'>|</div>
-                        <button className={ this.state.btnUI_Active ? 'btnSelected' : null} onClick={
-                            () => {this._showUnavailableItems(); this._clearChecks();}}>
+                        <button 
+                            className={this.state.btnUI_Active ? 'btnSelected' : null} 
+                            onClick={() => {this._showUnavailableItems(); this._clearChecks();}}
+                        >
                             Unavailable Items
                         </button>
                         {this.state.userContentIsVisible ? <div className='item_styling'>|</div> : null}
-                        {this.state.userContentIsVisible ? <button className={ this.state.btnU_Active ? 'btnSelected' : null} 
-                            onClick={() => {this._showUsers(); this._clearChecks();}}>Users</button> : null}
+                        {this.state.userContentIsVisible ? 
+                            <button 
+                                className={this.state.btnU_Active ? 'btnSelected' : null} 
+                                onClick={() => {this._showUsers(); this._clearChecks();}}
+                            >
+                                Users
+                            </button> : 
+                            null
+                        }
                     </div>
-                    <ToggleSwitch/>
+                    <ToggleSwitch />
                 </div>
-                
                 <div id='Table_Body'>
                     {this._buildContentList()}
                 </div>

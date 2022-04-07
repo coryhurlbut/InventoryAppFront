@@ -11,7 +11,7 @@ export class AuthController {
     };
     
     // Uses the URL in the environment variable and the relative path from the controller to build the full API URL
-    buildApiUrl (url) {
+    buildApiUrl(url) {
         return process.env.REACT_APP_HOSTNAME + url;
     };
 
@@ -24,7 +24,7 @@ export class AuthController {
             /*replaced map with forEach to remove warning error: 
                 Expected to return a value in arrow function  array-callback-return*/
         cookies.split('; ').forEach(cookie => {
-            if (cookie.split('=')[0] === 'accessToken') {
+            if(cookie.split('=')[0] === 'accessToken') {
                 returnValue = decodeURIComponent(cookie.split('=')[1]);
             }
         });
@@ -40,11 +40,10 @@ export class AuthController {
             /*replaced map with forEach to remove warning error: 
                     Expected to return a value in arrow function  array-callback-return*/
         cookies.split('; ').forEach(cookie => {
-            if (cookie.split('=')[0] === 'refreshToken') {
+            if(cookie.split('=')[0] === 'refreshToken') {
                 returnValue = decodeURIComponent(cookie.split('=')[1]);
             };
         });
-
         return returnValue;
     };
 
@@ -79,7 +78,10 @@ export class AuthController {
         };
 
         // Makes request to refresh, gets the response in json, then takes the data out and stores in auth
-        await fetch(this.buildApiUrl('auth/refresh'), initObj).then(res => res.json()).then(data => auth = data).catch(err => auth = new Error(err));
+        await fetch(this.buildApiUrl('auth/refresh'), initObj)
+        .then(res => res.json())
+        .then(data => auth = data)
+        .catch(err => auth = new Error(err));
 
         if (auth.message && auth.message.split(' ')[0] === 'TypeError:') {return auth.message};
         // If no auth data or incorrect token, return undefined 
@@ -92,28 +94,30 @@ export class AuthController {
 
     // Checks if accessToken is expired or not. Returns true if valid
     checkTokenExpiration() {
-        // jwtDecode is an imported library. It decodes the payload but can't verify or decode the signed secret on the token
+        // jwtDecode is an imported library.
+        // It decodes the payload but can't verify or decode the signed secret on the token
         let decodedToken = this.getUserInfo();
         let currentDate = new Date();
 
         // decodedToken.exp is in seconds, current.getTime returns milliseconds 
-        if (decodedToken.exp * 1000 < currentDate.getTime()) {
+        if(decodedToken.exp * 1000 < currentDate.getTime()) {
           return false;
         } else {  
           return true;
         };
     };
 
-    // Checks if there is a refreshToken in the localStorage. If there is, get a new accessToken with the 
+    // Checks if there is a refreshToken in the localStorage.
+    // If there is, get a new accessToken with the 
     // refreshToken function. If not, return undefined
     async checkToken() {
         let auth;
         const refreshToken = this.getRefreshToken();
 
-        if (refreshToken !== undefined) {
+        if(refreshToken !== undefined) {
             auth = await this.refreshToken(refreshToken);
             return auth;
-        }else{
+        } else {
             return undefined;
         };
     };
@@ -123,7 +127,7 @@ export class AuthController {
         try {
             let user = jwtDecode(this.getAccessToken());
             return user;
-        } catch (error) {
+        } catch(error) {
             return {
                 ...error,
                 status: 500,
@@ -133,9 +137,9 @@ export class AuthController {
     }
 
     // Custom request function to add headers for authenticated requests
-    async requestWithAuth (url, initObj) {
+    async requestWithAuth(url, initObj) {
         // Checks if access token is expired. If it is, refreshes token before making request.
-        if (!this.checkTokenExpiration()) {
+        if(!this.checkTokenExpiration()) {
             await this.refreshToken();
         };
         
@@ -148,12 +152,12 @@ export class AuthController {
 
         try {
             // Make request with given API path and method
-            let response = await fetch(this.buildApiUrl(url), initObj)
+            let response = await fetch(this.buildApiUrl(url), initObj);
             if (response.status >= 400) {
                 throw await response.json();
             };
             return await response.json();
-        } catch (err) {
+        } catch(err) {
             // Example error form to return -> {"message":"Password is incorrect","instance":"unknown","status":400}
             return err.error;
         };

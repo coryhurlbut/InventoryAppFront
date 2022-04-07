@@ -1,15 +1,15 @@
 import React                from 'react';
 
-import { Modal }            from '@fluentui/react';
+import {Modal}              from '@fluentui/react';
 
-import { UserController, 
+import {UserController, 
         AdminLogController, 
-        ItemController }    from '../../controllers';
+        ItemController}     from '../../controllers';
 
 /*
 *   Modal for deleting a user
 */
-export default class DeleteUserModal extends React.Component{
+export default class DeleteUserModal extends React.Component {
     constructor(props) {
         super(props);
         
@@ -23,7 +23,7 @@ export default class DeleteUserModal extends React.Component{
     };
 
     _dismissModal() {
-        this.setState({ isOpen: false });
+        this.setState({isOpen: false});
     };
     
     async _deleteUser() {
@@ -31,20 +31,25 @@ export default class DeleteUserModal extends React.Component{
         
         //Checks if any user that is going to get deleted has any items signed out
         let res = await UserController.checkSignouts(this.state.selectedObjects, unavailableItems);
-        if (res.status === 'error') {
-            this.setState({ isControllerError: true, controllerErrorMessage: res.message });
+        if(res.status === 'error') {
+            this.setState({ isControllerError: true, 
+                            controllerErrorMessage: res.message
+            });
             return;
         } else {
-            this.setState({ isControllerError: false, ercontrollerErrorMessageror: '' });
+            this.setState({ isControllerError: false, 
+                            ercontrollerErrorMessageror: ''
+            });
         };
 
         await UserController.deleteUsers(this.state.idArray)
-        .then( async (auth) => {
+        .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ isControllerError: false, 
-                            controllerErrorMessage: ''});
+                            controllerErrorMessage: ''
+            });
 
-            for (let i = 0; i < this.state.idArray.length; i++) {
+            for(let i = 0; i < this.state.idArray.length; i++) {
                 let log = {
                     itemId:     'N/A',
                     userId:     this.state.idArray[i],
@@ -54,28 +59,31 @@ export default class DeleteUserModal extends React.Component{
                 };
                 await AdminLogController.createAdminLog(log);
             };
-
             window.location.reload();
             this._dismissModal();
         })
         .catch(async (err) => {            
             this.setState({ isControllerError: true, 
-                            controllerErrorMessage: err.message}); 
+                            controllerErrorMessage: err.message
+            }); 
         });
     };
 
     /* Loops through the array of items and displays them as a list */
-    _displayArray(users){
-        const displayUsers = users.map(
-            (user) => <li className='arrayObject' key={ user._id } > { user.userName } </li>);
+    _displayArray(users) {
+        const displayUsers = users.map((user) => 
+            <li className='arrayObject' key={user._id}> 
+                {user.userName}
+            </li>
+        );
 
         return(
-            <ul> { displayUsers } </ul>
+            <ul>{displayUsers}</ul>
         );
     };
 
     /* Builds display for deleting users */
-    _buildDeleteNotification(){
+    _buildDeleteNotification() {
         return(
             <>
             <div className='modalHeader'>
@@ -94,14 +102,16 @@ export default class DeleteUserModal extends React.Component{
     };
 
     /* If a backend issue occurs, display message to user */
-    _buildErrorDisplay(){
+    _buildErrorDisplay() {
         return(
             <>
             <div className='modalHeader'>
                 <h3>Error Has Occured</h3>
             </div>
             <div className='modalBody'>
-                <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
+                <p className='errorMesage'>
+                    {this.state.controllerErrorMessage}
+                </p>
             </div>
             <div className='modalFooter'>
                 <button type="reset" onClick={() => this._dismissModal()}>Close</button>
@@ -113,7 +123,7 @@ export default class DeleteUserModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.state.isControllerError ? this._buildErrorDisplay() : this._buildDeleteNotification() }
+                {this.state.isControllerError ? this._buildErrorDisplay() : this._buildDeleteNotification()}
             </Modal>
         );
     };

@@ -1,10 +1,10 @@
-import { genericController } from './GenericController';
-import { AuthController } from "./AuthController";
+import {genericController} from './GenericController';
+import {AuthController} from "./AuthController";
 
 /*
 *   Controls functions calling APIs for Item data operations
 */
-class ItemController extends AuthController{
+class ItemController extends AuthController {
 
     //Gets all available items
     async getAvailableItems() {
@@ -25,11 +25,6 @@ class ItemController extends AuthController{
     async createItem(item) {
         return await this.requestWithAuth('items', {method: 'POST', body: JSON.stringify(item)}); 
     };
-
-    //Deletes one item by Id
-    // async deleteItem(itemId) {
-    //     return await this.requestWithAuth(`items/${itemId}`, {method: 'DELETE'});
-    // };
 
     //Deletes items by Id
     async deleteItems(itemIds) {
