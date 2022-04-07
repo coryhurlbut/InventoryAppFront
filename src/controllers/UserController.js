@@ -1,4 +1,5 @@
 import { AuthController } from "./AuthController";
+import { genericController } from "./GenericController";
 
 /* 
 *   Controls functions calling APIs for User data operations
@@ -25,7 +26,10 @@ class UserController extends AuthController{
 
         return response;
     };
-
+    //the slightly different route for a new user requesting access, which still adds to the database as pending
+    async registerNewUser(userRegister){
+        return await genericController.request('users/new', {method: 'POST', body: JSON.stringify(userRegister)});
+    }
     //Creates a single user. Must be given body of all required user fields
     async createUser(user) {
         return await this.requestWithAuth('users', {method: 'POST', body: JSON.stringify(user)});

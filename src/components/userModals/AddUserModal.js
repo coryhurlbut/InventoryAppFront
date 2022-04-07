@@ -28,6 +28,7 @@ export default class AddUserModal extends React.Component{
             pwDisabled:      true,
             pwRequired:      false,
             userRoleDisabled:false,
+            isSignUp:        props.isSignUp,
             
             errorDetails:           {
                 field:        '',
@@ -44,8 +45,7 @@ export default class AddUserModal extends React.Component{
     async componentDidMount(){
         try {
             let signedInAccount = await AuthController.getUserInfo();
-
-            if(signedInAccount.user.user.userRole === 'custodian'){
+            if(signedInAccount.user.user.userRole === 'custodian' || signedInAccount.user.user.userRole === undefined){
                 //Front end display so it show's user is selected
                 let select = document.getElementById('selectUser');
                 select.value = 'user';
@@ -77,32 +77,58 @@ export default class AddUserModal extends React.Component{
             phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
             status:         this.state.status
         };
-
+        //alternate data model for user sign up
+        let userRegister = {
+            firstName:      this.state.firstName,
+            lastName:       this.state.lastName,
+            userName:       this.state.userName,
+            userRole:       'user',
+            phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
+            status:         'pending'
+        }
         let returnedUser = {};
-        await UserController.createUser(user)
-        .then((data) => {
-            if (data.status !== undefined && data.status >= 400) throw data;
-            
-            this.setState({ isControllerError: false, 
-                            controllerErrorMessage: ''});
-            returnedUser = data;
+        if(this.state.isSignUp){
+            await UserController.registerNewUser(userRegister)
+            .then((data) => {
+                if (data.status !== undefined && data.status >= 400) throw data;
+                
+                this.setState({ isControllerError: false, 
+                                controllerErrorMessage: ''});
+                returnedUser = data;
+    
+                window.location.reload();
+                this._dismissModal();
+            })
+            .catch( async (err) => {  
+                this.setState({ isControllerError: true, 
+                                controllerErrorMessage: err.message});          
+            });
+        }else{
+            await UserController.createUser(user)
+            .then((data) => {
+                if (data.status !== undefined && data.status >= 400) throw data;
+                
+                this.setState({ isControllerError: false, 
+                                controllerErrorMessage: ''});
+                returnedUser = data;
 
-            window.location.reload();
-            this._dismissModal();
-        })
-        .catch( async (err) => {  
-            this.setState({ isControllerError: true, 
-                            controllerErrorMessage: err.message});          
-        });
-
-        let log = {
-            itemId:     'N/A',
-            userId:     returnedUser._id,
-            adminId:    '',
-            action:     'add',
-            content:    'user'
-        };
-        await AdminLogController.createAdminLog(log);
+                window.location.reload();
+                this._dismissModal();
+            })
+            .catch( async (err) => {  
+                this.setState({ isControllerError: true, 
+                                controllerErrorMessage: err.message});          
+            });
+        
+            let log = {
+                itemId:     'N/A',
+                userId:     returnedUser._id,
+                adminId:    '',
+                action:     'add',
+                content:    'user'
+            };
+            await AdminLogController.createAdminLog(log);
+        }
     };
 
     _enablePasswordEdit(event) {
@@ -180,10 +206,11 @@ export default class AddUserModal extends React.Component{
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
     _isSumbitAvailable(){
-        if(validateFields.validateSubmit(this.state.firstName, this.state.lastName, this.state.userName, this.state.userRole, this.state.phoneNumber, this.state.pwRequired, this.state.password) && this.state.errors.length === 0){
-            return true;
+        if(this.state.isSignUp){
+            return validateFields.validateUserRequest(this.state.firstName, this.state.lastName, this.state.userName, this.state.phoneNumber) && this.state.errors.length === 0;
+        }else{
+        return validateFields.validateSubmit(this.state.firstName, this.state.lastName, this.state.userName, this.state.userRole, this.state.phoneNumber, this.state.pwRequired, this.state.password) && this.state.errors.length === 0;
         }
-        return false;
     };
 
     /* Primary purpose:
@@ -260,7 +287,7 @@ export default class AddUserModal extends React.Component{
         /* If something is returned from the passed function, an error occured 
             since an error was returned, set the error state if not already set
         */
-        if(!this.returnErrorDetails(fieldID)){   //Does the error already exist? no
+        if(!this._returnErrorDetails(fieldID)){   //Does the error already exist? no
             switch (fieldID) {
                 case 'password':
                     if(validationFunc(this.state.pwRequired, fieldVal)){
@@ -378,7 +405,7 @@ export default class AddUserModal extends React.Component{
                 break;
             case 'selectUser':
                 this.setState({ userRole: sanitizeData.sanitizeWhitespace(fieldVal)});
-                this.enablePasswordEdit(evt);
+                this._enablePasswordEdit(evt);
                 break;
             case 'password':
                 this.setState({ password: sanitizeData.sanitizeWhitespace(fieldVal)});
@@ -437,7 +464,11 @@ export default class AddUserModal extends React.Component{
                             onBlur={(evt) => this._handleBlur(validateFields.validateUserName, evt)}/>
                         { this._displayErrorMessage('userName') }
                     </fieldset>
-                    <fieldset>
+                    {/* Ternary operator for checking whether or not this is an add user action initiated by admin or by new users
+                    requesting accounts */}
+                    {this.state.isSignUp ? null : 
+                    <div>
+                        <fieldset>
                         <h4 className='inputTitle'>User's Role</h4>
                         <select 
                             disabled={this.state.userRoleDisabled} 
@@ -477,7 +508,8 @@ export default class AddUserModal extends React.Component{
                             onChange={(evt) => this._handleChange(validateFields.validatePasswordConfirm, evt)}
                             onBlur={(evt) => this._handleBlur(validateFields.validatePasswordConfirm, evt)}/>
                         { this._displayErrorMessage('confirmPassword') }
-                    </fieldset>
+                    </fieldset></div>
+                    }
                     <fieldset>
                         <h4 className='inputTitle'>Phone Number</h4>
                         <input
@@ -489,10 +521,11 @@ export default class AddUserModal extends React.Component{
                             onBlur={(evt) => this._handleBlur(validateFields.validatePhoneNumber, evt)}/>
                         { this._displayErrorMessage('phoneNumber') }
                     </fieldset>
-                </div>
+                
                 <div className='modalFooter'>
                     {this._isSumbitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
                     <button type="reset" onClick={() => this._dismissModal()}>Close</button>
+                </div>
                 </div>
             </form>
             </>
