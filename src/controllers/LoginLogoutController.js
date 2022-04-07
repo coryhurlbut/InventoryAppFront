@@ -1,5 +1,5 @@
 import GenericController from './GenericController';
-import { AuthController } from '../controllers';
+import {AuthController} from '../controllers';
 /*
  *   Controls functions calling APIs for Auth data operations
  */
@@ -33,7 +33,7 @@ export default class LoginLogoutController extends GenericController {
             AuthController.setRefreshTokenCookie(response.refreshToken);
 
             return response;
-        } catch (err) {
+        } catch(err) {
             return err;
         };
     };

@@ -15,12 +15,12 @@
     font-weight: bold;
     text-transform: uppercase;
 }
-.modalHeader h3{
+.modalHeader h3 {
     margin: 0px;
 }
 
 /*Handles the content of Modal*/
-.modalBody{
+.modalBody {
     /*To avoid modal auto styling*/
     padding-top: 10px;
     padding-left: 25px;
@@ -34,7 +34,7 @@
 
     text-align: left;
 }
-.modalBody fieldset{
+.modalBody fieldset {
     display: flex;
     justify-content:space-evenly;
     align-items: left;
@@ -45,40 +45,40 @@
     padding: 0;
 }
 
-.inputTitle{
+.inputTitle {
     font-weight: bold!important;
 }
-.modalBody h4{
+.modalBody h4 {
     margin: 0;
     padding-top: 5px;
     font-weight: normal;
 }
 
-.modalBody input{
+.modalBody input {
     width: 75%;
     height: 23px;
     background-color: #c7c7c7;   
 }
-.userRole select, .userStatus select{
+.userRole select, .userStatus select {
     width: 100%!important;
     
 }
-.modalBody select{
+.modalBody select {
     width: 35%;
     background-color: #c7c7c7;
     outline: 1px solid #787878;
     border: 1px solid #929292;
 }
 
-.modalBody p{
+.modalBody p {
     text-align: left;
 }
 
-.modalBody .arrayObject{
+.modalBody .arrayObject {
     font-weight: bold;
 }
 
-.modalBody button{    /*Reset button styling*/
+.modalBody button {    /*Reset button styling*/
     padding: 2px 8px;
     margin-left: 3px;
 
@@ -89,32 +89,32 @@
 
     border-radius: 5px;
 }
-.modalBody button:hover{
+.modalBody button:hover {
     color: #c7c7c7;
     background-color: #11375c;
 }
 
 /* Handle valid state appearence*/
-.valid{
+.valid {
     outline: 1px solid #787878;
     border: 1px solid #929292;
 }
-.valid:focus{
+.valid:focus {
     outline: 1px solid #333333;
 }
 
 /* Handle invalid state appearence*/
-.invalid{
+.invalid {
     outline: 1px solid #ec314a;
     border: 1px solid #ec314a;
 }
-.invalid:focus{
+.invalid:focus {
     outline: 1px solid #ec314a;
     border: 1px solid #333333;
 }
 
 /* Handles how disabled information is viewed*/
-.valid:disabled, .invalid:disabled, input:disabled{
+.valid:disabled, .invalid:disabled, input:disabled {
     outline: none;
     border: none;
 
@@ -122,15 +122,15 @@
 }
 
 /* Create space for displayed error message/handle the error message*/
-.emptyLabel{
+.emptyLabel {
     color: transparent;
     font-size: small;
 }
-.errorMessage{
+.errorMessage {
     color: #ec314a;
     font-size: small;
 }
-.passwordRequirements{
+.passwordRequirements {
     color: #787878;
     font-size: small;
     padding-bottom: 5px;
@@ -138,26 +138,26 @@
 }
 
 /* Have select dropdowns side by side*/
-.sideBySide{
+.sideBySide {
     display: flex;
     justify-content: flex-start;
     align-items: center;
 
     margin-top: 10px;
 }
-.userRole{
+.userRole {
     margin-right: 13px;
 }
 
 /*Primary handles the button styling of Modal*/
-.modalFooter{
+.modalFooter {
     padding-bottom: 10px;
     padding-top: 10px;
     
     background-color: #b3b3b3;
     text-align: center;
 }
-.modalFooter button, input[type=submit]{
+.modalFooter button, input[type=submit] {
     margin: 5px;
     padding: 5px;
     padding-left: 10px;
@@ -181,12 +181,12 @@ input[type=submit]:disabled {
     background-color: #b3b3b3;
     color: #787878;
 }
-.modalFooter button:hover, input[type=submit]:hover{
+.modalFooter button:hover, input[type=submit]:hover {
     color: #11375c;
     background-color: #929292;
 }
 
 /* Login */
-#modalBody_Password, #modalBody_Username{
+#modalBody_Password, #modalBody_Username {
     padding: 10px;
 }

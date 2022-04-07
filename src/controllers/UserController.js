@@ -1,9 +1,9 @@
-import { AuthController } from "./AuthController";
+import {AuthController} from "./AuthController";
 
 /* 
 *   Controls functions calling APIs for User data operations
 */
-class UserController extends AuthController{
+class UserController extends AuthController {
 
     //Gets all users
     async getAllUsers() {
@@ -56,7 +56,7 @@ class UserController extends AuthController{
         let res = { status: '', message: ''};
 
         items.forEach(item => {
-            if (users.length > 1) {
+            if(users.length > 1) {
                 /*replaced map with forEach to remove warning error: 
                     Expected to return a value in arrow function  array-callback-return*/
                 users.forEach(user => {
@@ -67,7 +67,7 @@ class UserController extends AuthController{
                     }
                 })
             } else {
-                if (item.possessedBy === users.userName) {
+                if(item.possessedBy === users.userName) {
                     res.status = 'error';
                     res.message = 'Cannot delete or deactivate a user while they have an item signed out';
                     return res;

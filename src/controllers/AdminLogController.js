@@ -1,8 +1,8 @@
-import { AuthController } from "./AuthController";
+import {AuthController} from "./AuthController";
 /*
 *   Controls functions calling APIs for AdminLog data operations
 */
-class AdminLogController extends AuthController{
+class AdminLogController extends AuthController {
     
     //Gets all admin logs
     async getAllAdminLogs() {

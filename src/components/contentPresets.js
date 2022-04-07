@@ -86,22 +86,22 @@ const usersColumns = [
 ];
 
 export const availableItemsContent = {
-    contentType:        "Available Items",
-    editControls:       "ItemEditControls",
-    inOrOut:            "Sign Item Out",
-    columns:            availableItemsColumns
+    contentType:  "Available Items",
+    editControls: "ItemEditControls",
+    inOrOut:      "Sign Item Out",
+    columns:      availableItemsColumns
 };
 export const unavailableItemsContent = {
-    contentType:        "Unavailable Items",
-    editControls:       "ItemEditControls",
-    inOrOut:            "Sign Item In",
-    columns:            unavailableItemsColumns
+    contentType:  "Unavailable Items",
+    editControls: "ItemEditControls",
+    inOrOut:      "Sign Item In",
+    columns:      unavailableItemsColumns
 };
 export const usersContent = {
-    contentType:        "Users",
-    editControls:       "UserEditControls",
-    inOrOut:            "",
-    columns:            usersColumns
+    contentType:  "Users",
+    editControls: "UserEditControls",
+    inOrOut:      "",
+    columns:      usersColumns
 };
 
 //Settings for what is to be displayed in ContentBuilder based on the user's role
