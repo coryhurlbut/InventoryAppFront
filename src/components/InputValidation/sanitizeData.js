@@ -28,7 +28,6 @@ class SanitizeData{
             match[4] - Line number
         */
 
-        console.log(reformatData);
         //Country code is optional
         if(reformatData[1]){
             databaseReady = reformatData[1] + formatter + reformatData[2] + formatter + reformatData[3] + formatter + reformatData[4];

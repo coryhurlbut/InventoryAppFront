@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal} from '@fluentui/react';
 import {loginLogoutController} from '../../controllers/LoginLogoutController';
+import { AddUserModal } from '../userModals';
 
 /*
 *   Modal for logging in
@@ -13,13 +14,21 @@ export default class LoginModal extends React.Component{
             userName:   '',
             password:   '',
             isError:    false,
-            error:      ''
+            error:      '',
+            isSignUp:   null
         };
 
         this.login          = this.login.bind(this);
+        this.isSigningUp    = this.isSigningUp.bind(this);
         this.dismissModal   = this.dismissModal.bind(this);
+        this.hideModal      = this.hideModal.bind(this);
+        
     };
 
+    hideModal() {
+        this.setState({ modal: null });
+    };
+    
     dismissModal() {
         this.setState({isOpen: false});
     };
@@ -36,8 +45,18 @@ export default class LoginModal extends React.Component{
             this.setState({error: err.message, isError: true});
         })
     };
+    isSigningUp(){
+        this.setState({ isSignUp: true });
+    }
 
     render() {
+        //Utilizing the add modal, this is checked on render because if someone clicks sign up 
+        //in the original login modal it will set state and re-render
+        if(this.state.isSignUp){
+            return(
+                <AddUserModal isSignUp={true} isOpen={true} hideModal={this.hideModal}/>
+            )
+        }else{
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 <div className="modalHeader">
@@ -71,10 +90,15 @@ export default class LoginModal extends React.Component{
                     </div>
                     <div className="modalFooter">
                         <button type="submit" onClick={this.login}>Log in</button>
+                        <button type='button' onClick={this.isSigningUp}>Sign Up</button>
                         <button type="reset" onClick={this.dismissModal}>Close</button>
                     </div>
                 </form>
             </Modal>
+        
         );
-    };
+            }
+        }
+        
+    
 };
