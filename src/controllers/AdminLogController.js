@@ -1,4 +1,4 @@
-import {AuthController} from "./AuthController";
+import {AuthController} from './AuthController';
 /*
 *   Controls functions calling APIs for AdminLog data operations
 */

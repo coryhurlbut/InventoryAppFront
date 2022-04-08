@@ -6,7 +6,7 @@
   justify-content:space-between;
   align-items: center;
 }
-#Table_Navigation {
+#tableNavigation {
   padding: 10px;
 
   display: flex;
@@ -15,12 +15,12 @@
 }
 
 /*Create seperation between table naviation*/
-.item_styling {
+.itemStyling {
   font-weight: bold;
   color: #b3b3b3;
 }
 
-#Table_Navigation button {
+#tableNavigation button {
   padding: 5px;
 
   border: transparent;
@@ -29,7 +29,7 @@
 
   font-size: 17px;
 }
-#Table_Navigation button:hover, .btnSelected {
+#tableNavigation button:hover, .btnSelected {
   border: none;
   border-radius: 3px;
   font-weight: bold;
@@ -43,7 +43,7 @@
 /*
   Table_Body contains the table title, actions, and the table displayed
 */
-#Table_Body {
+#tableBody {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -54,14 +54,14 @@
   color: #787878;
 }
 
-#Table_Modification {
+#tableModification {
   display: flex;
   justify-content:center;
   align-items: center;
 
   background-color: transparent;
 }
-#Table_Modification button {
+#tableModification button {
   padding: 5px 10px;
   margin: 5px 10px;
 
@@ -72,7 +72,7 @@
   border: none;
   background-color: transparent;
 }
-#Table_Modification button:hover, #Table_Modification button:disabled:hover {
+#tableModification button:hover, #tableModification button:disabled:hover {
   font-weight: bolder;
   color: #026c76;
 
@@ -81,7 +81,7 @@
   text-decoration-color: #013e44;
   text-underline-offset: 3px;
 }
-#Table_Modification button:disabled {
+#tableModification button:disabled {
   /* color: #c5cadc; */
   color: #222121;
   text-decoration: none;
@@ -128,10 +128,8 @@ table th {
   border-bottom: 1px solid #828282;
   border-left: 1px solid #828282;
 
-
   background-color: #013e44;
 }
-
 
 /*
 table tr:nth-child(even){background-color: #f1f1f1;}

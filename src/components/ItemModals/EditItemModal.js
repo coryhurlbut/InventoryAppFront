@@ -237,79 +237,79 @@ export default class EditItemModal extends React.Component{
     buildForm(){
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Edit Item</h3>
             </div>
             <form onSubmit={(Event) => {Event.preventDefault(); this.editItem();}}>
-                <div className='modalBody'>
+                <div className="modalBody">
                     <fieldset>
-                        <h4 className='inputTitle'>Name</h4>
+                        <h4 className="inputTitle">Name</h4>
                         <input 
-                            type='text' 
+                            type="text" 
                             id='name'
-                            className={ this.returnErrorDetails('name') ? 'invalid' : 'valid'}
+                            className={ this.returnErrorDetails('name') ? "invalid" : "valid"}
                             value={this.state.name} 
                             onChange={(evt) => this.handleChange(validateFields.validateName, evt)}
                             onBlur={(evt) => this.handleBlur(validateFields.validateName, evt)}/>
                         { this.displayErrorMessage('name') }
                     </fieldset>
                     <fieldset>
-                        <h4 className='inputTitle'>Description</h4>
+                        <h4 className="inputTitle">Description</h4>
                         <input 
-                            type='text' 
+                            type="text" 
                             id='description' 
-                            className={ this.returnErrorDetails('description') ? 'invalid' : 'valid'}
+                            className={ this.returnErrorDetails('description') ? "invalid" : "valid"}
                             value={this.state.description}
                             onChange={(evt) => this.handleChange(validateFields.validateDescription, evt)}
                             onBlur={(evt) => this.handleBlur(validateFields.validateDescription, evt)}/>
                         { this.displayErrorMessage('description') }
                     </fieldset>
                     <fieldset>
-                        <h4 className='inputTitle'>Serial Number</h4>
+                        <h4 className="inputTitle">Serial Number</h4>
                         <input 
-                            type='text' 
+                            type="text" 
                             id='serialNumber' 
-                            className={ this.returnErrorDetails('serialNumber') ? 'invalid' : 'valid'}
+                            className={ this.returnErrorDetails('serialNumber') ? "invalid" : "valid"}
                             value={this.state.serialNumber} 
                             onChange={(evt) => this.handleChange(validateFields.validateSerialNumber, evt)}
                             onBlur={(evt) => this.handleBlur(validateFields.validateSerialNumber, evt)}/>
                         { this.displayErrorMessage('serialNumber') }
                     </fieldset>
                     <fieldset>
-                        <h4 className='inputTitle'>Notes</h4>
+                        <h4 className="inputTitle">Notes</h4>
                         <input 
-                            type='text' 
+                            type="text" 
                             id='notes' 
-                            className={ this.returnErrorDetails('notes') ? 'invalid' : 'valid'}
+                            className={ this.returnErrorDetails('notes') ? "invalid" : "valid"}
                             value={this.state.notes} 
                             onChange={(evt) => this.handleChange(validateFields.validateNotes, evt)}
                             onBlur={(evt) => this.handleBlur(validateFields.validateNotes, evt)}/>
                         { this.displayErrorMessage('notes') }
                     </fieldset>
                     <fieldset>
-                        <h4 className='inputTitle'>Home Location</h4>
+                        <h4 className="inputTitle">Home Location</h4>
                         <input 
-                            type='text' 
+                            type="text" 
                             id='homeLocation' 
-                            className={ this.returnErrorDetails('homeLocation') ? 'invalid' : 'valid'}
+                            className={ this.returnErrorDetails('homeLocation') ? "invalid" : "valid"}
                             value={this.state.homeLocation} 
                             onChange={(evt) => this.handleChange(validateFields.validateLocation, evt)}
                             onBlur={(evt) => this.handleBlur(validateFields.validateLocation, evt)}/>
                         { this.displayErrorMessage('homeLocation') }
                     </fieldset>
                     <fieldset>
-                        <h4 className='inputTitle'>Specific Location</h4>
+                        <h4 className="inputTitle">Specific Location</h4>
                         <input 
-                            type='text' 
+                            type="text" 
                             id='specificLocation' 
-                            className={ this.returnErrorDetails('specificLocation') ? 'invalid' : 'valid'}
+                            className={ this.returnErrorDetails('specificLocation') ? "invalid" : "valid"}
                             value={this.state.specificLocation} 
                             onChange={(evt) => this.handleChange(validateFields.validateSpecificLocation, evt)}
                             onBlur={(evt) => this.handleBlur(validateFields.validateSpecificLocation, evt)}/>
                         { this.displayErrorMessage('specificLocation') }
                     </fieldset>
                 </div>
-                <div className='modalFooter'>
+                <div className="modalFooter">
                     { this.isSumbitAvailable() ? <input type='submit' value='Submit'></input> : <input type='submit' value='Submit' disabled></input>}
                     <button type="reset" onClick={() => this.dismissModal()}>Close</button>
                 </div>
@@ -322,13 +322,13 @@ export default class EditItemModal extends React.Component{
     buildErrorDisplay(){
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Error Has Occured</h3>
             </div>
-            <div className='modalBody'>
-                <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
+            <div className="modalBody">
+                <p className="errorMessage"> {this.state.controllerErrorMessage} </p>
             </div>
-            <div className='modalFooter'>
+            <div className="modalFooter">
                 <button type="reset" onClick={() => this.dismissModal()}>Close</button>
             </div>
             </>

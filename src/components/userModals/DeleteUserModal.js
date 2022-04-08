@@ -72,7 +72,7 @@ export default class DeleteUserModal extends React.Component {
     /* Loops through the array of items and displays them as a list */
     _displayArray(users) {
         const displayUsers = users.map((user) => 
-            <li className='arrayObject' key={user._id}> 
+            <li className="arrayObject" key={user._id}> 
                 {user.userName}
             </li>
         );
@@ -86,14 +86,14 @@ export default class DeleteUserModal extends React.Component {
     _buildDeleteNotification() {
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Delete User</h3>
             </div>
-            <div className='modalBody'>
+            <div className="modalBody">
                 <h4>You are about to delete the following:</h4>
                 {this._displayArray(this.state.selectedObjects)}
             </div>
-            <div className='modalFooter'>
+            <div className="modalFooter">
                 <button onClick={() => this._deleteUser()}>Delete</button>
                 <button onClick={() => this._dismissModal()}>Close</button>
             </div>
@@ -105,15 +105,15 @@ export default class DeleteUserModal extends React.Component {
     _buildErrorDisplay() {
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Error Has Occured</h3>
             </div>
-            <div className='modalBody'>
-                <p className='errorMesage'>
+            <div className="modalBody">
+                <p className="errorMessage">
                     {this.state.controllerErrorMessage}
                 </p>
             </div>
-            <div className='modalFooter'>
+            <div className="modalFooter">
                 <button type="reset" onClick={() => this._dismissModal()}>Close</button>
             </div>
             </>

@@ -57,11 +57,11 @@ export default class AdminLogDisplay extends React.Component {
     render() {
         return(
             <Modal onDismissed={this.props.hideModal} isOpen={this.state.isOpen}>
-                <div className='modalHeader'>Admin Log</div>
-                <div className='modalBody'>
+                <div className="modalHeader">Admin Log</div>
+                <div className="modalBody">
                     <Table columns={columns} data={this.state.content} />
                 </div>
-                <div className='modalFooter'>
+                <div className="modalFooter">
                     <button onClick={() => this.dismissModal()}>Close</button>
                 </div>
             </Modal>

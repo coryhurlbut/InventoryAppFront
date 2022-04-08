@@ -40,36 +40,36 @@ export default class LoginModal extends React.Component{
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                <div className='modalHeader'>
+                <div className="modalHeader">
                     <h3>Log In</h3>
                 </div>
                 <form onSubmit={(event) => {event.preventDefault(); this.login();}}>
-                    <div className='modalBody'>
+                    <div className="modalBody">
                     {this.state.isError ? <label className='errorMessage'>{this.state.error === 'User is not activated' ? this.state.error : null}</label> : null}
                         <fieldset id='modalBody_Username'>
-                            <h4 className='inputTitle'>Username: </h4>
+                            <h4 className="inputTitle">Username: </h4>
                             <input 
-                                type='text' 
+                                type="text" 
                                 key='userName' 
-                                className={ this.state.error === 'Username is incorrect' ? 'invalid' : 'valid'}
+                                className={ this.state.error === 'Username is incorrect' ? "invalid" : "valid"}
                                 required 
                                 value={this.state.userName} 
                                 onChange={(event) => {this.setState({userName: event.target.value})}}/>
                             {this.state.isError ? <label className='errorMessage'>{this.state.error === 'Username is incorrect' ? this.state.error : null}</label> : null}
                         </fieldset>
                         <fieldset id='modalBody_Password'>
-                            <h4 className='inputTitle'>Password: </h4>
+                            <h4 className="inputTitle">Password: </h4>
                             <input 
                                 type='password' 
                                 key='password' 
-                                className={ this.state.error === 'Password is incorrect' ? 'invalid' : 'valid'}
+                                className={ this.state.error === 'Password is incorrect' ? "invalid" : "valid"}
                                 required
                                 value={this.state.password} 
                                 onChange={(event) => {this.setState({password: event.target.value})}}/>
                             {this.state.isError ? <label className='errorMessage'>{this.state.error === 'Password is incorrect' ? this.state.error : null}</label> : null}
                         </fieldset>
                     </div>
-                    <div className='modalFooter'>
+                    <div className="modalFooter">
                         <button type="submit" onClick={this.login}>Log in</button>
                         <button type="reset" onClick={this.dismissModal}>Close</button>
                     </div>

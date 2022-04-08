@@ -65,14 +65,14 @@ export default class SignItemInModal extends React.Component{
     buildSignInNotification(){
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Sign Item In</h3>
             </div>
-            <div className='modalBody'>
+            <div className="modalBody">
                 <h4>You are about to sign back in:</h4>
                 {this.displayArray(this.state.selectedObjects)}
             </div>
-            <div className='modalFooter'>
+            <div className="modalFooter">
                 <button onClick={() => this.signItemsIn()}>Submit</button>
                 <button onClick={() => this.dismissModal()}>Close</button>
             </div>
@@ -84,13 +84,13 @@ export default class SignItemInModal extends React.Component{
     buildErrorDisplay(){
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Error Has Occured</h3>
             </div>
-            <div className='modalBody'>
-                <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
+            <div className="modalBody">
+                <p className="errorMessage"> {this.state.controllerErrorMessage} </p>
             </div>
-            <div className='modalFooter'>
+            <div className="modalFooter">
                 <button type="reset" onClick={() => this.dismissModal()}>Close</button>
             </div>
             </>

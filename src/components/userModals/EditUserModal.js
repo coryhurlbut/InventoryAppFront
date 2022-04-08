@@ -57,11 +57,11 @@ export default class EditUserModal extends React.Component {
             };
 
             //Sets the userRole select tag to the user's role
-            let selectUserRole = document.getElementById('selectUserRole');
+            let selectUserRole = document.getElementById("selectUserRole");
             selectUserRole.value = thisUser.userRole;
 
             //Sets the status select tag to the user's status
-            let selectUserStatus = document.getElementById('selectUserStatus');
+            let selectUserStatus = document.getElementById("selectUserStatus");
             selectUserStatus.value = thisUser.status;
 
             /* Will set password reset button to show and track that 
@@ -86,7 +86,7 @@ export default class EditUserModal extends React.Component {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
             this.setState({ isControllerError: true,
-                            controllerErrorMessage: "An error occured while loading. Please refresh and try again."
+                            controllerErrorMessage: 'An error occured while loading. Please refresh and try again.'
             });
         }
     };
@@ -196,26 +196,26 @@ export default class EditUserModal extends React.Component {
         if(errorDetail) {
             if(fieldID === 'password' || fieldID === 'confirmPassword') {
                 return(
-                    <label className='errorMessage' hidden={this.state.pwDisabled}>
+                    <label className="errorMessage" hidden={this.state.pwDisabled}>
                         {errorDetail.errorMessage}
                     </label>
                 );
             } else{
                 return(
-                    <label className='errorMessage'>
-                        { errorDetail.errorMessage}
+                    <label className="errorMessage">
+                        {errorDetail.errorMessage}
                     </label>
                 );
             }
-        } else if(fieldID === "password" && !this.state.pwDisabled) {
+        } else if(fieldID === 'password' && !this.state.pwDisabled) {
             return(
-                <label className='passwordRequirements'>
+                <label className="passwordRequirements">
                     Must Include: lowercase/uppercase/number/symbol
                 </label>
             );
         }
         return(
-            <label className='emptyLabel'>
+            <label className="emptyLabel">
                 This is filler
             </label>);
     };
@@ -483,79 +483,79 @@ export default class EditUserModal extends React.Component {
     _buildForm(){
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Edit User</h3>
             </div>
             <form onSubmit={(Event) => {Event.preventDefault(); this._editUser();}}>
-                <div className='modalBody'>
+                <div className="modalBody">
                     <fieldset>
-                        <h4 className='inputTitle'>First Name</h4>
+                        <h4 className="inputTitle">First Name</h4>
                         <input 
-                            type='text' 
-                            id='firstName' 
-                            className={ this._returnErrorDetails('firstName') ? 'invalid' : 'valid'}
+                            type="text" 
+                            id="firstName"
+                            className={ this._returnErrorDetails("firstName") ? "invalid" : "valid"}
                             value={this.state.firstName} 
                             onChange={(Event) => this._handleChange(validateFields.validateFirstName, Event)}
                             onBlur={(Event) => this._handleBlur(validateFields.validateFirstName, Event)}
                         />
-                        {this._displayErrorMessage('firstName')}
+                        {this._displayErrorMessage("firstName")}
                     </fieldset>
                     <fieldset>
-                        <h4 className='inputTitle'>Last Name</h4>
+                        <h4 className="inputTitle">Last Name</h4>
                         <input 
-                            type='text' 
-                            id='lastName' 
-                            className={ this._returnErrorDetails('lastName') ? 'invalid' : 'valid'}
+                            type="text" 
+                            id="lastName"
+                            className={ this._returnErrorDetails("lastName") ? "invalid" : "valid"}
                             value={this.state.lastName}
                             onChange={(Event) => this._handleChange(validateFields.validateLastName, Event)}
                             onBlur={(Event) => this._handleBlur(validateFields.validateLastName, Event)}
                         />
-                        {this._displayErrorMessage('lastName')}
+                        {this._displayErrorMessage("lastName")}
                     </fieldset>
                     <fieldset>
-                        <h4 className='inputTitle'>Username</h4>
+                        <h4 className="inputTitle">Username</h4>
                         <input 
-                            type='text' 
-                            id='userName'  
+                            type="text" 
+                            id="userName"
                             disabled
                             value={this.state.userName}
                         />
                      </fieldset>
-                    <div className='sideBySide'>
-                        <div className='userRole'>
-                            <h4 className='inputTitle'>User's Role</h4>
+                    <div className="sideBySide">
+                        <div className="userRole">
+                            <h4 className="inputTitle">User's Role</h4>
                                 <select 
                                     disabled={this.state.userRoleDisabled} 
-                                    id='selectUserRole'  
-                                    className={ this._returnErrorDetails('selectUser') ? 'invalid' : 'valid'}
+                                    id="selectUserRole"  
+                                    className={ this._returnErrorDetails("selectUser") ? "invalid" : "valid"}
                                     onChange={(Event) => this._handleUserRoleChange(Event)}
                                 >
-                                    <option id="userOpt" value='user'>User</option>
-                                    <option id="custodianOpt" value='custodian'>Custodian</option>
-                                    <option id="adminOpt" value='admin'>Admin</option>
+                                    <option id="userOpt" value="user">User</option>
+                                    <option id="custodianOpt" value="custodian">Custodian</option>
+                                    <option id="adminOpt" value="admin">Admin</option>
                                 </select>
                         </div>
-                        <div className='userStatus'>
-                            <h4 className='inputTitle'>Status</h4>
+                        <div className="userStatus">
+                            <h4 className="inputTitle">Status</h4>
                                 <select 
                                     disabled={this.state.userRoleDisabled} 
-                                    id='selectUserStatus' 
-                                    className={ this._returnErrorDetails('selectUser') ? 'invalid' : 'valid'}
+                                    id="selectUserStatus" 
+                                    className={ this._returnErrorDetails("selectUser") ? "invalid" : "valid"}
                                     onChange={(Event) => this.setState({status: Event.target.value})}
                                 >
-                                    <option id="activeOpt" value='active'>Active</option>
-                                    <option id="inactiveOpt" value='inactive'>Inactive</option>
+                                    <option id="activeOpt" value="active">Active</option>
+                                    <option id="inactiveOpt" value="inactive">Inactive</option>
                                 </select>
                         </div>
                     </div>
-                    {this._displayErrorMessage('userRole')}
+                    {this._displayErrorMessage("userRole")}
                     <fieldset>
-                        <h4 className='inputTitle'>Password</h4>
+                        <h4 className="inputTitle">Password</h4>
                         <span>
                             <input 
-                                type='password' 
-                                id='password' 
-                                className={ this._returnErrorDetails('password') ? 'invalid' : 'valid'}
+                                type="password"
+                                id="password"
+                                className={ this._returnErrorDetails("password") ? "invalid" : "valid"}
                                 disabled={this.state.pwDisabled}
                                 value={this.state.password} 
                                 onChange={(Event) => this._handleChange(validateFields.validatePassword, Event)}
@@ -568,36 +568,36 @@ export default class EditUserModal extends React.Component {
                                 Reset
                             </button>
                         </span>
-                        {this._displayErrorMessage('password')}
-                        <h4 className='inputTitle' hidden={this.state.pwDisabled}>Confirm Password</h4>
+                        {this._displayErrorMessage("password")}
+                        <h4 className="inputTitle" hidden={this.state.pwDisabled}>Confirm Password</h4>
                             <input 
-                                type='password' 
-                                id='confirmPassword' 
-                                className={ this._returnErrorDetails('confirmPassword') ? 'invalid' : 'valid'}
+                                type="password"
+                                id="confirmPassword"
+                                className={ this._returnErrorDetails("confirmPassword") ? "invalid" : "valid"}
                                 hidden={this.state.pwDisabled}
                                 value={this.state.confirmPassword} 
                                 onChange={(Event) => this._handleChange(validateFields.validatePasswordConfirm, Event)}
                                 onBlur={(Event) => this._handleBlur(validateFields.validatePasswordConfirm, Event)}
                             />
-                            {this._displayErrorMessage('confirmPassword')}
+                            {this._displayErrorMessage("confirmPassword")}
                     </fieldset>
                     <fieldset>
-                        <h4 className='inputTitle'>Phone Number</h4>
+                        <h4 className="inputTitle">Phone Number</h4>
                         <input
-                            type='text' 
-                            id='phoneNumber' 
-                            className={ this._returnErrorDetails('phoneNumber') ? 'invalid' : 'valid'}
+                            type="text" 
+                            id="phoneNumber"
+                            className={ this._returnErrorDetails("phoneNumber") ? "invalid" : "valid"}
                             value={this.state.phoneNumber}
                             onChange={(Event) => this._handleChange(validateFields.validatePhoneNumber, Event)}
                             onBlur={(Event) => this._handleBlur(validateFields.validatePhoneNumber, Event)}
                         />
-                        {this._displayErrorMessage('phoneNumber')}
+                        {this._displayErrorMessage("phoneNumber")}
                     </fieldset>
                 </div>
-                <div className='modalFooter'>
+                <div className="modalFooter">
                     {this._isSubmitAvailable() ? 
-                        <input type='submit' value='Submit'/> : 
-                        <input type='submit' value='Submit' disabled/>
+                        <input type="submit" value="Submit"/> : 
+                        <input type="submit" value="Submit" disabled />
                     }
                     <button type="reset" onClick={() => {this._dismissModal()}}>Close</button>
                 </div>
@@ -610,15 +610,15 @@ export default class EditUserModal extends React.Component {
     _buildErrorDisplay(){
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Error Has Occured</h3>
             </div>
-            <div className='modalBody'>
-                <p className='errorMesage'>
+            <div className="modalBody">
+                <p className="errorMessage">
                     {this.state.controllerErrorMessage} 
                 </p>
             </div>
-            <div className='modalFooter'>
+            <div className="modalFooter">
                 <button type="reset" onClick={() => this._dismissModal()}>Close</button>
             </div>
             </>

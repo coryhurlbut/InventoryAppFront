@@ -120,17 +120,17 @@ export default class ContentBuilder extends React.Component {
             <div className="pageHeader">
                     <h2>Inventory App</h2>
                     {this.state.isLoggedIn ? 
-                        <div className='profileContainer Main'>
+                        <div className="profileContainer Main">
                             <button onClick={ () => {this.setState({isDropdownActive : true})}}>
-                                <img src={ profileIcon } alt='My Profile'/>
+                                <img src={ profileIcon } alt="My Profile"/>
                             </button>
-                            <div className='profileContainer DropDown'>
-                                <div className='contentContainer Text'>
+                            <div className="profileContainer DropDown">
+                                <div className="contentContainer Text">
                                     <label>Account:</label>
                                     <label>{this.state.auth.user.userName}</label>
                                 </div>
-                                <div className='contentDivider'/>
-                                <div className='contentContainer Action'>
+                                <div className="contentDivider"/>
+                                <div className="contentContainer Action">
                                     <button 
                                         hidden={!view.itemLogIsVisible} 
                                         onClick={() => this._showItemLogModal()}
@@ -144,14 +144,14 @@ export default class ContentBuilder extends React.Component {
                                         Admin Logs
                                     </button>
                                 </div>
-                                <div className='contentDivider'/>
-                                <div className='contentContainer Action'>
+                                <div className="contentDivider"/>
+                                <div className="contentContainer Action">
                                     <button onClick={ () => this._loginLogout() }>Logout</button>
                                 </div>
                             </div>
                         </div> : 
                         <button 
-                            className='logInLogOut' 
+                            className="logInLogOut"
                             onClick={ () => this._loginLogout() }
                         >
                             Login

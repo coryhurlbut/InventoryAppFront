@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { useTable, useRowSelect } from "react-table";
+import { useTable, useRowSelect } from 'react-table';
 
 import '../styles/Table.css'
 
@@ -46,13 +46,13 @@ function Table({ columns, data, ...props }) {
                             <tr 
                                 {...row.getRowProps()} 
                                 {...row.getToggleRowSelectedProps()}
-                                indeterminate='false' 
+                                indeterminate="false" 
                                 onClick={() => {
                                     row.toggleRowSelected()
                                     props.setParentState(row.original);
                                 }} 
                                 className="dataRow" 
-                                title=''
+                                title=""
                                 style={row.isSelected ?  //unable to style in other file due to needing the conditional changes
                                     {'backgroundColor': (row.index % 2 === 1 ? '#76c5ceb6' : '#a8f5feb6')} : 
                                     null

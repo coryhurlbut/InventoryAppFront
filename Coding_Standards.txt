@@ -115,7 +115,21 @@ React Coding Standards:
                             <div>foo</div>
                         );
                     }
-                }  
+                } 
+        1.13 Attributes/Variable Names/classNames should be written using camel case
+            //Bad
+                <div id="Content_Body">
+                    <div id="user_Controls">
+                        <div id="Table_Navigation" />
+                    </div>
+                </div>
+                
+            //Good
+                <div id="contentBody">
+                <div id="userControls">
+                    <div id="tableNavigation" />
+                    </div>
+                </div>
 
     2. ARCHITECTURE & CLEAN CODE  /* Directory Structure: https://www.taniarascia.com/react-architecture-directory-structure/ */
         2.1 No DRY [Don't Repeat Yourself] violations. Create utility files to avoid duplicate code
@@ -233,22 +247,57 @@ React Coding Standards:
                     <Quux />
                 </Foo>
 
+            //Good
+                {this.state.signItemInOutIsVisible ?
+                    <SignItemInOutControls
+                        inOrOut={this.state.inOrOut}
+                        idArray={this.state.idArray}
+                        selectedObjects={this.state.selectedObjects}
+                        id={this.state.id}
+                    /> :
+                    null
+                }
+
         2.14 Quotes
-            Always use double quotes (") for JSX attributes, but single quotes (') for all other JS. 
+            Always use double quotes (") for JSX attributes, 
+             but single quotes (') for all other JS. 
                 eslint: jsx-quotes
-                Why? Regular HTML attributes also typically use double quotes instead of single, so JSX attributes mirror this convention.
+                Why? Regular HTML attributes also typically use double quotes instead of single, 
+                so JSX attributes mirror this convention.
 
             // bad
-                <Foo bar='bar' />
+                <label className='errorMessage' >
+                    {errorDetail.errorMessage}
+                </label>
 
             // good
-                <Foo bar="bar" />
+                <input 
+                    type="text" 
+                    id="firstName" 
+                    className={this._returnErrorDetails("firstName") ? "invalid" : "valid"}
+                    value={this.state.firstName} 
+                    onChange={(Event) => this._handleChange(validateFields.validateFirstName, Event)}
+                    onBlur={(Event) => this._handleBlur(validateFields.validateFirstName, Event)}
+                />
+                {this._displayErrorMessage("firstName")}
 
             // bad
-                <Foo style={{ left: "20px" }} />
+                let log = {
+                    itemId:     "N/A",
+                    userId:     returnedUser._id,
+                    adminId:    "",
+                    action:     "add",
+                    content:    "user"
+                };
 
             // good
-                <Foo style={{ left: '20px' }} />
+                let log = {
+                    itemId:     'N/A',
+                    userId:     returnedUser._id,
+                    adminId:    '',
+                    action:     'add',
+                    content:    'user'
+                };
 
         2.15 Spacing
             2.15.1 Always include a single space in your self-closing tag. eslint: no-multi-spaces, react/jsx-tag-spacing

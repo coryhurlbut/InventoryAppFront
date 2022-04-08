@@ -109,11 +109,11 @@ export default class SignItemOutModal extends React.Component{
     buildSignOutNotification(){
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Sign Item Out</h3>                    
             </div>
             <form onSubmit={(event) => {event.preventDefault(); this.signItemsOut();}}>
-            <div className='modalBody'>
+            <div className="modalBody">
                 <h4>You are about to sign out: </h4>
                 {this.displayArray(this.state.selectedObjects)}
                 <label>Choose a user: </label>
@@ -132,7 +132,7 @@ export default class SignItemOutModal extends React.Component{
                     <optgroup label='Admins' id='adminGroup'></optgroup>
                 </select>
             </div>
-            <div className='modalFooter'>
+            <div className="modalFooter">
                 { this.isSumbitAvailable() ? <input type='submit'></input> : <input type='submit' disabled></input>}
                 <button type="reset" onClick={() => this.dismissModal()}>Close</button>
             </div>
@@ -145,13 +145,13 @@ export default class SignItemOutModal extends React.Component{
     buildErrorDisplay(){
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Error Has Occured</h3>
             </div>
-            <div className='modalBody'>
-                <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
+            <div className="modalBody">
+                <p className="errorMessage"> {this.state.controllerErrorMessage} </p>
             </div>
-            <div className='modalFooter'>
+            <div className="modalFooter">
                 <button type="reset" onClick={() => this.dismissModal()}>Close</button>
             </div>
             </>

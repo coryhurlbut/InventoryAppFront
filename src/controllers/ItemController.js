@@ -1,5 +1,5 @@
 import {genericController} from './GenericController';
-import {AuthController} from "./AuthController";
+import {AuthController} from './AuthController';
 
 /*
 *   Controls functions calling APIs for Item data operations

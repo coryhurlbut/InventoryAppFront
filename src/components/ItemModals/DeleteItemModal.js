@@ -65,14 +65,14 @@ export default class DeleteItemModal extends React.Component{
     buildDeleteNotification(){
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Delete Item</h3>
             </div>
-            <div className='modalBody'>
+            <div className="modalBody">
                 <h4>You are about to delete the following:</h4>
                 {this.displayArray(this.state.selectedObjects)}
             </div>
-            <div className='modalFooter'>
+            <div className="modalFooter">
                 <button onClick={() => this.deleteItem()}>Delete</button>
                 <button onClick={() => this.dismissModal()}>Close</button>
             </div>
@@ -84,13 +84,13 @@ export default class DeleteItemModal extends React.Component{
     buildErrorDisplay(){
         return(
             <>
-            <div className='modalHeader'>
+            <div className="modalHeader">
                 <h3>Error Has Occured</h3>
             </div>
-            <div className='modalBody'>
-                <p className='errorMesage'> {this.state.controllerErrorMessage} </p>
+            <div className="modalBody">
+                <p className="errorMessage"> {this.state.controllerErrorMessage} </p>
             </div>
-            <div className='modalFooter'>
+            <div className="modalFooter">
                 <button type="reset" onClick={() => this.dismissModal()}>Close</button>
             </div>
             </>

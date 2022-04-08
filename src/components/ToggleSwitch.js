@@ -9,10 +9,10 @@ const ToggleSwitch = () => {
                 <input 
                     type="checkbox" 
                     className="checkbox"
-                    name='lightDark' 
-                    id='lightDark'
+                    name="lightDark"
+                    id="lightDark"
                 />
-                <label className="label" htmlFor='lightDark' >
+                <label className="label" htmlFor="lightDark">
                     <span className="inner" />
                     <span className="switch" />
                 </label>

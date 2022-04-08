@@ -1,4 +1,4 @@
-import jwtDecode from "jwt-decode";
+import jwtDecode from 'jwt-decode';
 
 /*
 *   Controller to be used by the other controllers. Holds main auth request functions that will be used in most controllers.
@@ -70,8 +70,8 @@ export class AuthController {
         let refreshToken = this.getRefreshToken();
         let initObj = {
             headers: {
-                "Accept":           "application/json",
-                "Content-Type":     "application/json"
+                'Accept':           'application/json',
+                'Content-Type':     'application/json'
             }, 
             method: 'POST', 
             body: JSON.stringify({ refreshToken: refreshToken })
