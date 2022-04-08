@@ -43,6 +43,7 @@ export default class AddUserModal extends React.Component{
     /* When a custodian is logged in, 
         allow only the ability to add user roles */
     async componentDidMount() {
+        console.log("componentDidMount");
         try {
             let signedInAccount = await AuthController.getUserInfo();
 
@@ -65,6 +66,7 @@ export default class AddUserModal extends React.Component{
         }
         
     };
+
 
     _dismissModal() {
         this.setState({isOpen: false});
