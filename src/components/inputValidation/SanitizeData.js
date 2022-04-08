@@ -1,19 +1,19 @@
 import validator from "validator";
 
 class SanitizeData{
-    sanitizeWhitespace(data){
-        if(validator.trim(data).length === 0){
-            let sanData = validator.trim(data)
+    sanitizeWhitespace(data) {
+        if(validator.trim(data).length === 0) {
+            let sanData = validator.trim(data);
             return sanData;
-        }
+        };
+
         return data;
     }
 
-    sanitizePhoneNumber(data){
-        let cleanData = data;
-
-        let formatter = "-";
-        let databaseReady = "";
+    sanitizePhoneNumber(data) {
+        let cleanData       = data;
+        let formatter       = "-";
+        let databaseReady   = "";
 
         cleanData = cleanData.replaceAll(' ', '');
         cleanData = cleanData.replaceAll('.', '');
@@ -29,22 +29,20 @@ class SanitizeData{
         */
 
         //Country code is optional
-        if(reformatData[1]){
+        if(reformatData[1]) {
             databaseReady = reformatData[1] + formatter + reformatData[2] + formatter + reformatData[3] + formatter + reformatData[4];
-        }
-        else{
+        } else {
             databaseReady = reformatData[2] + formatter + reformatData[3] + formatter + reformatData[4];
         }
         
         return databaseReady;
     }
 
-    sanitizeName(data){
-
+    sanitizeName(data) {
         return data;
     }
 }
 
 const sanitizeData = new SanitizeData();
 
-export { sanitizeData };
+export default sanitizeData;

@@ -1,15 +1,17 @@
 //Import all controllers
-import ItemController       from './ItemController';
-import UserController       from './UserController';
-import ItemLogController    from './ItemLogController';
-import AdminLogController   from './AdminLogController';
-import AuthController       from './AuthController';
+import itemController           from "./ItemController";
+import userController           from "./UserController";
+import itemLogController        from "./ItemLogController";
+import adminLogController       from "./AdminLogController";
+import authController           from "./AuthController";
+import loginLogoutController    from "./LoginLogoutController";
 
 //Export all controllers together for cleaner importing elsewhere
 export {
-    ItemController,
-    UserController,
-    ItemLogController, 
-    AdminLogController,
-    AuthController
-}
+    itemController,
+    userController,
+    itemLogController, 
+    adminLogController,
+    authController,
+    loginLogoutController
+};

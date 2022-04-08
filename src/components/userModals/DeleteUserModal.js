@@ -1,10 +1,10 @@
 import React                from 'react';
 
-import {Modal}              from '@fluentui/react';
+import { Modal }            from '@fluentui/react';
 
-import {UserController, 
-        AdminLogController, 
-        ItemController}     from '../../controllers';
+import { userController, 
+        adminLogController, 
+        itemController }    from '../../controllers';
 
 /*
 *   Modal for deleting a user
@@ -20,33 +20,36 @@ export default class DeleteUserModal extends React.Component {
             isControllerError:      false,
             controllerErrorMessage: ''
         };
-    };
+    }
 
-    _dismissModal() {
+    _dismissModal = () => {
         this.setState({isOpen: false});
-    };
+    }
     
-    async _deleteUser() {
-        let unavailableItems = await ItemController.getUnavailableItems();
+    _deleteUser = async () => {
+        let unavailableItems = await itemController.getUnavailableItems();
         
         //Checks if any user that is going to get deleted has any items signed out
-        let res = await UserController.checkSignouts(this.state.selectedObjects, unavailableItems);
+        let res = await userController.checkSignouts(this.state.selectedObjects, unavailableItems);
         if(res.status === 'error') {
-            this.setState({ isControllerError: true, 
-                            controllerErrorMessage: res.message
+            this.setState({ 
+                isControllerError: true, 
+                controllerErrorMessage: res.message 
             });
             return;
         } else {
-            this.setState({ isControllerError: false, 
-                            ercontrollerErrorMessageror: ''
+            this.setState({ 
+                isControllerError: false, 
+                ercontrollerErrorMessage: ''
             });
         };
 
-        await UserController.deleteUsers(this.state.idArray)
-        .then(async (auth) => {
+        await userController.deleteUsers(this.state.idArray)
+        .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
-            this.setState({ isControllerError: false, 
-                            controllerErrorMessage: ''
+            this.setState({ 
+                isControllerError: false, 
+                controllerErrorMessage: ''
             });
 
             for(let i = 0; i < this.state.idArray.length; i++) {
@@ -57,30 +60,29 @@ export default class DeleteUserModal extends React.Component {
                     action:     'delete',
                     content:    'user'
                 };
-                await AdminLogController.createAdminLog(log);
+                await adminLogController.createAdminLog(log);
             };
             window.location.reload();
             this._dismissModal();
         })
         .catch(async (err) => {            
-            this.setState({ isControllerError: true, 
-                            controllerErrorMessage: err.message
+            this.setState({ 
+                isControllerError: true, 
+                controllerErrorMessage: err.message
             }); 
         });
-    };
+    }
 
     /* Loops through the array of items and displays them as a list */
-    _displayArray(users) {
+    _displayArray = (users) => {
         const displayUsers = users.map((user) => 
             <li className="arrayObject" key={user._id}> 
                 {user.userName}
             </li>
         );
 
-        return(
-            <ul>{displayUsers}</ul>
-        );
-    };
+        return <ul>{displayUsers}</ul>;
+    }
 
     /* Builds display for deleting users */
     _buildDeleteNotification() {
@@ -99,7 +101,7 @@ export default class DeleteUserModal extends React.Component {
             </div>
             </>
         );
-    };
+    }
 
     /* If a backend issue occurs, display message to user */
     _buildErrorDisplay() {
@@ -118,7 +120,7 @@ export default class DeleteUserModal extends React.Component {
             </div>
             </>
         );
-    };
+    }
 
     render() {
         return(
@@ -126,5 +128,5 @@ export default class DeleteUserModal extends React.Component {
                 {this.state.isControllerError ? this._buildErrorDisplay() : this._buildDeleteNotification()}
             </Modal>
         );
-    };
-};
+    }
+}

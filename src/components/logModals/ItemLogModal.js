@@ -1,9 +1,9 @@
-import React                from 'react';
-import { Modal }              from '@fluentui/react';
-import Table                from '../Table';
-import itemLogController    from '../../controllers/ItemLogController';
-import '@fluentui/react';
-// import ItemLogController from '../controllers/ItemLogController';
+import React                    from 'react';
+
+import { Modal }                from '@fluentui/react';
+
+import Table                    from '../Table';
+import { itemLogController }    from '../../controllers';
 
 const columns = [
     {
@@ -37,7 +37,7 @@ const columns = [
 */
 
 export default class ItemLogModal extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -46,12 +46,12 @@ export default class ItemLogModal extends React.Component {
         };
     }
 
-    async componentDidMount(){
+    async componentDidMount() {
         let data = await itemLogController.getAllItemLogs();
         this.setState({ content: data });
     }
 
-    dismissModal(){
+    _dismissModal = () => {
         this.setState({isOpen: false});
     }
 
@@ -63,9 +63,9 @@ export default class ItemLogModal extends React.Component {
                     <Table columns={columns} data={this.state.content} />
                 </div>
                 <div className="modalFooter">
-                    <button onClick={() => this.dismissModal()}>Close</button>
+                    <button onClick={this._dismissModal}>Close</button>
                 </div>
             </Modal>
         ); 
-    };
-};
+    }
+}

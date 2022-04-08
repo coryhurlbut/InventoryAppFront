@@ -1,17 +1,15 @@
 import React from 'react';
 
-import '@fluentui/react';
+import { authController }       from '../controllers';
+import ContentList              from './ContentList';
+import { ItemLogModal,
+    AdminLogModal }             from './logModals';
+import { LoginModal,
+    LogoutModal }               from './profileModals';
+import { displayPresets }       from './ContentPresets';
 
-
-import {AuthController}       from '../controllers';
-import ContentList            from './ContentList';
-import ItemLogModal           from './LogModals/ItemLogModal';
-import AdminLogModal          from './LogModals/AdminLogModal';
-import LoginModal             from './ProfileModals/LoginModal';
-import LogoutModal            from './ProfileModals/LogoutModal';
-import {displayPresets}       from './contentPresets';
-import profileIcon            from '../styles/Images/profileIcon25x25.jpg';
 import '../styles/App.css';
+import profileIcon              from '../styles/profile_icon_25x25.jpg';
 
 /*
 *   Builds the page by calling components and passing down what should be visible
@@ -37,7 +35,7 @@ export default class ContentBuilder extends React.Component {
     };
 
     async componentDidMount() {
-        let auth = await AuthController.checkToken();
+        let auth = await authController.checkToken();
         
         if(auth === undefined || auth.error !== undefined) {
             this._clearAuth();

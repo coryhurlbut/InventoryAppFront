@@ -1,8 +1,12 @@
 import React                    from 'react';
+
 import { Modal }                from '@fluentui/react';
+
+
+import { adminLogController }   from '../../controllers';
+import Table                    from '../Table';
+
 import '../../styles/Modal.css'
-import adminLogController from '../../controllers/AdminLogController';
-import Table from '../Table';
 
 
 const columns = [
@@ -35,7 +39,7 @@ const columns = [
 /*
 *   Displays log of admin actions (add, edit, delete of items and users)
 */
-export default class AdminLogDisplay extends React.Component {
+export default class AdminLogModal extends React.Component {
     constructor(props){
         super(props)
 
@@ -43,14 +47,14 @@ export default class AdminLogDisplay extends React.Component {
             isOpen: props.isOpen,
             content: []
         };
-    };
+    }
 
     async componentDidMount() {
         let logs = await adminLogController.getAllAdminLogs();
         this.setState({ content: logs });
     }
 
-    dismissModal() {
+    _dismissModal = () => {
         this.setState({ isOpen: false });
     }
     
@@ -62,9 +66,9 @@ export default class AdminLogDisplay extends React.Component {
                     <Table columns={columns} data={this.state.content} />
                 </div>
                 <div className="modalFooter">
-                    <button onClick={() => this.dismissModal()}>Close</button>
+                    <button onClick={this._dismissModal}>Close</button>
                 </div>
             </Modal>
-        )
-    };
-};
+        );
+    }
+}

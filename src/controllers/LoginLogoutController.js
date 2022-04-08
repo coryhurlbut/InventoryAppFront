@@ -1,12 +1,12 @@
 import GenericController from './GenericController';
-import {AuthController} from '../controllers';
+import { authController } from '../controllers';
 /*
  *   Controls functions calling APIs for Auth data operations
  */
-export default class LoginLogoutController extends GenericController {
+export class LoginLogoutController extends GenericController {
 
     async logout(auth) {
-        AuthController.deleteCookie();
+        authController.deleteCookie();
         return await this.request('auth/logout', {
             method: 'DELETE',
             body: JSON.stringify(auth)
@@ -29,8 +29,8 @@ export default class LoginLogoutController extends GenericController {
             let response = await this.request('auth/login', reqObj);
             if (response.status >= 400) throw response;
 
-            AuthController.setAccessTokenCookie(response.accessToken);
-            AuthController.setRefreshTokenCookie(response.refreshToken);
+            authController.setAccessTokenCookie(response.accessToken);
+            authController.setRefreshTokenCookie(response.refreshToken);
 
             return response;
         } catch(err) {
@@ -40,4 +40,5 @@ export default class LoginLogoutController extends GenericController {
 };
 
 //Exports an instance of the class instead of the class
-export const loginLogoutController = new LoginLogoutController();
+const loginLogoutController = new LoginLogoutController();
+export default loginLogoutController;

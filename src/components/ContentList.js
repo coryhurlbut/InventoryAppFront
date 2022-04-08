@@ -1,16 +1,17 @@
-import React                        from 'react';
+import React                    from 'react';
 
-import ItemEditControls             from './Controls/ItemEditControls';
-import UserEditControls             from './Controls/UserEditControls';
-import SignItemInOutControls        from './Controls/SignItemInOutControls';
-import ItemController               from '../controllers/ItemController';
-import UserController               from '../controllers/UserController';
-import Table                        from './Table';
-import {availableItemsContent, 
-        unavailableItemsContent, 
-        usersContent }              from './contentPresets';
-import ToggleSwitch                 from './ToggleSwitch';
-import '../styles/Table.css';
+import { ItemEditControls,
+    UserEditControls,
+    SignItemInOutControls }     from './controls';
+import { itemController,
+    userController }            from '../controllers';
+import { availableItemsContent, 
+    unavailableItemsContent, 
+    usersContent }              from './ContentPresets';
+
+import Table                    from './Table';
+import ToggleSwitch             from './ToggleSwitch';
+import '../styles/table.css';
 import '../styles/App.css';
 import '../styles/Modal.css';
 
@@ -67,8 +68,8 @@ export default class ContentList extends React.Component {
         this._showAvailableItems();
     };
 
-    async _showAvailableItems() {
-        let items = await ItemController.getAvailableItems();
+    _showAvailableItems = async () => {
+        let items = await itemController.getAvailableItems();
         this.setState({
             content:            items || null,
             contentType:        availableItemsContent.contentType,
@@ -83,8 +84,8 @@ export default class ContentList extends React.Component {
         });
     };
 
-    async _showUnavailableItems() {
-        let items = await ItemController.getUnavailableItems();
+    _showUnavailableItems = async () => {
+        let items = await itemController.getUnavailableItems();
         this.setState({
             content:            items || null,
             contentType:        unavailableItemsContent.contentType,
@@ -99,8 +100,8 @@ export default class ContentList extends React.Component {
         });
     };
 
-    async _showUsers() {
-        let users = await UserController.getAllUsers();
+    _showUsers = async () => {
+        let users = await userController.getAllUsers();
         this.setState({
             content:            users || null,
             contentType:        usersContent.contentType,

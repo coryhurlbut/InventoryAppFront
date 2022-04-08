@@ -1,7 +1,7 @@
-import AddItemModal from './AddItemModal';
-import DeleteItemModal from './DeleteItemModal';
-import EditItemModal from './EditItemModal';
-import SignItemInModal from './SignItemInModal';
+import AddItemModal     from './AddItemModal';
+import DeleteItemModal  from './DeleteItemModal';
+import EditItemModal    from './EditItemModal';
+import SignItemInModal  from './SignItemInModal';
 import SignItemOutModal from './SignItemOutModal';
 
 /*
@@ -13,4 +13,4 @@ export {
     EditItemModal,
     SignItemInModal,
     SignItemOutModal
-}
+};

@@ -1,12 +1,13 @@
-import React                  from 'react';
+import React                from 'react';
 
-import {Modal}                from '@fluentui/react';
+import { Modal }            from '@fluentui/react';
 
-import {UserController,
-        ItemController, 
-        AdminLogController}   from '../../controllers';
-import {validateFields}       from '../InputValidation/userValidation';
-import {sanitizeData}         from '../InputValidation/sanitizeData';
+import { itemController,
+    userController,
+    adminLogController }    from '../../controllers'
+import { userValidation,
+    sanitizeData }          from '../inputValidation';
+
 /*
 *   Modal for editing a user
 */
@@ -49,7 +50,7 @@ export default class EditUserModal extends React.Component {
         -password display/reset password logic */
     async componentDidMount() {
         try {
-            let thisUser = await UserController.getUserById(this.state.idArray[0]);
+            let thisUser = await userController.getUserById(this.state.idArray[0]);
 
             //Disables userRole dropdown if the selected user is the user logged in
             if(thisUser.userId === thisUser._id) {
@@ -109,11 +110,11 @@ export default class EditUserModal extends React.Component {
 
         //Checks if items are signed out to user if admin is trying to deactivate the account.
         if(user.status === 'inactive') {
-            let unavailableItems = await ItemController.getUnavailableItems();
+            let unavailableItems = await itemController.getUnavailableItems();
 
             //Checks if any user that is going to get deleted has any items signed out
-            let res = await UserController.checkSignouts(user, unavailableItems);
-            if(res.status === 'error') {
+            let res = await userController.checkSignouts(user, unavailableItems);
+            if (res.status === 'error') {
                 this.setState({ isControllerError: true, 
                                 controllerErrorMessage: res.message
                 });
@@ -133,14 +134,14 @@ export default class EditUserModal extends React.Component {
             content:    'user'
         };
 
-        await UserController.updateUser(this.state.idArray[0], user)
+        await userController.updateUser(this.state.idArray[0], user)
         .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ isControllerError: false, 
                             controllerErrorMessage: ''
             });
             
-            await AdminLogController.createAdminLog(log);
+            await adminLogController.createAdminLog(log);
 
             window.location.reload();
             this._dismissModal();
@@ -495,10 +496,9 @@ export default class EditUserModal extends React.Component {
                             id="firstName"
                             className={ this._returnErrorDetails("firstName") ? "invalid" : "valid"}
                             value={this.state.firstName} 
-                            onChange={(Event) => this._handleChange(validateFields.validateFirstName, Event)}
-                            onBlur={(Event) => this._handleBlur(validateFields.validateFirstName, Event)}
-                        />
-                        {this._displayErrorMessage("firstName")}
+                            onChange={(evt) => this.handleChange(userValidation.validateFirstName, evt)}
+                            onBlur={(evt) => this.handleBlur(userValidation.validateFirstName, evt)}/>
+                        { this.displayErrorMessage('firstName') }
                     </fieldset>
                     <fieldset>
                         <h4 className="inputTitle">Last Name</h4>
@@ -507,10 +507,9 @@ export default class EditUserModal extends React.Component {
                             id="lastName"
                             className={ this._returnErrorDetails("lastName") ? "invalid" : "valid"}
                             value={this.state.lastName}
-                            onChange={(Event) => this._handleChange(validateFields.validateLastName, Event)}
-                            onBlur={(Event) => this._handleBlur(validateFields.validateLastName, Event)}
-                        />
-                        {this._displayErrorMessage("lastName")}
+                            onChange={(evt) => this.handleChange(userValidation.validateLastName, evt)}
+                            onBlur={(evt) => this.handleBlur(userValidation.validateLastName, evt)}/>
+                        { this.displayErrorMessage('lastName') }
                     </fieldset>
                     <fieldset>
                         <h4 className="inputTitle">Username</h4>
@@ -558,15 +557,9 @@ export default class EditUserModal extends React.Component {
                                 className={ this._returnErrorDetails("password") ? "invalid" : "valid"}
                                 disabled={this.state.pwDisabled}
                                 value={this.state.password} 
-                                onChange={(Event) => this._handleChange(validateFields.validatePassword, Event)}
-                                onBlur={(Event) => this._handleBlur(validateFields.validatePassword, Event)}
-                            />
-                            <button 
-                                hidden={!this.state.resetBtn} 
-                                onClick={(Event) => {Event.preventDefault(); this._allowPasswordReset()}}
-                            >
-                                Reset
-                            </button>
+                                onChange={(evt) => this.handleChange(userValidation.validatePassword, evt)}
+                                onBlur={(evt) => this.handleBlur(userValidation.validatePassword, evt)}/>
+                            <button hidden={!this.state.resetBtn} onClick={(event) => {event.preventDefault(); this.allowPasswordReset()}}>Reset</button>
                         </span>
                         {this._displayErrorMessage("password")}
                         <h4 className="inputTitle" hidden={this.state.pwDisabled}>Confirm Password</h4>
@@ -576,10 +569,9 @@ export default class EditUserModal extends React.Component {
                                 className={ this._returnErrorDetails("confirmPassword") ? "invalid" : "valid"}
                                 hidden={this.state.pwDisabled}
                                 value={this.state.confirmPassword} 
-                                onChange={(Event) => this._handleChange(validateFields.validatePasswordConfirm, Event)}
-                                onBlur={(Event) => this._handleBlur(validateFields.validatePasswordConfirm, Event)}
-                            />
-                            {this._displayErrorMessage("confirmPassword")}
+                                onChange={(evt) => this.handleChange(userValidation.validatePasswordConfirm, evt)}
+                                onBlur={(evt) => this.handleBlur(userValidation.validatePasswordConfirm, evt)}/>
+                            { this.displayErrorMessage('confirmPassword') }
                     </fieldset>
                     <fieldset>
                         <h4 className="inputTitle">Phone Number</h4>
@@ -588,10 +580,9 @@ export default class EditUserModal extends React.Component {
                             id="phoneNumber"
                             className={ this._returnErrorDetails("phoneNumber") ? "invalid" : "valid"}
                             value={this.state.phoneNumber}
-                            onChange={(Event) => this._handleChange(validateFields.validatePhoneNumber, Event)}
-                            onBlur={(Event) => this._handleBlur(validateFields.validatePhoneNumber, Event)}
-                        />
-                        {this._displayErrorMessage("phoneNumber")}
+                            onChange={(evt) => this.handleChange(userValidation.validatePhoneNumber, evt)}
+                            onBlur={(evt) => this.handleBlur(userValidation.validatePhoneNumber, evt)}/>
+                        { this.displayErrorMessage('phoneNumber') }
                     </fieldset>
                 </div>
                 <div className="modalFooter">
