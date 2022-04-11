@@ -223,7 +223,11 @@ export default class AddUserModal extends React.Component {
 
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
+<<<<<<< HEAD
+    _isSumbitAvailable(){
+=======
     _isSubmitAvailable(){
+>>>>>>> aa2a21a6030f46fafb09dc1ddef6bfb71f307c94
         if(this.state.isSignUp) {
             return userValidation.validateUserRequest(
                 this.state.firstName,
@@ -540,10 +544,10 @@ export default class AddUserModal extends React.Component {
                                     <select 
                                         disabled={this.state.userRoleDisabled} 
                                         id='selectUser' 
-                                        className={ this.returnErrorDetails('selectUser') ? 'invalid' : 'valid'}
+                                        className={ this._returnErrorDetails('selectUser') ? 'invalid' : 'valid'}
                                         defaultValue={''}  
-                                        onChange={(evt) => this.handleChange(userValidation.validateUserRole, evt)}
-                                        onBlur={(evt) => this.handleBlur(userValidation.validateUserRole, evt)}>
+                                        onChange={(evt) => this._handleChange(userValidation.validateUserRole, evt)}
+                                        onBlur={(evt) => this._handleBlur(userValidation.validateUserRole, evt)}>
 
                                         <option label='' hidden disabled ></option>
                                         <option value='user'>User</option>
