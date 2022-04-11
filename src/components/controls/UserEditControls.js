@@ -33,6 +33,7 @@ export default class UserEditControls extends React.Component {
         this.setState({
             modal: <AddUserModal 
                 isOpen
+                userRole={null}
                 hideModal={this.hideModal}
             />
         });
