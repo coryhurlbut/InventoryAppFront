@@ -3,26 +3,13 @@ import React from 'react';
 import { authController }       from '../controllers';
 import ContentList              from './ContentList';
 import { ItemLogModal,
-    AdminLogModal }             from './logModals';
+    AdminLogModal,
+    ApproveUsersModal }         from './logModals';
 import { LoginModal,
     LogoutModal }               from './profileModals';
 import { displayPresets }       from './contentPresets';
-
-<<<<<<< Updated upstream
-=======
-
-import {AuthController}       from '../controllers';
-import ContentList            from './ContentList';
-import ItemLogModal           from './LogModals/ItemLogModal';
-import AdminLogModal          from './LogModals/AdminLogModal';
-import ApproveUsersModal      from './LogModals/ApproveUsersModal';
-import LoginModal             from './ProfileModals/LoginModal';
-import LogoutModal            from './ProfileModals/LogoutModal';
-import {displayPresets}       from './contentPresets';
-import profileIcon            from '../styles/Images/profileIcon25x25.jpg';
->>>>>>> Stashed changes
-import '../styles/App.css';
 import profileIcon              from '../styles/Images/profileIcon25x25.jpg';
+import '../styles/App.css';
 
 /*
 *   Builds the page by calling components and passing down what should be visible

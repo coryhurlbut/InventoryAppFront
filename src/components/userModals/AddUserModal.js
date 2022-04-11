@@ -378,11 +378,7 @@ export default class AddUserModal extends React.Component{
                 break;
             case 'selectUser':
                 this.setState({ userRole: sanitizeData.sanitizeWhitespace(fieldVal)});
-<<<<<<< Updated upstream
-                this.enablePasswordEdit(evt);
-=======
                 this._enablePasswordEdit(Event);
->>>>>>> Stashed changes
                 break;
             case 'password':
                 this.setState({ password: sanitizeData.sanitizeWhitespace(fieldVal)});
