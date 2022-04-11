@@ -22,13 +22,13 @@ export default class AddUserModal extends React.Component{
             userName:        '',
             password:        '',
             confirmPassword: '',
-            userRole:        '',
+            userRole:        props.userRole,
             phoneNumber:     '',
             status:          'active',
             pwDisabled:      true,
             pwRequired:      false,
             userRoleDisabled:false,
-            isSignUp:        null,
+            isSignUp:        props.isSignUp,
             
             errorDetails:           {
                 field:        '',
@@ -45,7 +45,7 @@ export default class AddUserModal extends React.Component{
     async componentDidMount(){
         try {
             let signedInAccount = await authController.getUserInfo();
-            if(this.isSignUp){this.setState({ status: 'pending'})}
+            if(this.isSignUp){this.setState({ status: 'pending', userRole: 'user' })}
 
             if(signedInAccount.user.user.userRole === 'custodian'){
                 //Front end display so it show's user is selected
@@ -79,8 +79,32 @@ export default class AddUserModal extends React.Component{
             phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
             status:         this.state.status
         };
-
+        //alternate data model for user sign up
+        let userRegister = {
+            firstName:      this.state.firstName,
+            lastName:       this.state.lastName,
+            userName:       this.state.userName,
+            userRole:       'user',
+            phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
+            status:         'pending'
+        }
         let returnedUser = {};
+        if(this.state.isSignUp){
+            await userController.registerNewUser(userRegister)
+            .then((data) => {
+                if (data.status !== undefined && data.status >= 400) throw data;
+                
+                this.setState({ isControllerError: false, 
+                                controllerErrorMessage: ''});
+                returnedUser = data;
+    
+                window.location.reload();
+                this._dismissModal();
+            })
+            .catch( async (err) => {  
+                this.setState({ isControllerError: true, 
+                                controllerErrorMessage: err.message});          
+            });
         await userController.createUser(user)
         .then((data) => {
             if (data.status !== undefined && data.status >= 400) throw data;
@@ -96,15 +120,18 @@ export default class AddUserModal extends React.Component{
             this.setState({ isControllerError: true, 
                             controllerErrorMessage: err.message});          
         });
-
-        let log = {
-            itemId:     'N/A',
-            userId:     returnedUser._id,
-            adminId:    '',
-            action:     'add',
-            content:    'user'
-        };
+       
+         let log = {
+                itemId:     'N/A',
+                userId:     returnedUser._id,
+                adminId:    '',
+                action:     'add',
+                content:    'user'
+         }
+            
         await adminLogController.createAdminLog(log);
+        }
+        
     };
 
     enablePasswordEdit(event) {
@@ -182,10 +209,24 @@ export default class AddUserModal extends React.Component{
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
     isSumbitAvailable(){
-        if(userValidation.validateSubmit(this.state.firstName, this.state.lastName, this.state.userName, this.state.userRole, this.state.phoneNumber, this.state.pwRequired, this.state.password) && this.state.errors.length === 0){
-            return true;
+        console.log(this.state.isSignUp);
+        if(this.state.isSignUp){
+            return userValidation.validateUserRequest(
+                this.state.firstName,
+                this.state.lastName,
+                this.state.userName,
+                this.state.phoneNumber)
+        }else{
+            return userValidation.validateSubmit(
+                this.state.firstName,
+                this.state.lastName,
+                this.state.userName,
+                this.state.userRole,
+                this.state.phoneNumber,
+                this.state.pwRequired,
+                this.state.password)
+                && this.state.errors.length === 0
         }
-        return false;
     };
 
     /* Primary purpose:
@@ -439,7 +480,7 @@ export default class AddUserModal extends React.Component{
                             onBlur={(evt) => this.handleBlur(userValidation.validateUserName, evt)}/>
                         { this.displayErrorMessage('userName') }
                     </fieldset>
-                    {this.state.isSignUp ?
+                    {this.state.isSignUp ? null :
                     <div><fieldset>
                         <h4 className='inputTitle'>User's Role</h4>
                         <select 
@@ -480,7 +521,7 @@ export default class AddUserModal extends React.Component{
                             onChange={(evt) => this.handleChange(userValidation.validatePasswordConfirm, evt)}
                             onBlur={(evt) => this.handleBlur(userValidation.validatePasswordConfirm, evt)}/>
                         { this.displayErrorMessage('confirmPassword') }
-                    </fieldset> </div>: null
+                    </fieldset> </div>
                     }
                     <fieldset>
                         <h4 className='inputTitle'>Phone Number</h4>
