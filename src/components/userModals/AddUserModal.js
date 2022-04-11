@@ -8,6 +8,9 @@ import { authController,
 import { userValidation,
     sanitizeData }          from '../inputValidation';
 
+
+
+const roleInfo = "Roles have different permissions and access\n\nUser: Only exists to hold signed out items, and tracking purposes. No password required\n\nCustodian: Can Sign items in and out. Password required\n\nAdmin: Full control over items/users, logs, and approving new users. Password required";
 /*
 *   Modal for adding a user
 */
@@ -533,19 +536,24 @@ export default class AddUserModal extends React.Component {
                         <div>
                             <fieldset>
                                 <h4 className="inputTitle">User's Role</h4>
-                                <select 
-                                    disabled={this.state.userRoleDisabled} 
-                                    id="selectUser"
-                                    className={ this._returnErrorDetails("selectUser") ? "invalid" : "valid"}
-                                    defaultValue={""}  
-                                    onChange={(Event) => this._handleChange(userValidation.validateUserRole, Event)}
-                                    onBlur={(Event) => this._handleBlur(userValidation.validateUserRole, Event)}
-                                >
-                                    <option label="" hidden disabled ></option>
-                                    <option value="user">User</option>
-                                    <option value="custodian">Custodian</option>
-                                    <option value="admin">Admin</option>
-                                </select>
+                                <span id='userSelect'>
+                                    <select 
+                                        disabled={this.state.userRoleDisabled} 
+                                        id='selectUser' 
+                                        className={ this.returnErrorDetails('selectUser') ? 'invalid' : 'valid'}
+                                        defaultValue={''}  
+                                        onChange={(evt) => this.handleChange(userValidation.validateUserRole, evt)}
+                                        onBlur={(evt) => this.handleBlur(userValidation.validateUserRole, evt)}>
+
+                                        <option label='' hidden disabled ></option>
+                                        <option value='user'>User</option>
+                                        <option value='custodian'>Custodian</option>
+                                        <option value='admin'>Admin</option>
+                                    </select>
+                                    <div title={roleInfo} id='roleInformation'>
+                                        ?
+                                    </div>
+                                </span>
                                 { this._displayErrorMessage("selectUser") }
                             </fieldset>
                             <fieldset>

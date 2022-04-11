@@ -136,12 +136,24 @@
     padding-bottom: 5px;
     margin-bottom: 5px;
 }
+#roleInformation {
+    padding-left: 12px;
+    font-weight: bolder;
+    font-size: large;
+    margin: 0;
+}
+#userSelect{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
+}
 /* Have select dropdowns side by side*/
 .sideBySide {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    
 
     margin-top: 10px;
 }
