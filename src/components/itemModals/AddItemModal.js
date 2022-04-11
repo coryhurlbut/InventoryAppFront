@@ -93,13 +93,13 @@ export default class AddItemModal extends React.Component{
 
         if(errorDetail) {
             return(
-                <label className='errorMessage'> 
+                <label className="errorMessage"> 
                     {errorDetail.errorMessage} 
                 </label>
             );
         };
 
-        return <label className='emptyLabel'>This is filler</label>;
+        return <label className="emptyLabel">This is filler</label>;
     }
 
     /* When an errorDetail is no longer present, remove from errors list */

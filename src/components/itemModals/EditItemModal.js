@@ -110,13 +110,13 @@ export default class EditItemModal extends React.Component{
 
         if(errorDetail) {
             return(
-                <label className='errorMessage'> 
+                <label className="errorMessage"> 
                     {errorDetail.errorMessage} 
                 </label>
             );
         };
 
-        return <label className='emptyLabel'>This is filler</label>;
+        return <label className="emptyLabel">This is filler</label>;
     }
 
     /* When an errorDetail is no longer present, remove from errors list */
@@ -261,7 +261,7 @@ export default class EditItemModal extends React.Component{
     _buildForm = () => {
         return(
             <>
-                <div className='modalHeader'>
+                <div className="modalHeader">
                     <h3>Edit Item</h3>
                 </div>
                 <form onSubmit={this._handleFormSubmit}>

@@ -73,9 +73,9 @@ export default class ApproveUsersModal extends React.Component{
     render(){
         return(
             <Modal onDismissed={this.props.hideModal} isOpen={this.state.isOpen}>
-                <div className='modalHeader'>Pending Users</div>
+                <div className="modalHeader">Pending Users</div>
                 <form onSubmit={(Event) => {Event.preventDefault()}}>
-                <div className='modalBody'>
+                <div className="modalBody">
                     <Table
                         columns={columns} 
                         data={this.state.content} 
@@ -84,7 +84,7 @@ export default class ApproveUsersModal extends React.Component{
                         setParentState={this.setParentState}
                     />
                 </div>
-                <div className='modalFooter'>
+                <div className="modalFooter">
                     <button disabled={this.state.idArray.length > 0 ? false : true} onClick={() => this._approveUsers()}>Approve</button>
                     <button disabled={this.state.idArray.length > 0 ? false : true} onClick={() => this._denyUsers()}>Deny</button>
                     <button onClick={() => {this.setState({ isOpen: false })}}>Close</button> 
