@@ -1,6 +1,6 @@
-import React from "react";
+import React  from "react";
+import icon   from './styles/Images/ErrorBoundaryPage.jpg';
 import './styles/ErrorBoundary.css';
-import icon from './styles/Images/ErrorBoundaryPage.jpg';
 
 /*
 * Class that catches errors from any child in its component tree. 
@@ -28,7 +28,7 @@ export default class ErrorBoundary extends React.Component {
         if(this.state.hasError) {
             return(
                 <div className="errorPage">
-                    <img src={ icon } alt="Error Icon"/>
+                    <img src={icon} alt="Error Icon" />
                     <h1>An error has occurred</h1>
                     <h3>Please refresh or try again later</h3>
                 </div>

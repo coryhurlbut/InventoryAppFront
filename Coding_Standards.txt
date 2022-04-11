@@ -266,7 +266,7 @@ React Coding Standards:
                 so JSX attributes mirror this convention.
 
             // bad
-                <label className='errorMessage' >
+                <label className="errorMessage" >
                     {errorDetail.errorMessage}
                 </label>
 

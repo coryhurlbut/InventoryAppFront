@@ -93,13 +93,13 @@ export default class AddItemModal extends React.Component{
 
         if(errorDetail) {
             return(
-                <label className='errorMessage'> 
+                <label className="errorMessage"> 
                     {errorDetail.errorMessage} 
                 </label>
             );
         };
 
-        return <label className='emptyLabel'>This is filler</label>;
+        return <label className="emptyLabel">This is filler</label>;
     }
 
     /* When an errorDetail is no longer present, remove from errors list */
@@ -143,9 +143,9 @@ export default class AddItemModal extends React.Component{
     /* Primary purpose:
         indicate to user that field is required when user clicks off field without entering any information
         isEmpty in userValidation is triggered and error is returned for display */
-    _handleBlur = (validationFunc, evt) => {
-        const fieldID       = evt.target.id;
-        const fieldVal      = evt.target.value;
+    _handleBlur = (validationFunc, Event) => {
+        const fieldID       = Event.target.id;
+        const fieldVal      = Event.target.value;
         const isErrorSet    = this._returnErrorDetails(fieldID);
 
         if(validationFunc(fieldVal) && isErrorSet === false) {
@@ -175,9 +175,9 @@ export default class AddItemModal extends React.Component{
     /* Provide user immediate field requirement:
         check if user is producing errors -> validateOnChange is true
         updates the value of the state for that field */
-    _handleChange = (validationFunc, evt) => {
-        const fieldID  = evt.target.id;
-        const fieldVal = evt.target.value;
+    _handleChange = (validationFunc, Event) => {
+        const fieldID  = Event.target.id;
+        const fieldVal = Event.target.value;
 
         /* If something is returned from this function, an error occured 
             since an error was returned, set the error state
@@ -256,8 +256,8 @@ export default class AddItemModal extends React.Component{
                                 id="name"
                                 className={this._returnErrorDetails("name") ? "invalid" : "valid"}
                                 value={this.state.name} 
-                                onChange={(evt) => this._handleChange(itemValidation.validateName, evt)}
-                                onBlur={(evt) => this._handleBlur(itemValidation.validateName, evt)}
+                                onChange={(Event) => this._handleChange(itemValidation.validateName, Event)}
+                                onBlur={(Event) => this._handleBlur(itemValidation.validateName, Event)}
                             />
                             {this._displayErrorMessage("name")}
                         </fieldset>
@@ -268,8 +268,8 @@ export default class AddItemModal extends React.Component{
                                 id="description" 
                                 className={this._returnErrorDetails("description") ? "invalid" : "valid"}
                                 value={this.state.description}
-                                onChange={(evt) => this._handleChange(itemValidation.validateDescription, evt)}
-                                onBlur={(evt) => this._handleBlur(itemValidation.validateDescription, evt)}
+                                onChange={(Event) => this._handleChange(itemValidation.validateDescription, Event)}
+                                onBlur={(Event) => this._handleBlur(itemValidation.validateDescription, Event)}
                             />
                             {this._displayErrorMessage("description")}
                         </fieldset>
@@ -280,8 +280,8 @@ export default class AddItemModal extends React.Component{
                                 id="serialNumber" 
                                 className={this._returnErrorDetails("serialNumber") ? "invalid" : "valid"}
                                 value={this.state.serialNumber} 
-                                onChange={(evt) => this._handleChange(itemValidation.validateSerialNumber, evt)}
-                                onBlur={(evt) => this._handleBlur(itemValidation.validateSerialNumber, evt)}
+                                onChange={(Event) => this._handleChange(itemValidation.validateSerialNumber, Event)}
+                                onBlur={(Event) => this._handleBlur(itemValidation.validateSerialNumber, Event)}
                             />
                             {this._displayErrorMessage("serialNumber")}
                         </fieldset>
@@ -292,8 +292,8 @@ export default class AddItemModal extends React.Component{
                                 id="notes" 
                                 className={this._returnErrorDetails("notes") ? "invalid" : "valid"}
                                 value={this.state.notes} 
-                                onChange={(evt) => this._handleChange(itemValidation.validateNotes, evt)}
-                                onBlur={(evt) => this._handleBlur(itemValidation.validateNotes, evt)}
+                                onChange={(Event) => this._handleChange(itemValidation.validateNotes, Event)}
+                                onBlur={(Event) => this._handleBlur(itemValidation.validateNotes, Event)}
                             />
                             {this._displayErrorMessage("notes")}
                         </fieldset>
@@ -304,8 +304,8 @@ export default class AddItemModal extends React.Component{
                                 id="homeLocation" 
                                 className={ this._returnErrorDetails("homeLocation") ? "invalid" : "valid"}
                                 value={this.state.homeLocation} 
-                                onChange={(evt) => this._handleChange(itemValidation.validateLocation, evt)}
-                                onBlur={(evt) => this._handleBlur(itemValidation.validateLocation, evt)}
+                                onChange={(Event) => this._handleChange(itemValidation.validateLocation, Event)}
+                                onBlur={(Event) => this._handleBlur(itemValidation.validateLocation, Event)}
                             />
                             {this._displayErrorMessage("homeLocation")}
                         </fieldset>
@@ -316,8 +316,8 @@ export default class AddItemModal extends React.Component{
                                 id="specificLocation" 
                                 className={ this._returnErrorDetails("specificLocation") ? "invalid" : "valid"}
                                 value={this.state.specificLocation} 
-                                onChange={(evt) => this._handleChange(itemValidation.validateSpecificLocation, evt)}
-                                onBlur={(evt) => this._handleBlur(itemValidation.validateSpecificLocation, evt)}
+                                onChange={(Event) => this._handleChange(itemValidation.validateSpecificLocation, Event)}
+                                onBlur={(Event) => this._handleBlur(itemValidation.validateSpecificLocation, Event)}
                             />
                             {this._displayErrorMessage("specificLocation")}
                         </fieldset>
