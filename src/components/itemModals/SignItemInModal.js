@@ -52,7 +52,6 @@ export default class SignItemInModal extends React.Component{
         .catch(async (err) => {            
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
-            console.log(err)
             this.setState({ 
                 isControllerError: true,
                 controllerErrorMessage: "An error occured while loading. Please refresh and try again."

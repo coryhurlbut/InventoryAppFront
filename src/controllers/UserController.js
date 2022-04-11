@@ -41,7 +41,6 @@ class UserController extends AuthController {
 
     // //Deletes a single user by Id
     async deleteUsers(userIds) {
-        console.log(userIds);
         return await this.requestWithAuth(`users/delete`, {method: 'DELETE', body: JSON.stringify(userIds)});
     };
 

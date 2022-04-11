@@ -263,17 +263,18 @@ export default class AddUserModal extends React.Component{
         if(!this.returnErrorDetails(fieldID)){   //Does the error already exist? no
             switch (fieldID) {
                 case 'password':
-                    if(validationFunc(this.state.pwRequired, fieldVal)){
+                    let result = validationFunc(this.state.pwRequired, fieldVal);
+                    if(result) {
                         let errorDetail = {
                             field:        fieldID,
-                            errorMessage: validationFunc(this.state.pwRequired, fieldVal)
+                            errorMessage: result
                         };
             
                         this.setState( prevState => ({
                             errorDetails: {
                                 ...prevState.errorDetails,
                                 field:        fieldID,
-                                errorMessage: validationFunc(this.state.pwRequired, fieldVal)
+                                errorMessage: result
                             },
                             errors: [
                                 ...prevState.errors,
@@ -324,10 +325,10 @@ export default class AddUserModal extends React.Component{
                     }
                     break;
             }
-        }else{
+        }else{ //Does the error already exist? yes
             switch (fieldID) {
                 case 'password':
-                    if(!validationFunc(this.state.pwRequired, fieldVal)){
+                    if(!validationFunc(this.state.pwRequired, fieldVal)){ //If no error
                         this.setState( prevState => ({
                             errorDetails: {
                                 ...prevState.errorDetails,
@@ -336,7 +337,30 @@ export default class AddUserModal extends React.Component{
                             }
                         }));
                         this.handleRemoveError(fieldID);
-                    }
+                    } else {
+                        let result = validationFunc(this.state.pwRequired, fieldVal);
+                        let prevError = this.returnErrorDetails(fieldID);
+
+                        if(result !== prevError.errorMessage) {
+                            this.handleRemoveError(fieldID);
+                            let errorDetail = {
+                                field:        fieldID,
+                                errorMessage: result
+                            };
+                
+                            this.setState( prevState => ({
+                                errorDetails: {
+                                    ...prevState.errorDetails,
+                                    field:        fieldID,
+                                    errorMessage: result
+                                },
+                                errors: [
+                                    ...prevState.errors,
+                                    errorDetail
+                                ]
+                            }));
+                        };
+                    };
                     break;
                 case 'confirmPassword':
                     if(!validationFunc(this.state.password, fieldVal)){
@@ -378,7 +402,7 @@ export default class AddUserModal extends React.Component{
                 break;
             case 'selectUser':
                 this.setState({ userRole: sanitizeData.sanitizeWhitespace(fieldVal)});
-                this._enablePasswordEdit(Event);
+                this.enablePasswordEdit(evt);
                 break;
             case 'password':
                 this.setState({ password: sanitizeData.sanitizeWhitespace(fieldVal)});
