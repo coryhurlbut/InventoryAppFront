@@ -220,29 +220,14 @@ export default class AddUserModal extends React.Component {
 
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
-<<<<<<< HEAD
-    _isSumbitAvailable(){
-        if(userValidation.validateSubmit(
-            this.state.firstName, 
-            this.state.lastName, 
-            this.state.userName, 
-            this.state.userRole, 
-            this.state.phoneNumber, 
-            this.state.pwRequired, 
-            this.state.password) && 
-            this.state.errors.length === 0
-        ) {
-            return true;
-=======
     isSumbitAvailable(){
-        console.log(this.state.isSignUp);
-        if(this.state.isSignUp){
+        if(this.state.isSignUp) {
             return userValidation.validateUserRequest(
                 this.state.firstName,
                 this.state.lastName,
                 this.state.userName,
                 this.state.phoneNumber)
-        }else{
+        } else {
             return userValidation.validateSubmit(
                 this.state.firstName,
                 this.state.lastName,
@@ -252,7 +237,6 @@ export default class AddUserModal extends React.Component {
                 this.state.pwRequired,
                 this.state.password)
                 && this.state.errors.length === 0
->>>>>>> ef3ac74f5841b43576c76d42741b77ce424ca364
         }
     };
 
