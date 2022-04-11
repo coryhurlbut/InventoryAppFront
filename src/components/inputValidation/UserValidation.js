@@ -38,7 +38,7 @@ class UserValidation {
 		
 		if(validator.isEmpty(santizedUserName)) {
 			return 'Please provide a username';
-		} else if(!validator.isAlphanumeric(santizedUserName, 'en-US', {ignore: /[\s-_]/})) {
+		} else if(!validator.isAlphanumeric(santizedUserName, 'en-US', {ignore: " -_"})) {
 			return '-_- letters and numbers only';
 		} else if(!validator.isLength(santizedUserName, {min:6, max:25})){
 			return 'Username must be between 6 and 25 characters';
