@@ -8,6 +8,19 @@ import { LoginModal,
     LogoutModal }               from './profileModals';
 import { displayPresets }       from './contentPresets';
 
+<<<<<<< Updated upstream
+=======
+
+import {AuthController}       from '../controllers';
+import ContentList            from './ContentList';
+import ItemLogModal           from './LogModals/ItemLogModal';
+import AdminLogModal          from './LogModals/AdminLogModal';
+import ApproveUsersModal      from './LogModals/ApproveUsersModal';
+import LoginModal             from './ProfileModals/LoginModal';
+import LogoutModal            from './ProfileModals/LogoutModal';
+import {displayPresets}       from './contentPresets';
+import profileIcon            from '../styles/Images/profileIcon25x25.jpg';
+>>>>>>> Stashed changes
 import '../styles/App.css';
 import profileIcon              from '../styles/Images/profileIcon25x25.jpg';
 
@@ -110,6 +123,16 @@ export default class ContentBuilder extends React.Component {
             />  
         });
     }
+    _showUserApprovalModal(){
+        this.setState({
+            modal: <ApproveUsersModal
+            isOpen={true}
+            hideModal={this.hideModal}
+            role={this.state.role}
+            contentType={'deez'}
+            />
+        })
+    }
 
     _buildContent(view) {
         return (
@@ -140,6 +163,12 @@ export default class ContentBuilder extends React.Component {
                                         onClick={() => this._showAdminLogModal()}
                                     >
                                         Admin Logs
+                                    </button>
+                                    <button 
+                                        hidden={!view.adminLogIsVisible}
+                                        onClick={() => this._showUserApprovalModal()}
+                                    >
+                                        Pending
                                     </button>
                                 </div>
                                 <div className="contentDivider"/>

@@ -15,6 +15,10 @@ class UserController extends AuthController {
     async getAllActiveUsers() {
         return await this.requestWithAuth('users/active', {method: 'GET'});
     }
+    //gets those users with status of pending, for admin approve modal
+    async getPendingUsers() {
+        return await this.requestWithAuth('users/pending', {method: 'GET'});
+    }
 
     //Gets a single user by Id
     async getUserById(userId) { 
@@ -37,6 +41,7 @@ class UserController extends AuthController {
 
     // //Deletes a single user by Id
     async deleteUsers(userIds) {
+        console.log(userIds);
         return await this.requestWithAuth(`users/delete`, {method: 'DELETE', body: JSON.stringify(userIds)});
     };
 
