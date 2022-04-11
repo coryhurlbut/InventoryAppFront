@@ -69,6 +69,17 @@ export default class ApproveUsersModal extends React.Component{
         console.log(arr);
         this.setState({ idArray: arr, selectedObjects: selectedObjects });
     }
+    _tableOrNoTable(){
+        if(this.state.idArray.length === 0){
+            return(
+            <div>
+                Nothing
+            </div>
+            )
+        }else{
+
+        }
+    }
 
     render(){
         return(
@@ -76,6 +87,7 @@ export default class ApproveUsersModal extends React.Component{
                 <div className='modalHeader'>Pending Users</div>
                 <form onSubmit={(Event) => {Event.preventDefault()}}>
                 <div className='modalBody'>
+                    {this.state.content.length >= 1 ? 
                     <Table
                         columns={columns} 
                         data={this.state.content} 
@@ -83,6 +95,8 @@ export default class ApproveUsersModal extends React.Component{
                         contentType={this.state.contentType}
                         setParentState={this.setParentState}
                     />
+                    : <p>There is no pending Users</p>
+                    }
                 </div>
                 <div className='modalFooter'>
                     <button disabled={this.state.idArray.length > 0 ? false : true} onClick={() => this._approveUsers()}>Approve</button>
