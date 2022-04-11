@@ -85,12 +85,8 @@ export default class ApproveUsersModal extends React.Component{
             <Modal onDismissed={this.props.hideModal} isOpen={this.state.isOpen}>
                 <div className="modalHeader">Pending Users</div>
                 <form onSubmit={(Event) => {Event.preventDefault()}}>
-<<<<<<< HEAD
-                <div className="modalBody">
-=======
                 <div className='modalBody'>
                     {this.state.content.length >= 1 ? 
->>>>>>> ce421393dc9c59ad96f7e7cd92e4db64d46d9fa5
                     <Table
                         columns={columns} 
                         data={this.state.content} 
