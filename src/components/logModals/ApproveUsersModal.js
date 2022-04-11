@@ -68,17 +68,6 @@ export default class ApproveUsersModal extends React.Component{
         };
         this.setState({ idArray: arr, selectedObjects: selectedObjects });
     }
-    _tableOrNoTable(){
-        if(this.state.idArray.length === 0){
-            return(
-            <div>
-                Nothing
-            </div>
-            )
-        }else{
-
-        }
-    }
 
     render(){
         return(
@@ -94,8 +83,7 @@ export default class ApproveUsersModal extends React.Component{
                         contentType={this.state.contentType}
                         setParentState={this.setParentState}
                     />
-                    : <p>There is no pending Users</p>
-                    }
+                    : <p>There is no pending Users</p>}
                 </div>
                 <div className="modalFooter">
                     <button disabled={this.state.idArray.length > 0 ? false : true} onClick={() => this._approveUsers()}>Approve</button>

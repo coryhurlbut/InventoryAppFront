@@ -147,6 +147,16 @@
     justify-content: flex-start;
     align-items: center;
 
+
+}
+.PendingUserNotification{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+#PendingIcon{
+    color: #ec314a;
+    padding-left: 1px;
 }
 /* Have select dropdowns side by side*/
 .sideBySide {
