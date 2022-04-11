@@ -62,6 +62,7 @@ export default class DeleteUserModal extends React.Component {
                 };
                 await adminLogController.createAdminLog(log);
             };
+
             window.location.reload();
             this._dismissModal();
         })
@@ -85,7 +86,7 @@ export default class DeleteUserModal extends React.Component {
     }
 
     /* Builds display for deleting users */
-    _buildDeleteNotification() {
+    _buildDeleteNotification = () => {
         return(
             <>
             <div className="modalHeader">
@@ -96,15 +97,15 @@ export default class DeleteUserModal extends React.Component {
                 {this._displayArray(this.state.selectedObjects)}
             </div>
             <div className="modalFooter">
-                <button onClick={() => this._deleteUser()}>Delete</button>
-                <button onClick={() => this._dismissModal()}>Close</button>
+                <button onClick={this._deleteUser}>Delete</button>
+                <button onClick={this._dismissModal}>Close</button>
             </div>
             </>
         );
     }
 
     /* If a backend issue occurs, display message to user */
-    _buildErrorDisplay() {
+    _buildErrorDisplay = () => {
         return(
             <>
             <div className="modalHeader">
@@ -116,7 +117,7 @@ export default class DeleteUserModal extends React.Component {
                 </p>
             </div>
             <div className="modalFooter">
-                <button type="reset" onClick={() => this._dismissModal()}>Close</button>
+                <button type="reset" onClick={this._dismissModal}>Close</button>
             </div>
             </>
         );

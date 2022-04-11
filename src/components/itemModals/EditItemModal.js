@@ -63,7 +63,7 @@ export default class EditItemModal extends React.Component{
         this.setState({ isOpen: false });
     }
 
-    editItem = async () => {
+    _editItem = async () => {
         let item = {
             name:               this.state.name,
             description:        this.state.description,
@@ -75,14 +75,14 @@ export default class EditItemModal extends React.Component{
         };
         
         let log = {
-            itemId:     this.state.idArray[0],
+            itemId:     this._idArray[0],
             userId:     'N/A',
             adminId:    '',
             action:     'edit',
             content:    'item'
         };
 
-        await itemController.updateItem(this.state.idArray[0], item)
+        await itemController.updateItem(this._idArray[0], item)
         .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 

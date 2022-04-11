@@ -35,9 +35,9 @@ export default class SignItemInModal extends React.Component{
                 isControllerError: false 
             });
 
-            for(let i = 0; i < this.state.idArray.length; i++) {
+            for(let i = 0; i < this._idArray.length; i++) {
                 let info = {
-                    itemId:      this.state.idArray[0],
+                    itemId:      this._idArray[i],
                     userId:      'test',
                     custodianId: '',
                     action:      'signed in',
@@ -52,6 +52,7 @@ export default class SignItemInModal extends React.Component{
         .catch(async (err) => {            
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
+            console.log(err)
             this.setState({ 
                 isControllerError: true,
                 controllerErrorMessage: "An error occured while loading. Please refresh and try again."
@@ -62,9 +63,11 @@ export default class SignItemInModal extends React.Component{
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
         const displayItem = items.map((item) => {
-            return <li className="arrayObject" key={item._id}> 
-                {item.name} 
-            </li>
+            return (
+                <li className="arrayObject" key={item._id}> 
+                    {item.name} 
+                </li>
+            );
         });
 
         return <ul>{displayItem}</ul>;
