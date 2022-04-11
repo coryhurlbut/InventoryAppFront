@@ -28,6 +28,7 @@ export default class AddUserModal extends React.Component{
             pwDisabled:      true,
             pwRequired:      false,
             userRoleDisabled:false,
+            isSignUp:        null,
             
             errorDetails:           {
                 field:        '',
@@ -44,6 +45,7 @@ export default class AddUserModal extends React.Component{
     async componentDidMount(){
         try {
             let signedInAccount = await authController.getUserInfo();
+            if(this.isSignUp){this.setState({ status: 'pending'})}
 
             if(signedInAccount.user.user.userRole === 'custodian'){
                 //Front end display so it show's user is selected
@@ -378,7 +380,7 @@ export default class AddUserModal extends React.Component{
                 break;
             case 'selectUser':
                 this.setState({ userRole: sanitizeData.sanitizeWhitespace(fieldVal)});
-                this._enablePasswordEdit(Event);
+                this.enablePasswordEdit(evt);
                 break;
             case 'password':
                 this.setState({ password: sanitizeData.sanitizeWhitespace(fieldVal)});
@@ -437,7 +439,8 @@ export default class AddUserModal extends React.Component{
                             onBlur={(evt) => this.handleBlur(userValidation.validateUserName, evt)}/>
                         { this.displayErrorMessage('userName') }
                     </fieldset>
-                    <fieldset>
+                    {this.state.isSignUp ?
+                    <div><fieldset>
                         <h4 className='inputTitle'>User's Role</h4>
                         <select 
                             disabled={this.state.userRoleDisabled} 
@@ -477,7 +480,8 @@ export default class AddUserModal extends React.Component{
                             onChange={(evt) => this.handleChange(userValidation.validatePasswordConfirm, evt)}
                             onBlur={(evt) => this.handleBlur(userValidation.validatePasswordConfirm, evt)}/>
                         { this.displayErrorMessage('confirmPassword') }
-                    </fieldset>
+                    </fieldset> </div>: null
+                    }
                     <fieldset>
                         <h4 className='inputTitle'>Phone Number</h4>
                         <input
