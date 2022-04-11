@@ -68,13 +68,29 @@ export default class ApproveUsersModal extends React.Component{
         };
         this.setState({ idArray: arr, selectedObjects: selectedObjects });
     }
+    _tableOrNoTable(){
+        if(this.state.idArray.length === 0){
+            return(
+            <div>
+                Nothing
+            </div>
+            )
+        }else{
+
+        }
+    }
 
     render(){
         return(
             <Modal onDismissed={this.props.hideModal} isOpen={this.state.isOpen}>
-                <div className='modalHeader'>Pending Users</div>
+                <div className="modalHeader">Pending Users</div>
                 <form onSubmit={(Event) => {Event.preventDefault()}}>
+<<<<<<< HEAD
+                <div className="modalBody">
+=======
                 <div className='modalBody'>
+                    {this.state.content.length >= 1 ? 
+>>>>>>> ce421393dc9c59ad96f7e7cd92e4db64d46d9fa5
                     <Table
                         columns={columns} 
                         data={this.state.content} 
@@ -82,8 +98,10 @@ export default class ApproveUsersModal extends React.Component{
                         contentType={this.state.contentType}
                         setParentState={this.setParentState}
                     />
+                    : <p>There is no pending Users</p>
+                    }
                 </div>
-                <div className='modalFooter'>
+                <div className="modalFooter">
                     <button disabled={this.state.idArray.length > 0 ? false : true} onClick={() => this._approveUsers()}>Approve</button>
                     <button disabled={this.state.idArray.length > 0 ? false : true} onClick={() => this._denyUsers()}>Deny</button>
                     <button onClick={() => {this.setState({ isOpen: false })}}>Close</button> 

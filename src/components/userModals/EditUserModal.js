@@ -520,8 +520,8 @@ export default class EditUserModal extends React.Component {
                             id="firstName"
                             className={ this._returnErrorDetails("firstName") ? "invalid" : "valid"}
                             value={this.state.firstName} 
-                            onChange={(evt) => this._handleChange(userValidation.validateFirstName, evt)}
-                            onBlur={(evt) => this._handleBlur(userValidation.validateFirstName, evt)}
+                            onChange={(Event) => this._handleChange(userValidation.validateFirstName, Event)}
+                            onBlur={(Event) => this._handleBlur(userValidation.validateFirstName, Event)}
                         />
                         {this._displayErrorMessage('firstName')}
                     </fieldset>
@@ -532,8 +532,8 @@ export default class EditUserModal extends React.Component {
                             id="lastName"
                             className={ this._returnErrorDetails("lastName") ? "invalid" : "valid"}
                             value={this.state.lastName}
-                            onChange={(evt) => this._handleChange(userValidation.validateLastName, evt)}
-                            onBlur={(evt) => this._handleBlur(userValidation.validateLastName, evt)}
+                            onChange={(Event) => this._handleChange(userValidation.validateLastName, Event)}
+                            onBlur={(Event) => this._handleBlur(userValidation.validateLastName, Event)}
                         />
                         {this._displayErrorMessage('lastName')}
                     </fieldset>
@@ -583,8 +583,8 @@ export default class EditUserModal extends React.Component {
                                 className={ this._returnErrorDetails("password") ? "invalid" : "valid"}
                                 disabled={this.state.pwDisabled}
                                 value={this.state.password} 
-                                onChange={(evt) => this._handleChange(userValidation.validatePassword, evt)}
-                                onBlur={(evt) => this._handleBlur(userValidation.validatePassword, evt)}
+                                onChange={(Event) => this._handleChange(userValidation.validatePassword, Event)}
+                                onBlur={(Event) => this._handleBlur(userValidation.validatePassword, Event)}
                             />
                             <button hidden={!this.state.resetBtn} onClick={(event) => {event.preventDefault(); this.allowPasswordReset()}}>Reset</button>
                         </span>
@@ -596,8 +596,8 @@ export default class EditUserModal extends React.Component {
                                 className={ this._returnErrorDetails("confirmPassword") ? "invalid" : "valid"}
                                 hidden={this.state.pwDisabled}
                                 value={this.state.confirmPassword} 
-                                onChange={(evt) => this._handleChange(userValidation.validatePasswordConfirm, evt)}
-                                onBlur={(evt) => this._handleBlur(userValidation.validatePasswordConfirm, evt)}
+                                onChange={(Event) => this._handleChange(userValidation.validatePasswordConfirm, Event)}
+                                onBlur={(Event) => this._handleBlur(userValidation.validatePasswordConfirm, Event)}
                             />
                             {this._displayErrorMessage('confirmPassword')}
                     </fieldset>
@@ -608,8 +608,8 @@ export default class EditUserModal extends React.Component {
                             id="phoneNumber"
                             className={ this._returnErrorDetails("phoneNumber") ? "invalid" : "valid"}
                             value={this.state.phoneNumber}
-                            onChange={(evt) => this._handleChange(userValidation.validatePhoneNumber, evt)}
-                            onBlur={(evt) => this._handleBlur(userValidation.validatePhoneNumber, evt)}
+                            onChange={(Event) => this._handleChange(userValidation.validatePhoneNumber, Event)}
+                            onBlur={(Event) => this._handleBlur(userValidation.validatePhoneNumber, Event)}
                         />
                         {this._displayErrorMessage('phoneNumber')}
                     </fieldset>
