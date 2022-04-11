@@ -8,6 +8,9 @@ import { authController,
 import { userValidation,
     sanitizeData }          from '../inputValidation';
 
+
+
+const roleInfo = "Roles have different permissions and access\n\nUser: Only exists to hold signed out items, and tracking purposes. No password required\n\nCustodian: Can Sign items in and out. Password required\n\nAdmin: Full control over items/users, logs, and approving new users. Password required";
 /*
 *   Modal for adding a user
 */
@@ -483,6 +486,7 @@ export default class AddUserModal extends React.Component{
                     {this.state.isSignUp ? null :
                     <div><fieldset>
                         <h4 className='inputTitle'>User's Role</h4>
+                        <span id='userSelect'>
                         <select 
                             disabled={this.state.userRoleDisabled} 
                             id='selectUser' 
@@ -495,7 +499,7 @@ export default class AddUserModal extends React.Component{
                             <option value='user'>User</option>
                             <option value='custodian'>Custodian</option>
                             <option value='admin'>Admin</option>
-                        </select>
+                        </select><div title={roleInfo} id='roleInformation'>?</div></span>
                         { this.displayErrorMessage('selectUser') }
                     </fieldset>
                     <fieldset>

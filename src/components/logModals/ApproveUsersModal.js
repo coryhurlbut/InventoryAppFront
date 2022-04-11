@@ -66,7 +66,6 @@ export default class ApproveUsersModal extends React.Component{
             arr.push(user._id);
             selectedObjects.push(user);
         };
-        console.log(arr);
         this.setState({ idArray: arr, selectedObjects: selectedObjects });
     }
     _tableOrNoTable(){
