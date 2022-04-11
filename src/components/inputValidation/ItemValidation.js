@@ -32,7 +32,7 @@ class ItemValidation {
 
 		if(validator.isEmpty(santizedDescription)) {
 			return 'Please provide a description';
-		} else if(!validator.isAlphanumeric(santizedDescription, 'en-US', {ignore: /[\s-']/})) {
+		} else if(!validator.isAlphanumeric(santizedDescription, 'en-US', {ignore: " -"})) {
 			return '-_- letters and numbers only';
 		} else if(!validator.isLength(santizedDescription, {min:1, max:25})) {
 			return 'Description cannot exceed 25 characters';
@@ -46,7 +46,7 @@ class ItemValidation {
 
 		if(validator.isEmpty(santizedSerialNum)) {
 			return 'Please provide a Serial Number';
-		} else if(!validator.isAlphanumeric(santizedSerialNum, 'en-US', {ignore: /[\s-]/})) {
+		} else if(!validator.isAlphanumeric(santizedSerialNum, 'en-US', {ignore: "-"})) {
 			return '-_- letters and numbers only';
 		} else if(!validator.isLength(santizedSerialNum, {min:1, max:25})) {
 			return 'Serial Number cannot exceed 25 characters';
@@ -61,7 +61,7 @@ class ItemValidation {
 		//Notes isn't a required field, so if empty, return no error
 		if(validator.isEmpty(santizedNotes)) {
 			return false;
-		} else if(!validator.isAlphanumeric(santizedNotes, 'en-US', {ignore: /[\s-]/})) {
+		} else if(!validator.isAlphanumeric(santizedNotes, 'en-US', {ignore: " -"})) {
 			return '-_- letters and numbers only';
 		};
 
@@ -73,7 +73,7 @@ class ItemValidation {
 
 		if(validator.isEmpty(santizedHomeLoc)) {
 			return 'Please provide a location';
-		} else if(!validator.isAlphanumeric(santizedHomeLoc, 'en-US', {ignore: /[\s-]/})) {
+		} else if(!validator.isAlphanumeric(santizedHomeLoc, 'en-US', {ignore: " -"})) {
 			return '-_- letters and numbers only';
 		} else if(!validator.isLength(santizedHomeLoc, {min:1, max:15})) {
 			return 'Home Location cannot exceed 15 characters';
@@ -87,7 +87,7 @@ class ItemValidation {
 
 		if(validator.isEmpty(santizedLocation)) {
 			return 'Please provide a specific location ';
-		} else if(!validator.isAlphanumeric(santizedLocation, 'en-US', {ignore: /[\s-]/})) {
+		} else if(!validator.isAlphanumeric(santizedLocation, 'en-US', {ignore: " -"})) {
 			return '-_- letters and numbers only';
 		} else if(!validator.isLength(santizedLocation, {min:1, max:15})) {
 			return 'Specific Location cannot exceed 15 characters';

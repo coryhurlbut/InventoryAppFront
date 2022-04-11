@@ -38,7 +38,7 @@ class UserValidation {
 		
 		if(validator.isEmpty(santizedUserName)) {
 			return 'Please provide a username';
-		} else if(!validator.isAlphanumeric(santizedUserName, 'en-US', {ignore: /[\s-_]/})) {
+		} else if(!validator.isAlphanumeric(santizedUserName, 'en-US', {ignore: " -_"})) {
 			return '-_- letters and numbers only';
 		} else if(!validator.isLength(santizedUserName, {min:6, max:25})){
 			return 'Username must be between 6 and 25 characters';
@@ -57,17 +57,17 @@ class UserValidation {
 
 	validatePassword(isRequired, password) {
 		if(!isRequired) return false;
-		
-		if(!validator.isStrongPassword(password, {minLowercase: 1})) {
-			return 'Invalid Password. Minimum one lowercase letter';
-		} else if(!validator.isStrongPassword(password, {minUppercase: 1})) {
-			return 'Invalid Password. Minimum one uppercase letter';
-		} else if(!validator.isStrongPassword(password, {minNumbers: 1})) {
-			return 'Invalid Password. Minimum one number';
-		} else if(!validator.isStrongPassword(password, {minSymbols: 1})) {
-			return 'Invalid Password. Minimum one special character';
-		} else if(!validator.isStrongPassword(password, {minLength:8})) {
+
+		if(!validator.isStrongPassword(password, {minLength: 8, minLowercase: 0, minUppercase: 0, minNumbers: 0, minSymbols: 0})) {
 			return 'Invalid Password. Minimum Length: 8';
+		} else if(!validator.isStrongPassword(password, {minLength: 0, minLowercase: 1, minUppercase: 0, minNumbers: 0, minSymbols: 0})) {
+			return 'Invalid Password. Minimum one lowercase letter';
+		} else if(!validator.isStrongPassword(password, {minLength: 0, minLowercase: 0, minUppercase: 1, minNumbers: 0, minSymbols: 0})) {
+			return 'Invalid Password. Minimum one uppercase letter';
+		} else if(!validator.isStrongPassword(password, {minLength: 0, minLowercase: 0, minUppercase: 0, minNumbers: 1, minSymbols: 0})) {
+			return 'Invalid Password. Minimum one number';
+		} else if(!validator.isStrongPassword(password, {minLength: 0, minLowercase: 0, minUppercase: 0, minNumbers: 0, minSymbols: 1})) {
+			return 'Invalid Password. Minimum one special character';
 		};
 
 		return false;

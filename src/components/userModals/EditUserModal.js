@@ -347,17 +347,18 @@ export default class EditUserModal extends React.Component {
             if(!this._returnErrorDetails(fieldID)) {   //Does the error already exist? no
                 switch(fieldID) {
                     case 'password':
-                        if(validationFunc(this.state.pwRequired, fieldVal)) {
+                        let result = validationFunc(this.state.pwRequired, fieldVal);
+                        if(result) {
                             let errorDetail = {
                                 field:        fieldID,
-                                errorMessage: validationFunc(this.state.pwRequired, fieldVal)
+                                errorMessage: result
                             };
                 
-                            this.setState(prevState => ({
+                            this.setState( prevState => ({
                                 errorDetails: {
                                     ...prevState.errorDetails,
                                     field:        fieldID,
-                                    errorMessage: validationFunc(this.state.pwRequired, fieldVal)
+                                    errorMessage: result
                                 },
                                 errors: [
                                     ...prevState.errors,
@@ -411,8 +412,8 @@ export default class EditUserModal extends React.Component {
             }else{
                 switch(fieldID) {
                     case 'password':
-                        if(!validationFunc(this.state.pwRequired, fieldVal)) {
-                            this.setState(prevState => ({
+                        if(!validationFunc(this.state.pwRequired, fieldVal)){ //If no error
+                            this.setState( prevState => ({
                                 errorDetails: {
                                     ...prevState.errorDetails,
                                     field:        '',
@@ -420,7 +421,30 @@ export default class EditUserModal extends React.Component {
                                 }
                             }));
                             this._handleRemoveError(fieldID);
-                        }
+                        } else {
+                            let result = validationFunc(this.state.pwRequired, fieldVal);
+                            let prevError = this._returnErrorDetails(fieldID);
+    
+                            if(result !== prevError.errorMessage) {
+                                this._handleRemoveError(fieldID);
+                                let errorDetail = {
+                                    field:        fieldID,
+                                    errorMessage: result
+                                };
+                    
+                                this.setState( prevState => ({
+                                    errorDetails: {
+                                        ...prevState.errorDetails,
+                                        field:        fieldID,
+                                        errorMessage: result
+                                    },
+                                    errors: [
+                                        ...prevState.errors,
+                                        errorDetail
+                                    ]
+                                }));
+                            };
+                        };
                         break;
                     case 'confirmPassword':
                         if(!validationFunc(this.state.password, fieldVal)) {

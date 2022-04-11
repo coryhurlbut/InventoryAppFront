@@ -71,8 +71,8 @@ export default class AddUserModal extends React.Component {
     };
 
     _dismissModal() {
-        this.setState({isOpen: false});
-    };
+        this.setState({ isOpen: false });
+    }
 
     async _addUser() {
         let user = {
@@ -223,7 +223,11 @@ export default class AddUserModal extends React.Component {
 
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
+<<<<<<< HEAD
     _isSumbitAvailable(){
+=======
+    _isSubmitAvailable(){
+>>>>>>> aa2a21a6030f46fafb09dc1ddef6bfb71f307c94
         if(this.state.isSignUp) {
             return userValidation.validateUserRequest(
                 this.state.firstName,
@@ -330,17 +334,18 @@ export default class AddUserModal extends React.Component {
         if(!this._returnErrorDetails(fieldID)) {   //Does the error already exist? no
             switch (fieldID) {
                 case 'password':
-                    if(validationFunc(this.state.pwRequired, fieldVal)){
+                    let result = validationFunc(this.state.pwRequired, fieldVal);
+                    if(result) {
                         let errorDetail = {
                             field:        fieldID,
-                            errorMessage: validationFunc(this.state.pwRequired, fieldVal)
+                            errorMessage: result
                         };
             
                         this.setState( prevState => ({
                             errorDetails: {
                                 ...prevState.errorDetails,
                                 field:        fieldID,
-                                errorMessage: validationFunc(this.state.pwRequired, fieldVal)
+                                errorMessage: result
                             },
                             errors: [
                                 ...prevState.errors,
@@ -391,10 +396,10 @@ export default class AddUserModal extends React.Component {
                     }
                     break;
             }
-        }else{
+        }else{ //Does the error already exist? yes
             switch (fieldID) {
                 case 'password':
-                    if(!validationFunc(this.state.pwRequired, fieldVal)){
+                    if(!validationFunc(this.state.pwRequired, fieldVal)){ //If no error
                         this.setState( prevState => ({
                             errorDetails: {
                                 ...prevState.errorDetails,
@@ -403,7 +408,30 @@ export default class AddUserModal extends React.Component {
                             }
                         }));
                         this._handleRemoveError(fieldID);
-                    }
+                    } else {
+                        let result = validationFunc(this.state.pwRequired, fieldVal);
+                        let prevError = this._returnErrorDetails(fieldID);
+
+                        if(result !== prevError.errorMessage) {
+                            this._handleRemoveError(fieldID);
+                            let errorDetail = {
+                                field:        fieldID,
+                                errorMessage: result
+                            };
+                
+                            this.setState( prevState => ({
+                                errorDetails: {
+                                    ...prevState.errorDetails,
+                                    field:        fieldID,
+                                    errorMessage: result
+                                },
+                                errors: [
+                                    ...prevState.errors,
+                                    errorDetail
+                                ]
+                            }));
+                        };
+                    };
                     break;
                 case 'confirmPassword':
                     if(!validationFunc(this.state.password, fieldVal)){
@@ -445,7 +473,7 @@ export default class AddUserModal extends React.Component {
                 break;
             case 'selectUser':
                 this.setState({ userRole: sanitizeData.sanitizeWhitespace(fieldVal)});
-                this.enablePasswordEdit(Event);
+                this._enablePasswordEdit(Event);
                 break;
             case 'password':
                 this.setState({ password: sanitizeData.sanitizeWhitespace(fieldVal)});
@@ -469,7 +497,7 @@ export default class AddUserModal extends React.Component {
             <div className="modalHeader">
                 <h3>Add User to Database</h3>
             </div>
-            <form onSubmit={(Event) => {Event.preventDefault(); this.addUser();}}>
+            <form onSubmit={(Event) => {Event.preventDefault(); this._addUser();}}>
                 <div className="modalBody">
                     <fieldset>
                         <h4 className="inputTitle">First Name</h4>
@@ -574,7 +602,7 @@ export default class AddUserModal extends React.Component {
                     </fieldset>
                 </div>
                 <div className="modalFooter">
-                    {this._isSumbitAvailable() ? 
+                    {this._isSubmitAvailable() ? 
                         <input type="submit" value="Submit" /> : 
                         <input type="submit" value="Submit" disabled />
                     }
