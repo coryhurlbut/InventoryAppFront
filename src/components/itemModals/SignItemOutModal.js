@@ -117,7 +117,7 @@ export default class SignItemOutModal extends React.Component{
 
     _handleFormSubmit = (event) => {
         event.preventDefault();
-        this._editItem();
+        this._signItemsOut();
     }
 
     _handleDropdownChange = (event) => {

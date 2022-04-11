@@ -7,11 +7,11 @@ import { itemController,
     userController }            from '../controllers';
 import { availableItemsContent, 
     unavailableItemsContent, 
-    usersContent }              from './ContentPresets';
+    usersContent }              from './contentPresets';
 
 import Table                    from './Table';
 import ToggleSwitch             from './ToggleSwitch';
-import '../styles/table.css';
+import '../styles/Table.css';
 import '../styles/App.css';
 import '../styles/Modal.css';
 

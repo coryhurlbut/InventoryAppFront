@@ -6,10 +6,10 @@ import { ItemLogModal,
     AdminLogModal }             from './logModals';
 import { LoginModal,
     LogoutModal }               from './profileModals';
-import { displayPresets }       from './ContentPresets';
+import { displayPresets }       from './contentPresets';
 
 import '../styles/App.css';
-import profileIcon              from '../styles/profile_icon_25x25.jpg';
+import profileIcon              from '../styles/Images/profileIcon25x25.jpg';
 
 /*
 *   Builds the page by calling components and passing down what should be visible

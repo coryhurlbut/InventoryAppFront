@@ -63,7 +63,6 @@ export default class ItemEditControls extends React.Component {
     }
 
     render() {
-        console.log(this.state.idArray)
         return (
             <div className="Edit_Controls">
                 <button onClick={this._addItem}>

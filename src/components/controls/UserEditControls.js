@@ -2,7 +2,7 @@ import React from 'react';
 
 import { AddUserModal, 
     DeleteUserModal, 
-    EditUserModal } from '../UserModals';
+    EditUserModal } from '../userModals';
 
 /*
 *   Displays the buttons for adding, deleting and editing users
