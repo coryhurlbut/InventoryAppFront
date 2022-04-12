@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { authController }       from '../controllers';
+import { authController, 
+    userController }            from '../controllers';
 import ContentList              from './ContentList';
 import { ItemLogModal,
     AdminLogModal,
@@ -14,6 +15,7 @@ import '../styles/App.css';
 /*
 *   Builds the page by calling components and passing down what should be visible
 */
+let pending = null;
 export default class ContentBuilder extends React.Component {
     constructor(props) {
         super(props);
@@ -24,7 +26,8 @@ export default class ContentBuilder extends React.Component {
             isLoggedIn:       false,
             modal:            null,
             role:             null,
-            isDropdownActive: false
+            isDropdownActive: false,
+            pendingUsers:     null
         };
 
         this.error = null;
@@ -36,6 +39,9 @@ export default class ContentBuilder extends React.Component {
 
     async componentDidMount() {
         let auth = await authController.checkToken();
+        let users = await userController.getPendingUsers();
+        this.setState({ pendingUsers: users });
+        pending = (this.state.pendingUsers.length > 0 ? false : true)
         
         if(auth === undefined || auth.error !== undefined) {
             this._clearAuth();
@@ -110,15 +116,27 @@ export default class ContentBuilder extends React.Component {
             />  
         });
     }
-    _showUserApprovalModal(){
+    _showUserApprovalModal = async() => {
+        console.log(this.state.pendingUsers.length);
         this.setState({
             modal: <ApproveUsersModal
             isOpen={true}
             hideModal={this.hideModal}
+            content={this.state.pendingUsers}
             role={this.state.role}
             contentType={'deez'}
             />
         })
+    }
+    //checks if there are any pending users, then returns red dot if there are users 
+    _pendingUsersRedDot(){
+        if(!pending){
+            return(
+                <span className='PendingUserNotification' id='PendingIcon'>
+                         •
+                </span>
+            )
+        }
     }
 
     _buildContent(view) {
@@ -151,12 +169,15 @@ export default class ContentBuilder extends React.Component {
                                     >
                                         Admin Logs
                                     </button>
+                                    <span className='PendingUserNotification'>
                                     <button 
                                         hidden={!view.adminLogIsVisible}
                                         onClick={() => this._showUserApprovalModal()}
                                     >
                                         Pending
                                     </button>
+                                    {this._pendingUsersRedDot()}
+                                    </span>
                                 </div>
                                 <div className="contentDivider"/>
                                 <div className="contentContainer Action">
