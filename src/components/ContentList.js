@@ -8,14 +8,11 @@ import { itemController,
 import { availableItemsContent, 
     unavailableItemsContent, 
     usersContent }              from './contentPresets';
-
 import Table                    from './Table';
 import ToggleSwitch             from './ToggleSwitch';
 import '../styles/Table.css';
 import '../styles/App.css';
 import '../styles/Modal.css';
-
-
 
 
 /*
@@ -33,18 +30,17 @@ export default class ContentList extends React.Component {
             editControls:               availableItemsContent.editControls,
             inOrOut:                    availableItemsContent.inOrOut,
             content:                    [],
-            idArray:                    [],
+            idArray:                    [],             //Now holds itemNumber or userName instead of _id
             selectedObjects:            [],
             btnAI_Active:               false,
             btnUI_Active:               false,
             btnU_Active:                false,
-            role:                       props.role
+            role:                       props.role,
+            isError:                    false,
+            errorMessage:               ''
         };
         
-        this.showAvailableItems     =   this._showAvailableItems.bind(this);
-        this.showUnavailableItems   =   this._showUnavailableItems.bind(this);
-        this.showUsers              =   this._showUsers.bind(this);
-        this.setParentState         =   this._setParentState.bind(this);
+        this.setParentState         =   this.setParentState.bind(this);
     };
 
     // Will update component props if parent props change
@@ -65,7 +61,13 @@ export default class ContentList extends React.Component {
     };
 
     componentDidMount() {
-        this._showAvailableItems();
+        try {
+            this._showAvailableItems();
+        } catch(error) {
+            this.setState({isError: true,
+                errorMessage: error.message
+            });
+        }
     };
 
     _showAvailableItems = async () => {
@@ -116,27 +118,30 @@ export default class ContentList extends React.Component {
         });
     }
 
-    _clearChecks(){
+    _clearChecks = () => {
         this.setState({ idArray: [], selectedObjects: [] });
     }
 
     //Callback function passed to table component.
     //Bound to ContentList state to update this state when called by child component.
-    _setParentState(user) {
+    setParentState = (obj) => {
         let arr = this.state.idArray;
-        let selectedObjects = this.state.selectedObjects;
-        if(arr.includes(user._id)) {
-            arr = arr.filter(el => el !== user._id);
-            selectedObjects = selectedObjects.filter(object => object._id !== user._id);
+        let objArr = this.state.selectedObjects;
+        let id = obj.itemNumber ? obj.itemNumber : obj.userName; //If obj is an item, take the itemNumber. Otherwise, take the userName
+        
+        if(arr.includes(id)) {
+            arr = arr.filter(el => el !== id);
+            objArr = objArr.filter(object => object.itemNumber !== id);
+            objArr = objArr.filter(object => object.userName !== id);
         } else {
-            arr.push(user._id);
-            selectedObjects.push(user);
+            arr.push(id);
+            objArr.push(obj);
         };
 
-        this.setState({idArray: arr, selectedObjects: selectedObjects});
+        this.setState({idArray: arr, selectedObjects: objArr});
     }
 
-    _buildContentList () {
+    _buildContentList = () => {
         if(this.state.content.length !== 0) {
             return(
                 <>
@@ -191,41 +196,56 @@ export default class ContentList extends React.Component {
         };
     };
 
+    _renderContentBody = () => {
+        return (
+            <>
+                <div id="userControls">
+                        <div id="tableNavigation">
+                            <button 
+                                className={this.state.btnAI_Active ? "btnSelected" : null} 
+                                onClick={() => {this._showAvailableItems(); this._clearChecks();}}
+                            >
+                                Available Items
+                            </button>
+                            <div className="itemStyling">|</div>
+                            <button 
+                                className={this.state.btnUI_Active ? "btnSelected" : null} 
+                                onClick={() => {this._showUnavailableItems(); this._clearChecks();}}
+                            >
+                                Unavailable Items
+                            </button>
+                            {this.state.userContentIsVisible ? <div className="itemStyling">|</div> : null}
+                            {this.state.userContentIsVisible ? 
+                                <button 
+                                    className={this.state.btnU_Active ? "btnSelected" : null} 
+                                    onClick={() => {this._showUsers(); this._clearChecks();}}
+                                >
+                                    Users
+                                </button> : 
+                                null
+                            }
+                        </div>
+                        <ToggleSwitch />
+                    </div>
+                    <div id="tableBody">
+                        {this._buildContentList()}
+                    </div>
+            </>
+        );
+    }
+
+    _renderErrorMessage = () => {
+        return (
+            <p>
+                {this.errorMessage}
+            </p>
+        );
+    };
 
     render() {
-        return (
+        return(
             <div id="contentBody">
-                <div id="userControls">
-                    <div id="tableNavigation">
-                        <button 
-                            className={this.state.btnAI_Active ? "btnSelected" : null} 
-                            onClick={() => {this._showAvailableItems(); this._clearChecks();}}
-                        >
-                            Available Items
-                        </button>
-                        <div className="itemStyling">|</div>
-                        <button 
-                            className={this.state.btnUI_Active ? "btnSelected" : null} 
-                            onClick={() => {this._showUnavailableItems(); this._clearChecks();}}
-                        >
-                            Unavailable Items
-                        </button>
-                        {this.state.userContentIsVisible ? <div className="itemStyling">|</div> : null}
-                        {this.state.userContentIsVisible ? 
-                            <button 
-                                className={this.state.btnU_Active ? "btnSelected" : null} 
-                                onClick={() => {this._showUsers(); this._clearChecks();}}
-                            >
-                                Users
-                            </button> : 
-                            null
-                        }
-                    </div>
-                    <ToggleSwitch />
-                </div>
-                <div id="tableBody">
-                    {this._buildContentList()}
-                </div>
+                { this.state.isError ? this._renderErrorMessage() : this._renderContentBody()}
             </div>
         );
     };

@@ -16,6 +16,7 @@ export default class EditItemModal extends React.Component{
         super(props);
         
         this.state = {
+<<<<<<< HEAD
             isOpen:           props.isOpen,
             name:             '',
             description:      '',
@@ -31,6 +32,18 @@ export default class EditItemModal extends React.Component{
                 field:            '',
                 errorMessage:     ''
             },
+=======
+            isOpen:                 props.isOpen,
+            itemNumber:             '',
+            name:                   '',
+            description:            '',
+            serialNumber:           '',
+            notes:                  '',
+            homeLocation:           '',
+            specificLocation:       '',
+            available:              true,
+
+>>>>>>> 160c45f40935a755382c10ad680b281a163433f6
             errors:                 [],
             isControllerError:      false,
             controllerErrorMessage: ''
@@ -42,9 +55,20 @@ export default class EditItemModal extends React.Component{
 
     async componentDidMount() {
         try {
-            let thisItem = await itemController.getItemById(this._idArray[0]);
+            const res = await itemController.getItemByItemNumber(this._idArray[0]);
+            const {
+                itemNumber,
+                name,
+                description,
+                serialNumber,
+                notes,
+                homeLocation,
+                specificLocation,
+                available 
+            } = res[0];
 
             this.setState({
+<<<<<<< HEAD
                 name:             thisItem.name,
                 description:      thisItem.description,
                 serialNumber:     thisItem.serialNumber,
@@ -53,6 +77,16 @@ export default class EditItemModal extends React.Component{
                 specificLocation: thisItem.specificLocation,
                 available:        thisItem.available,
                 tempNotes:        thisItem.notes
+=======
+                itemNumber:             itemNumber,
+                name:                   name,
+                description:            description,
+                serialNumber:           serialNumber,
+                notes:                  notes,
+                homeLocation:           homeLocation,
+                specificLocation:       specificLocation,
+                available:              available
+>>>>>>> 160c45f40935a755382c10ad680b281a163433f6
             });
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
@@ -75,6 +109,7 @@ export default class EditItemModal extends React.Component{
 
         let newNotes = (`${this.state.tempNotes + this.state.notes + '   ' + now1 + '   '}`);
         let item = {
+<<<<<<< HEAD
             name:               this.state.name,
             description:        this.state.description,
             serialNumber:       this.state.serialNumber,
@@ -82,17 +117,26 @@ export default class EditItemModal extends React.Component{
             homeLocation:       this.state.homeLocation,
             specificLocation:   this.state.specificLocation,
             available:          this.state.available,
+=======
+            itemNumber:             this.state.itemNumber,
+            name:                   this.state.name,
+            description:            this.state.description,
+            serialNumber:           this.state.serialNumber,
+            notes:                  this.state.notes,
+            homeLocation:           this.state.homeLocation,
+            specificLocation:       this.state.specificLocation,
+            available:              this.state.available
+>>>>>>> 160c45f40935a755382c10ad680b281a163433f6
         };
-        
         let log = {
-            itemId:     this._idArray[0],
+            itemId:     item.itemNumber,
             userId:     'N/A',
             adminId:    '',
             action:     'edit',
             content:    'item'
         };
-
-        await itemController.updateItem(this._idArray[0], item)
+        
+        await itemController.updateItem(item)
         .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
@@ -183,11 +227,6 @@ export default class EditItemModal extends React.Component{
             };
 
             this.setState( prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        fieldID,
-                    errorMessage: validationFunc(fieldVal)
-                },
                 isError:          true,
                 errors: [
                     ...prevState.errors,
@@ -217,24 +256,12 @@ export default class EditItemModal extends React.Component{
             };
 
             this.setState( prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        fieldID,
-                    errorMessage: validationFunc(fieldVal)
-                },
                 errors: [
                     ...prevState.errors,
                     errorDetail
                 ]
             }));
         } else if(!validationFunc(fieldVal)) {
-            this.setState( prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        '',
-                    errorMessage: ''
-                }
-            }));
             this._handleRemoveError(fieldID);
         };
 
@@ -280,6 +307,15 @@ export default class EditItemModal extends React.Component{
                 </div>
                 <form onSubmit={this._handleFormSubmit}>
                     <div className="modalBody">
+                        <fieldset>
+                            <h4 className="inputTitle">Item Number</h4>
+                            <input 
+                                type="text" 
+                                id="itemNumber"
+                                disabled
+                                value={this.state.itemNumber}
+                            />
+                        </fieldset>
                         <fieldset>
                             <h4 className="inputTitle">Name</h4>
                             <input 

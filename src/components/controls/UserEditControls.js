@@ -13,7 +13,7 @@ export default class UserEditControls extends React.Component {
 
         this.state = {
             modal:              null,
-            role:                props.role,
+            role:               props.role,
             idArray:            props.idArray,
             selectedObjects:    props.selectedObjects
         };

@@ -104,6 +104,7 @@ class UserValidation {
 
 		return true;
 	}
+
 	validateUserRequest(firstName, lastName, userName, phoneNumber){
 		if(validator.isEmpty(firstName) || 
 			validator.isEmpty(lastName) || 
@@ -114,7 +115,6 @@ class UserValidation {
 		};
 
 		return true;
-
 	}
 }
 

@@ -5,6 +5,15 @@ import { Modal }                    from '@fluentui/react';
 import { loginLogoutController }    from '../../controllers';
 import { AddUserModal }             from '../userModals';
 
+const LOGIN_ATTEMPT_EXCEEDED = 'Max Login Attemp Exceeded. Please try again later.';
+const FAILED_LOGIN_DEFAULT = 'Username/Password is incorrect';
+const BACKEND_GENERATED_ERRORMESSAGES = [
+    '"userName" is not allowed to be empty',
+    '"password" is not allowed to be empty', 
+    '"userName" length must be at least 6 characters long',
+    '"password" length must be at least 8 characters long'
+];
+
 /*
 *   Modal for logging in
 */
@@ -13,11 +22,11 @@ export default class LoginModal extends React.Component{
         super(props);
 
         this.state = {
-            isOpen:     props.isOpen,
-            userName:   '',
-            password:   '',
-            isError:    false,
-            error:      ''
+            isOpen:       props.isOpen,
+            userName:     '',
+            password:     '',
+            isError:      false,
+            errorMessage: ''
         };
     }
 
@@ -35,8 +44,12 @@ export default class LoginModal extends React.Component{
             //reload so the page re-renders with red dot notification by pending
             window.location.reload();
         })
-        .catch(async (err) => {    
-            this.setState({ error: err.message, isError: true });
+        .catch(async (err) => {
+            if(BACKEND_GENERATED_ERRORMESSAGES.includes(err.message)) {
+                this.setState({ errorMessage: FAILED_LOGIN_DEFAULT, isError: true });
+            } else {
+                this.setState({ errorMessage: err.message, isError: true });
+            }
         });
     }
 
@@ -44,20 +57,85 @@ export default class LoginModal extends React.Component{
         this.setState({ isSignUp: true });
     }
 
-    _renderIfError = (message) => {
-        if(!this.state.isError) return null;
-
+    _renderLoginForm = () => {
+        return(
+            <>
+                <div className="modalHeader">
+                    <h3>Log In</h3>
+                </div>
+                <form onSubmit={(event) => {event.preventDefault();}}>
+                    <div className="modalBody">
+                        {this.state.isError ?
+                            this._renderIfError() :
+                            null
+                        }
+                        <fieldset id="modalBody_Username">
+                            <h4 className="inputTitle">Username: </h4>
+                            <input 
+                                type="text" 
+                                key="userName" 
+                                className={this.state.isError ? "invalid" : "valid"}
+                                value={this.state.userName} 
+                                onChange={(event) => {this.setState({userName: event.target.value})}}
+                            />
+                        </fieldset>
+                        <fieldset id="modalBody_Password">
+                            <h4 className="inputTitle">Password: </h4>
+                            <input 
+                                type="password" 
+                                key="password" 
+                                className={this.state.isError ? "invalid" : "valid"}
+                                value={this.state.password} 
+                                onChange={(event) => {this.setState({password: event.target.value})}}
+                            />
+                        </fieldset>
+                    </div>
+                    <div className="modalFooter">
+                        <button type="submit" onClick={this._login}>Log in</button>
+                        <button type='button' onClick={this._isSigningUp}>Sign Up</button>
+                        <button type="reset" onClick={this._dismissModal}>Close</button>
+                    </div>
+                </form>
+            </>
+        );
+    }
+    //Display Attempt errors if unsucessfully login
+    _renderIfError = () => {
         return (
             <label className="errorMessage">
-                {
-                    this.state.error === message ? 
-                        this.state.error : 
-                        null
-                }
+                *{this.state.errorMessage}
             </label>
         );
     }
+<<<<<<< HEAD
     _hideModal = () => {
+=======
+    //Prevent brute force attacks
+    _renderMaxLoginAttemptsError = () => {
+        return(
+            <>
+                <div className="modalHeader">
+                    <h3>Max Login Attempt Exceeded</h3>
+                </div>
+                <div className="modalBody">
+                    <p>
+                        Please try again later.
+                    </p>
+                </div>
+                <div className="modalFooter">
+                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                </div>
+            </>
+        );
+    }
+
+    hideModal = () => {
+        this.props.hideModal();
+        this._dismissModal();
+    }
+
+    hideModal = () => {
+>>>>>>> 160c45f40935a755382c10ad680b281a163433f6
         this.props.hideModal();
         this._dismissModal();
     }
@@ -71,6 +149,7 @@ export default class LoginModal extends React.Component{
             )
         } else {
             return(
+<<<<<<< HEAD
                 <Modal isOpen={this.state.isOpen} onDismissed={this.props._hideModal}>
                     <div className="modalHeader">
                         <h3>Log In</h3>
@@ -108,6 +187,12 @@ export default class LoginModal extends React.Component{
                             <button type="reset" onClick={this._dismissModal}>Close</button>
                         </div>
                     </form>
+=======
+                <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
+                    {this.state.errorMessage === LOGIN_ATTEMPT_EXCEEDED ?
+                        this._renderMaxLoginAttemptsError() :
+                        this._renderLoginForm()}
+>>>>>>> 160c45f40935a755382c10ad680b281a163433f6
                 </Modal>
             );
         };
