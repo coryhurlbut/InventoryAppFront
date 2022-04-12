@@ -15,19 +15,22 @@ export default class AddItemModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen:           props.isOpen,
-            name:             '',
-            description:      '',
-            serialNumber:     '',
-            notes:            '',
-            homeLocation:     '',
-            specificLocation: '',
-            available:        true,
-            disabled:         true,
+            isOpen:                 props.isOpen,
+            itemNumber:             'AAA-AAAAA',
+            itemNumberPrefix:       '',
+            itemNumberIdentifier:   '',
+            name:                   '',
+            description:            '',
+            serialNumber:           '',
+            notes:                  '',
+            homeLocation:           '',
+            specificLocation:       '',
+            available:              true,
+            disabled:               true,
             
             errorDetails:           {
-                field:        '',
-                errorMessage: ''
+                field:              '',
+                errorMessage:       ''
             },
             errors:                 [],
             isControllerError:      false,
@@ -42,6 +45,7 @@ export default class AddItemModal extends React.Component{
     _addItem = async () => {
         //Makes call to add item to database and grabs the _id of the newly created item
         let item = {
+            itemNumber:         this.state.itemNumber,
             name:               this.state.name,
             description:        this.state.description,
             serialNumber:       this.state.serialNumber,
@@ -74,7 +78,7 @@ export default class AddItemModal extends React.Component{
 
         //Uses the new item _id to make a log to the admin log of the new item being added
         let log = {
-            itemId:     returnedItem._id,
+            itemId:     returnedItem.itemNumber,
             userId:     'N/A',
             adminId:    '',
             action:     'add',
@@ -125,8 +129,10 @@ export default class AddItemModal extends React.Component{
 
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
-    _isSumbitAvailable = () => {
+    _isSubmitAvailable = () => {
         if(itemValidation.validateSubmit(
+            this.state.itemNumberPrefix,
+            this.state.itemNumberIdentifier,
             this.state.name, 
             this.state.description, 
             this.state.homeLocation, 
@@ -212,6 +218,18 @@ export default class AddItemModal extends React.Component{
 
         //Update the state for whatever field is being modified
         switch(fieldID) {
+            case 'itemNumberPrefix':
+                this.setState({ 
+                    itemNumberPrefix: sanitizeData.sanitizeWhitespace(fieldVal),
+                    itemNumber: sanitizeData.sanitizeWhitespace(this._createItemNumber(Event))
+                });
+                break;
+            case 'itemNumberIdentifier':
+                this.setState({ 
+                    itemNumberIdentifier: sanitizeData.sanitizeWhitespace(fieldVal),
+                    itemNumber: sanitizeData.sanitizeWhitespace(this._createItemNumber(Event))
+                });
+                break;
             case 'name':
                 this.setState({ name: sanitizeData.sanitizeWhitespace(fieldVal) });
                 break;
@@ -235,6 +253,17 @@ export default class AddItemModal extends React.Component{
         };
     }
 
+    _createItemNumber = (event) => {
+        let itemNumArray = this.state.itemNumber.split("-");
+        if(event.target.id === 'itemNumberPrefix') {
+            itemNumArray[0] = event.target.value;
+        } else {
+            itemNumArray[1] = event.target.value;
+        };
+        
+        return `${itemNumArray[0]}-${itemNumArray[1].toUpperCase()}`;
+    }
+
     _handleFormSubmit = (event) => {
         event.preventDefault();
         this._addItem();
@@ -249,6 +278,39 @@ export default class AddItemModal extends React.Component{
                 </div>
                 <form onSubmit={this._handleFormSubmit}>
                     <div className="modalBody">
+                        <fieldset>
+                            <h4 className="inputTitle">Item Number</h4>
+                            <select 
+                                id="itemNumberPrefix" 
+                                defaultValue="" 
+                                onChange={(event) => this._handleChange(itemValidation.validateItemNumberPrefix, event)}
+                            >
+                                <option hidden disabled value="" />
+                                <option id="ituOpt" value="ITU-" >ITU</option>
+                                <option id="cstOpt" value="CST-" >CST/KM</option>
+                                <option id="afeOpt" value="AFE-" >AFE</option>
+                                <option id="cssOpt" value="CSS-" >CSS</option>
+                                <option id="supOpt" value="SUP-" >SUP</option>
+                                <option id="opsOpt" value="OPS-" >OPS</option>
+                                <option id="srmOpt" value="SRM-" >SARM</option>
+                                <option id="stuOpt" value="STU-" >Student Actions</option>
+                                <option id="regOpt" value="REG-" >Registrars</option>
+                                <option id="facOpt" value="FAC-" >FacD</option>
+                                <option id="mtlOpt" value="MTL-" >MTL</option>
+                                <option id="othOpt" value="OTH-" >Other</option>
+                            </select>
+                            {this._displayErrorMessage("itemNumberPrefix")}
+                            <input 
+                                type="text" 
+                                id="itemNumberIdentifier"
+                                placeholder="5 digit identifier"
+                                className={this._returnErrorDetails("itemNumberIdentifier") ? "invalid" : "valid"}
+                                value={this.state.itemNumberIdentifier} 
+                                onChange={(event) => {this._handleChange(itemValidation.validateItemNumberIdentifier, event)}}
+                                onBlur={(event) => this._handleBlur(itemValidation.validateItemNumberIdentifier, event)}
+                            />
+                            {this._displayErrorMessage("itemNumberIdentifier")}
+                        </fieldset>
                         <fieldset>
                             <h4 className="inputTitle">Name</h4>
                             <input 
@@ -326,7 +388,7 @@ export default class AddItemModal extends React.Component{
                         <input 
                             type="submit" 
                             value="Submit" 
-                            disabled={!this._isSumbitAvailable()}
+                            disabled={!this._isSubmitAvailable()}
                         />
                         <button type="reset" onClick={this._dismissModal}>
                             Close

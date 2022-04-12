@@ -56,6 +56,11 @@ export default class LoginModal extends React.Component{
         );
     }
 
+    hideModal = () => {
+        this.props.hideModal();
+        this._dismissModal();
+    }
+
     render() {
         //Utilizing the add modal, this is checked on render because if someone clicks sign up 
         //in the original login modal it will set state and re-render

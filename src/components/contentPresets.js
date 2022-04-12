@@ -2,8 +2,12 @@
 
 const availableItemsColumns = [
     {
+        Header: 'Item Number',
+        accessor: 'itemNumber'
+    },
+    {
         Header: 'Item Name',
-        accessor: 'name',
+        accessor: 'name'
     },
     {
         Header: 'Description',
@@ -11,7 +15,7 @@ const availableItemsColumns = [
     },
     {
         Header: 'Location',
-        accessor: 'homeLocation',
+        accessor: 'homeLocation'
     },
     {
         Header: 'Specific Location',
@@ -29,8 +33,12 @@ const availableItemsColumns = [
 
 const unavailableItemsColumns = [
     {
+        Header: 'Item Number',
+        accessor: 'itemNumber'
+    },
+    {
         Header: 'Item Name',
-        accessor: 'name',
+        accessor: 'name'
     },
     {
         Header: 'Description',
@@ -38,7 +46,7 @@ const unavailableItemsColumns = [
     },
     {
         Header: 'Location',
-        accessor: 'homeLocation',
+        accessor: 'homeLocation'
     },
     {
         Header: 'Specific Location',
@@ -61,7 +69,7 @@ const unavailableItemsColumns = [
 const usersColumns = [
     {
         Header: 'First Name',
-        accessor: 'firstName',
+        accessor: 'firstName'
     },
     {
         Header: 'Last Name',
@@ -69,7 +77,7 @@ const usersColumns = [
     },
     {
         Header: 'Username',
-        accessor: 'userName',
+        accessor: 'userName'
     },
     {
         Header: 'User Role',
