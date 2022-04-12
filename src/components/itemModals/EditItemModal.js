@@ -23,10 +23,7 @@ export default class EditItemModal extends React.Component{
             homeLocation:     '',
             specificLocation: '',
             available:        true,
-            errorDetails:     {
-                field:            '',
-                errorMessage:     ''
-            },
+
             errors:                 [],
             isControllerError:      false,
             controllerErrorMessage: ''
@@ -173,11 +170,6 @@ export default class EditItemModal extends React.Component{
             };
 
             this.setState( prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        fieldID,
-                    errorMessage: validationFunc(fieldVal)
-                },
                 isError:          true,
                 errors: [
                     ...prevState.errors,
@@ -206,24 +198,12 @@ export default class EditItemModal extends React.Component{
             };
 
             this.setState( prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        fieldID,
-                    errorMessage: validationFunc(fieldVal)
-                },
                 errors: [
                     ...prevState.errors,
                     errorDetail
                 ]
             }));
         } else if(!validationFunc(fieldVal)) {
-            this.setState( prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        '',
-                    errorMessage: ''
-                }
-            }));
             this._handleRemoveError(fieldID);
         };
 

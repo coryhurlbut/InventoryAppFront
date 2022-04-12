@@ -25,10 +25,6 @@ export default class AddItemModal extends React.Component{
             available:        true,
             disabled:         true,
             
-            errorDetails:           {
-                field:        '',
-                errorMessage: ''
-            },
             errors:                 [],
             isControllerError:      false,
             controllerErrorMessage: ''
@@ -156,11 +152,6 @@ export default class AddItemModal extends React.Component{
             };
 
             this.setState( prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        fieldID,
-                    errorMessage: validationFunc(fieldVal)
-                },
                 isError:          true,
                 errors: [
                     ...prevState.errors,
@@ -176,6 +167,7 @@ export default class AddItemModal extends React.Component{
         check if user is producing errors -> validateOnChange is true
         updates the value of the state for that field */
     _handleChange = (validationFunc, Event) => {
+        console.log(this.state.errors);
         const fieldID  = Event.target.id;
         const fieldVal = Event.target.value;
 
@@ -189,24 +181,12 @@ export default class AddItemModal extends React.Component{
             };
 
             this.setState( prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        fieldID,
-                    errorMessage: validationFunc(fieldVal)
-                },
                 errors: [
                     ...prevState.errors,
                     errorDetail
                 ]
             }));
         } else if(!validationFunc(fieldVal)) {
-            this.setState( prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        '',
-                    errorMessage: ''
-                }
-            }));
             this._handleRemoveError(fieldID);
         };
 
@@ -235,8 +215,8 @@ export default class AddItemModal extends React.Component{
         };
     }
 
-    _handleFormSubmit = (event) => {
-        event.preventDefault();
+    _handleFormSubmit = (Event) => {
+        Event.preventDefault();
         this._addItem();
     }
 
@@ -247,7 +227,7 @@ export default class AddItemModal extends React.Component{
                 <div className="modalHeader">
                     <h3>Add Item to database</h3>
                 </div>
-                <form onSubmit={this._handleFormSubmit}>
+                <form onSubmit={(Event) => {this._handleSubmit(Event);}}>
                     <div className="modalBody">
                         <fieldset>
                             <h4 className="inputTitle">Name</h4>

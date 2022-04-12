@@ -34,10 +34,6 @@ export default class EditUserModal extends React.Component {
             userId:          '',
             userRoleDisabled:false,
 
-            errorDetails:           {
-                field:        '',
-                errorMessage: ''
-            },
             errors:                 [],
             isControllerError:      false,
             controllerErrorMessage: ''
@@ -278,11 +274,6 @@ export default class EditUserModal extends React.Component {
             };
 
             this.setState(prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        fieldID,
-                    errorMessage: validationFunc(this.state.pwRequired, fieldVal)
-                },
                 errors: [
                     ...prevState.errors,
                     errorDetail
@@ -298,11 +289,6 @@ export default class EditUserModal extends React.Component {
             };
 
             this.setState(prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        fieldID,
-                    errorMessage: validationFunc(this.state.password, fieldVal)
-                },
                 errors: [
                     ...prevState.errors,
                     errorDetail
@@ -320,11 +306,6 @@ export default class EditUserModal extends React.Component {
             };
 
             this.setState(prevState => ({
-                errorDetails: {
-                    ...prevState.errorDetails,
-                    field:        fieldID,
-                    errorMessage: validationFunc(fieldVal)
-                },
                 errors: [
                     ...prevState.errors,
                     errorDetail
@@ -355,11 +336,6 @@ export default class EditUserModal extends React.Component {
                             };
                 
                             this.setState( prevState => ({
-                                errorDetails: {
-                                    ...prevState.errorDetails,
-                                    field:        fieldID,
-                                    errorMessage: result
-                                },
                                 errors: [
                                     ...prevState.errors,
                                     errorDetail
@@ -375,11 +351,6 @@ export default class EditUserModal extends React.Component {
                             };
                 
                             this.setState(prevState => ({
-                                errorDetails: {
-                                    ...prevState.errorDetails,
-                                    field:        fieldID,
-                                    errorMessage: validationFunc(this.state.password, fieldVal)
-                                },
                                 errors: [
                                     ...prevState.errors,
                                     errorDetail
@@ -396,11 +367,6 @@ export default class EditUserModal extends React.Component {
                             };
     
                             this.setState(prevState => ({
-                                errorDetails: {
-                                    ...prevState.errorDetails,
-                                    field:        fieldID,
-                                    errorMessage: validationFunc(fieldVal)
-                                },
                                 errors: [
                                     ...prevState.errors,
                                     errorDetail
@@ -413,13 +379,6 @@ export default class EditUserModal extends React.Component {
                 switch(fieldID) {
                     case 'password':
                         if(!validationFunc(this.state.pwRequired, fieldVal)){ //If no error
-                            this.setState( prevState => ({
-                                errorDetails: {
-                                    ...prevState.errorDetails,
-                                    field:        '',
-                                    errorMessage: ''
-                                }
-                            }));
                             this._handleRemoveError(fieldID);
                         } else {
                             let result = validationFunc(this.state.pwRequired, fieldVal);
@@ -433,11 +392,6 @@ export default class EditUserModal extends React.Component {
                                 };
                     
                                 this.setState( prevState => ({
-                                    errorDetails: {
-                                        ...prevState.errorDetails,
-                                        field:        fieldID,
-                                        errorMessage: result
-                                    },
                                     errors: [
                                         ...prevState.errors,
                                         errorDetail
@@ -448,25 +402,11 @@ export default class EditUserModal extends React.Component {
                         break;
                     case 'confirmPassword':
                         if(!validationFunc(this.state.password, fieldVal)) {
-                            this.setState(prevState => ({
-                                errorDetails: {
-                                    ...prevState.errorDetails,
-                                    field:        '',
-                                    errorMessage: ''
-                                }
-                            }));
                             this._handleRemoveError(fieldID);
                         }
                         break;
                     default:
                         if(!validationFunc(fieldVal)) {
-                            this.setState(prevState => ({
-                                errorDetails: {
-                                    ...prevState.errorDetails,
-                                    field:        '',
-                                    errorMessage: ''
-                                }
-                            }));
                             this._handleRemoveError(fieldID);
                         }
                         break;
