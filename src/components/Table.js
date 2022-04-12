@@ -12,8 +12,9 @@ function Table({ columns, data, ...props }) {
         headerGroups,
         rows,
         prepareRow,
-        selectedFlatRows,
-        state: { selectedRowIds }
+        //not used at the moment
+        //selectedFlatRows,
+        //state: { selectedRowIds }
     } = useTable({
             columns,
             data,

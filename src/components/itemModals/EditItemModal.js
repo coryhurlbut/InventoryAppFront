@@ -6,6 +6,7 @@ import { itemController,
     adminLogController }    from '../../controllers';
 import { itemValidation,
     sanitizeData }          from '../inputValidation';
+import { ViewNotesModal }   from '../logModals';
 
 /*
 *   Modal for editing an item
@@ -20,9 +21,12 @@ export default class EditItemModal extends React.Component{
             description:      '',
             serialNumber:     '',
             notes:            '',
+            savedNotes:       [{}],
+            tempNotes:        '',
             homeLocation:     '',
             specificLocation: '',
             available:        true,
+            viewNotesBool:    null,
             errorDetails:     {
                 field:            '',
                 errorMessage:     ''
@@ -44,10 +48,11 @@ export default class EditItemModal extends React.Component{
                 name:             thisItem.name,
                 description:      thisItem.description,
                 serialNumber:     thisItem.serialNumber,
-                notes:            thisItem.notes,
+                savedNotes:       [{notes: thisItem.notes}],
                 homeLocation:     thisItem.homeLocation,
                 specificLocation: thisItem.specificLocation,
-                available:        thisItem.available
+                available:        thisItem.available,
+                tempNotes:        thisItem.notes
             });
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
@@ -64,14 +69,19 @@ export default class EditItemModal extends React.Component{
     }
 
     _editItem = async () => {
+        let d = Date.now();
+        let now = new Date(d);
+        let now1 = now.toISOString();
+
+        let newNotes = (`${this.state.tempNotes + this.state.notes + '   ' + now1 + '   '}`);
         let item = {
             name:               this.state.name,
             description:        this.state.description,
             serialNumber:       this.state.serialNumber,
-            notes:              this.state.notes,
+            notes:              newNotes,
             homeLocation:       this.state.homeLocation,
             specificLocation:   this.state.specificLocation,
-            available:          this.state.available
+            available:          this.state.available,
         };
         
         let log = {
@@ -195,6 +205,7 @@ export default class EditItemModal extends React.Component{
     _handleChange = (validationFunc, Event) => {
         const fieldID  = Event.target.id;
         const fieldVal = Event.target.value;
+        console.log(this.state.savedNotes.notes + 'saved' + this.state.notes + 'notes');
 
         /* If something is returned from this function, an error occured 
             since an error was returned, set the error state
@@ -256,6 +267,9 @@ export default class EditItemModal extends React.Component{
         event.preventDefault();
         this._editItem();
     }
+    _openNotesModal = () => {
+        this.setState({ viewNotesBool: true });
+    }
 
     /* Builds user input form */
     _buildForm = () => {
@@ -304,6 +318,7 @@ export default class EditItemModal extends React.Component{
                         </fieldset>
                         <fieldset>
                             <h4 className="inputTitle">Notes</h4>
+                            <span className='sideBySide'>
                             <input 
                                 type="text" 
                                 id="notes" 
@@ -312,6 +327,10 @@ export default class EditItemModal extends React.Component{
                                 onChange={(Event) => this._handleChange(itemValidation.validateNotes, Event)}
                                 onBlur={(Event) => this._handleBlur(itemValidation.validateNotes, Event)}
                             />
+                            <button type='button' onClick={this._openNotesModal}>
+                                View
+                            </button>
+                            </span>
                             {this._displayErrorMessage("notes")}
                         </fieldset>
                         <fieldset>
@@ -368,10 +387,18 @@ export default class EditItemModal extends React.Component{
     }
 
     render() {
+        if(this.state.viewNotesBool){
+            console.log(this.state.savedNotes);
+            return(
+                <ViewNotesModal isOpen={true} hideModal={null} content={this.state.savedNotes} name={`${this.state.name}`}/>
+            )
+        }
+        else{
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 {this.isControllerError ? this._buildErrorDisplay() : this._buildForm()}
             </Modal>
         );
+        }
     }
 }

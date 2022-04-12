@@ -12,10 +12,11 @@ import { displayPresets }       from './contentPresets';
 import profileIcon              from '../styles/Images/profileIcon25x25.jpg';
 import '../styles/App.css';
 
+//variable for pending notification
+let pending = null;
 /*
 *   Builds the page by calling components and passing down what should be visible
 */
-let pending = null;
 export default class ContentBuilder extends React.Component {
     constructor(props) {
         super(props);

@@ -21,10 +21,6 @@ const availableItemsColumns = [
         Header: 'Serial Number',
         accessor: 'serialNumber'
     },
-    {
-        Header: 'Notes',
-        accessor: 'notes'
-    }
 ];
 
 const unavailableItemsColumns = [
@@ -47,10 +43,6 @@ const unavailableItemsColumns = [
     {
         Header: 'Serial Number',
         accessor: 'serialNumber'
-    },
-    {
-        Header: 'Notes',
-        accessor: 'notes'
     },
     {
         Header: 'Signed Out To',

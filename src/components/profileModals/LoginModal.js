@@ -57,7 +57,7 @@ export default class LoginModal extends React.Component{
             </label>
         );
     }
-    hideModal = () => {
+    _hideModal = () => {
         this.props.hideModal();
         this._dismissModal();
     }
@@ -67,11 +67,11 @@ export default class LoginModal extends React.Component{
         //in the original login modal it will set state and re-render
         if(this.state.isSignUp) {
             return(
-                <AddUserModal userRole={'user'} isSignUp={true} isOpen hideModal={this.hideModal}/>
+                <AddUserModal userRole={'user'} isSignUp={true} isOpen hideModal={this._hideModal}/>
             )
         } else {
             return(
-                <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
+                <Modal isOpen={this.state.isOpen} onDismissed={this.props._hideModal}>
                     <div className="modalHeader">
                         <h3>Log In</h3>
                     </div>
