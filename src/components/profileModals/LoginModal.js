@@ -32,6 +32,8 @@ export default class LoginModal extends React.Component{
             this.setState({ error: '', isError: false });
             this.props.setAuth(auth);
             this._dismissModal();
+            //reload so the page re-renders with red dot notification by pending
+            window.location.reload();
         })
         .catch(async (err) => {    
             this.setState({ error: err.message, isError: true });

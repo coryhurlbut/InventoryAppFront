@@ -15,6 +15,7 @@ import '../styles/App.css';
 /*
 *   Builds the page by calling components and passing down what should be visible
 */
+let pending = null;
 export default class ContentBuilder extends React.Component {
     constructor(props) {
         super(props);
@@ -40,6 +41,7 @@ export default class ContentBuilder extends React.Component {
         let auth = await authController.checkToken();
         let users = await userController.getPendingUsers();
         this.setState({ pendingUsers: users });
+        pending = (this.state.pendingUsers.length > 0 ? false : true)
         
         if(auth === undefined || auth.error !== undefined) {
             this._clearAuth();
@@ -126,6 +128,16 @@ export default class ContentBuilder extends React.Component {
             />
         })
     }
+    //checks if there are any pending users, then returns red dot if there are users 
+    _pendingUsersRedDot(){
+        if(!pending){
+            return(
+                <span className='PendingUserNotification' id='PendingIcon'>
+                         •
+                </span>
+            )
+        }
+    }
 
     _buildContent(view) {
         return (
@@ -164,10 +176,7 @@ export default class ContentBuilder extends React.Component {
                                     >
                                         Pending
                                     </button>
-                                    <span className='PendingUserNotification' id='PendingIcon' 
-                                    hidden={this.state.pendingUsers.length > 0 ? false : true}>
-                                        •
-                                        </span>
+                                    {this._pendingUsersRedDot()}
                                     </span>
                                 </div>
                                 <div className="contentDivider"/>

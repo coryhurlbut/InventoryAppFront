@@ -223,11 +223,7 @@ export default class AddUserModal extends React.Component {
 
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
-<<<<<<< HEAD
-    _isSumbitAvailable(){
-=======
     _isSubmitAvailable(){
->>>>>>> aa2a21a6030f46fafb09dc1ddef6bfb71f307c94
         if(this.state.isSignUp) {
             return userValidation.validateUserRequest(
                 this.state.firstName,
