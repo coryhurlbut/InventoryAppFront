@@ -35,7 +35,7 @@ export default class ApproveUsersModal extends React.Component{
             selectedObjects: [],
             btnConfig: true
         }
-        this.setParentState    = this._setParentState.bind(this);
+        this.setParentState    = this.setParentState.bind(this);
 
     }
     async componentDidMount(){
@@ -56,17 +56,19 @@ export default class ApproveUsersModal extends React.Component{
         this.dismissModal();
     }
 
-    _setParentState(user) {
+    setParentState = (user) => {
         let arr = this.state.idArray;
-        let selectedObjects = this.state.selectedObjects;
-        if(arr.includes(user._id)) {
-            arr = arr.filter(el => el !== user._id);
-            selectedObjects = selectedObjects.filter(object => object._id !== user._id);
+        let objArr = this.state.selectedObjects;
+        
+        if(arr.includes(user.userName)) {
+            arr = arr.filter(el => el !== user.userName);
+            objArr = objArr.filter(object => object.userName !== user.userName);
         } else {
-            arr.push(user._id);
-            selectedObjects.push(user);
+            arr.push(user.userName);
+            objArr.push(user);
         };
-        this.setState({ idArray: arr, selectedObjects: selectedObjects });
+
+        this.setState({idArray: arr, selectedObjects: objArr});
     }
 
     render(){

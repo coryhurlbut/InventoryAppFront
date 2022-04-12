@@ -27,6 +27,7 @@ export class LoginLogoutController extends GenericController {
 
         try {
             let response = await this.request('auth/login', reqObj);
+
             if (response.status >= 400) throw response;
 
             authController.setAccessTokenCookie(response.accessToken);

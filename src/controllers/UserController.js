@@ -47,6 +47,7 @@ class UserController extends AuthController {
 
     //Activates users. Must pass the userNames in a JSON array
     async activateUsers(users) {
+        console.log(users)
         return await this.requestWithAuth(`users/activate`, {method: 'PATCH', body: JSON.stringify(users)});
     }
 
