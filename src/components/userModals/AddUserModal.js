@@ -95,7 +95,7 @@ export default class AddUserModal extends React.Component {
             window.location.reload();
             this._dismissModal();
         })
-        .catch( async (err) => {  
+        .catch(async (err) => {  
             this.setState({ isControllerError: true, 
                             controllerErrorMessage: err.message
             });          
