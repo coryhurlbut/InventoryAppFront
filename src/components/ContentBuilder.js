@@ -40,17 +40,17 @@ export default class ContentBuilder extends React.Component {
         let auth = await authController.checkToken();
         let users = await userController.getPendingUsers();
         this.setState({ pendingUsers: users });
-        
+
         if(auth === undefined || auth.error !== undefined) {
             this._clearAuth();
         } else if (typeof auth === 'string' && auth.split(' ')[0] === 'TypeError:') {
             this.error = auth;
         } else {
-            this.setAuth(auth);
+            this._setAuth(auth);
         };
     };
 
-    _setAuth(auth) {
+    _setAuth = (auth) => {
         if(auth.user.userRole === 'admin' || auth.user.userRole === 'custodian') {
             this.setState({ 
                 auth: auth, 
@@ -64,7 +64,7 @@ export default class ContentBuilder extends React.Component {
         this.setState({role: auth.user.userRole});
     };
 
-    _clearAuth() {
+    _clearAuth = () => {
         this.setState({ 
             auth: null, 
             isLoggedIn: false, 
@@ -72,11 +72,11 @@ export default class ContentBuilder extends React.Component {
         });
     };
 
-    _hideModal() {
+    _hideModal = () => {
         this.setState({modal: null});
     };
 
-    _loginLogout() {
+    _loginLogout = () => {
         if(this.state.isLoggedIn) {
             this.setState({
                 modal: <LogoutModal 
@@ -97,7 +97,7 @@ export default class ContentBuilder extends React.Component {
         };
     };
 
-    _showItemLogModal() {
+    _showItemLogModal = () => {
         this.setState({ 
             modal: <ItemLogModal 
                 isOpen={true} 
@@ -106,7 +106,7 @@ export default class ContentBuilder extends React.Component {
         });
     }
 
-    _showAdminLogModal() {
+    _showAdminLogModal = () => {
         this.setState({ 
             modal: <AdminLogModal 
                 isOpen={true} 
@@ -115,49 +115,50 @@ export default class ContentBuilder extends React.Component {
         });
     }
     _showUserApprovalModal = async() => {
-        console.log(this.state.pendingUsers.length);
         this.setState({
             modal: <ApproveUsersModal
-            isOpen={true}
-            hideModal={this.hideModal}
-            content={this.state.pendingUsers}
-            role={this.state.role}
-            contentType={'deez'}
+                isOpen={true}
+                hideModal={this.hideModal}
+                content={this.state.pendingUsers}
+                role={this.state.role}
+                contentType={'deez'}
             />
         })
     }
 
-    _buildContent(view) {
+    _buildContent = (view) => {
         return (
             <>
             {this.state.modal}
             <div className="pageHeader">
-                    <h2>Inventory App</h2>
-                    {this.state.isLoggedIn ? 
-                        <div className="profileContainer Main">
-                            <button onClick={ () => {this.setState({isDropdownActive : true})}}>
-                                <img src={ profileIcon } alt="My Profile"/>
-                            </button>
-                            <div className="profileContainer DropDown">
-                                <div className="contentContainer Text">
-                                    <label>Account:</label>
-                                    <label>{this.state.auth.user.userName}</label>
-                                </div>
-                                <div className="contentDivider"/>
-                                <div className="contentContainer Action">
-                                    <button 
-                                        hidden={!view.itemLogIsVisible} 
-                                        onClick={() => this._showItemLogModal()}
-                                    >
-                                        Item Logs
-                                    </button>
-                                    <button 
-                                        hidden={!view.adminLogIsVisible} 
-                                        onClick={() => this._showAdminLogModal()}
-                                    >
-                                        Admin Logs
-                                    </button>
-                                    <span className='PendingUserNotification'>
+                <h2>Inventory App</h2>
+                {this.state.isLoggedIn ? 
+                    <div className="profileContainer Main">
+                        <button onClick={() => 
+                            {this.setState({isDropdownActive : true})}}
+                        >
+                            <img src={ profileIcon } alt="My Profile"/>
+                        </button>
+                        <div className="profileContainer DropDown">
+                            <div className="contentContainer Text">
+                                <label>Account:</label>
+                                <label>{this.state.auth.user.userName}</label>
+                            </div>
+                            <div className="contentDivider"/>
+                            <div className="contentContainer Action">
+                                <button 
+                                    hidden={!view.itemLogIsVisible} 
+                                    onClick={() => this._showItemLogModal()}
+                                >
+                                    Item Logs
+                                </button>
+                                <button 
+                                    hidden={!view.adminLogIsVisible} 
+                                    onClick={() => this._showAdminLogModal()}
+                                >
+                                    Admin Logs
+                                </button>
+                                <span className='PendingUserNotification'>
                                     <button 
                                         hidden={!view.adminLogIsVisible}
                                         onClick={() => this._showUserApprovalModal()}
@@ -165,24 +166,25 @@ export default class ContentBuilder extends React.Component {
                                         Pending
                                     </button>
                                     <span className='PendingUserNotification' id='PendingIcon' 
-                                    hidden={this.state.pendingUsers.length > 0 ? false : true}>
-                                        •
-                                        </span>
+                                        hidden={this.state.pendingUsers.length > 0 ? false : true}
+                                    >
+                                    •
                                     </span>
-                                </div>
-                                <div className="contentDivider"/>
-                                <div className="contentContainer Action">
-                                    <button onClick={ () => this._loginLogout() }>Logout</button>
-                                </div>
+                                </span>
                             </div>
-                        </div> : 
-                        <button 
-                            className="logInLogOut"
-                            onClick={ () => this._loginLogout() }
-                        >
-                            Login
-                        </button>
-                    }
+                            <div className="contentDivider"/>
+                            <div className="contentContainer Action">
+                                <button onClick={ () => this._loginLogout() }>Logout</button>
+                            </div>
+                        </div>
+                    </div> : 
+                    <button 
+                        className="logInLogOut"
+                        onClick={ () => this._loginLogout() }
+                    >
+                        Login
+                    </button>
+                }
             </div>
             <div className="pageBody">
                 <ContentList 

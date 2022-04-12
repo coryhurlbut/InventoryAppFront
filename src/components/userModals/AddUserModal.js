@@ -208,7 +208,7 @@ export default class AddUserModal extends React.Component {
     
     /* Loops through the errors list
         returns the errorDetail or false if it doesn't exists */
-    _returnErrorDetails(fieldID){
+    _returnErrorDetails(fieldID) {
         let errorList = this.state.errors;
 
         if(errorList){
@@ -223,11 +223,7 @@ export default class AddUserModal extends React.Component {
 
     /* Useability Feature:
         submit button is only enabled when no errors are detected */
-<<<<<<< HEAD
-    _isSumbitAvailable(){
-=======
-    _isSubmitAvailable(){
->>>>>>> aa2a21a6030f46fafb09dc1ddef6bfb71f307c94
+    _isSubmitAvailable() {
         if(this.state.isSignUp) {
             return userValidation.validateUserRequest(
                 this.state.firstName,

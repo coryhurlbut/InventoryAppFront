@@ -8,14 +8,11 @@ import { itemController,
 import { availableItemsContent, 
     unavailableItemsContent, 
     usersContent }              from './contentPresets';
-
 import Table                    from './Table';
 import ToggleSwitch             from './ToggleSwitch';
 import '../styles/Table.css';
 import '../styles/App.css';
 import '../styles/Modal.css';
-
-
 
 
 /*
@@ -38,7 +35,9 @@ export default class ContentList extends React.Component {
             btnAI_Active:               false,
             btnUI_Active:               false,
             btnU_Active:                false,
-            role:                       props.role
+            role:                       props.role,
+            isError:                    false,
+            errorMessage:               ''
         };
         
         this.showAvailableItems     =   this._showAvailableItems.bind(this);
@@ -65,7 +64,13 @@ export default class ContentList extends React.Component {
     };
 
     componentDidMount() {
-        this._showAvailableItems();
+        try {
+            this._showAvailableItems();
+        } catch(error) {
+            this.setState({isError: true,
+                errorMessage: error.message
+            });
+        }
     };
 
     _showAvailableItems = async () => {
@@ -116,13 +121,13 @@ export default class ContentList extends React.Component {
         });
     }
 
-    _clearChecks(){
+    _clearChecks = () => {
         this.setState({ idArray: [], selectedObjects: [] });
     }
 
     //Callback function passed to table component.
     //Bound to ContentList state to update this state when called by child component.
-    _setParentState(user) {
+    _setParentState = (user) => {
         let arr = this.state.idArray;
         let selectedObjects = this.state.selectedObjects;
         if(arr.includes(user._id)) {
@@ -136,7 +141,7 @@ export default class ContentList extends React.Component {
         this.setState({idArray: arr, selectedObjects: selectedObjects});
     }
 
-    _buildContentList () {
+    _buildContentList = () => {
         if(this.state.content.length !== 0) {
             return(
                 <>
@@ -191,41 +196,56 @@ export default class ContentList extends React.Component {
         };
     };
 
+    _renderContentBody = () => {
+        return (
+            <>
+                <div id="userControls">
+                        <div id="tableNavigation">
+                            <button 
+                                className={this.state.btnAI_Active ? "btnSelected" : null} 
+                                onClick={() => {this._showAvailableItems(); this._clearChecks();}}
+                            >
+                                Available Items
+                            </button>
+                            <div className="itemStyling">|</div>
+                            <button 
+                                className={this.state.btnUI_Active ? "btnSelected" : null} 
+                                onClick={() => {this._showUnavailableItems(); this._clearChecks();}}
+                            >
+                                Unavailable Items
+                            </button>
+                            {this.state.userContentIsVisible ? <div className="itemStyling">|</div> : null}
+                            {this.state.userContentIsVisible ? 
+                                <button 
+                                    className={this.state.btnU_Active ? "btnSelected" : null} 
+                                    onClick={() => {this._showUsers(); this._clearChecks();}}
+                                >
+                                    Users
+                                </button> : 
+                                null
+                            }
+                        </div>
+                        <ToggleSwitch />
+                    </div>
+                    <div id="tableBody">
+                        {this._buildContentList()}
+                    </div>
+            </>
+        );
+    }
+
+    _renderErrorMessage = () => {
+        return (
+            <p>
+                {this.errorMessage}
+            </p>
+        );
+    };
 
     render() {
-        return (
+        return(
             <div id="contentBody">
-                <div id="userControls">
-                    <div id="tableNavigation">
-                        <button 
-                            className={this.state.btnAI_Active ? "btnSelected" : null} 
-                            onClick={() => {this._showAvailableItems(); this._clearChecks();}}
-                        >
-                            Available Items
-                        </button>
-                        <div className="itemStyling">|</div>
-                        <button 
-                            className={this.state.btnUI_Active ? "btnSelected" : null} 
-                            onClick={() => {this._showUnavailableItems(); this._clearChecks();}}
-                        >
-                            Unavailable Items
-                        </button>
-                        {this.state.userContentIsVisible ? <div className="itemStyling">|</div> : null}
-                        {this.state.userContentIsVisible ? 
-                            <button 
-                                className={this.state.btnU_Active ? "btnSelected" : null} 
-                                onClick={() => {this._showUsers(); this._clearChecks();}}
-                            >
-                                Users
-                            </button> : 
-                            null
-                        }
-                    </div>
-                    <ToggleSwitch />
-                </div>
-                <div id="tableBody">
-                    {this._buildContentList()}
-                </div>
+                { this.state.isError ? this._renderErrorMessage() : this._renderContentBody()}
             </div>
         );
     };
