@@ -108,36 +108,64 @@ export default class AddUserModal extends React.Component {
             phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
             status:         this.state.status
         };
+        //alternate data model for user sign up
+        let userRegister = {
+            firstName:      this.state.firstName,
+            lastName:       this.state.lastName,
+            userName:       this.state.userName,
+            userRole:       'user',
+            phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
+            status:         'pending'
+        };
 
         let returnedUser = {};
-        await userController.createUser(user)
-        .then((data) => {
-            if (data.status !== undefined && data.status >= 400) throw data;
-            
-            this.setState({ isControllerError: false, 
-                            controllerErrorMessage: ''
-            });
-            returnedUser = data;
 
-            window.location.reload();
-            this._dismissModal();
-        })
-        .catch(async (err) => {  
-            this.setState({ isControllerError: true, 
-                            controllerErrorMessage: err.message
-            });          
-        });
-       
-        let log = {
-            itemId:     'N/A',
-            userId:     returnedUser._id,
-            adminId:    '',
-            action:     'add',
-            content:    'user'
-        }
-            
-        await adminLogController.createAdminLog(log);
-    };
+        if(this.state.isSignUp) {
+            await userController.registerNewUser(userRegister)
+            .then((data) => {
+                if (data.status !== undefined && data.status >= 400) throw data;
+                
+                this.setState({ isControllerError: false, 
+                                controllerErrorMessage: ''});
+                returnedUser = data;
+    
+                window.location.reload();
+                this._dismissModal();
+            })
+            .catch( async (err) => {  
+                this.setState({ isControllerError: true, 
+                                controllerErrorMessage: err.message});          
+            });
+        } else {
+            await userController.createUser(user)
+            .then((data) => {
+                if (data.status !== undefined && data.status >= 400) throw data;
+                
+                this.setState({ isControllerError: false, 
+                                controllerErrorMessage: ''
+                });
+                returnedUser = data;
+
+                window.location.reload();
+                this._dismissModal();
+            })
+            .catch(async (err) => {  
+                this.setState({ isControllerError: true, 
+                                controllerErrorMessage: err.message
+                });          
+            });
+        
+            let log = {
+                    itemId:     'N/A',
+                    userId:     returnedUser.userName,
+                    adminId:    '',
+                    action:     'add',
+                    content:    'user'
+            };
+                
+            await adminLogController.createAdminLog(log);
+        };
+    }
     
     _enablePasswordEdit(event) {
         if(event.target.value === 'user') {

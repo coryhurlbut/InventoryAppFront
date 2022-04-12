@@ -30,7 +30,7 @@ export default class ContentList extends React.Component {
             editControls:               availableItemsContent.editControls,
             inOrOut:                    availableItemsContent.inOrOut,
             content:                    [],
-            idArray:                    [],
+            idArray:                    [],             //Now holds itemNumber or userName instead of _id
             selectedObjects:            [],
             btnAI_Active:               false,
             btnUI_Active:               false,
@@ -40,10 +40,7 @@ export default class ContentList extends React.Component {
             errorMessage:               ''
         };
         
-        this.showAvailableItems     =   this._showAvailableItems.bind(this);
-        this.showUnavailableItems   =   this._showUnavailableItems.bind(this);
-        this.showUsers              =   this._showUsers.bind(this);
-        this.setParentState         =   this._setParentState.bind(this);
+        this.setParentState         =   this.setParentState.bind(this);
     };
 
     // Will update component props if parent props change
@@ -127,18 +124,21 @@ export default class ContentList extends React.Component {
 
     //Callback function passed to table component.
     //Bound to ContentList state to update this state when called by child component.
-    _setParentState = (user) => {
+    setParentState = (obj) => {
         let arr = this.state.idArray;
-        let selectedObjects = this.state.selectedObjects;
-        if(arr.includes(user._id)) {
-            arr = arr.filter(el => el !== user._id);
-            selectedObjects = selectedObjects.filter(object => object._id !== user._id);
+        let objArr = this.state.selectedObjects;
+        let id = obj.itemNumber ? obj.itemNumber : obj.userName; //If obj is an item, take the itemNumber. Otherwise, take the userName
+        
+        if(arr.includes(id)) {
+            arr = arr.filter(el => el !== id);
+            objArr = objArr.filter(object => object.itemNumber !== id);
+            objArr = objArr.filter(object => object.userName !== id);
         } else {
-            arr.push(user._id);
-            selectedObjects.push(user);
+            arr.push(id);
+            objArr.push(obj);
         };
 
-        this.setState({idArray: arr, selectedObjects: selectedObjects});
+        this.setState({idArray: arr, selectedObjects: objArr});
     }
 
     _buildContentList = () => {

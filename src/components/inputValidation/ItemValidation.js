@@ -11,8 +11,30 @@ homeLocation:       this.state.homeLocation,
 specificLocation:   this.state.specificLocation,
 */
 class ItemValidation {
- 
+	
 	/* Validates data and produces errors*/
+	validateItemNumberPrefix(itemNumberPrefix) {
+		if(itemNumberPrefix === '') {
+			return "Please select the itemNumber prefix";
+		};
+
+		return false;
+	}
+
+	validateItemNumberIdentifier(itemNumberIdentifier) {
+		let sanitizedItemNumber = sanitizeData.sanitizeWhitespace(itemNumberIdentifier);
+		
+		if(validator.isEmpty(sanitizedItemNumber)) {
+			return 'Please provide a 5 digit identifier';
+		} else if(!validator.isAlphanumeric(sanitizedItemNumber, 'en-US')) {
+			return '-_- letters and numbers only';
+		} else if(!validator.isLength(sanitizedItemNumber, {min:5, max:5})) {
+			return 'Item Number identifier must be 5 characters';
+		};
+		
+		return false;
+	}
+
 	validateName(name) {
 		let santizedName = sanitizeData.sanitizeWhitespace(name);
 		
@@ -97,7 +119,8 @@ class ItemValidation {
 	}
 
 	validateSubmit(name, description, homeLocation, specificLocation, serialNumber) {
-		if(validator.isEmpty(name) || 
+		if(
+			validator.isEmpty(name) || 
 			validator.isEmpty(description) || 
 			validator.isEmpty(homeLocation) || 
 			validator.isEmpty(specificLocation) || 

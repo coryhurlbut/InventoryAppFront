@@ -46,10 +46,10 @@ export default class EditUserModal extends React.Component {
         -password display/reset password logic */
     async componentDidMount() {
         try {
-            let thisUser = await userController.getUserById(this.state.idArray[0]);
-
+            let res = await userController.getUserByUserName(this.state.idArray[0]);
+            let thisUser = res[0];
             //Disables userRole dropdown if the selected user is the user logged in
-            if(thisUser.userId === thisUser._id) {
+            if(res.adminUserName === thisUser.userName) {
                 this.setState({userRoleDisabled: true});
             };
 
@@ -65,8 +65,9 @@ export default class EditUserModal extends React.Component {
                 the user has a password already if they were originally
                 a custodian or admin.*/
             if(thisUser.userRole !== 'user') {
-                this.setState({ resetBtn: true, 
-                                hasPassword: true
+                this.setState({ 
+                    resetBtn: true, 
+                    hasPassword: true
                 });
             };
 
@@ -82,15 +83,16 @@ export default class EditUserModal extends React.Component {
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
-            this.setState({ isControllerError: true,
-                            controllerErrorMessage: 'An error occured while loading. Please refresh and try again.'
+            this.setState({ 
+                isControllerError: true,
+                controllerErrorMessage: 'An error occured while loading. Please refresh and try again.'
             });
-        }
-    };
+        };
+    }
 
     _dismissModal = () => {
         this.setState({ isOpen: false });
-    };
+    }
 
     async _editUser() {
         let user = {
@@ -111,13 +113,15 @@ export default class EditUserModal extends React.Component {
             //Checks if any user that is going to get deleted has any items signed out
             let res = await userController.checkSignouts(user, unavailableItems);
             if (res.status === 'error') {
-                this.setState({ isControllerError: true, 
-                                controllerErrorMessage: res.message
+                this.setState({ 
+                    isControllerError: true, 
+                    controllerErrorMessage: res.message
                 });
                 return;
             } else {
-                this.setState({ isControllerError: false,
-                                controllerErrorMessage: ''
+                this.setState({
+                    isControllerError: false,
+                    controllerErrorMessage: ''
                 });
             };
         };
@@ -130,11 +134,12 @@ export default class EditUserModal extends React.Component {
             content:    'user'
         };
 
-        await userController.updateUser(this.state.idArray[0], user)
+        await userController.updateUser(user)
         .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
-            this.setState({ isControllerError: false, 
-                            controllerErrorMessage: ''
+            this.setState({ 
+                isControllerError: false, 
+                controllerErrorMessage: ''
             });
             
             await adminLogController.createAdminLog(log);
@@ -143,8 +148,9 @@ export default class EditUserModal extends React.Component {
             this._dismissModal();
         })
         .catch(async (err) => {            
-            this.setState({ isControllerError: true, 
-                            controllerErrorMessage: err.message
+            this.setState({ 
+                isControllerError: true, 
+                controllerErrorMessage: err.message
             }); 
         });
     };
@@ -526,7 +532,7 @@ export default class EditUserModal extends React.Component {
                                 onChange={(Event) => this._handleChange(userValidation.validatePassword, Event)}
                                 onBlur={(Event) => this._handleBlur(userValidation.validatePassword, Event)}
                             />
-                            <button hidden={!this.state.resetBtn} onClick={(event) => {event.preventDefault(); this.allowPasswordReset()}}>Reset</button>
+                            <button hidden={!this.state.resetBtn} onClick={(event) => {event.preventDefault(); this._allowPasswordReset()}}>Reset</button>
                         </span>
                         {this._displayErrorMessage("password")}
                         <h4 className="inputTitle" hidden={this.state.pwDisabled}>Confirm Password</h4>
@@ -555,7 +561,7 @@ export default class EditUserModal extends React.Component {
                     </fieldset>
                 </div>
                 <div className="modalFooter">
-                <input type='submit' value='Submit' disabled={!this._isSubmitAvailable()} />
+                    <input type='submit' value='Submit' disabled={!this._isSubmitAvailable()} />
                     <button type="reset" onClick={this._dismissModal}>Close</button>
                 </div>
             </form>

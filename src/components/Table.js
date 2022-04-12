@@ -11,9 +11,7 @@ function Table({ columns, data, ...props }) {
         getTableBodyProps,
         headerGroups,
         rows,
-        prepareRow,
-        selectedFlatRows,
-        state: { selectedRowIds }
+        prepareRow
     } = useTable({
             columns,
             data,
