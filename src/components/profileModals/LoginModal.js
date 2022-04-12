@@ -107,9 +107,6 @@ export default class LoginModal extends React.Component{
             </label>
         );
     }
-<<<<<<< HEAD
-    _hideModal = () => {
-=======
     //Prevent brute force attacks
     _renderMaxLoginAttemptsError = () => {
         return(
@@ -135,7 +132,6 @@ export default class LoginModal extends React.Component{
     }
 
     hideModal = () => {
->>>>>>> 160c45f40935a755382c10ad680b281a163433f6
         this.props.hideModal();
         this._dismissModal();
     }
@@ -149,50 +145,10 @@ export default class LoginModal extends React.Component{
             )
         } else {
             return(
-<<<<<<< HEAD
-                <Modal isOpen={this.state.isOpen} onDismissed={this.props._hideModal}>
-                    <div className="modalHeader">
-                        <h3>Log In</h3>
-                    </div>
-                    <form onSubmit={(event) => {event.preventDefault(); this._login();}}>
-                        <div className="modalBody">
-                        {this._renderIfError("User is not activated")}
-                            <fieldset id="modalBody_Username">
-                                <h4 className="inputTitle">Username: </h4>
-                                <input 
-                                    type="text" 
-                                    key="userName" 
-                                    className={this.state.error === "Username is incorrect" ? "invalid" : "valid"}
-                                    required 
-                                    value={this.state.userName} 
-                                    onChange={(event) => {this.setState({userName: event.target.value})}}
-                                />
-                                {this._renderIfError("Username is incorrect")}
-                            </fieldset>
-                            <fieldset id="modalBody_Password">
-                                <h4 className="inputTitle">Password: </h4>
-                                <input 
-                                    type="password" 
-                                    key="password" 
-                                    className={this.state.error === "Password is incorrect" ? "invalid" : "valid"}
-                                    required
-                                    value={this.state.password} 
-                                    onChange={(event) => {this.setState({password: event.target.value})}}/>
-                                {this._renderIfError("Password is incorrect")}
-                            </fieldset>
-                        </div>
-                        <div className="modalFooter">
-                            <button type="submit" onClick={this._login}>Log in</button>
-                            <button type='button' onClick={this._isSigningUp}>Sign Up</button>
-                            <button type="reset" onClick={this._dismissModal}>Close</button>
-                        </div>
-                    </form>
-=======
                 <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                     {this.state.errorMessage === LOGIN_ATTEMPT_EXCEEDED ?
                         this._renderMaxLoginAttemptsError() :
                         this._renderLoginForm()}
->>>>>>> 160c45f40935a755382c10ad680b281a163433f6
                 </Modal>
             );
         };

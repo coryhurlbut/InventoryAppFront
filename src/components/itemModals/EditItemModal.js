@@ -16,8 +16,8 @@ export default class EditItemModal extends React.Component{
         super(props);
         
         this.state = {
-<<<<<<< HEAD
             isOpen:           props.isOpen,
+            itemNumber:       '',
             name:             '',
             description:      '',
             serialNumber:     '',
@@ -32,18 +32,6 @@ export default class EditItemModal extends React.Component{
                 field:            '',
                 errorMessage:     ''
             },
-=======
-            isOpen:                 props.isOpen,
-            itemNumber:             '',
-            name:                   '',
-            description:            '',
-            serialNumber:           '',
-            notes:                  '',
-            homeLocation:           '',
-            specificLocation:       '',
-            available:              true,
-
->>>>>>> 160c45f40935a755382c10ad680b281a163433f6
             errors:                 [],
             isControllerError:      false,
             controllerErrorMessage: ''
@@ -68,25 +56,15 @@ export default class EditItemModal extends React.Component{
             } = res[0];
 
             this.setState({
-<<<<<<< HEAD
-                name:             thisItem.name,
-                description:      thisItem.description,
-                serialNumber:     thisItem.serialNumber,
-                savedNotes:       [{notes: thisItem.notes}],
-                homeLocation:     thisItem.homeLocation,
-                specificLocation: thisItem.specificLocation,
-                available:        thisItem.available,
-                tempNotes:        thisItem.notes
-=======
                 itemNumber:             itemNumber,
                 name:                   name,
                 description:            description,
                 serialNumber:           serialNumber,
-                notes:                  notes,
+                savedNotes:             [{notes}],
                 homeLocation:           homeLocation,
                 specificLocation:       specificLocation,
-                available:              available
->>>>>>> 160c45f40935a755382c10ad680b281a163433f6
+                available:              available,
+                tempNotes:              notes
             });
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
@@ -109,7 +87,7 @@ export default class EditItemModal extends React.Component{
 
         let newNotes = (`${this.state.tempNotes + this.state.notes + '   ' + now1 + '   '}`);
         let item = {
-<<<<<<< HEAD
+            itemNumber:         this.state.itemNumber,
             name:               this.state.name,
             description:        this.state.description,
             serialNumber:       this.state.serialNumber,
@@ -117,16 +95,6 @@ export default class EditItemModal extends React.Component{
             homeLocation:       this.state.homeLocation,
             specificLocation:   this.state.specificLocation,
             available:          this.state.available,
-=======
-            itemNumber:             this.state.itemNumber,
-            name:                   this.state.name,
-            description:            this.state.description,
-            serialNumber:           this.state.serialNumber,
-            notes:                  this.state.notes,
-            homeLocation:           this.state.homeLocation,
-            specificLocation:       this.state.specificLocation,
-            available:              this.state.available
->>>>>>> 160c45f40935a755382c10ad680b281a163433f6
         };
         let log = {
             itemId:     item.itemNumber,

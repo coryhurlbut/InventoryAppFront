@@ -33,6 +33,7 @@ export default class ApproveUsersModal extends React.Component {
             hideModal:       props.hideModal,
             role:            props.role,
             contentType:     props.contentType,
+            selectedObjects: null,
             idArray:         [],
             selectedObjects: [],
             btnConfig:       true
@@ -73,7 +74,7 @@ export default class ApproveUsersModal extends React.Component {
         };
 
         this.setState({ idArray: arr, 
-            selectedObjects: selectedObjects 
+            selectedObjects: objArr 
         });
     }
 
