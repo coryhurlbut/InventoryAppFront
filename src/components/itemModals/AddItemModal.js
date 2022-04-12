@@ -139,7 +139,7 @@ export default class AddItemModal extends React.Component{
             this.state.specificLocation, 
             this.state.serialNumber
             ) && this.state.errors.length === 0
-        ){
+        ) {
             return true;
         }
 
@@ -221,13 +221,13 @@ export default class AddItemModal extends React.Component{
             case 'itemNumberPrefix':
                 this.setState({ 
                     itemNumberPrefix: sanitizeData.sanitizeWhitespace(fieldVal),
-                    itemNumber: sanitizeData.sanitizeWhitespace(this._createItemNumber(Event))
+                    itemNumber: this._createItemNumber(Event)
                 });
                 break;
             case 'itemNumberIdentifier':
                 this.setState({ 
                     itemNumberIdentifier: sanitizeData.sanitizeWhitespace(fieldVal),
-                    itemNumber: sanitizeData.sanitizeWhitespace(this._createItemNumber(Event))
+                    itemNumber: this._createItemNumber(Event)
                 });
                 break;
             case 'name':
@@ -255,12 +255,13 @@ export default class AddItemModal extends React.Component{
 
     _createItemNumber = (event) => {
         let itemNumArray = this.state.itemNumber.split("-");
+
         if(event.target.id === 'itemNumberPrefix') {
             itemNumArray[0] = event.target.value;
         } else {
             itemNumArray[1] = event.target.value;
         };
-        
+
         return `${itemNumArray[0]}-${itemNumArray[1].toUpperCase()}`;
     }
 
@@ -286,18 +287,18 @@ export default class AddItemModal extends React.Component{
                                 onChange={(event) => this._handleChange(itemValidation.validateItemNumberPrefix, event)}
                             >
                                 <option hidden disabled value="" />
-                                <option id="ituOpt" value="ITU-" >ITU</option>
-                                <option id="cstOpt" value="CST-" >CST/KM</option>
-                                <option id="afeOpt" value="AFE-" >AFE</option>
-                                <option id="cssOpt" value="CSS-" >CSS</option>
-                                <option id="supOpt" value="SUP-" >SUP</option>
-                                <option id="opsOpt" value="OPS-" >OPS</option>
-                                <option id="srmOpt" value="SRM-" >SARM</option>
-                                <option id="stuOpt" value="STU-" >Student Actions</option>
-                                <option id="regOpt" value="REG-" >Registrars</option>
-                                <option id="facOpt" value="FAC-" >FacD</option>
-                                <option id="mtlOpt" value="MTL-" >MTL</option>
-                                <option id="othOpt" value="OTH-" >Other</option>
+                                <option id="ituOpt" value="ITU" >ITU</option>
+                                <option id="cstOpt" value="CST" >CST/KM</option>
+                                <option id="afeOpt" value="AFE" >AFE</option>
+                                <option id="cssOpt" value="CSS" >CSS</option>
+                                <option id="supOpt" value="SUP" >SUP</option>
+                                <option id="opsOpt" value="OPS" >OPS</option>
+                                <option id="srmOpt" value="SRM" >SARM</option>
+                                <option id="stuOpt" value="STU" >Student Actions</option>
+                                <option id="regOpt" value="REG" >Registrars</option>
+                                <option id="facOpt" value="FAC" >FacD</option>
+                                <option id="mtlOpt" value="MTL" >MTL</option>
+                                <option id="othOpt" value="OTH" >Other</option>
                             </select>
                             {this._displayErrorMessage("itemNumberPrefix")}
                             <input 

@@ -15,17 +15,18 @@ export default class EditItemModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen:           props.isOpen,
-            name:             '',
-            description:      '',
-            serialNumber:     '',
-            notes:            '',
-            homeLocation:     '',
-            specificLocation: '',
-            available:        true,
-            errorDetails:     {
-                field:            '',
-                errorMessage:     ''
+            isOpen:                 props.isOpen,
+            itemNumber:             '',
+            name:                   '',
+            description:            '',
+            serialNumber:           '',
+            notes:                  '',
+            homeLocation:           '',
+            specificLocation:       '',
+            available:              true,
+            errorDetails:           {
+                field:              '',
+                errorMessage:       ''
             },
             errors:                 [],
             isControllerError:      false,
@@ -38,16 +39,27 @@ export default class EditItemModal extends React.Component{
 
     async componentDidMount() {
         try {
-            let thisItem = await itemController.getItemById(this._idArray[0]);
+            const res = await itemController.getItemByItemNumber(this._idArray[0]);
+            const {
+                itemNumber,
+                name,
+                description,
+                serialNumber,
+                notes,
+                homeLocation,
+                specificLocation,
+                available 
+            } = res[0];
 
             this.setState({
-                name:             thisItem.name,
-                description:      thisItem.description,
-                serialNumber:     thisItem.serialNumber,
-                notes:            thisItem.notes,
-                homeLocation:     thisItem.homeLocation,
-                specificLocation: thisItem.specificLocation,
-                available:        thisItem.available
+                itemNumber:             itemNumber,
+                name:                   name,
+                description:            description,
+                serialNumber:           serialNumber,
+                notes:                  notes,
+                homeLocation:           homeLocation,
+                specificLocation:       specificLocation,
+                available:              available
             });
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
@@ -65,24 +77,24 @@ export default class EditItemModal extends React.Component{
 
     _editItem = async () => {
         let item = {
-            name:               this.state.name,
-            description:        this.state.description,
-            serialNumber:       this.state.serialNumber,
-            notes:              this.state.notes,
-            homeLocation:       this.state.homeLocation,
-            specificLocation:   this.state.specificLocation,
-            available:          this.state.available
+            itemNumber:             this.state.itemNumber,
+            name:                   this.state.name,
+            description:            this.state.description,
+            serialNumber:           this.state.serialNumber,
+            notes:                  this.state.notes,
+            homeLocation:           this.state.homeLocation,
+            specificLocation:       this.state.specificLocation,
+            available:              this.state.available
         };
-        
         let log = {
-            itemId:     this._idArray[0],
+            itemId:     item.itemNumber,
             userId:     'N/A',
             adminId:    '',
             action:     'edit',
             content:    'item'
         };
-
-        await itemController.updateItem(this._idArray[0], item)
+        
+        await itemController.updateItem(item)
         .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
@@ -266,6 +278,15 @@ export default class EditItemModal extends React.Component{
                 </div>
                 <form onSubmit={this._handleFormSubmit}>
                     <div className="modalBody">
+                        <fieldset>
+                            <h4 className="inputTitle">Item Number</h4>
+                            <input 
+                                type="text" 
+                                id="itemNumber"
+                                disabled
+                                value={this.state.itemNumber}
+                            />
+                        </fieldset>
                         <fieldset>
                             <h4 className="inputTitle">Name</h4>
                             <input 

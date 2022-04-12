@@ -117,7 +117,6 @@ export default class ContentBuilder extends React.Component {
         });
     }
     _showUserApprovalModal = async() => {
-        console.log(this.state.pendingUsers.length);
         this.setState({
             modal: <ApproveUsersModal
             isOpen={true}

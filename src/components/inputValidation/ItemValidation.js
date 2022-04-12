@@ -25,7 +25,7 @@ class ItemValidation {
 		let sanitizedItemNumber = sanitizeData.sanitizeWhitespace(itemNumberIdentifier);
 		
 		if(validator.isEmpty(sanitizedItemNumber)) {
-			return 'Please provide an itemNumber';
+			return 'Please provide a 5 digit identifier';
 		} else if(!validator.isAlphanumeric(sanitizedItemNumber, 'en-US')) {
 			return '-_- letters and numbers only';
 		} else if(!validator.isLength(sanitizedItemNumber, {min:5, max:5})) {
@@ -118,10 +118,8 @@ class ItemValidation {
 		return false;
 	}
 
-	validateSubmit(itemNumberPrefix, itemNumberIdentifier, name, description, homeLocation, specificLocation, serialNumber) {
+	validateSubmit(name, description, homeLocation, specificLocation, serialNumber) {
 		if(
-			validator.isEmpty(itemNumberPrefix) ||
-			validator.isEmpty(itemNumberIdentifier) ||
 			validator.isEmpty(name) || 
 			validator.isEmpty(description) || 
 			validator.isEmpty(homeLocation) || 

@@ -17,7 +17,7 @@ class ItemController extends AuthController {
     };
 
     //Gets one item by Id
-    async getItemById(itemNumber) {
+    async getItemByItemNumber(itemNumber) {
         return await this.requestWithAuth(`items/item/${itemNumber}`, {method: 'GET'});
     };
 

@@ -92,9 +92,11 @@ export default class AddUserModal extends React.Component {
             userRole:       'user',
             phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
             status:         'pending'
-        }
+        };
+
         let returnedUser = {};
-        if(this.state.isSignUp){
+
+        if(this.state.isSignUp) {
             await userController.registerNewUser(userRegister)
             .then((data) => {
                 if (data.status !== undefined && data.status >= 400) throw data;
@@ -110,36 +112,36 @@ export default class AddUserModal extends React.Component {
                 this.setState({ isControllerError: true, 
                                 controllerErrorMessage: err.message});          
             });
-        await userController.createUser(user)
-        .then((data) => {
-            if (data.status !== undefined && data.status >= 400) throw data;
-            
-            this.setState({ isControllerError: false, 
-                            controllerErrorMessage: ''
-            });
-            returnedUser = data;
+        } else {
+            await userController.createUser(user)
+            .then((data) => {
+                if (data.status !== undefined && data.status >= 400) throw data;
+                
+                this.setState({ isControllerError: false, 
+                                controllerErrorMessage: ''
+                });
+                returnedUser = data;
 
-            window.location.reload();
-            this._dismissModal();
-        })
-        .catch(async (err) => {  
-            this.setState({ isControllerError: true, 
-                            controllerErrorMessage: err.message
-            });          
-        });
-       
-         let log = {
-                itemId:     'N/A',
-                userId:     returnedUser._id,
-                adminId:    '',
-                action:     'add',
-                content:    'user'
-         }
-            
-        await adminLogController.createAdminLog(log);
-        }
+                window.location.reload();
+                this._dismissModal();
+            })
+            .catch(async (err) => {  
+                this.setState({ isControllerError: true, 
+                                controllerErrorMessage: err.message
+                });          
+            });
         
-    };
+            let log = {
+                    itemId:     'N/A',
+                    userId:     returnedUser.userName,
+                    adminId:    '',
+                    action:     'add',
+                    content:    'user'
+            };
+                
+            await adminLogController.createAdminLog(log);
+        };
+    }
     
     _enablePasswordEdit(event) {
         if(event.target.value === 'user') {

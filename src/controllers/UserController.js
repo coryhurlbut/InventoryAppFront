@@ -21,15 +21,16 @@ class UserController extends AuthController {
     }
 
     //Gets a single user by Id
-    async getUserById(userId) { 
-        let response = await this.requestWithAuth(`users/${userId}`, {method: 'GET'});
+    async getUserByUserName(userName) { 
+        let response = await this.requestWithAuth(`users/${userName}`, {method: 'GET'});
         
         //Gets user info to send to editUserModal for preventing user from changing their own role.
         let user = this.getUserInfo();
-        response.userId = user.user.user._id;
+        response.adminUserName = user.user.user.userName;
 
         return response;
-    };
+    }
+
     //the slightly different route for a new user requesting access, which still adds to the database as pending
     async registerNewUser(userRegister){
         return await genericController.request('users/new', {method: 'POST', body: JSON.stringify(userRegister)});
@@ -37,27 +38,27 @@ class UserController extends AuthController {
     //Creates a single user. Must be given body of all required user fields
     async createUser(user) {
         return await this.requestWithAuth('users', {method: 'POST', body: JSON.stringify(user)});
-    };
+    }
 
     // //Deletes a single user by Id
-    async deleteUsers(userIds) {
-        return await this.requestWithAuth(`users/delete`, {method: 'DELETE', body: JSON.stringify(userIds)});
-    };
+    async deleteUsers(users) {
+        return await this.requestWithAuth(`users/delete`, {method: 'DELETE', body: JSON.stringify(users)});
+    }
 
-    //Activates users. Must pass the user ids in a JSON array
-    async activateUsers(userIds) {
-        return await this.requestWithAuth(`users/activate`, {method: 'PATCH', body: JSON.stringify(userIds)});
-    };
+    //Activates users. Must pass the userNames in a JSON array
+    async activateUsers(users) {
+        return await this.requestWithAuth(`users/activate`, {method: 'PATCH', body: JSON.stringify(users)});
+    }
 
-    //Deactivates users. Must pass the user ids in a JSON array
-    async deactivateUsers(userIds) {
-        return await this.requestWithAuth(`users/deactivate`, {method: 'PATCH', body: JSON.stringify(userIds)});
-    };
+    //Deactivates users. Must pass the userNames in a JSON array
+    async deactivateUsers(users) {
+        return await this.requestWithAuth(`users/deactivate`, {method: 'PATCH', body: JSON.stringify(users)});
+    }
 
-    //Updates a single user. Must pass the user's Id and the new user data
-    async updateUser(userId, user) {
-        return await this.requestWithAuth(`users/${userId}`, {method: 'PATCH', body: JSON.stringify(user)});
-    };
+    //Updates a single user. Must pass the new user data
+    async updateUser(user) {
+        return await this.requestWithAuth(`users/${user.userName}`, {method: 'PATCH', body: JSON.stringify(user)});
+    }
 
     //Checks if users have items signed out to them. Called before delete or deactivating a user.
     async checkSignouts(users, items) {
@@ -85,7 +86,7 @@ class UserController extends AuthController {
         
         return res;
     }
-};
+}
 
 //Exports an instance of the class instead of the class
 const userController = new UserController();
