@@ -74,6 +74,34 @@ export default class AddUserModal extends React.Component {
         this.setState({ isOpen: false });
     }
 
+    async _addPendingUser() {
+        let userRegister = {
+            firstName:      this.state.firstName,
+            lastName:       this.state.lastName,
+            userName:       this.state.userName,
+            userRole:       'user',
+            phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
+            status:         'pending'
+        }
+
+        await userController.registerNewUser(userRegister)
+        .then((data) => {
+            if (data.status !== undefined && data.status >= 400) throw data;
+            
+            this.setState({ isControllerError: false, 
+                            controllerErrorMessage: ''
+            });
+
+            window.location.reload();
+            this._dismissModal();
+        })
+        .catch( async (err) => {  
+            this.setState({ isControllerError: true, 
+                            controllerErrorMessage: err.message
+            });          
+        });
+    }
+
     async _addUser() {
         let user = {
             firstName:      this.state.firstName,
@@ -84,32 +112,8 @@ export default class AddUserModal extends React.Component {
             phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
             status:         this.state.status
         };
-        //alternate data model for user sign up
-        let userRegister = {
-            firstName:      this.state.firstName,
-            lastName:       this.state.lastName,
-            userName:       this.state.userName,
-            userRole:       'user',
-            phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
-            status:         'pending'
-        }
+
         let returnedUser = {};
-        if(this.state.isSignUp){
-            await userController.registerNewUser(userRegister)
-            .then((data) => {
-                if (data.status !== undefined && data.status >= 400) throw data;
-                
-                this.setState({ isControllerError: false, 
-                                controllerErrorMessage: ''});
-                returnedUser = data;
-    
-                window.location.reload();
-                this._dismissModal();
-            })
-            .catch( async (err) => {  
-                this.setState({ isControllerError: true, 
-                                controllerErrorMessage: err.message});          
-            });
         await userController.createUser(user)
         .then((data) => {
             if (data.status !== undefined && data.status >= 400) throw data;
@@ -128,17 +132,15 @@ export default class AddUserModal extends React.Component {
             });          
         });
        
-         let log = {
-                itemId:     'N/A',
-                userId:     returnedUser._id,
-                adminId:    '',
-                action:     'add',
-                content:    'user'
-         }
+        let log = {
+            itemId:     'N/A',
+            userId:     returnedUser._id,
+            adminId:    '',
+            action:     'add',
+            content:    'user'
+        }
             
         await adminLogController.createAdminLog(log);
-        }
-        
     };
     
     _enablePasswordEdit(event) {
@@ -486,6 +488,15 @@ export default class AddUserModal extends React.Component {
         }
     };
 
+    _handleSubmit = (Event) => {
+        Event.preventDefault(); 
+        if(this.state.isSignUp) {
+            this._addPendingUser();
+        } else{
+            this._addUser();
+        }
+    };
+
     /* Builds user input form */
     _buildForm(){
         return(
@@ -493,7 +504,7 @@ export default class AddUserModal extends React.Component {
             <div className="modalHeader">
                 <h3>Add User to Database</h3>
             </div>
-            <form onSubmit={(Event) => {Event.preventDefault(); this._addUser();}}>
+            <form onSubmit={(Event) => {this._handleSubmit(Event);}}>
                 <div className="modalBody">
                     <fieldset>
                         <h4 className="inputTitle">First Name</h4>
@@ -607,7 +618,7 @@ export default class AddUserModal extends React.Component {
             </form>
             </>
         );
-    }
+    };
 
     /* If a backend issue occurs, display message to user */
     _buildErrorDisplay(){
