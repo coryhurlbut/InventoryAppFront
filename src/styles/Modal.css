@@ -20,6 +20,9 @@
 }
 
 /*Handles the content of Modal*/
+#viewItemNotes{                          
+    max-width: 500px;
+}
 .modalBody {
     /*To avoid modal auto styling*/
     padding-top: 10px;
@@ -125,6 +128,13 @@
 .emptyLabel {
     color: transparent;
     font-size: small;
+    webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;  /* Safari */
+    -khtml-user-select: none;   /* Konqueror HTML */
+    -moz-user-select: none;     /* Old versions of Firefox */
+    -ms-user-select: none;      /* Internet Explorer/Edge */
+     user-select: none;         /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
 }
 .errorMessage {
     color: #ec314a;
@@ -170,7 +180,6 @@
 .userRole {
     margin-right: 13px;
 }
-
 /*Primary handles the button styling of Modal*/
 .modalFooter {
     padding-bottom: 10px;

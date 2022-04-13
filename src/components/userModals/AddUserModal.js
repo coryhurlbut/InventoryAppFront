@@ -108,36 +108,9 @@ export default class AddUserModal extends React.Component {
             phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
             status:         this.state.status
         };
-        //alternate data model for user sign up
-        let userRegister = {
-            firstName:      this.state.firstName,
-            lastName:       this.state.lastName,
-            userName:       this.state.userName,
-            userRole:       'user',
-            phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
-            status:         'pending'
-        };
-
         let returnedUser = {};
 
-        if(this.state.isSignUp) {
-            await userController.registerNewUser(userRegister)
-            .then((data) => {
-                if (data.status !== undefined && data.status >= 400) throw data;
-                
-                this.setState({ isControllerError: false, 
-                                controllerErrorMessage: ''});
-                returnedUser = data;
-    
-                window.location.reload();
-                this._dismissModal();
-            })
-            .catch( async (err) => {  
-                this.setState({ isControllerError: true, 
-                                controllerErrorMessage: err.message});          
-            });
-        } else {
-            await userController.createUser(user)
+        await userController.createUser(user)
             .then((data) => {
                 if (data.status !== undefined && data.status >= 400) throw data;
                 
@@ -164,7 +137,6 @@ export default class AddUserModal extends React.Component {
             };
                 
             await adminLogController.createAdminLog(log);
-        };
     }
     
     _enablePasswordEdit(event) {
@@ -199,13 +171,13 @@ export default class AddUserModal extends React.Component {
             if(fieldID === 'password' || fieldID === 'confirmPassword') {
                 return(
                     <label className="errorMessage" hidden={this.state.pwDisabled}> 
-                        { errorDetail.errorMessage} 
+                        {errorDetail.errorMessage} 
                     </label>
                 );
             } else{
                 return(
                     <label className="errorMessage"> 
-                        { errorDetail.errorMessage} 
+                        {errorDetail.errorMessage} 
                     </label>
                 );
             }

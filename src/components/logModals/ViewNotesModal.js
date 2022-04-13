@@ -41,9 +41,9 @@ export default class ViewNotesModal extends React.Component{
 
     render(){
         return(
-            <Modal isOpen={this.state.isOpen}>
+            <Modal  isOpen={this.state.isOpen}>
                 <div className='modalHeader'>{this.state.name}</div>
-                <div className="modalBody">
+                <div id='viewItemNotes'className="modalBody">
                     <Table 
                         columns={columns} 
                         data={this.state.content} 
