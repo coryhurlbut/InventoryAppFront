@@ -83,7 +83,7 @@ class ItemValidation {
 		//Notes isn't a required field, so if empty, return no error
 		if(validator.isEmpty(santizedNotes)) {
 			return false;
-		} else if(!validator.isAlphanumeric(santizedNotes, 'en-US', {ignore: " -"})) {
+		} else if(!validator.isAlphanumeric(santizedNotes, 'en-US', {ignore: " -,.':"})) {
 			return '-_- letters and numbers only';
 		};
 

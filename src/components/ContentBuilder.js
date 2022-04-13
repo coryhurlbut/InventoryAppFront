@@ -31,7 +31,7 @@ export default class ContentBuilder extends React.Component {
             pendingUsers:     null
         };
 
-        this.error = null;
+        this.error =                  null;
 
         this.setAuth   = this._setAuth.bind(this);
         this.hideModal = this._hideModal.bind(this);
@@ -40,7 +40,10 @@ export default class ContentBuilder extends React.Component {
 
     async componentDidMount() {
         let auth = await authController.checkToken();
+
         let users = await userController.getPendingUsers();
+
+
         this.setState({ pendingUsers: users });
         pending = (this.state.pendingUsers.length > 0 ? false : true)
         

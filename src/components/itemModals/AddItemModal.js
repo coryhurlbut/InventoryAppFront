@@ -61,7 +61,7 @@ export default class AddItemModal extends React.Component{
                 controllerErrorMessage: '' 
             });
             returnedItem = data;
-            
+            console.log("Add Item Successful", returnedItem);
             window.location.reload();
             this._dismissModal();
         })
