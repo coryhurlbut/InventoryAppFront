@@ -7,7 +7,7 @@ import { itemController,
 import { itemValidation,
     sanitizeData }          from '../inputValidation';
 import { ViewNotesModal }   from '../logModals';
-
+let notesArray = [];
 /*
 *   Modal for editing an item
 */
@@ -54,7 +54,8 @@ export default class EditItemModal extends React.Component{
                 specificLocation,
                 available 
             } = res[0];
-
+            this.mapNotes(notes);
+            
             this.setState({
                 itemNumber:             itemNumber,
                 name:                   name,
@@ -66,6 +67,7 @@ export default class EditItemModal extends React.Component{
                 available:              available,
                 tempNotes:              notes
             });
+            
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
@@ -74,6 +76,28 @@ export default class EditItemModal extends React.Component{
                 controllerErrorMessage: "An error occured while loading. Please refresh and try again."
             });
         }
+    }
+    mapNotes = (notes) => {
+        let notesSplitArray = [];
+            notesSplitArray = notes.split('`');
+            let notesObject = {
+                notes: '',
+                date: ''
+            };
+            for (let i = 0; i < notesSplitArray.length; i++) {
+                if(notesSplitArray[i] !== ""){
+                    if(i % 2 === 0 || i === 0){
+                        notesObject.notes = notesSplitArray[i];
+                    }else{
+                        notesObject.date = notesSplitArray[i];
+                        notesArray.push(notesObject);
+                        notesObject = {
+                            notes: '',
+                            date: ''
+                        }
+                    }
+                }
+            }
     }
 
     _dismissModal = () => {
@@ -85,7 +109,7 @@ export default class EditItemModal extends React.Component{
         let now = new Date(d);
         let now1 = now.toISOString();
 
-        let newNotes = (`${this.state.tempNotes + this.state.notes + '   ' + now1 + '   '}`);
+        let newNotes = (`${this.state.tempNotes + this.state.notes + '`' + now1 + '`'}`);
         let item = {
             itemNumber:         this.state.itemNumber,
             name:               this.state.name,
@@ -212,7 +236,6 @@ export default class EditItemModal extends React.Component{
     _handleChange = (validationFunc, Event) => {
         const fieldID  = Event.target.id;
         const fieldVal = Event.target.value;
-        console.log(this.state.savedNotes.notes + 'saved' + this.state.notes + 'notes');
 
         /* If something is returned from this function, an error occured 
             since an error was returned, set the error state
@@ -392,9 +415,8 @@ export default class EditItemModal extends React.Component{
 
     render() {
         if(this.state.viewNotesBool){
-            console.log(this.state.savedNotes);
             return(
-                <ViewNotesModal isOpen={true} hideModal={null} content={this.state.savedNotes} name={`${this.state.name}`}/>
+                <ViewNotesModal isOpen={true} hideModal={null} content={notesArray} name={`${this.state.name}`}/>
             )
         }
         else{

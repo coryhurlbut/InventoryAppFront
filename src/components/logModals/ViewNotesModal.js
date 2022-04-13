@@ -7,6 +7,10 @@ const columns = [
     {
         Header: "Notes",
         accessor: "notes"
+    },
+    {
+        Header: "Date",
+        accessor: 'date'
     }
 ]
 

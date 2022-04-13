@@ -39,13 +39,18 @@ export default class AddItemModal extends React.Component{
     }
 
     _addItem = async () => {
+        let d = Date.now();
+        let now = new Date(d);
+        let now1 = now.toISOString();
+
+        let newNotes = (`${this.state.notes + '`' + now1 + '`'}`);
         //Makes call to add item to database and grabs the _id of the newly created item
         let item = {
             itemNumber:         this.state.itemNumber,
             name:               this.state.name,
             description:        this.state.description,
             serialNumber:       this.state.serialNumber,
-            notes:              this.state.notes,
+            notes:              newNotes,
             homeLocation:       this.state.homeLocation,
             specificLocation:   this.state.specificLocation,
             available:          this.state.available
