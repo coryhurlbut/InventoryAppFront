@@ -47,7 +47,6 @@ export default class ViewNotesModal extends React.Component{
 
     render(){
         if(this.state.viewEditItemBool){
-            console.log(this._idArray);
             return(
                 <EditItemModal 
                 isOpen
@@ -59,7 +58,6 @@ export default class ViewNotesModal extends React.Component{
             )
         }
         else{
-            console.log(this.state.arr1);
             return(
                 
                 <Modal  isOpen={this.state.isOpen}>

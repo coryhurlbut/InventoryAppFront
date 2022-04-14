@@ -79,7 +79,6 @@ export default class ApproveUsersModal extends React.Component {
     }
 
     render(){
-        console.log(this.state.content);
         return(
             <Modal onDismissed={this.props.hideModal} isOpen={this.state.isOpen}>
                 <div className="modalHeader">Pending Users</div>

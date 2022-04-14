@@ -8,7 +8,6 @@ import { itemValidation,
     sanitizeData }          from '../inputValidation';
 import { ViewNotesModal }   from '../logModals';
 let notesArray = [];
-let arr1 = [];
 /*
 *   Modal for editing an item
 */
@@ -45,8 +44,6 @@ export default class EditItemModal extends React.Component{
 
     async componentDidMount() {
         try {
-            arr1 = this._idArray;
-            console.log(this._idArray);
             const res = await itemController.getItemByItemNumber(this._idArray[0]);
             const {
                 itemNumber,

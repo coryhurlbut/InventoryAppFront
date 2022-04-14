@@ -66,7 +66,6 @@ export default class AddItemModal extends React.Component{
                 controllerErrorMessage: '' 
             });
             returnedItem = data;
-            console.log("Add Item Successful", returnedItem);
             window.location.reload();
             this._dismissModal();
         })
@@ -178,7 +177,6 @@ export default class AddItemModal extends React.Component{
         check if user is producing errors -> validateOnChange is true
         updates the value of the state for that field */
     _handleChange = (validationFunc, Event) => {
-        //console.log(this.state.errors);
         const fieldID  = Event.target.id;
         const fieldVal = Event.target.value;
 
