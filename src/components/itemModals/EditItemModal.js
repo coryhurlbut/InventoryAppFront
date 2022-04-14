@@ -8,6 +8,7 @@ import { itemValidation,
     sanitizeData }          from '../inputValidation';
 import { ViewNotesModal }   from '../logModals';
 let notesArray = [];
+let arr1 = [];
 /*
 *   Modal for editing an item
 */
@@ -34,7 +35,8 @@ export default class EditItemModal extends React.Component{
             },
             errors:                 [],
             isControllerError:      false,
-            controllerErrorMessage: ''
+            controllerErrorMessage: '',
+            reload:         props.reload
         };
 
         this._idArray = props.idArray;
@@ -43,6 +45,8 @@ export default class EditItemModal extends React.Component{
 
     async componentDidMount() {
         try {
+            arr1 = this._idArray;
+            console.log(this._idArray);
             const res = await itemController.getItemByItemNumber(this._idArray[0]);
             const {
                 itemNumber,
@@ -102,6 +106,9 @@ export default class EditItemModal extends React.Component{
 
     _dismissModal = () => {
         this.setState({ isOpen: false });
+        if(this.state.reload){
+            window.location.reload();
+        }
     }
 
     _editItem = async () => {
@@ -346,14 +353,17 @@ export default class EditItemModal extends React.Component{
                         <fieldset>
                             <h4 className="inputTitle">Notes</h4>
                             <span className='sideBySide'>
-                            <input 
-                                type="text" 
-                                id="notes" 
-                                className={ this._returnErrorDetails("notes") ? "invalid" : "valid"}
+                            <textarea
+                                type="text"
+                                id="notes"
+                                rows='2'
+                                cols='21'
+                                maxLength={100}
+                                className={this._returnErrorDetails("notes") ? "invalid" : "valid"}
                                 value={this.state.notes} 
                                 onChange={(Event) => this._handleChange(itemValidation.validateNotes, Event)}
                                 onBlur={(Event) => this._handleBlur(itemValidation.validateNotes, Event)}
-                            />
+                                ></textarea>
                             <button type='button' onClick={this._openNotesModal}>
                                 View
                             </button>
@@ -416,7 +426,8 @@ export default class EditItemModal extends React.Component{
     render() {
         if(this.state.viewNotesBool){
             return(
-                <ViewNotesModal isOpen={true} hideModal={null} content={notesArray} name={`${this.state.name}`}/>
+                <ViewNotesModal idArray={this._idArray} isOpen={true} hideModal={null} content={notesArray} 
+                name={`${this.state.name}`}/>
             )
         }
         else{

@@ -178,7 +178,7 @@ export default class AddItemModal extends React.Component{
         check if user is producing errors -> validateOnChange is true
         updates the value of the state for that field */
     _handleChange = (validationFunc, Event) => {
-        console.log(this.state.errors);
+        //console.log(this.state.errors);
         const fieldID  = Event.target.id;
         const fieldVal = Event.target.value;
 
@@ -262,7 +262,7 @@ export default class AddItemModal extends React.Component{
                 <div className="modalHeader">
                     <h3>Add Item to database</h3>
                 </div>
-                <form onSubmit={(Event) => {this._handleSubmit(Event);}}>
+                <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                     <div className="modalBody">
                         <fieldset>
                             <h4 className="inputTitle">Item Number</h4>
@@ -335,14 +335,17 @@ export default class AddItemModal extends React.Component{
                         </fieldset>
                         <fieldset>
                             <h4 className="inputTitle">Notes</h4>
-                            <input 
-                                type="text" 
-                                id="notes" 
+                            <textarea
+                                type="text"
+                                id="notes"
+                                rows='2'
+                                cols='21'
+                                maxLength={100}
                                 className={this._returnErrorDetails("notes") ? "invalid" : "valid"}
                                 value={this.state.notes} 
                                 onChange={(Event) => this._handleChange(itemValidation.validateNotes, Event)}
                                 onBlur={(Event) => this._handleBlur(itemValidation.validateNotes, Event)}
-                            />
+                                ></textarea>
                             {this._displayErrorMessage("notes")}
                         </fieldset>
                         <fieldset>

@@ -1,6 +1,7 @@
-import React     from "react";
-import { Modal } from "@fluentui/react";
-import Table     from "../Table";
+import React         from "react";
+import { Modal }     from "@fluentui/react";
+import Table         from "../Table";
+import EditItemModal from "../itemModals/EditItemModal";
 import '../../styles/Modal.css'
 
 const columns = [
@@ -19,16 +20,17 @@ export default class ViewNotesModal extends React.Component{
         super(props);
 
         this.state = {
-            isOpen:     props.isOpen,
-            hideModal:  props.hideModal,
-            content:    props.content,
-            name:       props.name
+            isOpen:             props.isOpen,
+            hideModal:          props.hideModal,
+            content:            props.content,
+            name:               props.name,
+            viewEditItemBool:   null,
         }
         this._setParentState = this._setParentState.bind(this);
+        this._idArray = props.idArray;
     }
-    _dismissModal(){
-        this.setState({ isOpen: false });
-        window.location.reload();
+    _viewEditItemModal(){
+        this.setState({ viewEditItemBool: true });
     }
     _setParentState(user) {
         let arr = this.state.idArray;
@@ -44,22 +46,38 @@ export default class ViewNotesModal extends React.Component{
     }
 
     render(){
-        return(
-            <Modal  isOpen={this.state.isOpen}>
-                <div className='modalHeader'>{this.state.name}</div>
-                <div id='viewItemNotes'className="modalBody">
-                    <Table 
-                        columns={columns} 
-                        data={this.state.content} 
-                        contentType={'deez'} 
-                        role={'custodian'}
-                        _setParentState={this._setParentState}
-                    />
-                </div>
-                <div className="modalFooter">
-                <button onClick={() => {this._dismissModal()}}>Close</button> 
-                </div>
-            </Modal>
-        )
+        if(this.state.viewEditItemBool){
+            console.log(this._idArray);
+            return(
+                <EditItemModal 
+                isOpen
+                hideModal={this.hideModal}
+                idArray={this._idArray} 
+                selectedObjects={this.state.selectedObjects}
+                reload={true}
+            />
+            )
+        }
+        else{
+            console.log(this.state.arr1);
+            return(
+                
+                <Modal  isOpen={this.state.isOpen}>
+                    <div className='modalHeader'>{this.state.name}</div>
+                    <div id='viewItemNotes'className="modalBody">
+                        <Table 
+                            columns={columns} 
+                            data={this.state.content} 
+                            contentType={'deez'} 
+                            role={'custodian'}
+                            _setParentState={this._setParentState}
+                        />
+                    </div>
+                    <div className="modalFooter">
+                    <button onClick={() => {this._viewEditItemModal()}}>Close</button> 
+                    </div>
+                </Modal>
+            )
+        }
     }
 }
