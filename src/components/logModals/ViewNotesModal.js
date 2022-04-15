@@ -1,7 +1,8 @@
-import React         from "react";
-import { Modal }     from "@fluentui/react";
-import Table         from "../Table";
-import EditItemModal from "../itemModals/EditItemModal";
+import React               from "react";
+import { Modal }           from "@fluentui/react";
+import Table               from "../Table";
+import EditItemModal       from "../itemModals/EditItemModal";
+import { SignItemInModal, SignItemOutModal } from "../itemModals";
 import '../../styles/Modal.css'
 
 const columns = [
@@ -24,13 +25,15 @@ export default class ViewNotesModal extends React.Component{
             hideModal:          props.hideModal,
             content:            props.content,
             name:               props.name,
-            viewEditItemBool:   null,
+            viewOtherModalBool: null,
+            previousModal:      props.previousModal
         }
         this._setParentState = this._setParentState.bind(this);
         this._idArray = props.idArray;
+        this._selectedObjects = props.selectedObjects;
     }
-    _viewEditItemModal(){
-        this.setState({ viewEditItemBool: true });
+    _viewOtherModal(){
+        this.setState({ viewOtherModalBool: true });
     }
     _setParentState(user) {
         let arr = this.state.idArray;
@@ -46,16 +49,39 @@ export default class ViewNotesModal extends React.Component{
     }
 
     render(){
-        if(this.state.viewEditItemBool){
-            return(
-                <EditItemModal 
-                isOpen
-                hideModal={this.hideModal}
-                idArray={this._idArray} 
-                selectedObjects={this.state.selectedObjects}
-                reload={true}
-            />
-            )
+        if(this.state.viewOtherModalBool){
+            switch(this.state.previousModal){
+                case 'editItem':
+                    return(
+                        <EditItemModal 
+                            isOpen
+                            hideModal={this.hideModal}
+                            idArray={this._idArray} 
+                            selectedObjects={this.state.selectedObjects}
+                            reload={true}
+                        />
+                    );
+                case 'signIn':
+                    return(
+                        <SignItemInModal 
+                            isOpen
+                            hideModal={this.hideModal}
+                            idArray={this._idArray} 
+                            selectedObjects={this._selectedObjects} 
+                        />
+                    );
+                case 'signOut':
+                    return(
+                        <SignItemOutModal 
+                            isOpen
+                            hideModal={this.hideModal}
+                            idArray={this._idArray} 
+                            selectedObjects={this._selectedObjects} 
+                        />
+                    );
+                default:
+                    break;
+            }
         }
         else{
             return(
@@ -72,7 +98,7 @@ export default class ViewNotesModal extends React.Component{
                         />
                     </div>
                     <div className="modalFooter">
-                    <button onClick={() => {this._viewEditItemModal()}}>Close</button> 
+                    <button onClick={() => {this._viewOtherModal()}}>Close</button> 
                     </div>
                 </Modal>
             )

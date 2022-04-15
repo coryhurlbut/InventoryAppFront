@@ -7,7 +7,7 @@ import { itemController,
 import { itemValidation,
     sanitizeData }          from '../inputValidation';
 import { ViewNotesModal }   from '../logModals';
-let notesArray = [];
+
 /*
 *   Modal for editing an item
 */
@@ -35,9 +35,10 @@ export default class EditItemModal extends React.Component{
             errors:                 [],
             isControllerError:      false,
             controllerErrorMessage: '',
-            reload:         props.reload
+            reload:         props.reload,
+            notesArrayFinal:    []
         };
-
+        this._mapNotes = this._mapNotes.bind(this);
         this._idArray = props.idArray;
         this._selectedObjects = props.selectedObjects;
     }
@@ -55,7 +56,7 @@ export default class EditItemModal extends React.Component{
                 specificLocation,
                 available 
             } = res[0];
-            this.mapNotes(notes);
+            this.setState({ notesArrayFinal: this._mapNotes(notes) })
             
             this.setState({
                 itemNumber:             itemNumber,
@@ -78,7 +79,9 @@ export default class EditItemModal extends React.Component{
             });
         }
     }
-    mapNotes = (notes) => {
+    //TODO - make this an imported function
+    _mapNotes = (notes) => {
+        let notesArray = [];
         let notesSplitArray = [];
             notesSplitArray = notes.split('`');
             let notesObject = {
@@ -99,6 +102,7 @@ export default class EditItemModal extends React.Component{
                     }
                 }
             }
+            return notesArray;
     }
 
     _dismissModal = () => {
@@ -423,8 +427,8 @@ export default class EditItemModal extends React.Component{
     render() {
         if(this.state.viewNotesBool){
             return(
-                <ViewNotesModal idArray={this._idArray} isOpen={true} hideModal={null} content={notesArray} 
-                name={`${this.state.name}`}/>
+                <ViewNotesModal idArray={this._idArray} isOpen={true} hideModal={null} content={this.state.notesArrayFinal} 
+                name={`${this.state.name}`} previousModal={'editItem'}/>
             )
         }
         else{

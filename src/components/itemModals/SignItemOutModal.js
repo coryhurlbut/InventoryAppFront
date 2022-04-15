@@ -5,6 +5,7 @@ import { Modal }            from '@fluentui/react';
 import { itemController, 
         itemLogController,
         userController }    from '../../controllers';
+import { ViewNotesModal }   from '../logModals';
 
 /*
 *   Modal for signing out an item
@@ -19,7 +20,9 @@ export default class SignItemOutModal extends React.Component{
             userId:                 null,
             userName:               '',
             isControllerError:      false,
-            controllerErrorMessage: ''
+            controllerErrorMessage: '',
+            notesArray:             [],
+            buttonClicked:          null
         };
 
         this._idArray = props.idArray;
@@ -96,13 +99,48 @@ export default class SignItemOutModal extends React.Component{
             };
         };
     }
-
+    _viewNotesModal = (buttonClicked) => {
+        this.setState({ notesArray: this._mapNotes(buttonClicked) })
+        this.setState({ viewNotesModalBool: true });
+    }
+    //TODO - make this an imported function
+    _mapNotes = (notes) => {
+        let notesArray = [];
+        let notesSplitArray = [];
+            notesSplitArray = notes.split('`');
+            let notesObject = {
+                notes: '',
+                date: ''
+            };
+            for (let i = 0; i < notesSplitArray.length; i++) {
+                if(notesSplitArray[i] !== ""){
+                    if(i % 2 === 0 || i === 0){
+                        notesObject.notes = notesSplitArray[i];
+                    }else{
+                        notesObject.date = notesSplitArray[i];
+                        notesArray.push(notesObject);
+                        notesObject = {
+                            notes: '',
+                            date: ''
+                        }
+                    }
+                }
+            }
+            return notesArray;
+    }
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
         const displayItem = items.map((item) => {
-            return <li className="arrayObject" key={item._id}> 
-                {item.name} 
-            </li>
+            return (
+                <span className='sideBySide' key={'fuk'}>
+                <li className="arrayObject" key={item.itemNumber}> 
+                    {item.name} 
+                </li>
+                <button type='button' key={item._id + 'yo'} id={item.itemNumber} onClick={() => this._viewNotesModal(item.notes)}>
+                    View Notes
+                </button>
+                </span>
+            );
         });
 
         return <ul>{displayItem}</ul>;
@@ -183,10 +221,17 @@ export default class SignItemOutModal extends React.Component{
     }
 
     render() {
+        if(this.state.viewNotesModalBool){
+            return(
+            <ViewNotesModal idArray={this._idArray} isOpen={true} hideModal={null} content={this.state.notesArray} 
+                name={'temp'} previousModal={'signOut'} selectedObjects={this._selectedObjects}/>
+            )
+        }else{
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 {this.state.isControllerError ? this._buildErrorDisplay() : this._buildSignOutNotification()}
             </Modal>
         );
+        }
     }
 }
