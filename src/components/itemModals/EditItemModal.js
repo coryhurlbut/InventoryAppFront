@@ -39,13 +39,13 @@ export default class EditItemModal extends React.Component{
             notesArrayFinal:    []
         };
         this._mapNotes = this._mapNotes.bind(this);
-        this._idArray = props.idArray;
+        this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
     }
 
     async componentDidMount() {
         try {
-            const res = await itemController.getItemByItemNumber(this._idArray[0]);
+            const res = await itemController.getItemByItemNumber(this._selectedIds[0]);
             const {
                 itemNumber,
                 name,
@@ -427,7 +427,7 @@ export default class EditItemModal extends React.Component{
     render() {
         if(this.state.viewNotesBool){
             return(
-                <ViewNotesModal idArray={this._idArray} isOpen={true} hideModal={null} content={this.state.notesArrayFinal} 
+                <ViewNotesModal selectedIds={this._selectedIds} isOpen={true} hideModal={null} content={this.state.notesArrayFinal} 
                 name={`${this.state.name}`} previousModal={'editItem'}/>
             )
         }

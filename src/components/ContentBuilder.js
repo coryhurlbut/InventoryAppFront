@@ -11,9 +11,6 @@ import { LoginModal,
 import { displayPresets }       from './contentPresets';
 import profileIcon              from '../styles/Images/profileIcon25x25.jpg';
 import '../styles/App.css';
-
-//variable for pending notification
-let pending = null;
 /*
 *   Builds the page by calling components and passing down what should be visible
 */
@@ -22,118 +19,110 @@ export default class ContentBuilder extends React.Component {
         super(props);
         
         this.state = {
-            auth:             null,
-            view:             displayPresets.main,
-            isLoggedIn:       false,
-            modal:            null,
-            role:             null,
-            isDropdownActive: false,
-            pendingUsers:     null
+            accountAuth:       null,
+            view:              displayPresets.main,
+            _isLoggedIn:       false,
+            _modal:            null,
+            accountRole:       null,
+            _isDropdownActive: false,
+            pendingUsers:      null
         };
-
-        this.error =                  null;
-
-        this.setAuth   = this._setAuth.bind(this);
-        this.hideModal = this._hideModal.bind(this);
-        this.clearAuth = this._clearAuth.bind(this);
+        this._isUsersPending   =      false;
+        this._isError          =      null;
     };
 
     async componentDidMount() {
-        let auth = await authController.checkToken();
-
+        let auth  = await authController.checkToken();
         let users = await userController.getPendingUsers();
 
-
-        this.setState({ pendingUsers: users });
-        pending = (this.state.pendingUsers.length > 0 ? false : true)
+        if(users.length > 0) {
+            this._isUsersPending = true;
+            this.setState({ pendingUsers: users });
+        }
         
         if(auth === undefined || auth.error !== undefined) {
             this._clearAuth();
         } else if (typeof auth === 'string' && auth.split(' ')[0] === 'TypeError:') {
-            this.error = auth;
+            this._isError = auth;
         } else {
             this._setAuth(auth);
-        };
+        }
     };
 
     _setAuth = (auth) => {
         if(auth.user.userRole === 'admin' || auth.user.userRole === 'custodian') {
             this.setState({ 
-                auth: auth, 
-                isLoggedIn: true, 
-                view: displayPresets[auth.user.userRole]
+                accountAuth: auth, 
+                _isLoggedIn: true, 
+                view:        displayPresets[auth.user.userRole]
             });
         } else {
             this._clearAuth();
             return;
         };
-        this.setState({role: auth.user.userRole});
+        this.setState({accountRole: auth.user.userRole});
     };
 
     _clearAuth = () => {
         this.setState({ 
-            auth: null, 
-            isLoggedIn: false, 
-            view: displayPresets.main
+            accountAuth: null, 
+            _isLoggedIn: false, 
+            view:        displayPresets.main
         });
     };
 
     _hideModal = () => {
-        this.setState({modal: null});
+        this.setState({_modal: null});
     };
-
-    _loginLogout = () => {
-        if(this.state.isLoggedIn) {
-            this.setState({
-                modal: <LogoutModal 
-                    auth={this.state.auth} 
-                    isOpen={true} 
-                    hideModal={this.hideModal} 
-                    clearAuth={this.clearAuth}
+    //accepts string parameter to decide which Modal to display
+    _showModal = (modalType) => {
+        let modal;
+        switch(modalType){
+            case 'loginLogout':
+                if(this.state._isLoggedIn) {
+                    modal = <LogoutModal 
+                        auth={this.state.accountAuth} 
+                        isOpen
+                        hideModal={this._hideModal} 
+                        clearAuth={this._clearAuth}
+                    />
+                } else {
+                    modal = <LoginModal 
+                        isOpen
+                        hideModal={this._hideModal} 
+                        setAuth={this._setAuth}
+                    />
+                };
+                break;
+            case 'itemLog':
+                modal = <ItemLogModal 
+                    isOpen
+                    hideModal={this._hideModal} 
                 />
-            });
-        } else {
-            this.setState({
-                modal: <LoginModal 
-                    isOpen={true} 
-                    hideModal={this.hideModal} 
-                    setAuth={this.setAuth}
+                break;
+            case 'adminLog':
+                modal = <AdminLogModal 
+                    isOpen
+                    hideModal={this._hideModal}
                 />
-            });
-        };
-    };
-
-    _showItemLogModal = () => {
-        this.setState({ 
-            modal: <ItemLogModal 
-                isOpen={true} 
-                hideModal={this.hideModal} 
-            /> 
-        });
-    }
-
-    _showAdminLogModal = () => {
-        this.setState({ 
-            modal: <AdminLogModal 
-                isOpen={true} 
-                hideModal={this.hideModal}
-            />  
-        });
-    }
-    _showUserApprovalModal = async() => {
-        this.setState({
-            modal: <ApproveUsersModal
-                isOpen={true}
-                hideModal={this.hideModal}
-                content={this.state.pendingUsers}
-                role={this.state.role}
-                contentType={'deez'}
-            />
-        })
+                break;
+            case 'userApproval':
+                modal = <ApproveUsersModal
+                    isOpen
+                    hideModal={this._hideModal}
+                    content={this.state.pendingUsers}
+                    accountRole={this.state.accountRole}
+                    contentType={'deez'}
+                />
+                break;
+            default:
+                break;
+        }
+        this.setState({ _modal: modal });
     }
     //checks if there are any pending users, then returns red dot if there are users 
     _pendingUsersRedDot = () => {
-        if(!pending){
+        if(this._isUsersPending){
             return(
                 <span className='PendingUserNotification' id='PendingIcon'>
                     •
@@ -145,39 +134,39 @@ export default class ContentBuilder extends React.Component {
     _buildContent = (view) => {
         return (
             <>
-            {this.state.modal}
+            {this.state._modal}
             <div className="pageHeader">
                 <h2>Inventory App</h2>
-                {this.state.isLoggedIn ? 
+                {this.state._isLoggedIn ? 
                     <div className="profileContainer Main">
                         <button onClick={() => 
-                            {this.setState({isDropdownActive : true})}}
+                            {this.setState({_isDropdownActive : true})}}
                         >
-                            <img src={ profileIcon } alt="My Profile"/>
+                            <img src={profileIcon} alt="My Profile"/>
                         </button>
                         <div className="profileContainer DropDown">
                             <div className="contentContainer Text">
                                 <label>Account:</label>
-                                <label>{this.state.auth.user.userName}</label>
+                                <label>{this.state.accountAuth.user.userName}</label>
                             </div>
                             <div className="contentDivider"/>
                             <div className="contentContainer Action">
                                 <button 
-                                    hidden={!view.itemLogIsVisible} 
-                                    onClick={() => this._showItemLogModal()}
+                                    hidden={!view.isItemLogVisible} 
+                                    onClick={() => this._showModal('itemLog')}
                                 >
                                     Item Logs
                                 </button>
                                 <button 
-                                    hidden={!view.adminLogIsVisible} 
-                                    onClick={() => this._showAdminLogModal()}
+                                    hidden={!view.isAdminLogVisible} 
+                                    onClick={() => this._showModal('adminLog')}
                                 >
                                     Admin Logs
                                 </button>
                                 <span className='PendingUserNotification'>
                                     <button 
-                                        hidden={!view.adminLogIsVisible}
-                                        onClick={() => this._showUserApprovalModal()}
+                                        hidden={!view.isItemLogVisible}
+                                        onClick={() => this._showModal('userApproval')}
                                     >
                                         Pending
                                     </button>
@@ -186,13 +175,13 @@ export default class ContentBuilder extends React.Component {
                             </div>
                             <div className="contentDivider"/>
                             <div className="contentContainer Action">
-                                <button onClick={ () => this._loginLogout() }>Logout</button>
+                                <button onClick={() => this._showModal('loginLogout')}>Logout</button>
                             </div>
                         </div>
                     </div> : 
                     <button 
                         className="logInLogOut"
-                        onClick={ () => this._loginLogout() }
+                        onClick={() => this._showModal('loginLogout')}
                     >
                         Login
                     </button>
@@ -200,10 +189,10 @@ export default class ContentBuilder extends React.Component {
             </div>
             <div className="pageBody">
                 <ContentList 
-                    role={this.state.role}
-                    editControlIsVisible={view.editControlIsVisible} 
-                    userContentIsVisible={view.userContentIsVisible} 
-                    signItemInOutIsVisible={view.signItemInOutIsVisible}
+                    accountRole={this.state.accountRole}
+                    isEditControlVisible={view.isEditControlVisible}
+                    isUserContentVisible={view.isUserContentVisible}
+                    isSignItemInOutVisible={view.isSignItemInOutVisible}
                 />
             </div>
             </>
@@ -211,7 +200,7 @@ export default class ContentBuilder extends React.Component {
     };
 
     render () {
-        if (this.error) {throw this.error};
+        if (this._isError) {throw this._isError};
         return(this._buildContent(this.state.view));
     };
 };

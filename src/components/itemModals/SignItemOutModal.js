@@ -25,7 +25,7 @@ export default class SignItemOutModal extends React.Component{
             buttonClicked:          null
         };
 
-        this._idArray = props.idArray;
+        this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
     }
 
@@ -49,7 +49,7 @@ export default class SignItemOutModal extends React.Component{
     }
 
     _signItemsOut = async () => {
-        await itemController.signItemOut(this._idArray, this.state.userName)
+        await itemController.signItemOut(this._selectedIds, this.state.userName)
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
@@ -57,9 +57,9 @@ export default class SignItemOutModal extends React.Component{
                 isControllerError: false 
             });
 
-            for(let i = 0; i < this._idArray.length; i++) {
+            for(let i = 0; i < this._selectedIds.length; i++) {
                 let info = {
-                    itemId:      this._idArray[i],
+                    itemId:      this._selectedIds[i],
                     userId:      this.state.userId,
                     custodianId: '',
                     action:      'signed out',
@@ -223,7 +223,7 @@ export default class SignItemOutModal extends React.Component{
     render() {
         if(this.state.viewNotesModalBool){
             return(
-            <ViewNotesModal idArray={this._idArray} isOpen={true} hideModal={null} content={this.state.notesArray} 
+            <ViewNotesModal selectedIds={this._selectedIds} isOpen={true} hideModal={null} content={this.state.notesArray} 
                 name={'temp'} previousModal={'signOut'} selectedObjects={this._selectedObjects}/>
             )
         }else{

@@ -85,7 +85,7 @@ React Coding Standards:
             // good
                 <MyComponent variant="fancy" />
         1.11 Prefixing none React methods
-            1.11.1 Prefix all none React methods within a class component with an underscore.
+            1.11.1 Prefix all none React methods within a class component, that don’t get used elsewhere, with an underscore.
                 class Foo extends React.Component {
 
                     componentDidMount() {
@@ -248,10 +248,10 @@ React Coding Standards:
                 </Foo>
 
             //Good
-                {this.state.signItemInOutIsVisible ?
+                {this.state.isSignItemInOutVisible ?
                     <SignItemInOutControls
                         inOrOut={this.state.inOrOut}
-                        idArray={this.state.idArray}
+                        selectedIds={this.state.selectedIds}
                         selectedObjects={this.state.selectedObjects}
                         id={this.state.id}
                     /> :

@@ -15,7 +15,7 @@ export default class DeleteUserModal extends React.Component {
         
         this.state = {
             isOpen:                 props.isOpen,
-            idArray:                props.idArray,
+            selectedIds:                props.selectedIds,
             selectedObjects:        props.selectedObjects,
             isControllerError:      false,
             controllerErrorMessage: ''
@@ -44,7 +44,7 @@ export default class DeleteUserModal extends React.Component {
             });
         };
 
-        await userController.deleteUsers(this.state.idArray)
+        await userController.deleteUsers(this.state.selectedIds)
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
@@ -52,10 +52,10 @@ export default class DeleteUserModal extends React.Component {
                 controllerErrorMessage: ''
             });
 
-            for(let i = 0; i < this.state.idArray.length; i++) {
+            for(let i = 0; i < this.state.selectedIds.length; i++) {
                 let log = {
                     itemId:     'N/A',
-                    userId:     this.state.idArray[i],
+                    userId:     this.state.selectedIds[i],
                     adminId:    '',
                     action:     'delete',
                     content:    'user'

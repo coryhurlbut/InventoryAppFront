@@ -29,14 +29,14 @@ export default class ViewNotesModal extends React.Component{
             previousModal:      props.previousModal
         }
         this._setParentState = this._setParentState.bind(this);
-        this._idArray = props.idArray;
+        this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
     }
     _viewOtherModal(){
         this.setState({ viewOtherModalBool: true });
     }
     _setParentState(user) {
-        let arr = this.state.idArray;
+        let arr = this.state.selectedIds;
         let selectedObjects = this.state.selectedObjects;
         if(arr.includes(user._id)) {
             arr = arr.filter(el => el !== user._id);
@@ -45,7 +45,7 @@ export default class ViewNotesModal extends React.Component{
             arr.push(user._id);
             selectedObjects.push(user);
         };
-        this.setState({ idArray: arr, selectedObjects: selectedObjects });
+        this.setState({ selectedIds: arr, selectedObjects: selectedObjects });
     }
 
     render(){
@@ -56,7 +56,7 @@ export default class ViewNotesModal extends React.Component{
                         <EditItemModal 
                             isOpen
                             hideModal={this.hideModal}
-                            idArray={this._idArray} 
+                            selectedIds={this._selectedIds} 
                             selectedObjects={this.state.selectedObjects}
                             reload={true}
                         />
@@ -66,7 +66,7 @@ export default class ViewNotesModal extends React.Component{
                         <SignItemInModal 
                             isOpen
                             hideModal={this.hideModal}
-                            idArray={this._idArray} 
+                            selectedIds={this._selectedIds} 
                             selectedObjects={this._selectedObjects} 
                         />
                     );
@@ -75,7 +75,7 @@ export default class ViewNotesModal extends React.Component{
                         <SignItemOutModal 
                             isOpen
                             hideModal={this.hideModal}
-                            idArray={this._idArray} 
+                            selectedIds={this._selectedIds} 
                             selectedObjects={this._selectedObjects} 
                         />
                     );
@@ -93,7 +93,7 @@ export default class ViewNotesModal extends React.Component{
                             columns={columns} 
                             data={this.state.content} 
                             contentType={'deez'} 
-                            role={'custodian'}
+                            accountRole={'custodian'}
                             _setParentState={this._setParentState}
                         />
                     </div>

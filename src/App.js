@@ -5,13 +5,11 @@ import ErrorBoundary    from './ErrorBoundary';
 
 
 export default class App extends React.Component {    
-    render(){
+    render() {
         return(
-            <>
-                <ErrorBoundary fallback={<p>Something went wrong</p>}>
-                    <ContentBuilder/>
-                </ErrorBoundary>
-            </>
+            <ErrorBoundary>
+                <ContentBuilder/>
+            </ErrorBoundary>
         );
-    };
-};
+    }
+}

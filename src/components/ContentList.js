@@ -1,13 +1,19 @@
 import React                    from 'react';
 
-import { ItemEditControls,
+import { 
+    ItemEditControls,
     UserEditControls,
-    SignItemInOutControls }     from './controls';
-import { itemController,
-    userController }            from '../controllers';
-import { availableItemsContent, 
+    SignItemInOutControls 
+}                               from './controls';
+import { 
+    itemController,
+    userController 
+}                               from '../controllers';
+import { 
+    availableItemsContent, 
     unavailableItemsContent, 
-    usersContent }              from './contentPresets';
+    usersContent 
+}                               from './contentPresets';
 import Table                    from './Table';
 import ToggleSwitch             from './ToggleSwitch';
 import '../styles/Table.css';
@@ -23,21 +29,21 @@ export default class ContentList extends React.Component {
         super(props);
         
         this.state = {
-            userContentIsVisible:       props.userContentIsVisible,
-            editControlIsVisible:       props.editControlIsVisible,
-            signItemInOutIsVisible:     props.signItemInOutIsVisible,
+            isUserContentVisible:       props.isUserContentVisible,
+            isEditControlVisible:       props.isEditControlVisible,
+            isSignItemInOutVisible:     props.isSignItemInOutVisible,
             contentType:                availableItemsContent.contentType,
             editControls:               availableItemsContent.editControls,
             inOrOut:                    availableItemsContent.inOrOut,
             content:                    [],
-            idArray:                    [],             //Now holds itemNumber or userName instead of _id
+            selectedIds:                [],             //Now holds itemNumber or userName instead of _id
             selectedObjects:            [],
-            btnAI_Active:               false,
-            btnUI_Active:               false,
-            btnU_Active:                false,
-            role:                       props.role,
-            isError:                    false,
-            errorMessage:               ''
+            _btnAI_Active:              false,
+            _btnUI_Active:              false,
+            _btnU_Active:               false,
+            accountRole:                props.accountRole,
+            _isError:                   false,
+            _errorMessage:              ''
         };
         
         this.setParentState         =   this.setParentState.bind(this);
@@ -47,15 +53,15 @@ export default class ContentList extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if(this.props !== prevProps) {
             this.setState({
-                userContentIsVisible:   this.props.userContentIsVisible,
-                editControlIsVisible:   this.props.editControlIsVisible,
-                signItemInOutIsVisible: this.props.signItemInOutIsVisible,
-                role:                   this.props.role
+                isUserContentVisible:   this.props.isUserContentVisible,
+                isEditControlVisible:   this.props.isEditControlVisible,
+                isSignItemInOutVisible: this.props.isSignItemInOutVisible,
+                accountRole:            this.props.accountRole
             });
         };
 
         //Resets content to available items after admin logout. Stops displaying users after logout if viewing as admin.
-        if(prevProps.userContentIsVisible && !this.props.userContentIsVisible) {
+        if(prevProps.isUserContentVisible && !this.props.isUserContentVisible) {
             this._showAvailableItems();
         };
     };
@@ -64,8 +70,8 @@ export default class ContentList extends React.Component {
         try {
             this._showAvailableItems();
         } catch(error) {
-            this.setState({isError: true,
-                errorMessage: error.message
+            this.setState({_isError: true,
+                _errorMessage: error.message
             });
         }
     };
@@ -78,11 +84,11 @@ export default class ContentList extends React.Component {
             editControls:       availableItemsContent.editControls,
             inOrOut:            availableItemsContent.inOrOut,
             columns:            availableItemsContent.columns,
-            idArray:            [],
+            selectedIds:        [],
             selectedObjects:    [],
-            btnAI_Active:       true,
-            btnUI_Active:       false,
-            btnU_Active:        false
+            _btnAI_Active:      true,
+            _btnUI_Active:      false,
+            _btnU_Active:       false
         });
     };
 
@@ -94,11 +100,11 @@ export default class ContentList extends React.Component {
             editControls:       unavailableItemsContent.editControls,
             inOrOut:            unavailableItemsContent.inOrOut,
             columns:            unavailableItemsContent.columns,
-            idArray:            [],
+            selectedIds:        [],
             selectedObjects:    [],
-            btnAI_Active:       false,
-            btnUI_Active:       true,
-            btnU_Active:        false
+            _btnAI_Active:      false,
+            _btnUI_Active:      true,
+            _btnU_Active:       false
         });
     };
 
@@ -110,22 +116,18 @@ export default class ContentList extends React.Component {
             editControls:       usersContent.editControls,
             inOrOut:            usersContent.inOrOut,
             columns:            usersContent.columns,
-            idArray:            [],
+            selectedIds:        [],
             selectedObjects:    [],
-            btnAI_Active:       false,
-            btnUI_Active:       false,
-            btnU_Active:        true
+            _btnAI_Active:      false,
+            _btnUI_Active:      false,
+            _btnU_Active:       true
         });
     }
-
-    _clearChecks = () => {
-        this.setState({ idArray: [], selectedObjects: [] });
-    }
-
+    
     //Callback function passed to table component.
     //Bound to ContentList state to update this state when called by child component.
     setParentState = (obj) => {
-        let arr = this.state.idArray;
+        let arr = this.state.selectedIds;
         let objArr = this.state.selectedObjects;
         let id = obj.itemNumber ? obj.itemNumber : obj.userName; //If obj is an item, take the itemNumber. Otherwise, take the userName
         
@@ -138,7 +140,7 @@ export default class ContentList extends React.Component {
             objArr.push(obj);
         };
 
-        this.setState({idArray: arr, selectedObjects: objArr});
+        this.setState({selectedIds: arr, selectedObjects: objArr});
     }
 
     _buildContentList = () => {
@@ -147,10 +149,10 @@ export default class ContentList extends React.Component {
                 <>
                 <div id="tableModification">
                     {this._buildEditControls()}
-                    {this.state.signItemInOutIsVisible ? 
+                    {this.state.isSignItemInOutVisible ? 
                         <SignItemInOutControls 
                             inOrOut={this.state.inOrOut} 
-                            idArray={this.state.idArray} 
+                            selectedIds={this.state.selectedIds} 
                             selectedObjects={this.state.selectedObjects} 
                             id={this.state.id} 
                         /> : 
@@ -161,7 +163,7 @@ export default class ContentList extends React.Component {
                     columns={this.state.columns} 
                     data={this.state.content} 
                     setParentState={this.setParentState} 
-                    userRole={this.state.role} 
+                    userRole={this.state.accountRole} 
                     contentType={this.state.contentType}
                 />
                 </>
@@ -177,20 +179,20 @@ export default class ContentList extends React.Component {
 
     _buildEditControls () {
         if(this.state.editControls === 'ItemEditControls' && 
-            this.state.editControlIsVisible
+            this.state.isEditControlVisible
         ) {
             return(
                 <ItemEditControls 
-                    idArray={this.state.idArray} 
+                    selectedIds={this.state.selectedIds} 
                     selectedObjects={this.state.selectedObjects} 
                 />
             );
         } else if(this.state.editControls === 'UserEditControls') {
             return(
                 <UserEditControls 
-                    idArray={this.state.idArray} 
+                    selectedIds={this.state.selectedIds} 
                     selectedObjects={this.state.selectedObjects} 
-                    role={this.state.role}
+                    accountRole={this.state.accountRole}
                 />
             );
         };
@@ -202,23 +204,23 @@ export default class ContentList extends React.Component {
                 <div id="userControls">
                         <div id="tableNavigation">
                             <button 
-                                className={this.state.btnAI_Active ? "btnSelected" : null} 
-                                onClick={() => {this._showAvailableItems(); this._clearChecks();}}
+                                className={this.state._btnAI_Active ? "btnSelected" : null} 
+                                onClick={() => {this._showAvailableItems()}}
                             >
                                 Available Items
                             </button>
                             <div className="itemStyling">|</div>
                             <button 
-                                className={this.state.btnUI_Active ? "btnSelected" : null} 
-                                onClick={() => {this._showUnavailableItems(); this._clearChecks();}}
+                                className={this.state._btnUI_Active ? "btnSelected" : null} 
+                                onClick={() => {this._showUnavailableItems()}}
                             >
                                 Unavailable Items
                             </button>
-                            {this.state.userContentIsVisible ? <div className="itemStyling">|</div> : null}
-                            {this.state.userContentIsVisible ? 
+                            {this.state.isUserContentVisible ? <div className="itemStyling">|</div> : null}
+                            {this.state.isUserContentVisible ? 
                                 <button 
-                                    className={this.state.btnU_Active ? "btnSelected" : null} 
-                                    onClick={() => {this._showUsers(); this._clearChecks();}}
+                                    className={this.state._btnU_Active ? "btnSelected" : null}
+                                    onClick={() => {this._showUsers()}}
                                 >
                                     Users
                                 </button> : 
@@ -234,18 +236,10 @@ export default class ContentList extends React.Component {
         );
     }
 
-    _renderErrorMessage = () => {
-        return (
-            <p>
-                {this.errorMessage}
-            </p>
-        );
-    };
-
     render() {
         return(
             <div id="contentBody">
-                { this.state.isError ? this._renderErrorMessage() : this._renderContentBody()}
+                { this.state._isError ? this.state._errorMessage : this._renderContentBody()}
             </div>
         );
     };

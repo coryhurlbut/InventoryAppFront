@@ -31,10 +31,10 @@ export default class ApproveUsersModal extends React.Component {
             isOpen:          props.isOpen,
             content:         [],
             hideModal:       props.hideModal,
-            role:            props.role,
+            accountRole:            props.accountRole,
             contentType:     props.contentType,
             selectedObjects: null,
-            idArray:         [],
+            selectedIds:         [],
             selectedObjects: [],
             btnConfig:       true
         }
@@ -52,17 +52,17 @@ export default class ApproveUsersModal extends React.Component {
     }
 
     _approveUsers = async () =>{
-        await userController.activateUsers(this.state.idArray);
+        await userController.activateUsers(this.state.selectedIds);
         this.dismissModal();
     }
 
     _denyUsers = async () => {
-        await userController.deleteUsers(this.state.idArray);
+        await userController.deleteUsers(this.state.selectedIds);
         this.dismissModal();
     }
 
     setParentState = (user) => {
-        let arr = this.state.idArray;
+        let arr = this.state.selectedIds;
         let objArr = this.state.selectedObjects;
         
         if(arr.includes(user.userName)) {
@@ -73,7 +73,7 @@ export default class ApproveUsersModal extends React.Component {
             objArr.push(user);
         };
 
-        this.setState({ idArray: arr, 
+        this.setState({ selectedIds: arr, 
             selectedObjects: objArr 
         });
     }
@@ -96,13 +96,13 @@ export default class ApproveUsersModal extends React.Component {
                     </div>
                     <div className="modalFooter">
                         <button 
-                            disabled={this.state.idArray.length > 0 ? false : true} 
+                            disabled={this.state.selectedIds.length > 0 ? false : true} 
                             onClick={() => this._approveUsers()}
                         >
                             Approve
                         </button>
                         <button 
-                        disabled={this.state.idArray.length > 0 ? false : true} 
+                        disabled={this.state.selectedIds.length > 0 ? false : true} 
                         onClick={() => this._denyUsers()}
                         >
                             Deny

@@ -17,7 +17,7 @@ export default class EditUserModal extends React.Component {
         
         this.state = {
             isOpen:          props.isOpen,
-            idArray:         props.idArray,
+            selectedIds:         props.selectedIds,
             selectedObjects: props.selectedObjects,
             firstName:       '',
             lastName:        '',
@@ -46,7 +46,7 @@ export default class EditUserModal extends React.Component {
         -password display/reset password logic */
     async componentDidMount() {
         try {
-            let res = await userController.getUserByUserName(this.state.idArray[0]);
+            let res = await userController.getUserByUserName(this.state.selectedIds[0]);
             let thisUser = res[0];
             //Disables userRole dropdown if the selected user is the user logged in
             if(res.adminUserName === thisUser.userName) {
@@ -128,7 +128,7 @@ export default class EditUserModal extends React.Component {
 
         let log = {
             itemId:     'N/A',
-            userId:     this.state.idArray[0],
+            userId:     this.state.selectedIds[0],
             adminId:    '',
             action:     'edit',
             content:    'user'

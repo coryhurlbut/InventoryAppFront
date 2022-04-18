@@ -18,7 +18,7 @@ export default class DeleteItemModal extends React.Component{
             controllerErrorMessage: ''
         };
 
-        this._idArray = props.idArray;
+        this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
     }
 
@@ -27,7 +27,7 @@ export default class DeleteItemModal extends React.Component{
     }
 
     _deleteItem = async () => {
-        await itemController.deleteItems(this._idArray)
+        await itemController.deleteItems(this._selectedIds)
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
@@ -35,9 +35,9 @@ export default class DeleteItemModal extends React.Component{
                 controllerErrorMessage: ''
             });
 
-            for(let i = 0; i < this._idArray.length; i++) {
+            for(let i = 0; i < this._selectedIds.length; i++) {
                 let log = {
-                    itemId:     this._idArray[i],
+                    itemId:     this._selectedIds[i],
                     userId:     'N/A',
                     adminId:    '',
                     action:     'delete',

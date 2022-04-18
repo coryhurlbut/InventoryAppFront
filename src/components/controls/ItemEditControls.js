@@ -13,7 +13,7 @@ export default class ItemEditControls extends React.Component {
         
         this.state = {
             modal:              null,
-            idArray:            props.idArray,
+            selectedIds:        props.selectedIds,
             selectedObjects:    props.selectedObjects
         };
     }
@@ -21,7 +21,7 @@ export default class ItemEditControls extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if(prevProps !== this.props) {
             this.setState({
-                idArray:            this.props.idArray,
+                selectedIds:        this.props.selectedIds,
                 selectedObjects:    this.props.selectedObjects
             });
         };
@@ -41,7 +41,7 @@ export default class ItemEditControls extends React.Component {
             modal: <EditItemModal 
                 isOpen
                 hideModal={this.hideModal}
-                idArray={this.state.idArray} 
+                selectedIds={this.state.selectedIds} 
                 selectedObjects={this.state.selectedObjects}
             />
         });
@@ -52,7 +52,7 @@ export default class ItemEditControls extends React.Component {
             modal: <DeleteItemModal 
                 isOpen
                 hideModal={this.hideModal}
-                idArray={this.state.idArray} 
+                selectedIds={this.state.selectedIds} 
                 selectedObjects={this.state.selectedObjects}
             />
         });
@@ -70,13 +70,13 @@ export default class ItemEditControls extends React.Component {
                 </button>
                 <button 
                     onClick={this._editItem} 
-                    disabled={this.state.idArray.length === 1 ? false : true}
+                    disabled={this.state.selectedIds.length === 1 ? false : true}
                 >
                     Edit Item
                 </button>
                 <button 
                     onClick={this._deleteItem} 
-                    disabled={this.state.idArray.length > 0 ? false : true}
+                    disabled={this.state.selectedIds.length > 0 ? false : true}
                 >
                     Delete Item
                 </button>

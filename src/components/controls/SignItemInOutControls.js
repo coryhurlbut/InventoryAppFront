@@ -11,7 +11,7 @@ export default class SignItemInOutControls extends React.Component {
         
         this.state = {
             modal:              null,
-            idArray:            props.idArray,
+            selectedIds:            props.selectedIds,
             selectedObjects:    props.selectedObjects
         };
     }
@@ -19,7 +19,7 @@ export default class SignItemInOutControls extends React.Component {
     componentDidUpdate(prevProps, prevState){
         if(prevProps !== this.props) {
             this.setState({
-                idArray:            this.props.idArray,
+                selectedIds:            this.props.selectedIds,
                 selectedObjects:    this.props.selectedObjects
             });
         };
@@ -34,7 +34,7 @@ export default class SignItemInOutControls extends React.Component {
             modal: <SignItemInModal 
                 isOpen
                 hideModal={this.hideModal}
-                idArray={this.state.idArray} 
+                selectedIds={this.state.selectedIds} 
                 selectedObjects={this.state.selectedObjects} 
             />
         });
@@ -45,7 +45,7 @@ export default class SignItemInOutControls extends React.Component {
             modal: <SignItemOutModal 
                 isOpen 
                 hideModal={this.hideModal}
-                idArray={this.state.idArray} 
+                selectedIds={this.state.selectedIds} 
                 selectedObjects={this.state.selectedObjects}  
             />
         });
@@ -56,7 +56,7 @@ export default class SignItemInOutControls extends React.Component {
             return (
                 <button 
                     onClick={this._signItemIn} 
-                    disabled={this.state.idArray.length > 0 ? false : true}
+                    disabled={this.state.selectedIds.length > 0 ? false : true}
                 >
                     {this.props.inOrOut}
                 </button>
@@ -65,7 +65,7 @@ export default class SignItemInOutControls extends React.Component {
             return (
                 <button 
                     onClick={this._signItemOut} 
-                    disabled={this.state.idArray.length > 0 ? false : true}
+                    disabled={this.state.selectedIds.length > 0 ? false : true}
                 >
                     {this.props.inOrOut}
                 </button>

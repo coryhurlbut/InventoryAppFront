@@ -107,30 +107,30 @@ export const usersContent = {
 //Settings for what is to be displayed in ContentBuilder based on the user's role
 export const displayPresets = {
     main: {
-        userContentIsVisible:   false,
-        signItemInOutIsVisible: false,
-        editControlIsVisible:   false,
+        isUserContentVisible:   false,
+        isSignItemInOutVisible: false,
+        isEditControlVisible:   false,
         allowEditNotes:         false,
         isLoggedIn:             false,
-        itemLogIsVisible:       false,
-        adminLogIsVisible:      false
+        isItemLogVisible:       false,
+        isAdminLogVisible:      false
     },
     custodian: {
-        userContentIsVisible:   true,
-        signItemInOutIsVisible: true,
-        editControlIsVisible:   false,
+        isUserContentVisible:   true,
+        isSignItemInOutVisible: true,
+        isEditControlVisible:   false,
         allowEditNotes:         false,
         isLoggedIn:             true,
-        itemLogIsVisible:       true,
-        adminLogIsVisible:      false
+        isItemLogVisible:       true,
+        isAdminLogVisible:      false
     },
     admin: {
-        userContentIsVisible:   true,
-        signItemInOutIsVisible: true,
-        editControlIsVisible:   true,
+        isUserContentVisible:   true,
+        isSignItemInOutVisible: true,
+        isEditControlVisible:   true,
         allowEditNotes:         true,
         isLoggedIn:             true,
-        itemLogIsVisible:       true,
-        adminLogIsVisible:      true
+        isItemLogVisible:       true,
+        isAdminLogVisible:      true
     }
 };

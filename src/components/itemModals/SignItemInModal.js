@@ -22,7 +22,7 @@ export default class SignItemInModal extends React.Component{
             buttonClicked:          null,
         };
 
-        this._idArray = props.idArray;
+        this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
     };
 
@@ -31,7 +31,7 @@ export default class SignItemInModal extends React.Component{
     }
 
     _signItemsIn = async () => {
-        await itemController.signItemIn(this._idArray)
+        await itemController.signItemIn(this._selectedIds)
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
@@ -39,9 +39,9 @@ export default class SignItemInModal extends React.Component{
                 isControllerError: false 
             });
 
-            for(let i = 0; i < this._idArray.length; i++) {
+            for(let i = 0; i < this._selectedIds.length; i++) {
                 let info = {
-                    itemId:      this._idArray[i],
+                    itemId:      this._selectedIds[i],
                     userId:      'test',
                     custodianId: '',
                     action:      'signed in',
@@ -149,7 +149,7 @@ export default class SignItemInModal extends React.Component{
     render() {
         if(this.state.viewNotesModalBool){
             return(
-            <ViewNotesModal idArray={this._idArray} isOpen={true} hideModal={null} content={this.state.notesArray} 
+            <ViewNotesModal selectedIds={this._selectedIds} isOpen={true} hideModal={null} content={this.state.notesArray} 
                 name={'temp'} previousModal={'signIn'} selectedObjects={this._selectedObjects}/>
             )
         }else{

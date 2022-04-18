@@ -13,8 +13,8 @@ export default class UserEditControls extends React.Component {
 
         this.state = {
             modal:              null,
-            role:               props.role,
-            idArray:            props.idArray,
+            accountRole:        props.accountRole,
+            selectedIds:        props.selectedIds,
             selectedObjects:    props.selectedObjects
         };
     }
@@ -22,8 +22,8 @@ export default class UserEditControls extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if(prevProps !== this.props) {
             this.setState({ 
-                role:               this.props.role,
-                idArray:            this.props.idArray,
+                accountRole:        this.props.accountRole,
+                selectedIds:        this.props.selectedIds,
                 selectedObjects:    this.props.selectedObjects
             });
         };
@@ -44,7 +44,7 @@ export default class UserEditControls extends React.Component {
             modal: <EditUserModal 
                 isOpen
                 hideModal={this.hideModal} 
-                idArray={this.state.idArray} 
+                selectedIds={this.state.selectedIds} 
                 selectedObjects={this.state.selectedObjects} 
             />
         });
@@ -55,7 +55,7 @@ export default class UserEditControls extends React.Component {
             modal: <DeleteUserModal 
                 isOpen
                 hideModal={this.hideModal} 
-                idArray={this.state.idArray} 
+                selectedIds={this.state.selectedIds} 
                 selectedObjects={this.state.selectedObjects} 
             />
         });
@@ -66,7 +66,7 @@ export default class UserEditControls extends React.Component {
     }
 
     _buildButtons = () => {
-        if(this.state.role === 'custodian') {
+        if(this.state.accountRole === 'custodian') {
             return(
                 <div className='Edit_Controls'>
                     <button onClick={this._addUser}>
@@ -83,13 +83,13 @@ export default class UserEditControls extends React.Component {
                     </button>
                     <button 
                         onClick={this._editUser} 
-                        disabled={this.state.idArray.length === 1 ? false : true}
+                        disabled={this.state.selectedIds.length === 1 ? false : true}
                     >
                         Edit User
                     </button>
                     <button 
                         onClick={this._deleteUser} 
-                        disabled={this.state.idArray.length > 0 ? false : true}
+                        disabled={this.state.selectedIds.length > 0 ? false : true}
                     >
                         Delete User
                     </button>
