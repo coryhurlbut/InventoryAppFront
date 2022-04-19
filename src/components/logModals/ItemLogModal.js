@@ -2,7 +2,7 @@ import React                    from 'react';
 
 import { Modal }                from '@fluentui/react';
 
-import Table                    from '../Table';
+import {Table}                    from '../tableStuff';
 import { itemLogController }    from '../../controllers';
 
 const columns = [

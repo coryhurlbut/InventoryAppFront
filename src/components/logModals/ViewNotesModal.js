@@ -1,6 +1,6 @@
 import React               from "react";
 import { Modal }           from "@fluentui/react";
-import Table               from "../Table";
+import {Table}                    from '../tableStuff';
 import EditItemModal       from "../itemModals/EditItemModal";
 import { SignItemInModal, SignItemOutModal } from "../itemModals";
 import '../../styles/Modal.css'
@@ -87,18 +87,21 @@ export default class ViewNotesModal extends React.Component{
             return(
                 
                 <Modal  isOpen={this.state.isOpen}>
-                    <div className='modalHeader'>{this.state.name}</div>
+                    <div className='modalHeader'>
+                        {this.state.name}
+                    </div>
                     <div id='viewItemNotes'className="modalBody">
                         <Table 
                             columns={columns} 
-                            data={this.state.content} 
-                            contentType={'deez'} 
+                            data={this.state.content}
                             accountRole={'custodian'}
                             _setParentState={this._setParentState}
                         />
                     </div>
                     <div className="modalFooter">
-                    <button onClick={() => {this._viewOtherModal()}}>Close</button> 
+                        <button onClick={() => {this._viewOtherModal()}}>
+                            Close
+                        </button> 
                     </div>
                 </Modal>
             )

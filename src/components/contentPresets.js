@@ -110,7 +110,6 @@ export const displayPresets = {
         isUserContentVisible:   false,
         isSignItemInOutVisible: false,
         isEditControlVisible:   false,
-        allowEditNotes:         false,
         isLoggedIn:             false,
         isItemLogVisible:       false,
         isAdminLogVisible:      false
@@ -119,7 +118,6 @@ export const displayPresets = {
         isUserContentVisible:   true,
         isSignItemInOutVisible: true,
         isEditControlVisible:   false,
-        allowEditNotes:         false,
         isLoggedIn:             true,
         isItemLogVisible:       true,
         isAdminLogVisible:      false
@@ -128,7 +126,6 @@ export const displayPresets = {
         isUserContentVisible:   true,
         isSignItemInOutVisible: true,
         isEditControlVisible:   true,
-        allowEditNotes:         true,
         isLoggedIn:             true,
         isItemLogVisible:       true,
         isAdminLogVisible:      true

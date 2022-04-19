@@ -6,6 +6,7 @@ import { itemController,
         itemLogController,
         userController }    from '../../controllers';
 import { ViewNotesModal }   from '../logModals';
+import MapNotes             from '../utilities/MapNotes';
 
 /*
 *   Modal for signing out an item
@@ -100,34 +101,10 @@ export default class SignItemOutModal extends React.Component{
         };
     }
     _viewNotesModal = (buttonClicked) => {
-        this.setState({ notesArray: this._mapNotes(buttonClicked) })
+        this.setState({ notesArray: MapNotes(buttonClicked) })
         this.setState({ viewNotesModalBool: true });
     }
-    //TODO - make this an imported function
-    _mapNotes = (notes) => {
-        let notesArray = [];
-        let notesSplitArray = [];
-            notesSplitArray = notes.split('`');
-            let notesObject = {
-                notes: '',
-                date: ''
-            };
-            for (let i = 0; i < notesSplitArray.length; i++) {
-                if(notesSplitArray[i] !== ""){
-                    if(i % 2 === 0 || i === 0){
-                        notesObject.notes = notesSplitArray[i];
-                    }else{
-                        notesObject.date = notesSplitArray[i];
-                        notesArray.push(notesObject);
-                        notesObject = {
-                            notes: '',
-                            date: ''
-                        }
-                    }
-                }
-            }
-            return notesArray;
-    }
+    
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
         const displayItem = items.map((item) => {

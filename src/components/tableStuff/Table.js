@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTable, useRowSelect } from 'react-table';
 
-import '../styles/Table.css'
+import '../../styles/Table.css'
 
 
 function Table({ columns, data, ...props }) {

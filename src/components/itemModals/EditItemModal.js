@@ -7,6 +7,7 @@ import { itemController,
 import { itemValidation,
     sanitizeData }          from '../inputValidation';
 import { ViewNotesModal }   from '../logModals';
+import MapNotes             from '../utilities/MapNotes';
 
 /*
 *   Modal for editing an item
@@ -36,9 +37,7 @@ export default class EditItemModal extends React.Component{
             isControllerError:      false,
             controllerErrorMessage: '',
             reload:         props.reload,
-            notesArrayFinal:    []
         };
-        this._mapNotes = this._mapNotes.bind(this);
         this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
     }
@@ -56,7 +55,7 @@ export default class EditItemModal extends React.Component{
                 specificLocation,
                 available 
             } = res[0];
-            this.setState({ notesArrayFinal: this._mapNotes(notes) })
+            this.setState({ notesArrayFinal: MapNotes(notes) })
             
             this.setState({
                 itemNumber:             itemNumber,
@@ -69,7 +68,6 @@ export default class EditItemModal extends React.Component{
                 available:              available,
                 tempNotes:              notes
             });
-            
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
@@ -78,31 +76,6 @@ export default class EditItemModal extends React.Component{
                 controllerErrorMessage: "An error occured while loading. Please refresh and try again."
             });
         }
-    }
-    //TODO - make this an imported function
-    _mapNotes = (notes) => {
-        let notesArray = [];
-        let notesSplitArray = [];
-            notesSplitArray = notes.split('`');
-            let notesObject = {
-                notes: '',
-                date: ''
-            };
-            for (let i = 0; i < notesSplitArray.length; i++) {
-                if(notesSplitArray[i] !== ""){
-                    if(i % 2 === 0 || i === 0){
-                        notesObject.notes = notesSplitArray[i];
-                    }else{
-                        notesObject.date = notesSplitArray[i];
-                        notesArray.push(notesObject);
-                        notesObject = {
-                            notes: '',
-                            date: ''
-                        }
-                    }
-                }
-            }
-            return notesArray;
     }
 
     _dismissModal = () => {

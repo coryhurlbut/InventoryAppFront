@@ -3,7 +3,7 @@ import React          from 'react';
 import { Modal }      from '@fluentui/react';
 
 import userController from '../../controllers/UserController';
-import Table          from '../Table';
+import {Table}        from '../tableStuff';
 import '../../styles/Modal.css'
 
 const columns = [
@@ -31,11 +31,10 @@ export default class ApproveUsersModal extends React.Component {
             isOpen:          props.isOpen,
             content:         [],
             hideModal:       props.hideModal,
-            accountRole:            props.accountRole,
+            accountRole:     props.accountRole,
             contentType:     props.contentType,
-            selectedObjects: null,
-            selectedIds:         [],
             selectedObjects: [],
+            selectedIds:     [],
             btnConfig:       true
         }
         this.setParentState    = this.setParentState.bind(this);
@@ -73,8 +72,8 @@ export default class ApproveUsersModal extends React.Component {
             objArr.push(user);
         };
 
-        this.setState({ selectedIds: arr, 
-            selectedObjects: objArr 
+        this.setState({ selectedIds: arr,
+            selectedObjects: objArr
         });
     }
 
@@ -88,7 +87,7 @@ export default class ApproveUsersModal extends React.Component {
                         <Table
                             columns={columns} 
                             data={this.state.content} 
-                            userRole={this.state.role} 
+                            userRole={this.state.accountRole} 
                             contentType={this.state.contentType}
                             setParentState={this.setParentState}
                         />
@@ -102,8 +101,8 @@ export default class ApproveUsersModal extends React.Component {
                             Approve
                         </button>
                         <button 
-                        disabled={this.state.selectedIds.length > 0 ? false : true} 
-                        onClick={() => this._denyUsers()}
+                            disabled={this.state.selectedIds.length > 0 ? false : true} 
+                            onClick={() => this._denyUsers()}
                         >
                             Deny
                         </button>

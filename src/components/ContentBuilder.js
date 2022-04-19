@@ -112,7 +112,7 @@ export default class ContentBuilder extends React.Component {
                     hideModal={this._hideModal}
                     content={this.state.pendingUsers}
                     accountRole={this.state.accountRole}
-                    contentType={'deez'}
+                    contentType={'Users'}
                 />
                 break;
             default:

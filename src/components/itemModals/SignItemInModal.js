@@ -5,6 +5,7 @@ import { Modal }            from '@fluentui/react';
 import { itemController,
     itemLogController }     from '../../controllers';
 import { ViewNotesModal }   from '../logModals';
+import MapNotes             from '../utilities/MapNotes';
 
 /*
 *   Modal for signing an item in
@@ -63,7 +64,7 @@ export default class SignItemInModal extends React.Component{
         });
     }
     _viewNotesModal = (buttonClicked) => {
-        this.setState({ notesArray: this._mapNotes(buttonClicked) })
+        this.setState({ notesArray: MapNotes(buttonClicked) })
         this.setState({ viewNotesModalBool: true });
     }
     //TODO - make this an imported function

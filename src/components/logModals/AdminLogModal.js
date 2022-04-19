@@ -4,7 +4,7 @@ import { Modal }                from '@fluentui/react';
 
 
 import { adminLogController }   from '../../controllers';
-import Table                    from '../Table';
+import {Table}                    from '../tableStuff';
 
 import '../../styles/Modal.css'
 
