@@ -49,7 +49,7 @@ function Table({ columns, data, ...props }) {
                                 onDoubleClick={() => {
                                     toggleAllRowsSelected();
                                     console.log(rows)
-                                    props._parseRowsArray(rows, rows[0].isSelected);
+                                    props.parseRowsArray(rows, rows[0].isSelected);
                                 }}
                                 onClick={() => {
                                     row.toggleRowSelected();
