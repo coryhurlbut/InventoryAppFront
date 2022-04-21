@@ -165,7 +165,7 @@ export default class ContentList extends React.Component {
         
     };
 
-    _buildEditControls () {
+    _buildEditControls = () => {
         if(this.state.editControls === 'ItemEditControls' &&
             this.state.isEditControlVisible
         ) {
