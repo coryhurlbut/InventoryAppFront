@@ -31,9 +31,9 @@ class ItemValidation {
 		} else if(!validator.isLength(sanitizedItemNumber, {min:5, max:5})) {
 			return 'Item Number identifier must be 5 characters';
 		};
-		
 		return false;
 	}
+	
 
 	validateName(name) {
 		let santizedName = sanitizeData.sanitizeWhitespace(name);

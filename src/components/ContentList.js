@@ -44,6 +44,7 @@ export default class ContentList extends React.Component {
         };
         
         this.setParentState         =   this.setParentState.bind(this);
+        this._parseRowsArray        =   this._parseRowsArray.bind(this);
         this.handleTableDisplay    =   this.handleTableDisplay.bind(this);
     };
 
@@ -100,6 +101,17 @@ export default class ContentList extends React.Component {
             selectedObjects:    [],
         });
     }
+    //TO-DO this can probably be way less code, and also probably be within setParentState method, fix for toggleAllRowsSelected
+    _parseRowsArray = (rowss, isSelectedd) =>{
+        console.log(isSelectedd);
+        if(!isSelectedd){
+            for (let i = 0; i < rowss.length; i++) {
+                this.setParentState(rowss[i].original);
+            }
+        }else{
+            this.setState({ selectedIds: [], selectedObjects: []});
+        }
+    }
     
     //Callback function passed to table component.
     //Bound to ContentList state to update this state when called by child component.
@@ -144,6 +156,7 @@ export default class ContentList extends React.Component {
                 columns={this.state.columns}
                 data={this.state.content}
                 setParentState={this.setParentState}
+                _parseRowsArray={this._parseRowsArray}
                 userRole={this.state.accountRole}
                 contentType={this.state.contentType}
             />
