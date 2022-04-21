@@ -103,7 +103,6 @@ export default class ContentList extends React.Component {
     }
     //TO-DO this can probably be way less code, and also probably be within setParentState method, fix for toggleAllRowsSelected
     _parseRowsArray = (rowss, isSelectedd) =>{
-        console.log(isSelectedd);
         if(!isSelectedd){
             for (let i = 0; i < rowss.length; i++) {
                 this.setParentState(rowss[i].original);

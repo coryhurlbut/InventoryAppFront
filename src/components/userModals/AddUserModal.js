@@ -113,7 +113,6 @@ export default class AddUserModal extends React.Component {
         };
         let returnedUser = {};
 
-        console.log("userInformation: ", user);
         await userController.createUser(user)
             .then((data) => {
                 if (data.status !== undefined && data.status >= 400) throw data;

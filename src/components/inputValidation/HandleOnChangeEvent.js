@@ -1,23 +1,13 @@
 /*
     Class to handle onChange and onBlur events for input field validation
-
-    Houses the error messages
-    should submit be available
-
-    Methods:
-    _displayErrorMessage()
-    _handleRemoveError()
-    _returnErrorDetails()
-    _isSubmitAvailable
-    _handleChangeAndBlur()
 */
 import React from 'react';
 
 /*
-    state variables: error messages
+    state variables: 
         handled by the component
         mutable
-    prop variables: fieldIDs 
+    prop variables: 
         data is managed by parent components (ItemModals, UserModals, ...)
         immutable
 */
@@ -47,18 +37,22 @@ export default class HandleOnChangeEvent {
             confirmPassword: '',
             phoneNumber:     ''
         };
-        
+        //Handles isSubmitAvailable when modal is first opened
         this.isFirstOpened = true;
 
+        //distinguish between userModals and itemModals 
         this.modalType = args;
 
+        //Checks the return of itemValidation.js and userValidation.js
         this.handleEvent = this._handleEvent.bind(this);
         this.handlePassword = this._handlePassword.bind(this);
         this.handleConfirmPassword = this._handleConfirmPassword.bind(this);
 
+        //Controls user display of the errors
         this.setErrorMessageDisplay = this._setErrorMessageDisplay.bind(this);
         this.setClassNameIsValid = this._setClassNameIsValid.bind(this);
 
+        //Manages if submit should be available given the type of modal we are using
         this.isAddUserModalSubmitAvailable = this._isAddUserModalSubmitAvailable.bind(this);
         this.isAddSignUpModalSubmitAvailable = this._isAddSignUpModalSubmitAvailable.bind(this);
         this.isItemModalSubmitAvailable = this._isItemModalSubmitAvailable.bind(this);
@@ -67,7 +61,7 @@ export default class HandleOnChangeEvent {
     /*
     Cases to deal with:
         is there an error in the value: set error message
-        is there not an error in the value: remove error
+        is there not an error in the value: remove error -> set to empty string
     */
     _handleEvent = (Event, methodCall) => {
         const inputFieldID = Event.target.id;
@@ -91,7 +85,7 @@ export default class HandleOnChangeEvent {
         }
         this.isFirstOpened = false;
     };
-
+    /* Special Case */
     _handleConfirmPassword = (userPassword, confirmPassword, methodCall) => {
         if(!methodCall(userPassword, confirmPassword)) {
             this.userErrorList['confirmPassword'] = EMPTY_STRING;
@@ -99,7 +93,7 @@ export default class HandleOnChangeEvent {
             this.userErrorList['confirmPassword'] = methodCall(userPassword, confirmPassword);
         }
     }
-
+    /* Special Case */
     _handlePassword = (isRequired, password, methodCall) => {
         if(!methodCall(isRequired, password)) {
             this.userErrorList['password'] = EMPTY_STRING;
@@ -108,7 +102,7 @@ export default class HandleOnChangeEvent {
         }
     }
 
-    /*  */
+    /* Handles special case of password and confirm password */
     _setErrorMessageDisplay = (inputFieldID, isDisabled = false) => {
         if(this.modalType === 'userModal') {
             if((inputFieldID === 'password' && 
@@ -148,7 +142,7 @@ export default class HandleOnChangeEvent {
             );
         }
     };
-
+    /* Classname -> valid if true / invalid if false */
     _setClassNameIsValid = (inputFieldID) => {
         if(this.modalType === 'userModal') {
             if(this.userErrorList[inputFieldID] === EMPTY_STRING) {
@@ -163,6 +157,7 @@ export default class HandleOnChangeEvent {
         }
     }
 
+    /* submit button disabled -> false / submit button enabled -> true */
     _isItemModalSubmitAvailable = () => {
         if(this.isFirstOpened){
             return false;
@@ -186,7 +181,7 @@ export default class HandleOnChangeEvent {
             }
         }
     }
-
+    /* submit button disabled -> false / submit button enabled -> true */
     _isAddUserModalSubmitAvailable = () => {
         if(this.isFirstOpened) {
             return false;
@@ -201,7 +196,7 @@ export default class HandleOnChangeEvent {
             return true;
         }
     }
-
+    /* submit button disabled -> false / submit button enabled -> true */
     _isAddSignUpModalSubmitAvailable = () => {
         if(this.isFirstOpened) {
             return false;
