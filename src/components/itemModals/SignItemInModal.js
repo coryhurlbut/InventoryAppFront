@@ -20,8 +20,8 @@ export default class SignItemInModal extends React.Component{
             notesArray:             [],
             buttonClicked:          null,
 
-            isControllerError:      false,
-            controllerErrorMessage: ''
+            isError:                false,
+            errorMessage:           ''
         };
 
         this._selectedIds = props.selectedIds;
@@ -36,9 +36,10 @@ export default class SignItemInModal extends React.Component{
         await itemController.signItemIn(this._selectedIds)
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
+            
             this.setState({ 
-                controllerErrorMessage: '', 
-                isControllerError: false 
+                isError:      false,
+                errorMessage: ''
             });
 
             for(let i = 0; i < this._selectedIds.length; i++) {
@@ -59,8 +60,8 @@ export default class SignItemInModal extends React.Component{
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
             this.setState({ 
-                isControllerError: true,
-                controllerErrorMessage: "An error occured while loading. Please refresh and try again."
+                isError: true,
+                errorMessage: "An error occured while loading. Please refresh and try again."
             });
         });
     }
@@ -120,7 +121,7 @@ export default class SignItemInModal extends React.Component{
                     <h3>Sign Item In</h3>
                 </div>
                 <div className="modalBody">
-                    {this.state.isControllerError ?
+                    {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
@@ -139,7 +140,7 @@ export default class SignItemInModal extends React.Component{
     _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.controllerErrorMessage}
+                *{this.state.errorMessage}
             </label>
         );
     };

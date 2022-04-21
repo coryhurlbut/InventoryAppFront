@@ -47,7 +47,8 @@ export default class HandleOnChangeEvent {
             confirmPassword: '',
             phoneNumber:     ''
         };
-        this.isSubmitAvailable = false;
+        
+        this.isFirstOpened = true;
 
         this.modalType = args;
 
@@ -88,6 +89,7 @@ export default class HandleOnChangeEvent {
                 this.itemErrorList[inputFieldID] = methodCall(inputFieldValue);
             }
         }
+        this.isFirstOpened = false;
     };
 
     _handleConfirmPassword = (userPassword, confirmPassword, methodCall) => {
@@ -162,16 +164,35 @@ export default class HandleOnChangeEvent {
     }
 
     _isItemModalSubmitAvailable = () => {
-        let errorList = this.itemErrorList;
-        
-        if(this.modalType === 'editItemModal') {
-            for(let errorItem in errorList) {
-                if(errorItem !== 'itemNumberPrefix' && errorItem !== 'itemNumberIdentifier' && errorList[errorItem] !== EMPTY_STRING) {
-                    return false;
-                }
-            }
-            return true;
+        if(this.isFirstOpened){
+            return false;
         } else {
+            let errorList = this.itemErrorList;
+        
+            if(this.modalType === 'editItemModal') {
+                for(let errorItem in errorList) {
+                    if(errorItem !== 'itemNumberPrefix' && errorItem !== 'itemNumberIdentifier' && errorList[errorItem] !== EMPTY_STRING) {
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                for(let errorItem in errorList) {
+                    if(errorList[errorItem] !== EMPTY_STRING) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+    }
+
+    _isAddUserModalSubmitAvailable = () => {
+        if(this.isFirstOpened) {
+            return false;
+        } else {
+            let errorList = this.userErrorList;
+
             for(let errorItem in errorList) {
                 if(errorList[errorItem] !== EMPTY_STRING) {
                     return false;
@@ -181,19 +202,11 @@ export default class HandleOnChangeEvent {
         }
     }
 
-    _isAddUserModalSubmitAvailable = () => {
-        let errorList = this.userErrorList;
-
-        for(let errorItem in errorList) {
-            if(errorList[errorItem] !== EMPTY_STRING) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     _isAddSignUpModalSubmitAvailable = () => {
-        let errorList = this.userErrorList;
+        if(this.isFirstOpened) {
+            return false;
+        } else {
+            let errorList = this.userErrorList;
 
         for(let errorItem in errorList) {
             if(errorItem === 'firstName' || 
@@ -207,6 +220,7 @@ export default class HandleOnChangeEvent {
             }
         }
         return true;
+        }
     }
 
 };

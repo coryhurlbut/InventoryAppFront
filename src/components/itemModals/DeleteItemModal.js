@@ -15,8 +15,8 @@ export default class DeleteItemModal extends React.Component{
         this.state = {
             isOpen:  props.isOpen,
 
-            isControllerError:      false,
-            controllerErrorMessage: ''
+            isError:      false,
+            errorMessage: ''
         };
 
         this._selectedIds = props.selectedIds;
@@ -32,8 +32,8 @@ export default class DeleteItemModal extends React.Component{
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
-                isControllerError: false, 
-                controllerErrorMessage: ''
+                isError: false, 
+                errorMessage: ''
             });
 
             for(let i = 0; i < this._selectedIds.length; i++) {
@@ -54,8 +54,8 @@ export default class DeleteItemModal extends React.Component{
         })
         .catch(async (err) => {            
             this.setState({ 
-                isControllerError: true, 
-                controllerErrorMessage: err.message
+                isError: true, 
+                errorMessage: err.message
             });
         });
     }
@@ -79,7 +79,7 @@ export default class DeleteItemModal extends React.Component{
                     <h3>Delete Item</h3>
                 </div>
                 <div className="modalBody">
-                    {this.state.isControllerError ?
+                    {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
@@ -98,7 +98,7 @@ export default class DeleteItemModal extends React.Component{
     _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.controllerErrorMessage}
+                *{this.state.errorMessage}
             </label>
         );
     };

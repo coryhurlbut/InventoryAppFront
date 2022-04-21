@@ -18,8 +18,8 @@ export default class DeleteUserModal extends React.Component {
             selectedIds:            props.selectedIds,
             selectedObjects:        props.selectedObjects,
 
-            isControllerError:      false,
-            controllerErrorMessage: ''
+            isError:                false,
+            errorMessage:           ''
         };
     }
 
@@ -34,14 +34,14 @@ export default class DeleteUserModal extends React.Component {
         let res = await userController.checkSignouts(this.state.selectedObjects, unavailableItems);
         if(res.status === 'error') {
             this.setState({ 
-                isControllerError: true, 
-                controllerErrorMessage: res.message 
+                isError: true, 
+                errorMessage: res.message 
             });
             return;
         } else {
             this.setState({ 
-                isControllerError: false, 
-                ercontrollerErrorMessage: ''
+                isError: false, 
+                errorMessage: ''
             });
         };
 
@@ -49,8 +49,8 @@ export default class DeleteUserModal extends React.Component {
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
-                isControllerError: false, 
-                controllerErrorMessage: ''
+                isError: false, 
+                errorMessage: ''
             });
 
             for(let i = 0; i < this.state.selectedIds.length; i++) {
@@ -69,8 +69,8 @@ export default class DeleteUserModal extends React.Component {
         })
         .catch(async (err) => {            
             this.setState({ 
-                isControllerError: true, 
-                controllerErrorMessage: err.message
+                isError: true, 
+                errorMessage: err.message
             }); 
         });
     }
@@ -94,7 +94,7 @@ export default class DeleteUserModal extends React.Component {
                     <h3>Delete User</h3>
                 </div>
                 <div className="modalBody">
-                    {this.state.isControllerError ?
+                    {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
@@ -113,7 +113,7 @@ export default class DeleteUserModal extends React.Component {
     _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.controllerErrorMessage}
+                *{this.state.errorMessage}
             </label>
         );
     };

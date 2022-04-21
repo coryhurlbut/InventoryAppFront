@@ -45,21 +45,22 @@ export default class ItemLogModal extends React.Component {
             content: [],
 
             isControllerError:      false,
-            controllerErrorMessage: ''
+            controllerErrorMessage: '',
+            isError:                false,
+            errorMessage:           ''
         };
     }
 
     async componentDidMount() {
-        let logData = await itemLogController.getAllItemLogs()
-        .then(() => {
+        try {
+            let logData = await itemLogController.getAllItemLogs();
             this.setState({ content: logData });
-        })
-        .catch(async (err) => {            
+        } catch (error) {
             this.setState({ 
                 isControllerError: true, 
-                controllerErrorMessage: err.message
+                controllerErrorMessage: error.message
             }); 
-        });
+        }
     }
 
     _dismissModal = () => {
@@ -71,7 +72,7 @@ export default class ItemLogModal extends React.Component {
             <>
                 <div className="modalHeader">Item Log</div>
                 <div className="modalBody">
-                    {this.state.isControllerError ?
+                    {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
@@ -88,7 +89,7 @@ export default class ItemLogModal extends React.Component {
     _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.controllerErrorMessage}
+                *{this.state.errorMessage}
             </label>
         );
     }

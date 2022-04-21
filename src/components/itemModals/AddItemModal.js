@@ -29,8 +29,8 @@ export default class AddItemModal extends React.Component{
             available:              true,
             disabled:               true,
             
-            isControllerError:      false,
-            controllerErrorMessage: ''
+            isError:      false,
+            errorMessage: ''
         };
         this.handleInputFields = new HandleOnChangeEvent('addItemModal');
     }
@@ -63,8 +63,8 @@ export default class AddItemModal extends React.Component{
             if(data.status !== undefined && data.status >= 400) throw data;
             
             this.setState({ 
-                isControllerError: false, 
-                controllerErrorMessage: '' 
+                isError: false, 
+                errorMessage: '' 
             });
             returnedItem = data;
             window.location.reload();
@@ -72,8 +72,8 @@ export default class AddItemModal extends React.Component{
         })
         .catch( async (err) => {            
             this.setState({ 
-                isControllerError: true, 
-                controllerErrorMessage: err.message 
+                isError: true, 
+                errorMessage: err.message 
             }); 
         });
 
@@ -159,7 +159,7 @@ export default class AddItemModal extends React.Component{
                 </div>
                 <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                     <div className="modalBody">
-                        {this.state.isControllerError ?
+                        {this.state.isError ?
                             this._renderErrorMessage() :
                             null
                         }
@@ -293,7 +293,7 @@ export default class AddItemModal extends React.Component{
     _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.controllerErrorMessage}
+                *{this.state.errorMessage}
             </label>
         );
     };

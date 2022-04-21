@@ -85,8 +85,8 @@ class ItemValidation {
 			return false;
 		} else if(!validator.isAlphanumeric(santizedNotes, 'en-US', {ignore: " -,.':"})) {
 			return '-_- letters and numbers only';
-		} else if(!validator.isLength(santizedNotes, {min:1, max:15})) {
-			return 'Specific Location cannot exceed 15 characters';
+		} else if(!validator.isLength(santizedNotes, {min:1, max:100})) {
+			return 'Notes cannot exceed 100 characters';
 		};
 
 		return false;

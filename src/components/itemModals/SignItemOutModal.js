@@ -24,7 +24,9 @@ export default class SignItemOutModal extends React.Component{
             buttonClicked:          null,
 
             isControllerError:      false,
-            controllerErrorMessage: ''
+            controllerErrorMessage: '',
+            isError:                false,
+            errorMessage:           ''
         };
 
         this._selectedIds = props.selectedIds;
@@ -34,7 +36,11 @@ export default class SignItemOutModal extends React.Component{
     async componentDidMount(){
         try {
             let users = await userController.getAllActiveUsers();
-            this.setState({ users: users });
+            this.setState({ 
+                users: users, 
+                isControllerError: false, 
+                controllerErrorMessage: '' 
+            });
             this._assignOptionGroup();
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
@@ -55,8 +61,8 @@ export default class SignItemOutModal extends React.Component{
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
-                controllerErrorMessage: '', 
-                isControllerError: false 
+                isError: false,
+                errorMessage: ''
             });
 
             for(let i = 0; i < this._selectedIds.length; i++) {
@@ -77,8 +83,8 @@ export default class SignItemOutModal extends React.Component{
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
             this.setState({ 
-                isControllerError: true,
-                controllerErrorMessage: error.message 
+                isError: true,
+                errorMessage: error.message 
             });
         });
     }
@@ -153,7 +159,7 @@ export default class SignItemOutModal extends React.Component{
                 </div>
                 <form onSubmit={this._handleFormSubmit}>
                 <div className="modalBody">
-                    {this.state.isControllerError ?
+                    {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
@@ -189,7 +195,7 @@ export default class SignItemOutModal extends React.Component{
     _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.controllerErrorMessage}
+                *{this.state.errorMessage}
             </label>
         );
     };

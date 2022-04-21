@@ -36,7 +36,9 @@ export default class EditUserModal extends React.Component {
             userRoleDisabled:false,
 
             isControllerError:      false,
-            controllerErrorMessage: ''
+            controllerErrorMessage: '',
+            isError:                false,
+            errorMessage:           ''
         };
         this.handleInputFields = new HandleOnChangeEvent('userModal');
     };
@@ -115,14 +117,14 @@ export default class EditUserModal extends React.Component {
             let res = await userController.checkSignouts(user, unavailableItems);
             if (res.status === 'error') {
                 this.setState({ 
-                    isControllerError: true, 
-                    controllerErrorMessage: res.message
+                    isError: true, 
+                    errorMessage: res.message
                 });
                 return;
             } else {
                 this.setState({
-                    isControllerError: false,
-                    controllerErrorMessage: ''
+                    isError: false,
+                    errorMessage: ''
                 });
             };
         };
@@ -139,8 +141,8 @@ export default class EditUserModal extends React.Component {
         .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
-                isControllerError: false, 
-                controllerErrorMessage: ''
+                isError: false, 
+                errorMessage: ''
             });
             
             await adminLogController.createAdminLog(log);
@@ -150,8 +152,8 @@ export default class EditUserModal extends React.Component {
         })
         .catch(async (err) => {            
             this.setState({ 
-                isControllerError: true, 
-                controllerErrorMessage: err.message
+                isError: true, 
+                errorMessage: err.message
             }); 
         });
     };
@@ -248,7 +250,7 @@ export default class EditUserModal extends React.Component {
             </div>
             <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                 <div className="modalBody">
-                    {this.state.isControllerError ?
+                    {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
@@ -366,7 +368,7 @@ export default class EditUserModal extends React.Component {
     _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.controllerErrorMessage}
+                *{this.state.errorMessage}
             </label>
         );
     };

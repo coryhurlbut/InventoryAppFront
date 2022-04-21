@@ -38,25 +38,26 @@ export default class ApproveUsersModal extends React.Component {
             btnConfig:       true,
 
             isControllerError:      false,
-            controllerErrorMessage: ''
+            controllerErrorMessage: '',
+            isError:                false,
+            errorMessage:           ''
         }
         this.setParentState    = this._setParentState.bind(this);
     }
 
     async componentDidMount() {
-        let users = await userController.getPendingUsers()
-        .then(() => {
+        try {
+            let users = await userController.getPendingUsers();
             this.setState({ content: users });
-        })
-        .catch(async (err) => {            
+        } catch (error) {
             this.setState({ 
                 isControllerError: true, 
-                controllerErrorMessage: err.message
+                controllerErrorMessage: error.message
             }); 
-        });
+        }
     }
 
-    dismissModal = () => {
+    _dismissModal = () => {
         this.setState({ isOpen: false });
         window.location.reload();
     }
@@ -64,12 +65,12 @@ export default class ApproveUsersModal extends React.Component {
     _approveUsers = async () =>{
         await userController.activateUsers(this.state.selectedIds)
         .then(() => {
-            this.dismissModal();
+            this._dismissModal();
         })
         .catch(async (err) => {            
             this.setState({ 
-                isControllerError: true, 
-                controllerErrorMessage: err.message
+                isError: true, 
+                errorMessage: err.message
             }); 
         });
     }
@@ -77,12 +78,12 @@ export default class ApproveUsersModal extends React.Component {
     _denyUsers = async () => {
         await userController.deleteUsers(this.state.selectedIds)
         .then(() => {
-            this.dismissModal();
+            this._dismissModal();
         })
         .catch(async (err) => {            
             this.setState({ 
-                isControllerError: true, 
-                controllerErrorMessage: err.message
+                isError: true, 
+                errorMessage: err.message
             }); 
         });
     }
@@ -110,7 +111,7 @@ export default class ApproveUsersModal extends React.Component {
                 <div className="modalHeader">Pending Users</div>
                 <form onSubmit={(Event) => {Event.preventDefault()}}>
                     <div className='modalBody'>
-                        {this.state.isControllerError ?
+                        {this.state.isError ?
                             this._renderErrorMessage() :
                             null
                         }
@@ -152,7 +153,7 @@ export default class ApproveUsersModal extends React.Component {
     _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.controllerErrorMessage}
+                *{this.state.errorMessage}
             </label>
         );
     };

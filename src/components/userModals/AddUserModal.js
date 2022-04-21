@@ -35,7 +35,9 @@ export default class AddUserModal extends React.Component {
             isSignUp:        props.isSignUp,
             
             isControllerError:      false,
-            controllerErrorMessage: ''
+            controllerErrorMessage: '',
+            isError:                false,
+            errorMessage:           ''
         };
         this.handleInputFields = new HandleOnChangeEvent('userModal');
     };
@@ -85,16 +87,16 @@ export default class AddUserModal extends React.Component {
         .then((data) => {
             if (data.status !== undefined && data.status >= 400) throw data;
             
-            this.setState({ isControllerError: false, 
-                            controllerErrorMessage: ''
+            this.setState({ isError: false, 
+                            errorMessage: ''
             });
 
             window.location.reload();
             this._dismissModal();
         })
         .catch(async (err) => {  
-            this.setState({ isControllerError: true, 
-                            controllerErrorMessage: err.message
+            this.setState({ isError: true, 
+                            errorMessage: err.message
             });          
         });
     }
@@ -116,8 +118,8 @@ export default class AddUserModal extends React.Component {
             .then((data) => {
                 if (data.status !== undefined && data.status >= 400) throw data;
                 
-                this.setState({ isControllerError: false, 
-                                controllerErrorMessage: ''
+                this.setState({ isError: false, 
+                                errorMessage: ''
                 });
                 returnedUser = data;
 
@@ -125,9 +127,8 @@ export default class AddUserModal extends React.Component {
                 this._dismissModal();
             })
             .catch(async (err) => { 
-                console.log('error:', err.message); 
-                this.setState({ isControllerError: true, 
-                                controllerErrorMessage: err.message
+                this.setState({ isError: true, 
+                                errorMessage: err.message
                 });          
             });
         
@@ -225,7 +226,7 @@ export default class AddUserModal extends React.Component {
             </div>
             <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                 <div className="modalBody">
-                    {this.state.isControllerError ?
+                    {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
@@ -348,7 +349,7 @@ export default class AddUserModal extends React.Component {
     _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.controllerErrorMessage}
+                *{this.state.errorMessage}
             </label>
         );
     };

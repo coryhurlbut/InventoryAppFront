@@ -14,8 +14,8 @@ export default class LogoutModal extends React.Component{
         this.state = {
             isOpen: props.isOpen,
 
-            isControllerError:      false,
-            controllerErrorMessage: ''
+            isError:                false,
+            errorMessage:           ''
         };
     }
     
@@ -27,14 +27,17 @@ export default class LogoutModal extends React.Component{
         await loginLogoutController.logout(this.props.accountAuth)
         .then(() => {
             this.props.clearAuth();
-
+            this.setState({ 
+                isError: false, 
+                errorMessage: ''
+            });
             window.location.reload();
             this._dismissModal();
         })
         .catch(async (err) => {            
             this.setState({ 
-                isControllerError: true, 
-                controllerErrorMessage: err.message
+                isError: true, 
+                errorMessage: err.message
             }); 
         });
     }
@@ -43,7 +46,7 @@ export default class LogoutModal extends React.Component{
     _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.controllerErrorMessage}
+                *{this.state.errorMessage}
             </label>
         );
     }
@@ -55,7 +58,7 @@ export default class LogoutModal extends React.Component{
                     <h3>Log Out</h3>
                 </div>
                 <div className="modalBody">
-                    {this.state.isControllerError ?
+                    {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }

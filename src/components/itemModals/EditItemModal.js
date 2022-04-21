@@ -33,7 +33,9 @@ export default class EditItemModal extends React.Component{
             reload:           props.reload,
             
             isControllerError:      false,
-            controllerErrorMessage: ''
+            controllerErrorMessage: '',
+            isError:                false,
+            errorMessage:           ''
         };
         this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
@@ -111,8 +113,8 @@ export default class EditItemModal extends React.Component{
         .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
-                isControllerError: false, 
-                controllerErrorMessage: ''
+                isError: false, 
+                errorMessage: ''
             });
             
             await adminLogController.createAdminLog(log);
@@ -122,8 +124,8 @@ export default class EditItemModal extends React.Component{
         })
         .catch(async (err) => {            
             this.setState({ 
-                isControllerError: true, 
-                controllerErrorMessage: err.message
+                isError: true, 
+                errorMessage: err.message
             });
         });
     }
@@ -177,7 +179,7 @@ export default class EditItemModal extends React.Component{
                 </div>
                 <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                     <div className="modalBody">
-                        {this.state.isControllerError ?
+                        {this.state.isError ?
                             this._renderErrorMessage() :
                             null
                         }
@@ -324,7 +326,7 @@ export default class EditItemModal extends React.Component{
         else{
             return(
                 <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                    {this.state.isControllerError ? this._renderErrorDisplay() : this._renderSignOutNotification()}
+                    {this.state.isControllerError ? this._renderErrorDisplay() : this._renderForm()}
                 </Modal>
             );
         }

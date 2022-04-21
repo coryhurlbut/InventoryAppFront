@@ -48,21 +48,22 @@ export default class AdminLogModal extends React.Component {
             content: [],
 
             isControllerError:      false,
-            controllerErrorMessage: ''
+            controllerErrorMessage: '',
+            isError:                false,
+            errorMessage:           ''
         };
     }
 
     async componentDidMount() {
-        let logData = await adminLogController.getAllAdminLogs()
-        .then(() => {
+        try {
+            let logData = await adminLogController.getAllAdminLogs();
             this.setState({ content: logData });
-        })
-        .catch(async (err) => {            
+        } catch (error) {
             this.setState({ 
                 isControllerError: true, 
-                controllerErrorMessage: err.message
+                controllerErrorMessage: error.message
             }); 
-        });
+        }
     }
 
     _dismissModal = () => {
@@ -74,7 +75,7 @@ export default class AdminLogModal extends React.Component {
             <>
                 <div className="modalHeader">Admin Log</div>
                 <div className="modalBody">
-                    {this.state.isControllerError ?
+                    {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
@@ -91,7 +92,7 @@ export default class AdminLogModal extends React.Component {
     _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.controllerErrorMessage}
+                *{this.state.errorMessage}
             </label>
         );
     }
