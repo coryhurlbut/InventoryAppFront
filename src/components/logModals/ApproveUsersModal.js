@@ -35,14 +35,25 @@ export default class ApproveUsersModal extends React.Component {
             contentType:     props.contentType,
             selectedObjects: [],
             selectedIds:     [],
-            btnConfig:       true
-        }
-        this.setParentState    = this.setParentState.bind(this);
+            btnConfig:       true,
 
+            isControllerError:      false,
+            controllerErrorMessage: ''
+        }
+        this.setParentState    = this._setParentState.bind(this);
     }
+
     async componentDidMount() {
-        let users = await userController.getPendingUsers();
-        this.setState({ content: users });
+        let users = await userController.getPendingUsers()
+        .then(() => {
+            this.setState({ content: users });
+        })
+        .catch(async (err) => {            
+            this.setState({ 
+                isControllerError: true, 
+                controllerErrorMessage: err.message
+            }); 
+        });
     }
 
     dismissModal = () => {
@@ -51,16 +62,32 @@ export default class ApproveUsersModal extends React.Component {
     }
 
     _approveUsers = async () =>{
-        await userController.activateUsers(this.state.selectedIds);
-        this.dismissModal();
+        await userController.activateUsers(this.state.selectedIds)
+        .then(() => {
+            this.dismissModal();
+        })
+        .catch(async (err) => {            
+            this.setState({ 
+                isControllerError: true, 
+                controllerErrorMessage: err.message
+            }); 
+        });
     }
 
     _denyUsers = async () => {
-        await userController.deleteUsers(this.state.selectedIds);
-        this.dismissModal();
+        await userController.deleteUsers(this.state.selectedIds)
+        .then(() => {
+            this.dismissModal();
+        })
+        .catch(async (err) => {            
+            this.setState({ 
+                isControllerError: true, 
+                controllerErrorMessage: err.message
+            }); 
+        });
     }
 
-    setParentState = (user) => {
+    _setParentState = (user) => {
         let arr = this.state.selectedIds;
         let objArr = this.state.selectedObjects;
         
@@ -77,12 +104,16 @@ export default class ApproveUsersModal extends React.Component {
         });
     }
 
-    render(){
+    _renderForm = () => {
         return(
-            <Modal onDismissed={this.props.hideModal} isOpen={this.state.isOpen}>
+            <>
                 <div className="modalHeader">Pending Users</div>
                 <form onSubmit={(Event) => {Event.preventDefault()}}>
                     <div className='modalBody'>
+                        {this.state.isControllerError ?
+                            this._renderErrorMessage() :
+                            null
+                        }
                         {this.state.content.length >= 1 ? 
                         <Table
                             columns={columns} 
@@ -113,6 +144,42 @@ export default class ApproveUsersModal extends React.Component {
                         </button> 
                     </div>
                 </form>
+            </>
+        );
+    }
+
+    /* If a backend issue occurs, display message to user */
+    _renderErrorMessage = () => {
+        return (
+            <label className="errorMessage">
+                *{this.state.controllerErrorMessage}
+            </label>
+        );
+    };
+
+    /* If componentDidMount error, display message to user */
+    _renderErrorDisplay = () => {
+        return(
+            <>
+                <div className="modalHeader">
+                    <h3>Error Has Occured</h3>
+                </div>
+                <div className="modalBody">
+                    <p className="errorMesage">
+                        {this.state.controllerErrorMessage}
+                    </p>
+                </div>
+                <div className="modalFooter">
+                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                </div>
+            </>
+        );
+    }
+
+    render(){
+        return(
+            <Modal onDismissed={this.props.hideModal} isOpen={this.state.isOpen}>
+                { this.state.isControllerError ? this._renderErrorDisplay() : this._renderForm() }
             </Modal>
         )
     }

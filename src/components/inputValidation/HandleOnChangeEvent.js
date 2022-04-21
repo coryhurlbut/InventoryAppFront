@@ -26,25 +26,26 @@ export default class HandleOnChangeEvent {
     //Expected arguments: userModal/itemModal
     constructor(args) {
         this.itemErrorList = {
-            itemNumber: '',
-            name: '',
-            description: '',
-            serialNumber: '',
-            notes: '',
-            homeLocation: '',
-            specificLocation: ''
+            itemNumberPrefix:     '',
+            itemNumberIdentifier: '',
+            name:                 '',
+            description:          '',
+            serialNumber:         '',
+            notes:                '',
+            homeLocation:         '',
+            specificLocation:     ''
         };
 
         this.userErrorList = {
-            firstName: '',
-            lastName: '',
-            userName: '',
-            password: '',
-            userRole: '',
-            status: '',
-            userPassword: '',
+            firstName:       '',
+            lastName:        '',
+            userName:        '',
+            password:        '',
+            userRole:        '',
+            status:          '',
+            userPassword:    '',
             confirmPassword: '',
-            phoneNumber: ''
+            phoneNumber:     ''
         };
         this.isSubmitAvailable = false;
 
@@ -58,6 +59,8 @@ export default class HandleOnChangeEvent {
         this.setClassNameIsValid = this._setClassNameIsValid.bind(this);
 
         this.isAddUserModalSubmitAvailable = this._isAddUserModalSubmitAvailable.bind(this);
+        this.isAddSignUpModalSubmitAvailable = this._isAddSignUpModalSubmitAvailable.bind(this);
+        this.isItemModalSubmitAvailable = this._isItemModalSubmitAvailable.bind(this);
     };
 
     /*
@@ -159,7 +162,23 @@ export default class HandleOnChangeEvent {
     }
 
     _isItemModalSubmitAvailable = () => {
-
+        let errorList = this.itemErrorList;
+        
+        if(this.modalType === 'editItemModal') {
+            for(let errorItem in errorList) {
+                if(errorItem !== 'itemNumberPrefix' && errorItem !== 'itemNumberIdentifier' && errorList[errorItem] !== EMPTY_STRING) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            for(let errorItem in errorList) {
+                if(errorList[errorItem] !== EMPTY_STRING) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
     _isAddUserModalSubmitAvailable = () => {

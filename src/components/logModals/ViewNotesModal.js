@@ -32,10 +32,12 @@ export default class ViewNotesModal extends React.Component{
         this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
     }
-    _viewOtherModal(){
+
+    _viewOtherModal = () => {
         this.setState({ viewOtherModalBool: true });
     }
-    _setParentState(user) {
+    
+    _setParentState = (user) => {
         let arr = this.state.selectedIds;
         let selectedObjects = this.state.selectedObjects;
         if(arr.includes(user._id)) {

@@ -87,13 +87,17 @@ export default class DeleteUserModal extends React.Component {
     }
 
     /* Builds display for deleting users */
-    _buildDeleteNotification = () => {
+    _renderDeleteNotification = () => {
         return(
             <>
                 <div className="modalHeader">
                     <h3>Delete User</h3>
                 </div>
                 <div className="modalBody">
+                    {this.state.isControllerError ?
+                        this._renderErrorMessage() :
+                        null
+                    }
                     <h4>You are about to delete the following:</h4>
                     {this._displayArray(this.state.selectedObjects)}
                 </div>
@@ -106,28 +110,18 @@ export default class DeleteUserModal extends React.Component {
     }
 
     /* If a backend issue occurs, display message to user */
-    _buildErrorDisplay = () => {
-        return(
-            <>
-            <div className="modalHeader">
-                <h3>Error Has Occured</h3>
-            </div>
-            <div className="modalBody">
-                <p className="errorMessage">
-                    {this.state.controllerErrorMessage}
-                </p>
-            </div>
-            <div className="modalFooter">
-                <button type="reset" onClick={this._dismissModal}>Close</button>
-            </div>
-            </>
+    _renderErrorMessage = () => {
+        return (
+            <label className="errorMessage">
+                *{this.state.controllerErrorMessage}
+            </label>
         );
-    }
+    };
 
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                {this.state.isControllerError ? this._buildErrorDisplay() : this._buildDeleteNotification()}
+                {this._renderDeleteNotification()}
             </Modal>
         );
     }

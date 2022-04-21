@@ -5,7 +5,8 @@ import { Modal }            from '@fluentui/react';
 import { itemController,
     adminLogController }    from '../../controllers';
 import { itemValidation,
-    sanitizeData }          from '../inputValidation';
+    sanitizeData,
+    HandleOnChangeEvent }   from '../inputValidation';
 import { ViewNotesModal }   from '../logModals';
 import MapNotes             from '../utilities/MapNotes';
 
@@ -29,17 +30,14 @@ export default class EditItemModal extends React.Component{
             specificLocation: '',
             available:        true,
             viewNotesBool:    null,
-            errorDetails:     {
-                field:            '',
-                errorMessage:     ''
-            },
-            errors:                 [],
+            reload:           props.reload,
+            
             isControllerError:      false,
-            controllerErrorMessage: '',
-            reload:         props.reload,
+            controllerErrorMessage: ''
         };
         this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
+        this.handleInputFields = new HandleOnChangeEvent('editItemModal');
     }
 
     async componentDidMount() {
@@ -130,155 +128,59 @@ export default class EditItemModal extends React.Component{
         });
     }
 
-    /* For the given field, identified by fieldID
-        determine is errors has an assoicated error message to display */
-    _displayErrorMessage = (fieldID) => {
-        let errorDetail = this._returnErrorDetails(fieldID);
-
-        if(errorDetail) {
-            return(
-                <label className="errorMessage"> 
-                    {errorDetail.errorMessage} 
-                </label>
-            );
-        };
-
-        return <label className="emptyLabel">This is filler</label>;
-    }
-
-    /* When an errorDetail is no longer present, remove from errors list */
-    _handleRemoveError = (fieldID) => {
-        const updatedErrors = this.state.errors.filter((errorDetails) => {return errorDetails.field !== fieldID});
-        this.setState({ errors: updatedErrors });
+    _openNotesModal = () => {
+        this.setState({ viewNotesBool: true });
     }
     
-    /* Loops through the errors list
-        returns the errorDetail or false if it doesn't exists */
-    _returnErrorDetails = (fieldID) => {
-        let errorList = this.state.errors;
+    _handleChangeEvent = (Event, methodCall) => {
+        let inputFieldID = Event.target.id;
+        let inputFieldValue = Event.target.value;
 
-        if(errorList) {
-            for(let index = 0; index < errorList.length; index++) {
-                if(errorList[index].field === fieldID) {
-                    return errorList[index];
-                };
-            };
-        };
-        return false;
-    }
-
-    /* Useability Feature:
-        submit button is only enabled when no errors are detected */
-    _isSubmitAvailable = () => {
-        if(itemValidation.validateSubmit(
-            this.state.name, 
-            this.state.description, 
-            this.state.homeLocation, 
-            this.state.specificLocation, 
-            this.state.serialNumber
-            ) && this.state.errors.length === 0
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /* Primary purpose:
-        indicate to user that field is required when user clicks off field without entering any information
-        isEmpty in userValidation is triggered and error is returned for display */
-    _handleBlur = (validationFunc, Event) => {
-        const fieldID       = Event.target.id;
-        const fieldVal      = Event.target.value;
-        const isErrorSet    = this._returnErrorDetails(fieldID);
-
-        if(validationFunc(fieldVal) && isErrorSet === false) {
-            //To update the list of error, we need an object preset with the inform, as we can't collect from setState errorDetails
-            let errorDetail = {
-                field:        fieldID,
-                errorMessage: validationFunc(fieldVal)
-            };
-
-            this.setState( prevState => ({
-                isError:          true,
-                errors: [
-                    ...prevState.errors,
-                    errorDetail
-                ]
-            }));
-        };
-
-        return;
-    };
-
-    /* Provide user immediate field requirement:
-        check if user is producing errors -> validateOnChange is true
-        updates the value of the state for that field */
-    _handleChange = (validationFunc, Event) => {
-        const fieldID  = Event.target.id;
-        const fieldVal = Event.target.value;
-
-        /* If something is returned from this function, an error occured 
-            since an error was returned, set the error state
-        */
-        if(!this._returnErrorDetails(fieldID) && validationFunc(fieldVal)) {   //Does the error already exist? no
-            let errorDetail = {
-                field:        fieldID,
-                errorMessage: validationFunc(fieldVal)
-            };
-
-            this.setState( prevState => ({
-                errors: [
-                    ...prevState.errors,
-                    errorDetail
-                ]
-            }));
-        } else if(!validationFunc(fieldVal)) {
-            this._handleRemoveError(fieldID);
-        };
+        this.handleInputFields.handleEvent(Event, methodCall);
 
         //Update the state for whatever field is being modified
-        switch(fieldID) {
+        switch(inputFieldID) {
             case 'name':
-                this.setState({ name: sanitizeData.sanitizeWhitespace(fieldVal) });
+                this.setState({ name: sanitizeData.sanitizeWhitespace(inputFieldValue) });
                 break;
             case 'description':
-                this.setState({ description: sanitizeData.sanitizeWhitespace(fieldVal) });
+                this.setState({ description: sanitizeData.sanitizeWhitespace(inputFieldValue) });
                 break;
             case 'serialNumber':
-                this.setState({ serialNumber: sanitizeData.sanitizeWhitespace(fieldVal) });
+                this.setState({ serialNumber: sanitizeData.sanitizeWhitespace(inputFieldValue) });
                 break;
             case 'notes':
-                this.setState({ notes: sanitizeData.sanitizeWhitespace(fieldVal) });
+                this.setState({ notes: sanitizeData.sanitizeWhitespace(inputFieldValue) });
                 break;
             case 'homeLocation':
-                this.setState({ homeLocation: sanitizeData.sanitizeWhitespace(fieldVal) });
+                this.setState({ homeLocation: sanitizeData.sanitizeWhitespace(inputFieldValue) });
                 break;
             case 'specificLocation':
-                this.setState({ specificLocation: sanitizeData.sanitizeWhitespace(fieldVal) });
+                this.setState({ specificLocation: sanitizeData.sanitizeWhitespace(inputFieldValue) });
                 break;
             default:
                 break;
         };
     }
-    
+
     _handleFormSubmit = (event) => {
         event.preventDefault();
         this._editItem();
     }
-    _openNotesModal = () => {
-        this.setState({ viewNotesBool: true });
-    }
 
     /* Builds user input form */
-    _buildForm = () => {
+    _renderForm = () => {
         return(
             <>
                 <div className="modalHeader">
                     <h3>Edit Item</h3>
                 </div>
-                <form onSubmit={this._handleFormSubmit}>
+                <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                     <div className="modalBody">
+                        {this.state.isControllerError ?
+                            this._renderErrorMessage() :
+                            null
+                        }
                         <fieldset>
                             <h4 className="inputTitle">Item Number</h4>
                             <input 
@@ -293,36 +195,36 @@ export default class EditItemModal extends React.Component{
                             <input 
                                 type="text" 
                                 id="name"
-                                className={this._returnErrorDetails("name") ? "invalid" : "valid"}
+                                className={this.handleInputFields.setClassNameIsValid("name") ? "valid" : "invalid"}
                                 value={this.state.name} 
-                                onChange={(Event) => this._handleChange(itemValidation.validateName, Event)}
-                                onBlur={(Event) => this._handleBlur(itemValidation.validateName, Event)}
+                                onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateName)}
+                                onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateName)}
                             />
-                            {this._displayErrorMessage("name")}
+                            {this.handleInputFields.setErrorMessageDisplay("name")}
                         </fieldset>
                         <fieldset>
                             <h4 className="inputTitle">Description</h4>
                             <input 
                                 type="text" 
                                 id="description" 
-                                className={ this._returnErrorDetails("description") ? "invalid" : "valid"}
+                                className={ this.handleInputFields.setClassNameIsValid("description") ? "valid" : "invalid"}
                                 value={this.state.description}
-                                onChange={(Event) => this._handleChange(itemValidation.validateDescription, Event)}
-                                onBlur={(Event) => this._handleBlur(itemValidation.validateDescription, Event)}
+                                onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateDescription)}
+                                onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateDescription)}
                             />
-                            {this._displayErrorMessage("description")}
+                            {this.handleInputFields.setErrorMessageDisplay("description")}
                         </fieldset>
                         <fieldset>
                             <h4 className="inputTitle">Serial Number</h4>
                             <input 
                                 type="text" 
                                 id="serialNumber" 
-                                className={ this._returnErrorDetails("serialNumber") ? "invalid" : "valid"}
+                                className={ this.handleInputFields.setClassNameIsValid("serialNumber") ? "valid" : "invalid"}
                                 value={this.state.serialNumber} 
-                                onChange={(Event) => this._handleChange(itemValidation.validateSerialNumber, Event)}
-                                onBlur={(Event) => this._handleBlur(itemValidation.validateSerialNumber, Event)}
+                                onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateSerialNumber)}
+                                onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateSerialNumber)}
                             />
-                            {this._displayErrorMessage("serialNumber")}
+                            {this.handleInputFields.setErrorMessageDisplay("serialNumber")}
                         </fieldset>
                         <fieldset>
                             <h4 className="inputTitle">Notes</h4>
@@ -333,44 +235,47 @@ export default class EditItemModal extends React.Component{
                                 rows='2'
                                 cols='21'
                                 maxLength={100}
-                                className={this._returnErrorDetails("notes") ? "invalid" : "valid"}
+                                className={this.handleInputFields.setClassNameIsValid("notes") ? "valid" : "invalid"}
                                 value={this.state.notes} 
-                                onChange={(Event) => this._handleChange(itemValidation.validateNotes, Event)}
-                                onBlur={(Event) => this._handleBlur(itemValidation.validateNotes, Event)}
+                                onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
+                                onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
                                 ></textarea>
                             <button type='button' onClick={this._openNotesModal}>
                                 View
                             </button>
                             </span>
-                            {this._displayErrorMessage("notes")}
+                            {this.handleInputFields.setErrorMessageDisplay("notes")}
                         </fieldset>
                         <fieldset>
                             <h4 className="inputTitle">Home Location</h4>
                             <input 
                                 type="text" 
                                 id="homeLocation" 
-                                className={ this._returnErrorDetails("homeLocation") ? "invalid" : "valid"}
+                                className={ this.handleInputFields.setClassNameIsValid("homeLocation") ? "valid" : "invalid"}
                                 value={this.state.homeLocation} 
-                                onChange={(Event) => this._handleChange(itemValidation.validateLocation, Event)}
-                                onBlur={(Event) => this._handleBlur(itemValidation.validateLocation, Event)}
+                                onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateHomeLocation)}
+                                onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateHomeLocation)}
                             />
-                            {this._displayErrorMessage("homeLocation")}
+                            {this.handleInputFields.setErrorMessageDisplay("homeLocation")}
                         </fieldset>
                         <fieldset>
                             <h4 className="inputTitle">Specific Location</h4>
                             <input 
                                 type="text" 
                                 id="specificLocation" 
-                                className={ this._returnErrorDetails("specificLocation") ? "invalid" : "valid"}
+                                className={ this.handleInputFields.setClassNameIsValid("specificLocation") ? "valid" : "invalid"}
                                 value={this.state.specificLocation} 
-                                onChange={(Event) => this._handleChange(itemValidation.validateSpecificLocation, Event)}
-                                onBlur={(Event) => this._handleBlur(itemValidation.validateSpecificLocation, Event)} 
+                                onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateSpecificLocation)}
+                                onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateSpecificLocation)} 
                             />
-                            {this._displayErrorMessage("specificLocation")}
+                            {this.handleInputFields.setErrorMessageDisplay("specificLocation")}
                         </fieldset>
                     </div>
                     <div className="modalFooter">
-                        <input type='submit' value='Submit' disabled={!this._isSubmitAvailable()} />
+                        <input type='submit' 
+                            value='Submit' 
+                            disabled={!this.handleInputFields.isItemModalSubmitAvailable()} 
+                        />
                         <button type="reset" onClick={this._dismissModal}>Close</button>
                     </div>
                 </form>
@@ -379,19 +284,26 @@ export default class EditItemModal extends React.Component{
     }
 
     /* If a backend issue occurs, display message to user */
-    _buildErrorDisplay = () => {
+    _renderErrorMessage = () => {
+        return (
+            <label className="errorMessage">
+                *{this.state.controllerErrorMessage}
+            </label>
+        );
+    };
+
+    /* If a backend issue occurs, display message to user */
+    _renderErrorDisplay = () => {
         return(
             <>
                 <div className="modalHeader">
                     <h3>Error Has Occured</h3>
                 </div>
                 <div className="modalBody">
-                    <p className="errorMesage">{this.controllerErrorMessage}</p>
+                    <p className="errorMesage">{this.state.controllerErrorMessage}</p>
                 </div>
                 <div className="modalFooter">
-                    <button type="reset" onClick={this._dismissModal}>
-                        Close
-                    </button>
+                    <button type="reset" onClick={this._dismissModal}>Close</button>
                 </div>
             </>
         );
@@ -400,16 +312,21 @@ export default class EditItemModal extends React.Component{
     render() {
         if(this.state.viewNotesBool){
             return(
-                <ViewNotesModal selectedIds={this._selectedIds} isOpen={true} hideModal={null} content={this.state.notesArrayFinal} 
-                name={`${this.state.name}`} previousModal={'editItem'}/>
-            )
+                <ViewNotesModal selectedIds={this._selectedIds} 
+                    isOpen={true} 
+                    hideModal={null} 
+                    content={this.state.notesArrayFinal} 
+                    name={`${this.state.name}`} 
+                    previousModal={'editItem'}
+                />
+            );
         }
         else{
-        return(
-            <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                {this.isControllerError ? this._buildErrorDisplay() : this._buildForm()}
-            </Modal>
-        );
+            return(
+                <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
+                    {this.state.isControllerError ? this._renderErrorDisplay() : this._renderSignOutNotification()}
+                </Modal>
+            );
         }
     }
 }

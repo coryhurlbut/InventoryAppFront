@@ -95,7 +95,7 @@ export default class EditUserModal extends React.Component {
         this.setState({ isOpen: false });
     }
 
-    async _editUser() {
+    _editUser = async () => {
         let user = {
             firstName:   this.state.firstName,
             lastName:    this.state.lastName,
@@ -156,7 +156,7 @@ export default class EditUserModal extends React.Component {
         });
     };
 
-    _handleUserRoleChange(Event) {
+    _handleUserRoleChange = (Event) => {
         if(Event.target.value === 'user') {
             this.setState({ 
                 password: '', 
@@ -184,7 +184,7 @@ export default class EditUserModal extends React.Component {
         };
     };
 
-    _allowPasswordReset() {
+    _allowPasswordReset = () => {
         this.setState({
             pwDisabled: false, 
             pwRequired: true, 
@@ -234,15 +234,24 @@ export default class EditUserModal extends React.Component {
         }
     }
 
+    _handleFormSubmit = (event) => {
+        event.preventDefault();
+        this._editUser();
+    }
+
     /* Builds user input form */
-    _buildForm(){
+    _renderForm = () => {
         return(
             <>
             <div className="modalHeader">
                 <h3>Edit User</h3>
             </div>
-            <form onSubmit={(Event) => {Event.preventDefault(); this._editUser();}}>
+            <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                 <div className="modalBody">
+                    {this.state.isControllerError ?
+                        this._renderErrorMessage() :
+                        null
+                    }
                     <fieldset>
                         <h4 className="inputTitle">First Name</h4>
                         <input 
@@ -345,7 +354,6 @@ export default class EditUserModal extends React.Component {
                     </fieldset>
                 </div>
                 <div className="modalFooter">
-                    {console.log(this.handleInputFields.isAddUserModalSubmitAvailable())}
                     <input type='submit' value='Submit' disabled={!this.handleInputFields.isAddUserModalSubmitAvailable()} />
                     <button type="reset" onClick={this._dismissModal}>Close</button>
                 </div>
@@ -355,28 +363,37 @@ export default class EditUserModal extends React.Component {
     };
 
     /* If a backend issue occurs, display message to user */
-    _buildErrorDisplay(){
-        return(
-            <>
-            <div className="modalHeader">
-                <h3>Error Has Occured</h3>
-            </div>
-            <div className="modalBody">
-                <p className="errorMessage">
-                    {this.state.controllerErrorMessage} 
-                </p>
-            </div>
-            <div className="modalFooter">
-                <button type="reset" onClick={this._dismissModal}>Close</button>
-            </div>
-            </>
+    _renderErrorMessage = () => {
+        return (
+            <label className="errorMessage">
+                *{this.state.controllerErrorMessage}
+            </label>
         );
     };
+
+    /* If componentDidMount error, display message to user */
+    _renderErrorDisplay = () => {
+        return(
+            <>
+                <div className="modalHeader">
+                    <h3>Error Has Occured</h3>
+                </div>
+                <div className="modalBody">
+                    <p className="errorMesage">
+                        {this.state.controllerErrorMessage}
+                    </p>
+                </div>
+                <div className="modalFooter">
+                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                </div>
+            </>
+        );
+    }
 
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.state.isControllerError ? this._buildErrorDisplay() : this._buildForm() }
+                { this.state.isControllerError ? this._renderErrorDisplay() : this._renderForm() }
             </Modal>
         );
     };

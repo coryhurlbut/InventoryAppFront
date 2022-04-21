@@ -20,10 +20,11 @@ export default class SignItemOutModal extends React.Component{
             users:                  [],
             userId:                 null,
             userName:               '',
-            isControllerError:      false,
-            controllerErrorMessage: '',
             notesArray:             [],
-            buttonClicked:          null
+            buttonClicked:          null,
+
+            isControllerError:      false,
+            controllerErrorMessage: ''
         };
 
         this._selectedIds = props.selectedIds;
@@ -144,7 +145,7 @@ export default class SignItemOutModal extends React.Component{
 
 
     /* Builds display for deleting items */
-    _buildSignOutNotification = () => {
+    _renderSignOutNotification = () => {
         return(
             <>
                 <div className="modalHeader">
@@ -152,6 +153,10 @@ export default class SignItemOutModal extends React.Component{
                 </div>
                 <form onSubmit={this._handleFormSubmit}>
                 <div className="modalBody">
+                    {this.state.isControllerError ?
+                        this._renderErrorMessage() :
+                        null
+                    }
                     <h4>You are about to sign out: </h4>
                     {this._displayArray(this._selectedObjects)}
                     <label>Choose a user: </label>
@@ -181,7 +186,16 @@ export default class SignItemOutModal extends React.Component{
     }
 
     /* If a backend issue occurs, display message to user */
-    _buildErrorDisplay = () => {
+    _renderErrorMessage = () => {
+        return (
+            <label className="errorMessage">
+                *{this.state.controllerErrorMessage}
+            </label>
+        );
+    };
+
+    /* If a backend issue occurs, display message to user */
+    _renderErrorDisplay = () => {
         return(
             <>
                 <div className="modalHeader">
@@ -204,11 +218,11 @@ export default class SignItemOutModal extends React.Component{
                 name={'temp'} previousModal={'signOut'} selectedObjects={this._selectedObjects}/>
             )
         }else{
-        return(
-            <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                {this.state.isControllerError ? this._buildErrorDisplay() : this._buildSignOutNotification()}
-            </Modal>
-        );
+            return(
+                <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
+                    {this.state.isControllerError ? this._renderErrorDisplay() : this._renderSignOutNotification()}
+                </Modal>
+            );
         }
     }
 }

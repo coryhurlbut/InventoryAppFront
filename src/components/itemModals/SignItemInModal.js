@@ -15,12 +15,13 @@ export default class SignItemInModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen:  props.isOpen,
-            isControllerError:      false,
-            controllerErrorMessage: '',
+            isOpen:                 props.isOpen,
             viewNotesModalBool:     null,
             notesArray:             [],
             buttonClicked:          null,
+
+            isControllerError:      false,
+            controllerErrorMessage: ''
         };
 
         this._selectedIds = props.selectedIds;
@@ -112,13 +113,17 @@ export default class SignItemInModal extends React.Component{
     }
 
     /* Builds display for deleting items */
-    _buildSignInNotification = () => {
+    _renderSignInNotification = () => {
         return(
             <>
                 <div className="modalHeader">
                     <h3>Sign Item In</h3>
                 </div>
                 <div className="modalBody">
+                    {this.state.isControllerError ?
+                        this._renderErrorMessage() :
+                        null
+                    }
                     <h4>You are about to sign back in:</h4>
                     {this._displayArray(this._selectedObjects)}
                 </div>
@@ -131,21 +136,13 @@ export default class SignItemInModal extends React.Component{
     }
 
     /* If a backend issue occurs, display message to user */
-    _buildErrorDisplay = () => {
-        return(
-            <>
-                <div className="modalHeader">
-                    <h3>Error Has Occured</h3>
-                </div>
-                <div className="modalBody">
-                    <p className="errorMesage">{this.state.controllerErrorMessage}</p>
-                </div>
-                <div className="modalFooter">
-                    <button type="reset" onClick={this._dismissModal}>Close</button>
-                </div>
-            </>
+    _renderErrorMessage = () => {
+        return (
+            <label className="errorMessage">
+                *{this.state.controllerErrorMessage}
+            </label>
         );
-    }
+    };
 
     render() {
         if(this.state.viewNotesModalBool){
@@ -156,7 +153,7 @@ export default class SignItemInModal extends React.Component{
         }else{
             return(
                 <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                    {this.state.isControllerError ? this._buildErrorDisplay() : this._buildSignInNotification()}
+                    {this._renderSignInNotification()}
                 </Modal>
             );
         }

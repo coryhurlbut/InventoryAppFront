@@ -67,11 +67,11 @@ export default class AddUserModal extends React.Component {
         
     };
 
-    _dismissModal() {
+    _dismissModal = () => {
         this.setState({ isOpen: false });
     }
 
-    async _addPendingUser() {
+    _addPendingUser = async () => {
         let userRegister = {
             firstName:      this.state.firstName,
             lastName:       this.state.lastName,
@@ -99,7 +99,7 @@ export default class AddUserModal extends React.Component {
         });
     }
 
-    async _addUser() {
+    _addUser = async () => {
         let user = {
             firstName:      this.state.firstName,
             lastName:       this.state.lastName,
@@ -142,7 +142,7 @@ export default class AddUserModal extends React.Component {
             await adminLogController.createAdminLog(log);
     }
     
-    _handleUserRoleChange(event) {
+    _handleUserRoleChange = (event) => {
         if(event.target.value === 'user') {
             this.setState({
                 pwDisabled: true, 
@@ -207,7 +207,7 @@ export default class AddUserModal extends React.Component {
         }
     }
 
-    _handleSubmit = (Event) => {
+    _handleFormSubmit = (Event) => {
         Event.preventDefault(); 
         if(this.state.isSignUp) {
             this._addPendingUser();
@@ -217,14 +217,18 @@ export default class AddUserModal extends React.Component {
     };
 
     /* Builds user input form */
-    _buildForm(){
+    _renderForm = () => {
         return(
             <>
             <div className="modalHeader">
                 <h3>Add User to Database</h3>
             </div>
-            <form onSubmit={(Event) => {this._handleSubmit(Event);}}>
+            <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                 <div className="modalBody">
+                    {this.state.isControllerError ?
+                        this._renderErrorMessage() :
+                        null
+                    }
                     <fieldset>
                         <h4 className="inputTitle">First Name</h4>
                         <input 
@@ -341,26 +345,37 @@ export default class AddUserModal extends React.Component {
     };
 
     /* If a backend issue occurs, display message to user */
-    _buildErrorDisplay(){
-        return(
-            <>
-            <div className="modalHeader">
-                <h3>Error Has Occured</h3>
-            </div>
-            <div className="modalBody">
-                <p className="errorMesage"> {this.controllerErrorMessage} </p>
-            </div>
-            <div className="modalFooter">
-                <button type="reset" onClick={() => this._dismissModal()}>Close</button>
-            </div>
-            </>
+    _renderErrorMessage = () => {
+        return (
+            <label className="errorMessage">
+                *{this.state.controllerErrorMessage}
+            </label>
         );
     };
+
+    /* If componentDidMount error, display message to user */
+    _renderErrorDisplay = () => {
+        return(
+            <>
+                <div className="modalHeader">
+                    <h3>Error Has Occured</h3>
+                </div>
+                <div className="modalBody">
+                    <p className="errorMesage">
+                        {this.state.controllerErrorMessage}
+                    </p>
+                </div>
+                <div className="modalFooter">
+                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                </div>
+            </>
+        );
+    }
 
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.isControllerError ? this._buildErrorDisplay() : this._buildForm() }
+                { this.state.isControllerError ? this._renderErrorDisplay() : this._renderForm() }
             </Modal>
         );
     };

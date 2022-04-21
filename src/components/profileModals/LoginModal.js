@@ -25,8 +25,9 @@ export default class LoginModal extends React.Component{
             isOpen:       props.isOpen,
             userName:     '',
             password:     '',
-            isError:      false,
-            errorMessage: ''
+
+            isControllerError:      false,
+            controllerErrorMessage: ''
         };
     }
 
@@ -38,7 +39,7 @@ export default class LoginModal extends React.Component{
         await loginLogoutController.login(this.state.userName, this.state.password)
         .then((auth) => {
             if(auth.status >= 400) throw auth;
-            this.setState({ error: '', isError: false });
+            this.setState({ error: '', isControllerError: false });
             this.props.setAuth(auth);
             this._dismissModal();
             //reload so the page re-renders with red dot notification by pending
@@ -46,9 +47,13 @@ export default class LoginModal extends React.Component{
         })
         .catch(async (err) => {
             if(BACKEND_GENERATED_ERRORMESSAGES.includes(err.message)) {
-                this.setState({ errorMessage: FAILED_LOGIN_DEFAULT, isError: true });
+                this.setState({ controllerErrorMessage: FAILED_LOGIN_DEFAULT, 
+                    isControllerError: true 
+                });
             } else {
-                this.setState({ errorMessage: err.message, isError: true });
+                this.setState({ controllerErrorMessage: err.message, 
+                    isControllerError: true 
+                });
             }
         });
     }
@@ -65,8 +70,8 @@ export default class LoginModal extends React.Component{
                 </div>
                 <form onSubmit={(event) => {event.preventDefault();}}>
                     <div className="modalBody">
-                        {this.state.isError ?
-                            this._renderIfError() :
+                        {this.state.isControllerError ?
+                            this._renderErrorMessage() :
                             null
                         }
                         <fieldset id="modalBody_Username">
@@ -74,7 +79,7 @@ export default class LoginModal extends React.Component{
                             <input 
                                 type="text" 
                                 key="userName" 
-                                className={this.state.isError ? "invalid" : "valid"}
+                                className={this.state.isControllerError ? "invalid" : "valid"}
                                 value={this.state.userName} 
                                 onChange={(event) => {this.setState({userName: event.target.value})}}
                             />
@@ -84,7 +89,7 @@ export default class LoginModal extends React.Component{
                             <input 
                                 type="password" 
                                 key="password" 
-                                className={this.state.isError ? "invalid" : "valid"}
+                                className={this.state.isControllerError ? "invalid" : "valid"}
                                 value={this.state.password} 
                                 onChange={(event) => {this.setState({password: event.target.value})}}
                             />
@@ -100,13 +105,14 @@ export default class LoginModal extends React.Component{
         );
     }
     //Display Attempt errors if unsucessfully login
-    _renderIfError = () => {
+    _renderErrorMessage = () => {
         return (
             <label className="errorMessage">
-                *{this.state.errorMessage}
+                *{this.state.controllerErrorMessage}
             </label>
         );
     }
+
     //Prevent brute force attacks
     _renderMaxLoginAttemptsError = () => {
         return(
@@ -141,7 +147,7 @@ export default class LoginModal extends React.Component{
         } else {
             return(
                 <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                    {this.state.errorMessage === LOGIN_ATTEMPT_EXCEEDED ?
+                    {this.state.controllerErrorMessage === LOGIN_ATTEMPT_EXCEEDED ?
                         this._renderMaxLoginAttemptsError() :
                         this._renderLoginForm()}
                 </Modal>

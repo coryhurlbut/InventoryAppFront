@@ -13,18 +13,39 @@ export default class LogoutModal extends React.Component{
 
         this.state = {
             isOpen: props.isOpen,
+
+            isControllerError:      false,
+            controllerErrorMessage: ''
         };
+    }
+    
+    _dismissModal = () => {
+        this.setState({ isOpen: false });
     }
 
     _logout = async () => {
-        //TODO: Error handling
-        await loginLogoutController.logout(this.props.accountAuth).then(() => this.props.clearAuth());
-        window.location.reload();
-        this._dismissModal();
+        await loginLogoutController.logout(this.props.accountAuth)
+        .then(() => {
+            this.props.clearAuth();
+
+            window.location.reload();
+            this._dismissModal();
+        })
+        .catch(async (err) => {            
+            this.setState({ 
+                isControllerError: true, 
+                controllerErrorMessage: err.message
+            }); 
+        });
     }
 
-    _dismissModal = () => {
-        this.setState({ isOpen: false });
+    //Display Attempt errors if unsucessfully login
+    _renderErrorMessage = () => {
+        return (
+            <label className="errorMessage">
+                *{this.state.controllerErrorMessage}
+            </label>
+        );
     }
 
     render() {
@@ -34,6 +55,10 @@ export default class LogoutModal extends React.Component{
                     <h3>Log Out</h3>
                 </div>
                 <div className="modalBody">
+                    {this.state.isControllerError ?
+                        this._renderErrorMessage() :
+                        null
+                    }
                     <p>Are you sure you want to Log Out?</p>
                 </div>
                 <div className="modalFooter">

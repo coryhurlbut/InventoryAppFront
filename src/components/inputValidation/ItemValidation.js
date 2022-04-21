@@ -21,10 +21,10 @@ class ItemValidation {
 		return false;
 	}
 
-	validateItemNumberIdentifier(isRequired, itemNumberIdentifier) {
+	validateItemNumberIdentifier(itemNumberIdentifier) {
 		let sanitizedItemNumber = sanitizeData.sanitizeWhitespace(itemNumberIdentifier);
 		
-		if(validator.isEmpty(isRequired, sanitizedItemNumber)) {
+		if(validator.isEmpty(sanitizedItemNumber)) {
 			return 'Please provide a 5 digit identifier';
 		} else if(!validator.isAlphanumeric(sanitizedItemNumber, 'en-US')) {
 			return '-_- letters and numbers only';

@@ -4,7 +4,7 @@ import { Modal }                from '@fluentui/react';
 
 
 import { adminLogController }   from '../../controllers';
-import {Table}                    from '../tableStuff';
+import {Table}                  from '../tableStuff';
 
 import '../../styles/Modal.css'
 
@@ -45,29 +45,80 @@ export default class AdminLogModal extends React.Component {
 
         this.state = {
             isOpen: props.isOpen,
-            content: []
+            content: [],
+
+            isControllerError:      false,
+            controllerErrorMessage: ''
         };
     }
 
     async componentDidMount() {
-        let logs = await adminLogController.getAllAdminLogs();
-        this.setState({ content: logs });
+        let logData = await adminLogController.getAllAdminLogs()
+        .then(() => {
+            this.setState({ content: logData });
+        })
+        .catch(async (err) => {            
+            this.setState({ 
+                isControllerError: true, 
+                controllerErrorMessage: err.message
+            }); 
+        });
     }
 
     _dismissModal = () => {
         this.setState({ isOpen: false });
     }
-    
-    render() {
+
+    _renderAdminLog = () => {
         return(
-            <Modal onDismissed={this.props.hideModal} isOpen={this.state.isOpen}>
+            <>
                 <div className="modalHeader">Admin Log</div>
                 <div className="modalBody">
+                    {this.state.isControllerError ?
+                        this._renderErrorMessage() :
+                        null
+                    }
                     <Table columns={columns} data={this.state.content} />
                 </div>
                 <div className="modalFooter">
                     <button onClick={this._dismissModal}>Close</button>
                 </div>
+            </>
+        );
+    }
+
+    //Display Attempt errors if unsucessfully login
+    _renderErrorMessage = () => {
+        return (
+            <label className="errorMessage">
+                *{this.state.controllerErrorMessage}
+            </label>
+        );
+    }
+
+    /* If componentDidMount error, display message to user */
+    _renderErrorDisplay = () => {
+        return(
+            <>
+                <div className="modalHeader">
+                    <h3>Error Has Occured</h3>
+                </div>
+                <div className="modalBody">
+                    <p className="errorMesage">
+                        {this.state.controllerErrorMessage}
+                    </p>
+                </div>
+                <div className="modalFooter">
+                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                </div>
+            </>
+        );
+    }
+    
+    render() {
+        return(
+            <Modal onDismissed={this.props.hideModal} isOpen={this.state.isOpen}>
+                { this.state.isControllerError ? this._renderErrorDisplay() : this._renderAdminLog() }
             </Modal>
         );
     }
