@@ -21,10 +21,10 @@ class ItemValidation {
 		return false;
 	}
 
-	validateItemNumberIdentifier(itemNumberIdentifier) {
+	validateItemNumberIdentifier(isRequired, itemNumberIdentifier) {
 		let sanitizedItemNumber = sanitizeData.sanitizeWhitespace(itemNumberIdentifier);
 		
-		if(validator.isEmpty(sanitizedItemNumber)) {
+		if(validator.isEmpty(isRequired, sanitizedItemNumber)) {
 			return 'Please provide a 5 digit identifier';
 		} else if(!validator.isAlphanumeric(sanitizedItemNumber, 'en-US')) {
 			return '-_- letters and numbers only';
@@ -85,12 +85,14 @@ class ItemValidation {
 			return false;
 		} else if(!validator.isAlphanumeric(santizedNotes, 'en-US', {ignore: " -,.':"})) {
 			return '-_- letters and numbers only';
+		} else if(!validator.isLength(santizedNotes, {min:1, max:15})) {
+			return 'Specific Location cannot exceed 15 characters';
 		};
 
 		return false;
 	}
 
-	validateLocation(homeLocation) {
+	validateHomeLocation(homeLocation) {
 		let santizedHomeLoc = sanitizeData.sanitizeWhitespace(homeLocation);
 
 		if(validator.isEmpty(santizedHomeLoc)) {

@@ -43,7 +43,7 @@ export default class ContentList extends React.Component {
             _errorMessage:              ''
         };
         
-        this.setParentState         =   this.setParentState.bind(this);
+        this.setParentState        =   this.setParentState.bind(this);
         this.handleTableDisplay    =   this.handleTableDisplay.bind(this);
     };
 

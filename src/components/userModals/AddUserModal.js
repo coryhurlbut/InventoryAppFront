@@ -1,12 +1,13 @@
-import React                from 'react';
+import React                 from 'react';
 
-import { Modal }            from '@fluentui/react';
+import { Modal }             from '@fluentui/react';
 
 import { authController,
     userController,
-    adminLogController }    from '../../controllers'
+    adminLogController }     from '../../controllers'
 import { userValidation,
-    sanitizeData }          from '../inputValidation';
+        sanitizeData,
+        HandleOnChangeEvent } from '../inputValidation';
 
 
 
@@ -33,10 +34,10 @@ export default class AddUserModal extends React.Component {
             userRoleDisabled:false,
             isSignUp:        props.isSignUp,
             
-            errors:                 [],
             isControllerError:      false,
             controllerErrorMessage: ''
         };
+        this.handleInputFields = new HandleOnChangeEvent('userModal');
     };
 
     /* When a custodian is logged in, 
@@ -44,17 +45,17 @@ export default class AddUserModal extends React.Component {
     async componentDidMount() {
         try {
             let signedInAccount = await authController.getUserInfo();
-            if(this.isSignUp){this.setState({ status: 'pending', userRole: 'user' })}
 
+            //Front end display so it show's user is selected
+            let select = document.getElementById('userRoleSelect');
+            select.value = 'user';
+            this.setState({userRole: 'user'});
+
+            if(this.isSignUp){this.setState({ status: 'pending'})}
+            
             if(signedInAccount.user.user.userRole === 'custodian') {
-                //Front end display so it show's user is selected
-                let select = document.getElementById('selectUser');
-                select.value = 'user';
-
-                //Backend functionality of setting the role to a user
-                this.setState({ userRoleDisabled: true,
-                                userRole: 'user'
-                });
+                this.setState({ userRoleDisabled: true });
+            
             }
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
@@ -110,6 +111,7 @@ export default class AddUserModal extends React.Component {
         };
         let returnedUser = {};
 
+        console.log("userInformation: ", user);
         await userController.createUser(user)
             .then((data) => {
                 if (data.status !== undefined && data.status >= 400) throw data;
@@ -122,7 +124,8 @@ export default class AddUserModal extends React.Component {
                 window.location.reload();
                 this._dismissModal();
             })
-            .catch(async (err) => {  
+            .catch(async (err) => { 
+                console.log('error:', err.message); 
                 this.setState({ isControllerError: true, 
                                 controllerErrorMessage: err.message
                 });          
@@ -139,7 +142,7 @@ export default class AddUserModal extends React.Component {
             await adminLogController.createAdminLog(log);
     }
     
-    _enablePasswordEdit(event) {
+    _handleUserRoleChange(event) {
         if(event.target.value === 'user') {
             this.setState({
                 pwDisabled: true, 
@@ -162,264 +165,47 @@ export default class AddUserModal extends React.Component {
         };
     };
 
-    /* For the given field, identified by fieldID
-        determine is errors has an assoicated error message to display */
-    _displayErrorMessage(fieldID) {
-        let errorDetail = this._returnErrorDetails(fieldID);
+    _handleChangeEvent = (Event, methodCall) => {
+        let inputFieldID = Event.target.id;
+        let inputFieldValue = Event.target.value;
 
-        if(errorDetail) {
-            if(fieldID === 'password' || fieldID === 'confirmPassword') {
-                return(
-                    <label className="errorMessage" hidden={this.state.pwDisabled}> 
-                        {errorDetail.errorMessage} 
-                    </label>
-                );
-            } else{
-                return(
-                    <label className="errorMessage"> 
-                        {errorDetail.errorMessage} 
-                    </label>
-                );
-            }
-        } else if(fieldID === 'password' && !this.state.pwDisabled) {
-            return(
-                <label className="passwordRequirements">
-                    Must Include: lowercase/uppercase/number/symbol
-                </label>
-            );
-        }
-        return <label className="emptyLabel">This is filler</label>;
-    };
-
-    /* When an errorDetail is no longer present, remove from errors list */
-    _handleRemoveError = (fieldID) => {
-        const updatedErrors = this.state.errors.filter(errorDetails => errorDetails.field !== fieldID);
-        this.setState({ errors: updatedErrors});
-    };
-    
-    /* Loops through the errors list
-        returns the errorDetail or false if it doesn't exists */
-    _returnErrorDetails(fieldID) {
-        let errorList = this.state.errors;
-
-        if(errorList){
-            for (let index = 0; index < errorList.length; index++) {
-                if(errorList[index].field === fieldID){
-                    return errorList[index];
-                }
-            }
-        }
-        return false;
-    };
-
-    /* Useability Feature:
-        submit button is only enabled when no errors are detected */
-    _isSubmitAvailable() {
-        if(this.state.isSignUp) {
-            return userValidation.validateUserRequest(
-                this.state.firstName,
-                this.state.lastName,
-                this.state.userName,
-                this.state.phoneNumber)
+        //Handles the error validation
+        if(inputFieldID === 'confirmPassword'){
+            this.handleInputFields.handleConfirmPassword(this.state.password, inputFieldValue, methodCall);
+        } else if(inputFieldID === 'password') {
+            this.handleInputFields.handlePassword(this.state.pwRequired, inputFieldValue, methodCall);
         } else {
-            return userValidation.validateSubmit(
-                this.state.firstName,
-                this.state.lastName,
-                this.state.userName,
-                this.state.userRole,
-                this.state.phoneNumber,
-                this.state.pwRequired,
-                this.state.password)
-                && this.state.errors.length === 0
-        }
-    };
-
-    /* Primary purpose:
-        indicate to user that field is required when user clicks off field without entering any information
-        isEmpty in userValidation is triggered and error is returned for display */
-    _handleBlur(validationFunc, Event) {
-        const fieldID = Event.target.id;
-        const fieldVal = Event.target.value;
-        const isErrorSet = this._returnErrorDetails(fieldID);
-
-        if(fieldID === 'password' && 
-            validationFunc(this.state.pwRequired, fieldVal) && 
-            isErrorSet === false
-        ) {
-            let errorDetail = {
-                field:        fieldID,
-                errorMessage: validationFunc(this.state.pwRequired, fieldVal)
-            };
-
-            this.setState( prevState => ({
-                errors: [
-                    ...prevState.errors,
-                    errorDetail
-                ]
-            }));
-        } else if(fieldID === 'confirmPassword' && 
-            validationFunc(this.state.password, fieldVal) && 
-            isErrorSet === false
-        ) {
-            let errorDetail = {
-                field:        fieldID,
-                errorMessage: validationFunc(this.state.password, fieldVal)
-            };
-
-            this.setState( prevState => ({
-                errors: [
-                    ...prevState.errors,
-                    errorDetail
-                ]
-            }));
-        } else if(fieldID !== 'password' && 
-            fieldID !== 'confirmPassword' && 
-            validationFunc(fieldVal) && 
-            isErrorSet === false
-        ) {
-            //To update the list of error, we need an object preset with the inform, as we can't collect from setState errorDetails
-            let errorDetail = {
-                field:        fieldID,
-                errorMessage: validationFunc(fieldVal)
-            };
-
-            this.setState( prevState => ({
-                errors: [
-                    ...prevState.errors,
-                    errorDetail
-                ]
-            }));
-        }  
-        return;
-    };
-
-    /* Provide user immediate field requirement:
-        check if user is producing errors -> validateOnChange is true
-        updates the value of the state for that field */
-    _handleChange(validationFunc, Event) {
-        const fieldID = Event.target.id;
-        const fieldVal = Event.target.value;
-
-        /* If something is returned from the passed function, an error occured 
-            since an error was returned, set the error state if not already set
-        */
-        if(!this._returnErrorDetails(fieldID)) {   //Does the error already exist? no
-            switch (fieldID) {
-                case 'password':
-                    let result = validationFunc(this.state.pwRequired, fieldVal);
-                    if(result) {
-                        let errorDetail = {
-                            field:        fieldID,
-                            errorMessage: result
-                        };
-            
-                        this.setState( prevState => ({
-                            errors: [
-                                ...prevState.errors,
-                                errorDetail
-                            ]
-                        }));
-                    }
-                    break;
-                case 'confirmPassword':
-                    if(validationFunc(this.state.password, fieldVal)){
-                        let errorDetail = {
-                            field:        fieldID,
-                            errorMessage: validationFunc(this.state.password, fieldVal)
-                        };
-            
-                        this.setState( prevState => ({
-                            errors: [
-                                ...prevState.errors,
-                                errorDetail
-                            ]
-                        }));
-                    }
-                    break;
-                default:
-                    if(validationFunc(fieldVal)){
-                        //To update the list of error, we need an object preset with the inform, as we can't collect from setState errorDetails
-                        let errorDetail = {
-                            field:        fieldID,
-                            errorMessage: validationFunc(fieldVal)
-                        };
-
-                        this.setState( prevState => ({
-                            errors: [
-                                ...prevState.errors,
-                                errorDetail
-                            ]
-                        }));
-                    }
-                    break;
-            }
-        }else{ //Does the error already exist? yes
-            switch (fieldID) {
-                case 'password':
-                    if(!validationFunc(this.state.pwRequired, fieldVal)){ //If no error
-                        this._handleRemoveError(fieldID);
-                    } else {
-                        let result = validationFunc(this.state.pwRequired, fieldVal);
-                        let prevError = this._returnErrorDetails(fieldID);
-
-                        if(result !== prevError.errorMessage) {
-                            this._handleRemoveError(fieldID);
-                            let errorDetail = {
-                                field:        fieldID,
-                                errorMessage: result
-                            };
-                
-                            this.setState( prevState => ({
-                                errors: [
-                                    ...prevState.errors,
-                                    errorDetail
-                                ]
-                            }));
-                        };
-                    };
-                    break;
-                case 'confirmPassword':
-                    if(!validationFunc(this.state.password, fieldVal)){
-                        this._handleRemoveError(fieldID);
-                    }
-                    break;
-                default:
-                    if(!validationFunc(fieldVal)){
-                        this._handleRemoveError(fieldID);
-                    }
-                    break;
-            }
+            this.handleInputFields.handleEvent(Event, methodCall);
         }
 
         //Update the state for whatever field is being modified
-        switch (fieldID) {
+        switch(inputFieldID) {
             case 'firstName':
-                this.setState({ firstName: sanitizeData.sanitizeWhitespace(fieldVal)});
+                this.setState({firstName: sanitizeData.sanitizeWhitespace(inputFieldValue)});
                 break;
             case 'lastName':
-                this.setState({ lastName: sanitizeData.sanitizeWhitespace(fieldVal)});
+                this.setState({lastName: sanitizeData.sanitizeWhitespace(inputFieldValue)});
                 break;
             case 'userName':
-                this.setState({ userName: sanitizeData.sanitizeWhitespace(fieldVal)});
+                this.setState({userName: sanitizeData.sanitizeWhitespace(inputFieldValue)});
                 break;
-            case 'selectUser':
-                this.setState({ userRole: sanitizeData.sanitizeWhitespace(fieldVal)});
-                this._enablePasswordEdit(Event);
+            case 'userRoleSelect':
+                this.setState({ userRole: sanitizeData.sanitizeWhitespace(inputFieldValue)});
+                this._handleUserRoleChange(Event);
                 break;
             case 'password':
-                this.setState({ password: sanitizeData.sanitizeWhitespace(fieldVal)});
+                this.setState({password: sanitizeData.sanitizeWhitespace(inputFieldValue)});
                 break;
             case 'confirmPassword':
-                this.setState({ confirmPassword: sanitizeData.sanitizeWhitespace(fieldVal)});
+                this.setState({confirmPassword: sanitizeData.sanitizeWhitespace(inputFieldValue)});
                 break;
             case 'phoneNumber':
-                this.setState({ phoneNumber: sanitizeData.sanitizeWhitespace(fieldVal)});
-                break;
-                                                                                            
+                this.setState({phoneNumber: sanitizeData.sanitizeWhitespace(inputFieldValue)});
+                break;                                                  
             default:
                 break;
         }
-    };
+    }
 
     _handleSubmit = (Event) => {
         Event.preventDefault(); 
@@ -444,36 +230,36 @@ export default class AddUserModal extends React.Component {
                         <input 
                             type="text" 
                             id="firstName" 
-                            className={ this._returnErrorDetails("firstName") ? "invalid" : "valid"}
+                            className={ this.handleInputFields.setClassNameIsValid("firstName") ? "valid" : "invalid"}
                             value={this.state.firstName} 
-                            onChange={(Event) => this._handleChange(userValidation.validateFirstName, Event)}
-                            onBlur={(Event) => this._handleBlur(userValidation.validateFirstName, Event)}
+                            onChange={(Event) => this._handleChangeEvent(Event, userValidation.validateFirstName)}
+                            onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validateFirstName)}
                         />
-                        { this._displayErrorMessage("firstName") }
+                        { this.handleInputFields.setErrorMessageDisplay("firstName") }
                     </fieldset>
                     <fieldset>
                         <h4 className="inputTitle">Last Name</h4>
                         <input 
                             type="text" 
                             id="lastName" 
-                            className={ this._returnErrorDetails("lastName") ? "invalid" : "valid"}
+                            className={ this.handleInputFields.setClassNameIsValid("lastName") ? "valid" : "invalid"}
                             value={this.state.lastName}
-                            onChange={(Event) => this._handleChange(userValidation.validateLastName, Event)}
-                            onBlur={(Event) => this._handleBlur(userValidation.validateLastName, Event)}
+                            onChange={(Event) => this._handleChangeEvent(Event, userValidation.validateLastName)}
+                            onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validateLastName)}
                         />
-                        { this._displayErrorMessage("lastName") }
+                        { this.handleInputFields.setErrorMessageDisplay("lastName") }
                     </fieldset>
                     <fieldset>
                         <h4 className="inputTitle">Username</h4>
                         <input 
                             type="text" 
                             id="userName"
-                            className={ this._returnErrorDetails("userName") ? "invalid" : "valid"}
+                            className={ this.handleInputFields.setClassNameIsValid("userName") ? "valid" : "invalid"}
                             value={this.state.userName}
-                            onChange={(Event) => this._handleChange(userValidation.validateUserName, Event)}
-                            onBlur={(Event) => this._handleBlur(userValidation.validateUserName, Event)}
+                            onChange={(Event) => this._handleChangeEvent(Event, userValidation.validateUserName)}
+                            onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validateUserName)}
                         />
-                        { this._displayErrorMessage("userName") }
+                        { this.handleInputFields.setErrorMessageDisplay("userName") }
                     </fieldset>
                     {this.state.isSignUp ? 
                         null :
@@ -483,11 +269,10 @@ export default class AddUserModal extends React.Component {
                                 <span id='userSelect'>
                                     <select 
                                         disabled={this.state.userRoleDisabled} 
-                                        id='selectUser' 
-                                        className={ this._returnErrorDetails('selectUser') ? 'invalid' : 'valid'}
-                                        defaultValue={''}  
-                                        onChange={(evt) => this._handleChange(userValidation.validateUserRole, evt)}
-                                        onBlur={(evt) => this._handleBlur(userValidation.validateUserRole, evt)}>
+                                        id='userRoleSelect' 
+                                        defaultValue={''} 
+                                        onChange={(Event) => {this._handleChangeEvent(Event, userValidation.validateUserRoleSelect)}}
+                                    >
 
                                         <option label='' hidden disabled ></option>
                                         <option value='user'>User</option>
@@ -498,33 +283,32 @@ export default class AddUserModal extends React.Component {
                                         ?
                                     </div>
                                 </span>
-                                { this._displayErrorMessage("selectUser") }
                             </fieldset>
                             <fieldset>
                                 <h4 className="inputTitle">Password</h4>
                                 <input
                                     type="password"
                                     id="password"
-                                    className={ this._returnErrorDetails("password") ? "invalid" : "valid"}
+                                    className={ this.handleInputFields.setClassNameIsValid("password") ? "valid" : "invalid"}
                                     disabled={this.state.pwDisabled}
                                     value={this.state.password} 
-                                    onChange={(Event) => this._handleChange(userValidation.validatePassword, Event)}
-                                    onBlur={(Event) => this._handleBlur(userValidation.validatePassword, Event)}
+                                    onChange={(Event) => this._handleChangeEvent(Event, userValidation.validatePassword)}
+                                    onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validatePassword)}
                                 />
-                                { this._displayErrorMessage("password") }
+                                { this.handleInputFields.setErrorMessageDisplay("password") }
                             
                                 <h4 className="inputTitle" hidden={this.state.pwDisabled}>Confirm Password</h4>
                                 <input 
                                     type="password"
                                     id="confirmPassword"
-                                    className={ this._returnErrorDetails("confirmPassword") ? "invalid" : "valid"}
+                                    className={ this.handleInputFields.setClassNameIsValid("confirmPassword") ? "valid" : "invalid"}
                                     hidden={this.state.pwDisabled} 
                                     disabled={this.state.pwDisabled}
                                     value={this.state.confirmPassword} 
-                                    onChange={(Event) => this._handleChange(userValidation.validatePasswordConfirm, Event)}
-                                    onBlur={(Event) => this._handleBlur(userValidation.validatePasswordConfirm, Event)}
+                                    onChange={(Event) => this._handleChangeEvent(Event, userValidation.validateConfirmPassword)}
+                                    onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validateConfirmPassword)}
                                 />
-                                { this._displayErrorMessage("confirmPassword") }
+                                { this.handleInputFields.setErrorMessageDisplay("confirmPassword") }
                             </fieldset> 
                         </div>
                     }
@@ -533,19 +317,22 @@ export default class AddUserModal extends React.Component {
                         <input
                             type="text" 
                             id="phoneNumber" 
-                            className={ this._returnErrorDetails("phoneNumber") ? "invalid" : "valid"}
+                            className={ this.handleInputFields.setClassNameIsValid("phoneNumber") ? "valid" : "invalid"}
                             value={this.state.phoneNumber}
-                            onChange={(Event) => this._handleChange(userValidation.validatePhoneNumber, Event)}
-                            onBlur={(Event) => this._handleBlur(userValidation.validatePhoneNumber, Event)}
+                            onChange={(Event) => this._handleChangeEvent(Event, userValidation.validatePhoneNumber)}
+                            onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validatePhoneNumber)}
                         />
-                        { this._displayErrorMessage("phoneNumber") }
+                        { this.handleInputFields.setErrorMessageDisplay("phoneNumber") }
                     </fieldset>
                 </div>
                 <div className="modalFooter">
-                    {this._isSubmitAvailable() ? 
-                        <input type="submit" value="Submit" /> : 
-                        <input type="submit" value="Submit" disabled />
-                    }
+                    <input type='submit'
+                        value='Submit'
+                        disabled={this.state.isSignUp ?
+                            !this.handleInputFields._isAddSignUpModalSubmitAvailable() :
+                            !this.handleInputFields.isAddUserModalSubmitAvailable()
+                        } 
+                    />
                     <button type="reset" onClick={() => this._dismissModal()}>Close</button>
                 </div>
             </form>

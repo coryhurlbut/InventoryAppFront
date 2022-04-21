@@ -47,7 +47,7 @@ class UserValidation {
 		return false;
 	}
 
-	validateUserRole(userRole) {
+	validateUserRoleSelect(userRole) {
 		if(userRole === '') {
 			return "Please select the user's role";
 		};
@@ -73,7 +73,7 @@ class UserValidation {
 		return false;
 	}
 
-	validatePasswordConfirm(password, confirmPassword) {
+	validateConfirmPassword(password, confirmPassword) {
 		if(password !== confirmPassword) {
 			return 'Passwords must match';
 		};

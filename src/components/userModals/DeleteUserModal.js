@@ -15,8 +15,9 @@ export default class DeleteUserModal extends React.Component {
         
         this.state = {
             isOpen:                 props.isOpen,
-            selectedIds:                props.selectedIds,
+            selectedIds:            props.selectedIds,
             selectedObjects:        props.selectedObjects,
+
             isControllerError:      false,
             controllerErrorMessage: ''
         };
