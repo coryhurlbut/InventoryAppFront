@@ -43,8 +43,9 @@ export default class ContentList extends React.Component {
             _errorMessage:              ''
         };
         
-        this.setParentState        =   this.setParentState.bind(this);
-        this.handleTableDisplay    =   this.handleTableDisplay.bind(this);
+        this.setParentState        =   this._setParentState.bind(this);
+        this.parseRowsArray        =   this._parseRowsArray.bind(this);
+        this.handleTableDisplay    =   this._handleTableDisplay.bind(this);
     };
 
     // Will update component props if parent props change
@@ -60,13 +61,13 @@ export default class ContentList extends React.Component {
 
         //Resets content to available items after admin logout. Stops displaying users after logout if viewing as admin.
         if(prevProps.isUserContentVisible && !this.props.isUserContentVisible) {
-            this.handleTableDisplay('availableItems');
+            this._handleTableDisplay('availableItems');
         };
     };
 
     componentDidMount() {
         try {
-            this.handleTableDisplay('availableItems');
+            this._handleTableDisplay('availableItems');
         } catch(error) {
             this.setState({_isError: true,
                 _errorMessage: error.message
@@ -75,7 +76,7 @@ export default class ContentList extends React.Component {
     };
 
 
-    handleTableDisplay = async (objectType) => {
+    _handleTableDisplay = async (objectType) => {
         let content;
         let object = {};
         if(objectType === 'availableItems'){
@@ -100,10 +101,21 @@ export default class ContentList extends React.Component {
             selectedObjects:    [],
         });
     }
+    //TO-DO this can probably be way less code, and also probably be within setParentState method, fix for toggleAllRowsSelected
+    _parseRowsArray = (rowss, isSelectedd) =>{
+        console.log(isSelectedd);
+        if(!isSelectedd){
+            for (let i = 0; i < rowss.length; i++) {
+                this.setParentState(rowss[i].original);
+            }
+        }else{
+            this.setState({ selectedIds: [], selectedObjects: []});
+        }
+    }
     
     //Callback function passed to table component.
     //Bound to ContentList state to update this state when called by child component.
-    setParentState = (obj) => {
+    _setParentState = (obj) => {
         let arr = this.state.selectedIds;
         let objArr = this.state.selectedObjects;
         let id = obj.itemNumber ? obj.itemNumber : obj.userName; //If obj is an item, take the itemNumber. Otherwise, take the userName
@@ -144,6 +156,7 @@ export default class ContentList extends React.Component {
                 columns={this.state.columns}
                 data={this.state.content}
                 setParentState={this.setParentState}
+                parseRowsArray={this._parseRowsArray}
                 userRole={this.state.accountRole}
                 contentType={this.state.contentType}
             />
@@ -178,7 +191,7 @@ export default class ContentList extends React.Component {
             <>
                 <div id="userControls">
                         <TableNav
-                            clickFunction={this.handleTableDisplay} 
+                            clickFunction={this._handleTableDisplay} 
                             isUserContentVisible={this.state.isUserContentVisible}
                         />
                         <ToggleSwitch />

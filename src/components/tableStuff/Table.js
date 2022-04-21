@@ -11,7 +11,8 @@ function Table({ columns, data, ...props }) {
         getTableBodyProps,
         headerGroups,
         rows,
-        prepareRow
+        prepareRow,
+        toggleAllRowsSelected
     } = useTable({
             columns,
             data,
@@ -44,9 +45,14 @@ function Table({ columns, data, ...props }) {
                             <tr 
                                 {...row.getRowProps()} 
                                 {...row.getToggleRowSelectedProps()}
-                                indeterminate="false" 
+                                indeterminate="false"
+                                onDoubleClick={() => {
+                                    toggleAllRowsSelected();
+                                    console.log(rows)
+                                    props._parseRowsArray(rows, rows[0].isSelected);
+                                }}
                                 onClick={() => {
-                                    row.toggleRowSelected()
+                                    row.toggleRowSelected();
                                     props.setParentState(row.original);
                                 }} 
                                 className="dataRow" 

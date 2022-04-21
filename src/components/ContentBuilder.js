@@ -75,7 +75,7 @@ export default class ContentBuilder extends React.Component {
         this.setState({_modal: null});
     };
     //accepts string parameter to decide which Modal to display
-    _showModal = (modalType) => {
+    _showModal = (modalType, modals) => {
         let modal;
         switch(modalType){
             case 'loginLogout':

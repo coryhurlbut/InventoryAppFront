@@ -116,7 +116,7 @@ export default class SignItemOutModal extends React.Component{
     _displayArray = (items) => {
         const displayItem = items.map((item) => {
             return (
-                <span className='sideBySide' key={'fuk'}>
+                <span className='sideBySide'>
                 <li className="arrayObject" key={item.itemNumber}> 
                     {item.name} 
                 </li>
