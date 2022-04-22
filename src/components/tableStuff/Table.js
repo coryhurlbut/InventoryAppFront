@@ -48,6 +48,10 @@ function Table({ columns, data, ...props }) {
                                 indeterminate="false"
                                 onDoubleClick={() => {
                                     toggleAllRowsSelected();
+<<<<<<< Updated upstream
+=======
+                                    console.log(rows)
+>>>>>>> Stashed changes
                                     props.parseRowsArray(rows, rows[0].isSelected);
                                 }}
                                 onClick={() => {
