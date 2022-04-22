@@ -207,32 +207,11 @@ export default class EditUserModal extends React.Component {
             this.handleInputFields.handleEvent(Event, methodCall);
         }
 
-        //Update the state for whatever field is being modified
-        switch(inputFieldID) {
-            case 'firstName':
-                this.setState({firstName: sanitizeData.sanitizeWhitespace(inputFieldValue)});
-                break;
-            case 'lastName':
-                this.setState({lastName: sanitizeData.sanitizeWhitespace(inputFieldValue)});
-                break;
-            case 'userName':
-                this.setState({userName: sanitizeData.sanitizeWhitespace(inputFieldValue)});
-                break;
-            case 'userRoleSelect':
-                this.setState({ userRole: sanitizeData.sanitizeWhitespace(inputFieldValue)});
-                this._handleUserRoleChange(Event);
-                break;
-            case 'password':
-                this.setState({password: sanitizeData.sanitizeWhitespace(inputFieldValue)});
-                break;
-            case 'confirmPassword':
-                this.setState({confirmPassword: sanitizeData.sanitizeWhitespace(inputFieldValue)});
-                break;
-            case 'phoneNumber':
-                this.setState({phoneNumber: sanitizeData.sanitizeWhitespace(inputFieldValue)});
-                break;                                                  
-            default:
-                break;
+        if(inputFieldID === 'userRoleSelect') {
+            this.setState({ userRole: sanitizeData.sanitizeWhitespace(inputFieldValue)});
+            this._handleUserRoleChange(Event);
+        } else {
+            this.setState({ [inputFieldID]: sanitizeData.sanitizeWhitespace(inputFieldValue) });
         }
     }
 

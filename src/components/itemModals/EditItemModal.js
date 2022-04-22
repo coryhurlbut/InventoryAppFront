@@ -140,29 +140,7 @@ export default class EditItemModal extends React.Component{
 
         this.handleInputFields.handleEvent(Event, methodCall);
 
-        //Update the state for whatever field is being modified
-        switch(inputFieldID) {
-            case 'name':
-                this.setState({ name: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            case 'description':
-                this.setState({ description: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            case 'serialNumber':
-                this.setState({ serialNumber: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            case 'notes':
-                this.setState({ notes: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            case 'homeLocation':
-                this.setState({ homeLocation: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            case 'specificLocation':
-                this.setState({ specificLocation: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            default:
-                break;
-        };
+        this.setState({ [inputFieldID]: sanitizeData.sanitizeWhitespace(inputFieldValue) });
     }
 
     _handleFormSubmit = (event) => {

@@ -1,0 +1,67 @@
+Date : 2022-04-21 14:42:54
+Directory : /home/sumerau/Documents/inventory-app-front-end/src/components
+Total : 35 files,  3833 codes, 201 comments, 421 blanks, all 4455 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |         35 |      3,833 |        201 |        421 |      4,455 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                  | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                     |         35 |      3,833 |        201 |        421 |      4,455 |
+| controls                                                                                              |          4 |        249 |         12 |         29 |        290 |
+| inputValidation                                                                                       |          5 |        411 |         54 |         83 |        548 |
+| itemModals                                                                                            |          6 |      1,015 |         51 |        101 |      1,167 |
+| logModals                                                                                             |          5 |        493 |         12 |         55 |        560 |
+| profileModals                                                                                         |          3 |        208 |         12 |         23 |        243 |
+| tableStuff                                                                                            |          3 |        112 |          0 |          9 |        121 |
+| userModals                                                                                            |          4 |        798 |         45 |         81 |        924 |
+| utilities                                                                                             |          2 |         45 |          0 |          4 |         49 |
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                              | language   | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /home/sumerau/Documents/inventory-app-front-end/src/components/ContentBuilder.js                      | JavaScript |        191 |          5 |         10 |        206 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/ContentList.js                         | JavaScript |        185 |          8 |         20 |        213 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/contentPresets.js                      | JavaScript |        126 |          2 |          6 |        134 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/controls/ItemEditControls.js           | JavaScript |         75 |          3 |          9 |         87 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/controls/SignItemInOutControls.js      | JavaScript |         74 |          3 |          9 |         86 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/controls/UserEditControls.js           | JavaScript |         92 |          3 |         10 |        105 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/controls/index.js                      | JavaScript |          8 |          3 |          1 |         12 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/inputValidation/HandleOnChangeEvent.js | JavaScript |        175 |         32 |         16 |        223 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/inputValidation/ItemValidation.js      | JavaScript |        101 |         10 |         29 |        140 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/inputValidation/SanitizeData.js        | JavaScript |         30 |          8 |         10 |         48 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/inputValidation/UserValidation.js      | JavaScript |         95 |          1 |         27 |        123 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/inputValidation/index.js               | JavaScript |         10 |          3 |          1 |         14 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/itemModals/AddItemModal.js             | JavaScript |        277 |          9 |         22 |        308 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/itemModals/DeleteItemModal.js          | JavaScript |         90 |          7 |         16 |        113 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/itemModals/EditItemModal.js            | JavaScript |        303 |          9 |         22 |        334 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/itemModals/SignItemInModal.js          | JavaScript |        137 |          9 |         16 |        162 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/itemModals/SignItemOutModal.js         | JavaScript |        196 |         14 |         24 |        234 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/itemModals/index.js                    | JavaScript |         12 |          3 |          1 |         16 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/logModals/AdminLogModal.js             | JavaScript |        106 |          5 |         15 |        126 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/logModals/ApproveUsersModal.js         | JavaScript |        167 |          2 |         19 |        188 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/logModals/ItemLogModal.js              | JavaScript |        105 |          5 |         13 |        123 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/logModals/ViewNotesModal.js            | JavaScript |        105 |          0 |          7 |        112 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/logModals/index.js                     | JavaScript |         10 |          0 |          1 |         11 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/profileModals/LoginModal.js            | JavaScript |        141 |          8 |         13 |        162 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/profileModals/LogoutModal.js           | JavaScript |         61 |          4 |          9 |         74 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/profileModals/index.js                 | JavaScript |          6 |          0 |          1 |          7 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/tableStuff/Table.js                    | JavaScript |         79 |          0 |          6 |         85 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/tableStuff/TableNav.js                 | JavaScript |         27 |          0 |          2 |         29 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/tableStuff/index.js                    | JavaScript |          6 |          0 |          1 |          7 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/userModals/AddUserModal.js             | JavaScript |        333 |         13 |         36 |        382 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/userModals/DeleteUserModal.js          | JavaScript |        105 |          7 |         16 |        128 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/userModals/EditUserModal.js            | JavaScript |        352 |         22 |         28 |        402 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/userModals/index.js                    | JavaScript |          8 |          3 |          1 |         12 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/utilities/MapNotes.js                  | JavaScript |         24 |          0 |          0 |         24 |
+| /home/sumerau/Documents/inventory-app-front-end/src/components/utilities/ToggleSwitch.js              | JavaScript |         21 |          0 |          4 |         25 |
+| Total                                                                                                 |            |      3,833 |        201 |        421 |      4,455 |
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

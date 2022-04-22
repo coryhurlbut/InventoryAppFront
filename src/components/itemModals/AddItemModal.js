@@ -108,41 +108,19 @@ export default class AddItemModal extends React.Component{
 
         this.handleInputFields.handleEvent(Event, methodCall);
 
-        //Update the state for whatever field is being modified
-        switch(inputFieldID) {
-            case 'itemNumberPrefix':
-                this.setState({ 
-                    itemNumberPrefix: sanitizeData.sanitizeWhitespace(inputFieldValue),
-                    itemNumber: this._createItemNumber(Event)
-                });
-                break;
-            case 'itemNumberIdentifier':
-                this.setState({ 
-                    itemNumberIdentifier: sanitizeData.sanitizeWhitespace(inputFieldValue),
-                    itemNumber: this._createItemNumber(Event)
-                });
-                break;
-            case 'name':
-                this.setState({ name: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            case 'description':
-                this.setState({ description: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            case 'serialNumber':
-                this.setState({ serialNumber: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            case 'notes':
-                this.setState({ notes: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            case 'homeLocation':
-                this.setState({ homeLocation: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            case 'specificLocation':
-                this.setState({ specificLocation: sanitizeData.sanitizeWhitespace(inputFieldValue) });
-                break;
-            default:
-                break;
-        };
+        if(inputFieldID === 'itemNumberPrefix') {
+            this.setState({ 
+                itemNumberPrefix: sanitizeData.sanitizeWhitespace(inputFieldValue),
+                itemNumber: this._createItemNumber(Event)
+            });
+        } else if(inputFieldID === 'itemNumberIdentifier') {
+            this.setState({ 
+                itemNumberIdentifier: sanitizeData.sanitizeWhitespace(inputFieldValue),
+                itemNumber: this._createItemNumber(Event)
+            });
+        } else {
+            this.setState({ [inputFieldID]: sanitizeData.sanitizeWhitespace(inputFieldValue) });
+        }
     }
 
     _handleFormSubmit = (event) => {
