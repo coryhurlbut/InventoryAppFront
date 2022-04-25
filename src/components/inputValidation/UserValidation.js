@@ -90,32 +90,6 @@ class UserValidation {
 
 		return false;
 	}
-
-	validateSubmit(firstName, lastName, userName, userRole, phoneNumber, isRequired, password) {
-		if(validator.isEmpty(firstName) || 
-			validator.isEmpty(lastName) || 
-			validator.isEmpty(userName) || 
-			validator.isEmpty(phoneNumber) || 
-			userRole === '' || 
-			(isRequired && validator.isEmpty(password))
-		) {
-			return false;
-		};
-
-		return true;
-	}
-
-	validateUserRequest(firstName, lastName, userName, phoneNumber){
-		if(validator.isEmpty(firstName) || 
-			validator.isEmpty(lastName) || 
-			validator.isEmpty(userName) || 
-			validator.isEmpty(phoneNumber)
-		) {
-			return false;
-		};
-
-		return true;
-	}
 }
 
 const userValidation = new UserValidation();

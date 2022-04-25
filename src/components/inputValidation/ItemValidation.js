@@ -119,20 +119,6 @@ class ItemValidation {
 
 		return false;
 	}
-
-	validateSubmit(name, description, homeLocation, specificLocation, serialNumber) {
-		if(
-			validator.isEmpty(name) || 
-			validator.isEmpty(description) || 
-			validator.isEmpty(homeLocation) || 
-			validator.isEmpty(specificLocation) || 
-			validator.isEmpty(serialNumber
-		)) {
-			return false;
-		};
-
-		return true;
-	}
 }
 
 const itemValidation = new ItemValidation();
