@@ -121,6 +121,7 @@ export default class ContentBuilder extends React.Component {
         this.setState({ _modal: modal });
     }
     //checks if there are any pending users, then returns red dot if there are users 
+    // https://www.magicbell.com/blog/react-notification-badges
     _pendingUsersRedDot = () => {
         if(this._isUsersPending){
             return(

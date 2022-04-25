@@ -11,7 +11,7 @@ import { userValidation,
 
 
 
-const roleInfo = "Roles have different permissions and access\n\nUser: Only exists to hold signed out items, and tracking purposes. No password required\n\nCustodian: Can Sign items in and out. Password required\n\nAdmin: Full control over items/users, logs, and approving new users. Password required";
+const roleInfo = "Roles have different permissions and access\n\nUser: Only exists to hold signed out items, and tracking purposes. No password required\n\nCustodian: Can sign items in and out. Password required\n\nAdmin: Full control over items/users, logs, and approving new users. Password required";
 /*
 *   Modal for adding a user
 */
