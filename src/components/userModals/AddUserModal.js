@@ -46,18 +46,19 @@ export default class AddUserModal extends React.Component {
         allow only the ability to add user roles */
     async componentDidMount() {
         try {
-            let signedInAccount = await authController.getUserInfo();
+            if(this.state.isSignUp) {
+                this.setState({ userRole: 'user', status: 'pending'})
+            } else {
+                let signedInAccount = await authController.getUserInfo();
 
-            //Front end display so it show's user is selected
-            let select = document.getElementById('userRoleSelect');
-            select.value = 'user';
-            this.setState({userRole: 'user'});
+                //Front end display so it show's user is selected
+                let select = document.getElementById('userRoleSelect');
+                select.value = 'user';
 
-            if(this.isSignUp){this.setState({ status: 'pending'})}
-            
-            if(signedInAccount.user.user.userRole === 'custodian') {
-                this.setState({ userRoleDisabled: true });
-            
+                if(signedInAccount.user.user.userRole === 'custodian') {
+                    this.setState({ userRole: 'user', userRoleDisabled: true });
+                
+                }
             }
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load

@@ -147,7 +147,7 @@ export default class LoginModal extends React.Component{
         //in the original login modal it will set state and re-render
         if(this.state.isSignUp) {
             return(
-                <AddUserModal userRole={'user'} isSignUp={true} isOpen hideModal={this._hideModal}/>
+                <AddUserModal userRole={'user'} isSignUp={true} isOpen hideModal={this.hideModal}/>
             )
         } else {
             return(
