@@ -76,10 +76,10 @@ class UserValidation {
 	}
 
 	validatePhoneNumber(phoneNumber) {
-		const validateNumber = new RegExp(/(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/);
+		const validateNumber = new RegExp(/\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/);
 		
 		if(!validateNumber.test(phoneNumber) || !validator.isLength(phoneNumber, {min:10, max: 14})) {
-			return 'Please enter a valid number';
+			return 'Please enter a valid phone number';
 		};
 
 		return false;
