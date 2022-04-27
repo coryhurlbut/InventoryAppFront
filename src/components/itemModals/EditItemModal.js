@@ -290,7 +290,7 @@ export default class EditItemModal extends React.Component{
     }
 
     render() {
-        if(this.state.viewNotesBool){
+        if(this.state.viewNotesBool) {
             return(
                 <ViewNotesModal selectedIds={this._selectedIds} 
                     isOpen={true} 
