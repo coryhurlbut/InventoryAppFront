@@ -12,6 +12,7 @@ import { userValidation,
 
 
 const roleInfo = "Roles have different permissions and access\n\nUser: Only exists to hold signed out items, and tracking purposes. No password required\n\nCustodian: Can sign items in and out. Password required\n\nAdmin: Full control over items/users, logs, and approving new users. Password required";
+const COMPONENT_DID_MOUNT_ERROR = 'An error occured while loading. Please refresh and try again.';
 /*
 *   Modal for adding a user
 */
@@ -39,7 +40,12 @@ export default class AddUserModal extends React.Component {
             isError:                false,
             errorMessage:           ''
         };
-        this.handleInputFields = new HandleOnChangeEvent('userModal');
+
+        if(props.isSignUp) {
+            this.handleInputFields = new HandleOnChangeEvent('userModalAddSignUp');
+        } else{
+            this.handleInputFields = new HandleOnChangeEvent('userModalAdd');
+        }
     };
 
     /* When a custodian is logged in, 
@@ -47,24 +53,25 @@ export default class AddUserModal extends React.Component {
     async componentDidMount() {
         try {
             if(this.state.isSignUp) {
-                this.setState({ userRole: 'user', status: 'pending'})
+                this.setState({status: 'pending'})
             } else {
                 let signedInAccount = await authController.getUserInfo();
 
-                //Front end display so it show's user is selected
-                let select = document.getElementById('userRoleSelect');
-                select.value = 'user';
-
                 if(signedInAccount.user.user.userRole === 'custodian') {
-                    this.setState({ userRole: 'user', userRoleDisabled: true });
+                    this.setState({userRoleDisabled: true });
                 
                 }
             }
+            //Have the default value role be user
+            this.setState({ userRole: 'user'});
+                //Front end display so it show's user is selected
+            let select = document.getElementById('userRoleSelect');
+            select.value = 'user';
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
             this.setState({ isControllerError: true,
-                            controllerErrorMessage: 'An error occured while loading. Please refresh and try again.'
+                            controllerErrorMessage: error.message
             });
         }
         
@@ -148,15 +155,10 @@ export default class AddUserModal extends React.Component {
             this.setState({
                 pwDisabled: true, 
                 pwRequired: false, 
-                password: '', 
+                password: '',
+                confirmPassword: '',
                 userRole: event.target.value
             });
-
-            if(this._returnErrorDetails('password')){
-                this._handleRemoveError('password');
-            } else if(this._returnErrorDetails('confirmPassword')){
-                this._handleRemoveError('confirmPassword');
-            }
         } else {
             this.setState({
                 pwDisabled: false, 
@@ -175,6 +177,8 @@ export default class AddUserModal extends React.Component {
             this.handleInputFields.handleConfirmPassword(this.state.password, inputFieldValue, methodCall);
         } else if(inputFieldID === 'password') {
             this.handleInputFields.handlePassword(this.state.pwRequired, inputFieldValue, methodCall);
+        } else if(inputFieldID === 'userRoleSelect') {
+            this.handleInputFields.handleUserRoleChange(inputFieldValue);
         } else {
             this.handleInputFields.handleEvent(Event, methodCall);
         }
@@ -255,7 +259,7 @@ export default class AddUserModal extends React.Component {
                                         disabled={this.state.userRoleDisabled} 
                                         id='userRoleSelect' 
                                         defaultValue={''} 
-                                        onChange={(Event) => {this._handleChangeEvent(Event, userValidation.validateUserRoleSelect)}}
+                                        onChange={(Event) => {this._handleChangeEvent(Event)}}
                                     >
 
                                         <option label='' hidden disabled ></option>

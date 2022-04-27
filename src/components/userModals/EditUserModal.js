@@ -40,7 +40,7 @@ export default class EditUserModal extends React.Component {
             isError:                false,
             errorMessage:           ''
         };
-        this.handleInputFields = new HandleOnChangeEvent('userModal');
+        this.handleInputFields = new HandleOnChangeEvent('userModalEdit');
     };
 
     /* Logic handeling of different roles and what they are able to access:
@@ -161,7 +161,8 @@ export default class EditUserModal extends React.Component {
     _handleUserRoleChange = (Event) => {
         if(Event.target.value === 'user') {
             this.setState({ 
-                password: '', 
+                password: '',
+                confirmPassword: '',
                 userRole: Event.target.value, 
                 pwRequired: false, 
                 pwDisabled: true, 
@@ -170,6 +171,7 @@ export default class EditUserModal extends React.Component {
         } else if(Event.target.value !== 'user' && !this.state.hasPassword){
             this.setState({ 
                 password: '', 
+                confirmPassword: '',
                 userRole: Event.target.value, 
                 pwRequired: true, 
                 pwDisabled: false, 
@@ -177,7 +179,8 @@ export default class EditUserModal extends React.Component {
             });
         } else {
             this.setState({
-                password: '', 
+                password: '',
+                confirmPassword: '',
                 userRole: Event.target.value, 
                 pwRequired: false, 
                 pwDisabled: true, 
@@ -203,6 +206,8 @@ export default class EditUserModal extends React.Component {
             this.handleInputFields.handleConfirmPassword(this.state.password, inputFieldValue, methodCall);
         } else if(inputFieldID === 'password') {
             this.handleInputFields.handlePassword(this.state.pwRequired, inputFieldValue, methodCall);
+        }  else if(inputFieldID === 'userRoleSelect') {
+            this.handleInputFields.handleUserRoleChange(inputFieldValue);
         } else {
             this.handleInputFields.handleEvent(Event, methodCall);
         }
@@ -273,7 +278,7 @@ export default class EditUserModal extends React.Component {
                                     disabled={this.state.userRoleDisabled} 
                                     id="userRoleSelect"  
                                     className="valid"
-                                    onChange={(Event) => {this._handleChangeEvent(Event, userValidation.validateUserRoleSelect)}}
+                                    onChange={(Event) => {this._handleChangeEvent(Event)}}
                                 >
                                     <option id="userOpt" value="user">User</option>
                                     <option id="custodianOpt" value="custodian">Custodian</option>
