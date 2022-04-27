@@ -56,6 +56,7 @@ class UserValidation {
 	}
 
 	validatePassword(isRequired, password) {
+		let passwordRegex = new RegExp(/^[a-zA-Z0-9!@#$%^&*_+]+$/);
 		if(!isRequired) return false;
 
 		if(!validator.isStrongPassword(password, {minLength: 8, minLowercase: 0, minUppercase: 0, minNumbers: 0, minSymbols: 0})) {
@@ -69,6 +70,7 @@ class UserValidation {
 		} else if(!validator.isStrongPassword(password, {minLength: 0, minLowercase: 0, minUppercase: 0, minNumbers: 0, minSymbols: 1})) {
 			return 'Invalid Password. Minimum one special character';
 		};
+		if(!passwordRegex.test(password)) {return 'Invalid character used'};
 
 		return false;
 	}
