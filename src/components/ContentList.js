@@ -189,15 +189,26 @@ export default class ContentList extends React.Component {
         return (
             <>
                 <div id="userControls">
-                        <TableNav
-                            clickFunction={this._handleTableDisplay} 
-                            isUserContentVisible={this.state.isUserContentVisible}
-                        />
-                        <ToggleSwitch />
-                    </div>
-                    <div id="tableBody">
-                        {this._buildContentList()}
-                    </div>
+                    <TableNav
+                        clickFunction={this._handleTableDisplay} 
+                        isUserContentVisible={this.state.isUserContentVisible}
+                    />
+                    <ToggleSwitch />
+                </div>
+                <div id="tableBody">
+                    {this._buildContentList()}
+                </div>
+            </>
+        );
+    }
+
+    _renderErrorDisplay = () => {
+        return (
+            <>
+                <div>
+                    <p>{this.state._errorMessage}</p>
+                    <p>https://localhost:8000/items/available</p>
+                </div>
             </>
         );
     }
@@ -205,7 +216,7 @@ export default class ContentList extends React.Component {
     render() {
         return(
             <div id="contentBody">
-                {this.state._isError ? this.state._errorMessage : this._renderContentBody()}
+                {this.state._isError ? this._renderErrorDisplay() : this._renderContentBody()}
             </div>
         );
     };

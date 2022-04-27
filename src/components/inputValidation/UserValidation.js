@@ -47,14 +47,6 @@ class UserValidation {
 		return false;
 	}
 
-	validateUserRoleSelect(userRole) {
-		if(userRole === '') {
-			return "Please select the user's role";
-		};
-
-		return false;
-	}
-
 	validatePassword(isRequired, password) {
 		let passwordRegex = new RegExp(/^[a-zA-Z0-9!@#$%^&*_+]+$/);
 		if(!isRequired) return false;

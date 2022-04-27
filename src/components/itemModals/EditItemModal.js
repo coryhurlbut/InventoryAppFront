@@ -39,7 +39,7 @@ export default class EditItemModal extends React.Component{
         };
         this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
-        this.handleInputFields = new HandleOnChangeEvent('editItemModal');
+        this.handleInputFields = new HandleOnChangeEvent('itemModalEdit');
     }
 
     async componentDidMount() {

@@ -32,7 +32,7 @@ export default class AddItemModal extends React.Component{
             isError:      false,
             errorMessage: ''
         };
-        this.handleInputFields = new HandleOnChangeEvent('addItemModal');
+        this.handleInputFields = new HandleOnChangeEvent('itemModalAdd');
     }
 
     _dismissModal = () => {
