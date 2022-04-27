@@ -93,12 +93,15 @@ export default class ViewNotesModal extends React.Component{
                         {this.state.name}
                     </div>
                     <div id='viewItemNotes'className="modalBody">
-                        <Table 
-                            columns={columns} 
-                            data={this.state.content}
-                            accountRole={'custodian'}
-                            _setParentState={this._setParentState}
-                        />
+                        {this.state.content.length <= 1 ? 
+                            'This item has no notes' : 
+                            <Table 
+                                columns={columns} 
+                                data={this.state.content}
+                                accountRole={'custodian'}
+                                _setParentState={this._setParentState}
+                            />
+                        }
                     </div>
                     <div className="modalFooter">
                         <button onClick={() => {this._viewOtherModal()}}>
