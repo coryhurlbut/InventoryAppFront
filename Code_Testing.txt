@@ -1,0 +1,13 @@
+Source Material:
+    https://reactjs.org/docs/testing.html
+    https://jestjs.io/docs/getting-started
+    https://flatteredwithflutter.com/unit-testing-in-react/
+    https://www.smashingmagazine.com/2020/06/practical-guide-testing-react-applications-jest/
+
+Jest: https://jestjs.io/
+    Install: 
+        npm install --save-dev jest
+    Test files:
+        fileName.test.js
+    Execution:
+        npm test

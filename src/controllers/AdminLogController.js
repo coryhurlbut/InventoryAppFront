@@ -22,7 +22,7 @@ class AdminLogController extends AuthController {
     //Creates an admin log. Must have required adminLog data
     async createAdminLog(adminLog) {
         let user = this.getUserInfo();
-        adminLog.adminId = user.user.user._id;
+        adminLog.adminId = user.user.user.userName;
         return await this.requestWithAuth('logs/adminLogs', {method: 'POST', body: JSON.stringify(adminLog)});
     };
 

@@ -55,19 +55,14 @@ export default class AddUserModal extends React.Component {
             if(this.state.isSignUp) {
                 this.setState({status: 'pending'})
             } else {
-                //Front end display so it show's user is selected
-                let select = document.getElementById('userRoleSelect');
-                select.value = 'user';
-
                 let signedInAccount = await authController.getUserInfo();
-
-                if(signedInAccount.user.user.userRole === 'custodian') {
-                    this.setState({userRoleDisabled: true });
                 
+                if(signedInAccount.user.user.userRole === 'custodian') {
+                    this.setState({userRoleDisabled: true});
                 }
             }
             //Have the default value role be user
-            this.setState({ userRole: 'user'});
+            this.setState({userRole: 'user'});
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
@@ -75,7 +70,6 @@ export default class AddUserModal extends React.Component {
                             controllerErrorMessage: error.message
             });
         }
-        
     };
 
     _dismissModal = () => {
@@ -259,7 +253,7 @@ export default class AddUserModal extends React.Component {
                                     <select 
                                         disabled={this.state.userRoleDisabled} 
                                         id='userRoleSelect' 
-                                        defaultValue={''} 
+                                        defaultValue={'user'} 
                                         onChange={(Event) => {this._handleChangeEvent(Event)}}
                                     >
 
