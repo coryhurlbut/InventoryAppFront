@@ -69,43 +69,23 @@ export default class SignItemInModal extends React.Component{
         this.setState({ notesArray: MapNotes(buttonClicked) })
         this.setState({ viewNotesModalBool: true });
     }
-    //TODO - make this an imported function
-    _mapNotes = (notes) => {
-        let notesArray = [];
-        let notesSplitArray = [];
-            notesSplitArray = notes.split('`');
-            let notesObject = {
-                notes: '',
-                date: ''
-            };
-            for (let i = 0; i < notesSplitArray.length; i++) {
-                if(notesSplitArray[i] !== ""){
-                    if(i % 2 === 0 || i === 0){
-                        notesObject.notes = notesSplitArray[i];
-                    }else{
-                        notesObject.date = notesSplitArray[i];
-                        notesArray.push(notesObject);
-                        notesObject = {
-                            notes: '',
-                            date: ''
-                        }
-                    }
-                }
-            }
-            return notesArray;
-    }
 
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
         const displayItem = items.map((item) => {
             return (
                 <span className='sideBySide'>
-                <li className="arrayObject" key={item.itemNumber}> 
-                    {item.name} 
-                </li>
-                <button type='button' key={item._id + 'yo'} id={item.itemNumber} onClick={() => this._viewNotesModal(item.notes)}>
-                    View Notes
-                </button>
+                    <li className="arrayObject" key={item.itemNumber}> 
+                        {item.name} 
+                    </li>
+                    <button 
+                        type='button' 
+                        key={item._id} 
+                        id={item.itemNumber} 
+                        onClick={() => this._viewNotesModal(item.notes)}
+                    >
+                        View Notes
+                    </button>
                 </span>
             );
         });
@@ -148,8 +128,15 @@ export default class SignItemInModal extends React.Component{
     render() {
         if(this.state.viewNotesModalBool){
             return(
-            <ViewNotesModal selectedIds={this._selectedIds} isOpen={true} hideModal={null} content={this.state.notesArray} 
-                name={'temp'} previousModal={'signIn'} selectedObjects={this._selectedObjects}/>
+                <ViewNotesModal 
+                    selectedIds={this._selectedIds} 
+                    isOpen={true} 
+                    hideModal={null} 
+                    content={this.state.notesArray} 
+                    name={'temp'} 
+                    previousModal={'signIn'} 
+                    selectedObjects={this._selectedObjects}
+                />
             )
         }else{
             return(

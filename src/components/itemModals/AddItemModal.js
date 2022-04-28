@@ -40,22 +40,38 @@ export default class AddItemModal extends React.Component{
     }
 
     _addItem = async () => {
-        let d = Date.now();
-        let now = new Date(d);
-        let now1 = now.toISOString();
+        let item = {};
+        //If the user enters something into notes, date stamp it
+        if(this.state.notes !== '') {
+            let currentDate = new Date();
+            let currentDateISOString = currentDate.toISOString();
+    
+            let newNotes = (`${this.state.notes + '`' + currentDateISOString + '`'}`);
+    
+            item = {
+                itemNumber:         this.state.itemNumber,
+                name:               this.state.name,
+                description:        this.state.description,
+                serialNumber:       this.state.serialNumber,
+                notes:              newNotes,
+                homeLocation:       this.state.homeLocation,
+                specificLocation:   this.state.specificLocation,
+                available:          this.state.available,
+            };
+        } else { //Pass default emptry string
+            item = {
+                itemNumber:         this.state.itemNumber,
+                name:               this.state.name,
+                description:        this.state.description,
+                serialNumber:       this.state.serialNumber,
+                notes:              this.state.notes,
+                homeLocation:       this.state.homeLocation,
+                specificLocation:   this.state.specificLocation,
+                available:          this.state.available,
+            };
+        }
 
-        let newNotes = (`${this.state.notes + '`' + now1 + '`'}`);
-        //Makes call to add item to database and grabs the _id of the newly created item
-        let item = {
-            itemNumber:         this.state.itemNumber,
-            name:               this.state.name,
-            description:        this.state.description,
-            serialNumber:       this.state.serialNumber,
-            notes:              newNotes,
-            homeLocation:       this.state.homeLocation,
-            specificLocation:   this.state.specificLocation,
-            available:          this.state.available
-        };
+
         let returnedItem = {};
 
         await itemController.createItem(item)

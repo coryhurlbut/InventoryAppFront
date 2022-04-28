@@ -87,14 +87,13 @@ export default class ViewNotesModal extends React.Component{
         }
         else{
             return(
-                
                 <Modal  isOpen={this.state.isOpen}>
                     <div className='modalHeader'>
                         {this.state.name}
                     </div>
                     <div id='viewItemNotes'className="modalBody">
-                        {this.state.content.length <= 1 ? 
-                            'This item has no notes' : 
+                        {this.state.content.length < 1 ? 
+                            'No available notes' : 
                             <Table 
                                 columns={columns} 
                                 data={this.state.content}

@@ -24,8 +24,7 @@ export default class EditItemModal extends React.Component{
             description:      '',
             serialNumber:     '',
             notes:            '',
-            savedNotes:       [{}],
-            tempNotes:        '',
+            previousNotes:    '',
             homeLocation:     '',
             specificLocation: '',
             available:        true,
@@ -39,6 +38,7 @@ export default class EditItemModal extends React.Component{
         };
         this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
+        
         this.handleInputFields = new HandleOnChangeEvent('itemModalEdit');
     }
 
@@ -62,11 +62,10 @@ export default class EditItemModal extends React.Component{
                 name:                   name,
                 description:            description,
                 serialNumber:           serialNumber,
-                savedNotes:             [{notes}],
                 homeLocation:           homeLocation,
                 specificLocation:       specificLocation,
                 available:              available,
-                tempNotes:              notes
+                previousNotes:          notes
             });
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
@@ -86,21 +85,60 @@ export default class EditItemModal extends React.Component{
     }
 
     _editItem = async () => {
-        let d = Date.now();
-        let now = new Date(d);
-        let now1 = now.toISOString();
+        let item = {};
+        let currentDate = new Date();
+        let currentDateISOString = currentDate.toISOString();
+        let updatedNotes;
 
-        let newNotes = (`${this.state.tempNotes + this.state.notes + '`' + now1 + '`'}`);
-        let item = {
-            itemNumber:         this.state.itemNumber,
-            name:               this.state.name,
-            description:        this.state.description,
-            serialNumber:       this.state.serialNumber,
-            notes:              newNotes,
-            homeLocation:       this.state.homeLocation,
-            specificLocation:   this.state.specificLocation,
-            available:          this.state.available,
-        };
+        //Are there existing notes to append new notes to?
+        if(this.state.previousNotes !== '') {
+            //Are there notes to append?
+                //If not, pass just the already existing notes
+            if(this.state.notes !== '') {
+                updatedNotes = (`${this.state.previousNotes + this.state.notes + '`' + currentDateISOString + '`'}`);
+            } else {
+                updatedNotes = (`${this.state.previousNotes}`);
+            }
+
+            item = {
+                itemNumber:         this.state.itemNumber,
+                name:               this.state.name,
+                description:        this.state.description,
+                serialNumber:       this.state.serialNumber,
+                notes:              updatedNotes,
+                homeLocation:       this.state.homeLocation,
+                specificLocation:   this.state.specificLocation,
+                available:          this.state.available,
+            };
+        } else { //Notes either has information or doesn't
+            if(this.state.notes !== '') {
+                updatedNotes = (`${this.state.notes + '`' + currentDateISOString + '`'}`);
+        
+                item = {
+                    itemNumber:         this.state.itemNumber,
+                    name:               this.state.name,
+                    description:        this.state.description,
+                    serialNumber:       this.state.serialNumber,
+                    notes:              updatedNotes,
+                    homeLocation:       this.state.homeLocation,
+                    specificLocation:   this.state.specificLocation,
+                    available:          this.state.available,
+                };
+            } else { //Pass default emptry string
+                item = {
+                    itemNumber:         this.state.itemNumber,
+                    name:               this.state.name,
+                    description:        this.state.description,
+                    serialNumber:       this.state.serialNumber,
+                    notes:              this.state.notes,
+                    homeLocation:       this.state.homeLocation,
+                    specificLocation:   this.state.specificLocation,
+                    available:          this.state.available,
+                };
+            }
+        }
+        
+
         let log = {
             itemId:     item.itemNumber,
             userId:     'N/A',
@@ -292,7 +330,8 @@ export default class EditItemModal extends React.Component{
     render() {
         if(this.state.viewNotesBool) {
             return(
-                <ViewNotesModal selectedIds={this._selectedIds} 
+                <ViewNotesModal 
+                    selectedIds={this._selectedIds} 
                     isOpen={true} 
                     hideModal={null} 
                     content={this.state.notesArrayFinal} 

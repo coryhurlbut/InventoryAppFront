@@ -107,6 +107,7 @@ export default class SignItemOutModal extends React.Component{
             };
         };
     }
+
     _viewNotesModal = (buttonClicked) => {
         this.setState({ notesArray: MapNotes(buttonClicked) })
         this.setState({ viewNotesModalBool: true });
@@ -117,12 +118,17 @@ export default class SignItemOutModal extends React.Component{
         const displayItem = items.map((item) => {
             return (
                 <span className='sideBySide'>
-                <li className="arrayObject" key={item.itemNumber}> 
-                    {item.name} 
-                </li>
-                <button type='button' key={item._id + 'yo'} id={item.itemNumber} onClick={() => this._viewNotesModal(item.notes)}>
-                    View Notes
-                </button>
+                    <li className="arrayObject" key={item.itemNumber}> 
+                        {item.name} 
+                    </li>
+                    <button 
+                        type='button' 
+                        key={item._id} 
+                        id={item.itemNumber} 
+                        onClick={() => this._viewNotesModal(item.notes)}
+                    >
+                        View Notes
+                    </button>
                 </span>
             );
         });
@@ -220,13 +226,23 @@ export default class SignItemOutModal extends React.Component{
     render() {
         if(this.state.viewNotesModalBool){
             return(
-            <ViewNotesModal selectedIds={this._selectedIds} isOpen={true} hideModal={null} content={this.state.notesArray} 
-                name={'temp'} previousModal={'signOut'} selectedObjects={this._selectedObjects}/>
+                <ViewNotesModal 
+                    selectedIds={this._selectedIds} 
+                    isOpen={true} 
+                    hideModal={null} 
+                    content={this.state.notesArray} 
+                    name={'temp'} 
+                    previousModal={'signOut'} 
+                    selectedObjects={this._selectedObjects}
+                />
             )
         }else{
             return(
                 <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                    {this.state.isControllerError ? this._renderErrorDisplay() : this._renderSignOutNotification()}
+                    {this.state.isControllerError ? 
+                        this._renderErrorDisplay() : 
+                        this._renderSignOutNotification()
+                    }
                 </Modal>
             );
         }
