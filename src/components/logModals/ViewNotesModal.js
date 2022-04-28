@@ -93,7 +93,7 @@ export default class ViewNotesModal extends React.Component{
                     </div>
                     <div id='viewItemNotes'className="modalBody">
                         {this.state.content.length < 1 ? 
-                            'No available notes' : 
+                            <p className="centerText">No available notes</p> : 
                             <Table 
                                 columns={columns} 
                                 data={this.state.content}

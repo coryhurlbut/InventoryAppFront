@@ -123,7 +123,7 @@ export default class ApproveUsersModal extends React.Component {
                             contentType={this.state.contentType}
                             setParentState={this.setParentState}
                         />
-                        : <p>There is no pending Users</p>}
+                        : <p className='centerText'>No available Pending Users</p>}
                     </div>
                     <div className="modalFooter">
                         <button 

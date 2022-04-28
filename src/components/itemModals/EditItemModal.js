@@ -247,20 +247,20 @@ export default class EditItemModal extends React.Component{
                         <fieldset>
                             <h4 className="inputTitle">Notes</h4>
                             <span className='sideBySide'>
-                            <textarea
-                                type="text"
-                                id="notes"
-                                rows='2'
-                                cols='21'
-                                maxLength={100}
-                                className={this.handleInputFields.setClassNameIsValid("notes") ? "valid" : "invalid"}
-                                value={this.state.notes} 
-                                onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
-                                onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
-                                ></textarea>
-                            <button type='button' onClick={this._openNotesModal}>
-                                View
-                            </button>
+                                <textarea
+                                    type="text"
+                                    id="notes"
+                                    rows='2'
+                                    cols='21'
+                                    maxLength={100}
+                                    className={this.handleInputFields.setClassNameIsValid("notes") ? "valid" : "invalid"}
+                                    value={this.state.notes} 
+                                    onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
+                                    onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
+                                    ></textarea>
+                                <button type='button' onClick={this._openNotesModal}>
+                                    View
+                                </button>
                             </span>
                             {this.handleInputFields.setErrorMessageDisplay("notes")}
                         </fieldset>

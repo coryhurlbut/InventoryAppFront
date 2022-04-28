@@ -22,6 +22,7 @@ export default class SignItemOutModal extends React.Component{
             userName:               '',
             notesArray:             [],
             buttonClicked:          null,
+            viewNotesName:          '',
 
             isControllerError:      false,
             controllerErrorMessage: '',
@@ -108,24 +109,26 @@ export default class SignItemOutModal extends React.Component{
         };
     }
 
-    _viewNotesModal = (buttonClicked) => {
-        this.setState({ notesArray: MapNotes(buttonClicked) })
-        this.setState({ viewNotesModalBool: true });
+    _viewNotesModal = (Event, buttonClicked) => {
+        this.setState({ notesArray: MapNotes(buttonClicked),
+            viewNotesModalBool: true,
+            viewNotesName: Event.target.id});
     }
     
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
         const displayItem = items.map((item) => {
             return (
-                <span className='sideBySide'>
+                <span className='displayItemsAndViewNotes'>
                     <li className="arrayObject" key={item.itemNumber}> 
-                        {item.name} 
+                        {item.itemNumber} : {item.name}
                     </li>
                     <button 
-                        type='button' 
+                        type='button'
+                        className='signinSignout' 
                         key={item._id} 
                         id={item.itemNumber} 
-                        onClick={() => this._viewNotesModal(item.notes)}
+                        onClick={Event => this._viewNotesModal(Event, item.notes)}
                     >
                         View Notes
                     </button>
@@ -171,18 +174,20 @@ export default class SignItemOutModal extends React.Component{
                     }
                     <h4>You are about to sign out: </h4>
                     {this._displayArray(this._selectedObjects)}
-                    <label>Choose a user: </label>
-                    <select 
-                        name="usersSelect" 
-                        id="usersSelect" 
-                        defaultValue={""} 
-                        onChange={this._handleDropdownChange} 
-                    > 
-                        <option label="" hidden disabled />
-                        <optgroup label="Users" id="userGroup" />
-                        <optgroup label="Custodians" id="custodianGroup" />
-                        <optgroup label="Admins" id="adminGroup" />
-                    </select>
+                    <span className='userSelectSigninSignout'>
+                        <label id='labelSelectSignout'>Choose a user:</label>
+                        <select 
+                            name="usersSelect" 
+                            id="usersSelect" 
+                            defaultValue={""} 
+                            onChange={this._handleDropdownChange} 
+                        > 
+                            <option label="" hidden disabled />
+                            <optgroup label="Users" id="userGroup" />
+                            <optgroup label="Custodians" id="custodianGroup" />
+                            <optgroup label="Admins" id="adminGroup" />
+                        </select>
+                    </span>
                 </div>
                 <div className="modalFooter">
                     <input 
@@ -231,7 +236,7 @@ export default class SignItemOutModal extends React.Component{
                     isOpen={true} 
                     hideModal={null} 
                     content={this.state.notesArray} 
-                    name={'temp'} 
+                    name={`${this.state.viewNotesName}`} 
                     previousModal={'signOut'} 
                     selectedObjects={this._selectedObjects}
                 />

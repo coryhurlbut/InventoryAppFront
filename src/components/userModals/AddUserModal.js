@@ -55,6 +55,10 @@ export default class AddUserModal extends React.Component {
             if(this.state.isSignUp) {
                 this.setState({status: 'pending'})
             } else {
+                //Front end display so it show's user is selected
+                let select = document.getElementById('userRoleSelect');
+                select.value = 'user';
+
                 let signedInAccount = await authController.getUserInfo();
 
                 if(signedInAccount.user.user.userRole === 'custodian') {
@@ -64,9 +68,6 @@ export default class AddUserModal extends React.Component {
             }
             //Have the default value role be user
             this.setState({ userRole: 'user'});
-                //Front end display so it show's user is selected
-            let select = document.getElementById('userRoleSelect');
-            select.value = 'user';
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this

@@ -19,6 +19,7 @@ export default class SignItemInModal extends React.Component{
             viewNotesModalBool:     null,
             notesArray:             [],
             buttonClicked:          null,
+            viewNotesName:          '',
 
             isError:                false,
             errorMessage:           ''
@@ -65,24 +66,26 @@ export default class SignItemInModal extends React.Component{
             });
         });
     }
-    _viewNotesModal = (buttonClicked) => {
-        this.setState({ notesArray: MapNotes(buttonClicked) })
-        this.setState({ viewNotesModalBool: true });
+    _viewNotesModal = (Event, buttonClicked) => {
+        this.setState({ notesArray: MapNotes(buttonClicked),
+            viewNotesModalBool: true,
+            viewNotesName: Event.target.id});
     }
 
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
         const displayItem = items.map((item) => {
             return (
-                <span className='sideBySide'>
+                <span className='displayItemsAndViewNotes'>
                     <li className="arrayObject" key={item.itemNumber}> 
-                        {item.name} 
+                        {item.itemNumber} : {item.name}
                     </li>
                     <button 
-                        type='button' 
+                        type='button'
+                        className='signinSignout'
                         key={item._id} 
                         id={item.itemNumber} 
-                        onClick={() => this._viewNotesModal(item.notes)}
+                        onClick={Event => this._viewNotesModal(Event, item.notes)}
                     >
                         View Notes
                     </button>
@@ -133,7 +136,7 @@ export default class SignItemInModal extends React.Component{
                     isOpen={true} 
                     hideModal={null} 
                     content={this.state.notesArray} 
-                    name={'temp'} 
+                    name={`${this.state.viewNotesName}`} 
                     previousModal={'signIn'} 
                     selectedObjects={this._selectedObjects}
                 />

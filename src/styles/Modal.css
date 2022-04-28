@@ -2,6 +2,12 @@
     This styling sheet focus the display modals:
         Login/Logout/AddUser/EditUser/DeleteUser
 */
+
+.centerText {
+    display: flex;
+    justify-content:center;
+}
+
 /*Title of Modal*/
 .modalHeader {
     /*margin: 30px;*/
@@ -82,11 +88,33 @@
     text-align: left;
 }
 
+/* This chuck styles the signin and signout modals*/
+
+.displayItemsAndViewNotes {
+    display: flex;
+    justify-content: space-between;
+}
+
 .modalBody .arrayObject {
     font-weight: bold;
 }
+.modalBody .signinSignout {
+    width: 95px;
+    margin-right: 25px;
+}
+.modalBody .userSelectSigninSignout{
+    display: flex;
+    justify-content: center;
+}
+.modalBody #labelSelectSignout{
+    margin-right: 10px;
+}
+ul li::marker{
+    content: "--> ";
+}
 
-.modalBody button {    /*Reset button styling*/
+/*Reset button styling*/
+.modalBody button {  
     padding: 2px 8px;
     margin-left: 3px;
 
@@ -133,7 +161,7 @@
 .emptyLabel {
     color: transparent;
     font-size: small;
-    webkit-touch-callout: none; /* iOS Safari */
+    -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;  /* Safari */
     -khtml-user-select: none;   /* Konqueror HTML */
     -moz-user-select: none;     /* Old versions of Firefox */
@@ -178,8 +206,6 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    
-    
 
     margin-top: 10px;
 }
