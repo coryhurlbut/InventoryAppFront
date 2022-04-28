@@ -48,6 +48,7 @@ class UserValidation {
 	}
 
 	validatePassword(isRequired, password) {
+		let passwordRegex = new RegExp(/^[a-zA-Z0-9!@#$%^&*_+]+$/);
 		if(!isRequired) return false;
 
 		if(!validator.isStrongPassword(password, {minLength: 8, minLowercase: 0, minUppercase: 0, minNumbers: 0, minSymbols: 0})) {
@@ -61,6 +62,7 @@ class UserValidation {
 		} else if(!validator.isStrongPassword(password, {minLength: 0, minLowercase: 0, minUppercase: 0, minNumbers: 0, minSymbols: 1})) {
 			return 'Invalid Password. Minimum one special character';
 		};
+		if(!passwordRegex.test(password)) {return 'Invalid character used'};
 
 		return false;
 	}
@@ -74,10 +76,10 @@ class UserValidation {
 	}
 
 	validatePhoneNumber(phoneNumber) {
-		const validateNumber = new RegExp(/(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/);
+		const validateNumber = new RegExp(/\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/);
 		
 		if(!validateNumber.test(phoneNumber) || !validator.isLength(phoneNumber, {min:10, max: 14})) {
-			return 'Please enter a valid number';
+			return 'Please enter a valid phone number';
 		};
 
 		return false;

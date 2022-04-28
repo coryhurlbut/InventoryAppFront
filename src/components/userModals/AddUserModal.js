@@ -305,6 +305,7 @@ export default class AddUserModal extends React.Component {
                         <input
                             type="text" 
                             id="phoneNumber" 
+                            placeholder="000-000-0000"
                             className={ this.handleInputFields.setClassNameIsValid("phoneNumber") ? "valid" : "invalid"}
                             value={this.state.phoneNumber}
                             onChange={(Event) => this._handleChangeEvent(Event, userValidation.validatePhoneNumber)}
