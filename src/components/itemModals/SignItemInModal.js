@@ -76,14 +76,13 @@ export default class SignItemInModal extends React.Component{
     _displayArray = (items) => {
         const displayItem = items.map((item) => {
             return (
-                <span className='displayItemsAndViewNotes'>
-                    <li className="arrayObject" key={item.itemNumber}> 
+                <span className='displayItemsAndViewNotes' key={item._id}>
+                    <li className="arrayObject"> 
                         {item.itemNumber} : {item.name}
                     </li>
                     <button 
                         type='button'
                         className='signinSignout'
-                        key={item._id} 
                         id={item.itemNumber} 
                         onClick={Event => this._viewNotesModal(Event, item.notes)}
                     >
