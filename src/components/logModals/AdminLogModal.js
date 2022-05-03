@@ -39,6 +39,11 @@ const columns = [
 /*
 *   Displays log of admin actions (add, edit, delete of items and users)
 */
+const MODAL_HEADER_TITLE = 'Admin Log';
+const MODAL_HEADER_ERROR_TITLE = 'Error Has Occured';
+
+const BTN_CLOSE = 'Close';
+
 export default class AdminLogModal extends React.Component {
     constructor(props){
         super(props)
@@ -73,7 +78,7 @@ export default class AdminLogModal extends React.Component {
     _renderAdminLog = () => {
         return(
             <>
-                <div className="modalHeader">Admin Log</div>
+                <div className="modalHeader">{MODAL_HEADER_TITLE}</div>
                 <div className="modalBody">
                     {this.state.isError ?
                         this._renderErrorMessage() :
@@ -82,7 +87,7 @@ export default class AdminLogModal extends React.Component {
                     <Table columns={columns} data={this.state.content} />
                 </div>
                 <div className="modalFooter">
-                    <button onClick={this._dismissModal}>Close</button>
+                    <button onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
             </>
         );
@@ -102,7 +107,7 @@ export default class AdminLogModal extends React.Component {
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Error Has Occured</h3>
+                    <h3>{MODAL_HEADER_ERROR_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     <p className="errorMesage">
@@ -110,7 +115,7 @@ export default class AdminLogModal extends React.Component {
                     </p>
                 </div>
                 <div className="modalFooter">
-                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                    <button type="reset" onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
             </>
         );

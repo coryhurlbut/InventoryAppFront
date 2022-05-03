@@ -13,6 +13,20 @@ import MapNotes             from '../utilities/MapNotes';
 /*
 *   Modal for editing an item
 */
+const MODAL_HEADER_TITLE = 'Edit Item';
+const MODAL_HEADER_ERROR_TITLE = 'Error Has Occured';
+
+const INPUT_FIELD_ITEM_NUMBER = 'Item Number';
+const INPUT_FIELD_NAME = 'Name';
+const INPUT_FIELD_DESCRIPTION = 'Description';
+const INPUT_FIELD_SERIAL_NUMBER = 'Serial Number';
+const INPUT_FIELD_NOTES = 'Notes';
+const VIEW_NOTES = 'View';
+const INPUT_FIELD_HOME_LOCATION = 'Home Location';
+const INPUT_FIELD_SPECIFIC_LOCATION = 'Specific Location';
+
+const BTN_CLOSE = 'Close';
+
 export default class EditItemModal extends React.Component{
     constructor(props) {
         super(props);
@@ -137,7 +151,6 @@ export default class EditItemModal extends React.Component{
                 };
             }
         }
-        
 
         let log = {
             itemId:     item.itemNumber,
@@ -191,7 +204,7 @@ export default class EditItemModal extends React.Component{
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Edit Item</h3>
+                    <h3>{MODAL_HEADER_TITLE}</h3>
                 </div>
                 <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                     <div className="modalBody">
@@ -199,8 +212,8 @@ export default class EditItemModal extends React.Component{
                             this._renderErrorMessage() :
                             null
                         }
-                        <fieldset>
-                            <h4 className="inputTitle">Item Number</h4>
+                        <fieldset className={INPUT_FIELD_ITEM_NUMBER}>
+                            <h4 className="inputTitle">{INPUT_FIELD_ITEM_NUMBER}</h4>
                             <input 
                                 type="text" 
                                 id="itemNumber"
@@ -208,8 +221,8 @@ export default class EditItemModal extends React.Component{
                                 value={this.state.itemNumber}
                             />
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Name</h4>
+                        <fieldset className={INPUT_FIELD_NAME}>
+                            <h4 className="inputTitle">{INPUT_FIELD_NAME}</h4>
                             <input 
                                 type="text" 
                                 id="name"
@@ -220,8 +233,8 @@ export default class EditItemModal extends React.Component{
                             />
                             {this.handleInputFields.setErrorMessageDisplay("name")}
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Description</h4>
+                        <fieldset className={INPUT_FIELD_DESCRIPTION}>
+                            <h4 className="inputTitle">{INPUT_FIELD_DESCRIPTION}</h4>
                             <input 
                                 type="text" 
                                 id="description" 
@@ -232,8 +245,8 @@ export default class EditItemModal extends React.Component{
                             />
                             {this.handleInputFields.setErrorMessageDisplay("description")}
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Serial Number</h4>
+                        <fieldset className={INPUT_FIELD_SERIAL_NUMBER}>
+                            <h4 className="inputTitle">{INPUT_FIELD_SERIAL_NUMBER}</h4>
                             <input 
                                 type="text" 
                                 id="serialNumber" 
@@ -244,8 +257,8 @@ export default class EditItemModal extends React.Component{
                             />
                             {this.handleInputFields.setErrorMessageDisplay("serialNumber")}
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Notes</h4>
+                        <fieldset className={INPUT_FIELD_NOTES}>
+                            <h4 className="inputTitle">{INPUT_FIELD_NOTES}</h4>
                             <span className='sideBySide'>
                                 <textarea
                                     type="text"
@@ -257,15 +270,15 @@ export default class EditItemModal extends React.Component{
                                     value={this.state.notes} 
                                     onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
                                     onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
-                                    ></textarea>
+                                />
                                 <button type='button' onClick={this._openNotesModal}>
-                                    View
+                                    {VIEW_NOTES}
                                 </button>
                             </span>
                             {this.handleInputFields.setErrorMessageDisplay("notes")}
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Home Location</h4>
+                        <fieldset className={INPUT_FIELD_HOME_LOCATION}>
+                            <h4 className="inputTitle">{INPUT_FIELD_HOME_LOCATION}</h4>
                             <input 
                                 type="text" 
                                 id="homeLocation" 
@@ -276,8 +289,8 @@ export default class EditItemModal extends React.Component{
                             />
                             {this.handleInputFields.setErrorMessageDisplay("homeLocation")}
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Specific Location</h4>
+                        <fieldset className={INPUT_FIELD_SPECIFIC_LOCATION}>
+                            <h4 className="inputTitle">{INPUT_FIELD_SPECIFIC_LOCATION}</h4>
                             <input 
                                 type="text" 
                                 id="specificLocation" 
@@ -294,7 +307,9 @@ export default class EditItemModal extends React.Component{
                             value='Submit' 
                             disabled={!this.handleInputFields.isItemModalSubmitAvailable()} 
                         />
-                        <button type="reset" onClick={this._dismissModal}>Close</button>
+                        <button type="reset" onClick={this._dismissModal}>
+                            {BTN_CLOSE}
+                        </button>
                     </div>
                 </form>
             </>
@@ -315,13 +330,15 @@ export default class EditItemModal extends React.Component{
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Error Has Occured</h3>
+                    <h3>{MODAL_HEADER_ERROR_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     <p className="errorMesage">{this.state.controllerErrorMessage}</p>
                 </div>
                 <div className="modalFooter">
-                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                    <button type="reset" onClick={this._dismissModal}>
+                        {BTN_CLOSE}
+                    </button>
                 </div>
             </>
         );

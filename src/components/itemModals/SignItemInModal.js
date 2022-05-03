@@ -10,6 +10,14 @@ import MapNotes             from '../utilities/MapNotes';
 /*
 *   Modal for signing an item in
 */
+const VIEW_NOTES = 'View Notes';
+
+const MODAL_HEADER_TITLE = 'Sign Item In';
+const MODAL_PROMPT = 'You are about to sign back in:';
+
+const BTN_SUBMIT = 'Submit';
+const BTN_CLOSE = 'Close';
+
 export default class SignItemInModal extends React.Component{
     constructor(props) {
         super(props);
@@ -66,6 +74,7 @@ export default class SignItemInModal extends React.Component{
             });
         });
     }
+
     _viewNotesModal = (Event, buttonClicked) => {
         this.setState({ notesArray: MapNotes(buttonClicked),
             viewNotesModalBool: true,
@@ -86,7 +95,7 @@ export default class SignItemInModal extends React.Component{
                         id={item.itemNumber} 
                         onClick={Event => this._viewNotesModal(Event, item.notes)}
                     >
-                        View Notes
+                        {VIEW_NOTES}
                     </button>
                 </span>
             );
@@ -100,19 +109,19 @@ export default class SignItemInModal extends React.Component{
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Sign Item In</h3>
+                    <h3>{MODAL_HEADER_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
-                    <h4>You are about to sign back in:</h4>
+                    <h4>{MODAL_PROMPT}</h4>
                     {this._displayArray(this._selectedObjects)}
                 </div>
                 <div className="modalFooter">
-                    <button onClick={this._signItemsIn}>Submit</button>
-                    <button onClick={this._dismissModal}>Close</button>
+                    <button onClick={this._signItemsIn}>{BTN_SUBMIT}</button>
+                    <button onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
             </>
         );

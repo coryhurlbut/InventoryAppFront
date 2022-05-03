@@ -7,6 +7,10 @@ import { AddUserModal,
 /*
 *   Displays the buttons for adding, deleting and editing users
 */
+const BTN_ADD_USER_TXT = 'Add User';
+const BTN_EDIT_USER_TXT = 'Edit User';
+const BTN_DELETE_USER_TXT = 'Delete User';
+
 export default class UserEditControls extends React.Component {
     constructor(props) {
         super(props);
@@ -70,7 +74,7 @@ export default class UserEditControls extends React.Component {
             return(
                 <div className='Edit_Controls'>
                     <button onClick={this._addUser}>
-                        Add User
+                        {BTN_ADD_USER_TXT}
                     </button>
                     {this.state.modal}
                 </div>
@@ -79,19 +83,19 @@ export default class UserEditControls extends React.Component {
             return(
                 <div className="Edit_Controls">
                     <button onClick={this._addUser}>
-                        Add User
+                        {BTN_ADD_USER_TXT}
                     </button>
                     <button 
                         onClick={this._editUser} 
                         disabled={this.state.selectedIds.length === 1 ? false : true}
                     >
-                        Edit User
+                        {BTN_EDIT_USER_TXT}
                     </button>
                     <button 
                         onClick={this._deleteUser} 
                         disabled={this.state.selectedIds.length > 0 ? false : true}
                     >
-                        Delete User
+                        {BTN_DELETE_USER_TXT}
                     </button>
                     {this.state.modal}
                 </div>
