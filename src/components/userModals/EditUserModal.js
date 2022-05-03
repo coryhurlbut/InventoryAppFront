@@ -113,8 +113,12 @@ export default class EditUserModal extends React.Component {
         if(user.status === 'inactive') {
             let unavailableItems = await itemController.getUnavailableItems();
 
+            //Controller function takes an array so we have to put the user into an array.
+            let userToCheck = [];
+            userToCheck.push(user);
+
             //Checks if any user that is going to get deleted has any items signed out
-            let res = await userController.checkSignouts(user, unavailableItems);
+            let res = await userController.checkSignouts(userToCheck, unavailableItems);
             if (res.status === 'error') {
                 this.setState({ 
                     isError: true, 
