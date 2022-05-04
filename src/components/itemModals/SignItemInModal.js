@@ -15,14 +15,13 @@ export default class SignItemInModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen:                 props.isOpen,
-            viewNotesModalBool:     null,
-            notesArray:             [],
-            buttonClicked:          null,
-            viewNotesName:          '',
-
-            isError:                false,
-            errorMessage:           ''
+            isOpen              : props.isOpen,
+            viewNotesModalBool  : null,
+            notesArray          : [],
+            buttonClicked       : null,
+            viewNotesName       : '',
+            isError             : false,
+            errorMessage        : ''
         };
 
         this._selectedIds = props.selectedIds;
@@ -45,11 +44,11 @@ export default class SignItemInModal extends React.Component{
 
             for(let i = 0; i < this._selectedIds.length; i++) {
                 let info = {
-                    itemId:      this._selectedIds[i],
-                    userId:      'test',
-                    custodianId: '',
-                    action:      'signed in',
-                    notes:       'test'
+                    itemId      : this._selectedIds[i],
+                    userId      : 'test',
+                    custodianId : '',
+                    action      : 'signed in',
+                    notes       : 'test'
                 };
                 await itemLogController.createItemLog(info);
             };

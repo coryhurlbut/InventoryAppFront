@@ -12,10 +12,9 @@ export default class LogoutModal extends React.Component{
         super(props);
 
         this.state = {
-            isOpen: props.isOpen,
-
-            isError:                false,
-            errorMessage:           ''
+            isOpen          : props.isOpen,
+            isError         : false,
+            errorMessage    : ''
         };
     }
     

@@ -19,16 +19,16 @@ export default class ContentBuilder extends React.Component {
         super(props);
         
         this.state = {
-            accountAuth:       null,
-            view:              displayPresets.main,
-            _isLoggedIn:       false,
-            _modal:            null,
-            accountRole:       null,
-            _isDropdownActive: false,
-            pendingUsers:      null
+            accountAuth         : null,
+            view                : displayPresets.main,
+            _isLoggedIn         : false,
+            _modal              : null,
+            accountRole         : null,
+            _isDropdownActive   : false,
+            pendingUsers        : null
         };
-        this._isUsersPending   =      false;
-        this._isError          =      null;
+        this._isUsersPending    = false;
+        this._isError           = null;
     };
 
     async componentDidMount() {
@@ -52,9 +52,9 @@ export default class ContentBuilder extends React.Component {
     _setAuth = (auth) => {
         if(auth.user.userRole === 'admin' || auth.user.userRole === 'custodian') {
             this.setState({ 
-                accountAuth: auth, 
-                _isLoggedIn: true, 
-                view:        displayPresets[auth.user.userRole]
+                accountAuth : auth, 
+                _isLoggedIn : true, 
+                view        : displayPresets[auth.user.userRole]
             });
         } else {
             this._clearAuth();
@@ -65,9 +65,9 @@ export default class ContentBuilder extends React.Component {
 
     _clearAuth = () => {
         this.setState({ 
-            accountAuth: null, 
-            _isLoggedIn: false, 
-            view:        displayPresets.main
+            accountAuth : null, 
+            _isLoggedIn : false, 
+            view        : displayPresets.main
         });
     };
 

@@ -2,7 +2,7 @@ import React                    from 'react';
 
 import { Modal }                from '@fluentui/react';
 
-import {Table}                    from '../tableStuff';
+import { Table }                from '../tableStuff';
 import { itemLogController }    from '../../controllers';
 
 const columns = [
@@ -41,13 +41,12 @@ export default class ItemLogModal extends React.Component {
         super(props);
 
         this.state = {
-            isOpen: props.isOpen,
-            content: [],
-
-            isControllerError:      false,
-            controllerErrorMessage: '',
-            isError:                false,
-            errorMessage:           ''
+            isOpen                  : props.isOpen,
+            content                 : [],
+            isControllerError       : false,
+            controllerErrorMessage  : '',
+            isError                 : false,
+            errorMessage            : ''
         };
     }
 
@@ -64,7 +63,7 @@ export default class ItemLogModal extends React.Component {
     }
 
     _dismissModal = () => {
-        this.setState({isOpen: false});
+        this.setState({ isOpen: false });
     }
 
     _renderItemLog = () => {

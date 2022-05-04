@@ -17,28 +17,27 @@ export default class EditUserModal extends React.Component {
         super(props);
         
         this.state = {
-            isOpen:          props.isOpen,
-            selectedIds:     props.selectedIds,
-            selectedObjects: props.selectedObjects,
-            firstName:       '',
-            lastName:        '',
-            userName:        '',
-            password:        '',
-            confirmPassword: '',
-            userRole:        '',
-            phoneNumber:     '',
-            status:          '',
-            pwDisabled:      true,
-            pwRequired:      false,
-            hasPassword:     false,
-            resetBtn:        false,
-            userId:          '',
-            userRoleDisabled:false,
-
-            isControllerError:      false,
-            controllerErrorMessage: '',
-            isError:                false,
-            errorMessage:           ''
+            isOpen                  : props.isOpen,
+            selectedIds             : props.selectedIds,
+            selectedObjects         : props.selectedObjects,
+            firstName               : '',
+            lastName                : '',
+            userName                : '',
+            password                : '',
+            confirmPassword         : '',
+            userRole                : '',
+            phoneNumber             : '',
+            status                  : '',
+            pwDisabled              : true,
+            pwRequired              : false,
+            hasPassword             : false,
+            resetBtn                : false,
+            userId                  : '',
+            userRoleDisabled        : false,
+            isControllerError       : false,
+            controllerErrorMessage  : '',
+            isError                 : false,
+            errorMessage            : ''
         };
         this.handleInputFields = new HandleOnChangeEvent('userModalEdit');
     };
@@ -53,7 +52,7 @@ export default class EditUserModal extends React.Component {
             let thisUser = res[0];
             //Disables userRole dropdown if the selected user is the user logged in
             if(res.adminUserName === thisUser.userName) {
-                this.setState({userRoleDisabled: true});
+                this.setState({ userRoleDisabled: true });
             };
 
             //Sets the userRole select tag to the user's role
@@ -75,13 +74,13 @@ export default class EditUserModal extends React.Component {
             };
 
             this.setState({
-                firstName:   thisUser.firstName, 
-                lastName:    thisUser.lastName,
-                userName:    thisUser.userName,
-                userRole:    thisUser.userRole,
-                phoneNumber: thisUser.phoneNumber,
-                userId:      thisUser.userId,
-                status:      thisUser.status
+                firstName   : thisUser.firstName, 
+                lastName    : thisUser.lastName,
+                userName    : thisUser.userName,
+                userRole    : thisUser.userRole,
+                phoneNumber : thisUser.phoneNumber,
+                userId      : thisUser.userId,
+                status      : thisUser.status
             });
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
@@ -99,14 +98,14 @@ export default class EditUserModal extends React.Component {
 
     _editUser = async () => {
         let user = {
-            firstName:   this.state.firstName,
-            lastName:    this.state.lastName,
-            userName:    this.state.userName,
-            password:    this.state.password,
-            userRole:    this.state.userRole,
-            phoneNumber: sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
-            status:      this.state.status,
-            hasPassword: this.state.hasPassword
+            firstName   : this.state.firstName,
+            lastName    : this.state.lastName,
+            userName    : this.state.userName,
+            password    : this.state.password,
+            userRole    : this.state.userRole,
+            phoneNumber : sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
+            status      : this.state.status,
+            hasPassword : this.state.hasPassword
         };
 
         //Checks if items are signed out to user if admin is trying to deactivate the account.
@@ -134,11 +133,11 @@ export default class EditUserModal extends React.Component {
         };
 
         let log = {
-            itemId:     'N/A',
-            userId:     this.state.selectedIds[0],
-            adminId:    '',
-            action:     'edit',
-            content:    'user'
+            itemId  : 'N/A',
+            userId  : this.state.selectedIds[0],
+            adminId : '',
+            action  : 'edit',
+            content : 'user'
         };
 
         await userController.updateUser(user)
@@ -165,39 +164,39 @@ export default class EditUserModal extends React.Component {
     _handleUserRoleChange = (Event) => {
         if(Event.target.value === 'user') {
             this.setState({ 
-                password: '',
-                confirmPassword: '',
-                userRole: Event.target.value, 
-                pwRequired: false, 
-                pwDisabled: true, 
-                resetBtn: false 
+                password        : '',
+                confirmPassword : '',
+                userRole        : Event.target.value, 
+                pwRequired      : false, 
+                pwDisabled      : true, 
+                resetBtn        : false 
             });
         } else if(Event.target.value !== 'user' && !this.state.hasPassword){
             this.setState({ 
-                password: '', 
-                confirmPassword: '',
-                userRole: Event.target.value, 
-                pwRequired: true, 
-                pwDisabled: false, 
-                resetBtn: false 
+                password        : '', 
+                confirmPassword : '',
+                userRole        : Event.target.value, 
+                pwRequired      : true, 
+                pwDisabled      : false, 
+                resetBtn        : false 
             });
         } else {
             this.setState({
-                password: '',
-                confirmPassword: '',
-                userRole: Event.target.value, 
-                pwRequired: false, 
-                pwDisabled: true, 
-                resetBtn: true 
+                password        : '',
+                confirmPassword : '',
+                userRole        : Event.target.value, 
+                pwRequired      : false, 
+                pwDisabled      : true, 
+                resetBtn        : true 
             });
         };
     };
 
     _allowPasswordReset = () => {
         this.setState({
-            pwDisabled: false, 
-            pwRequired: true, 
-            resetBtn: false
+            pwDisabled  : false, 
+            pwRequired  : true, 
+            resetBtn    : false
         });
     };
 

@@ -28,19 +28,18 @@ export default class ApproveUsersModal extends React.Component {
         super(props)
 
         this.state = {
-            isOpen:          props.isOpen,
-            content:         [],
-            hideModal:       props.hideModal,
-            accountRole:     props.accountRole,
-            contentType:     props.contentType,
-            selectedObjects: [],
-            selectedIds:     [],
-            btnConfig:       true,
-
-            isControllerError:      false,
-            controllerErrorMessage: '',
-            isError:                false,
-            errorMessage:           ''
+            isOpen                  : props.isOpen,
+            content                 : [],
+            hideModal               : props.hideModal,
+            accountRole             : props.accountRole,
+            contentType             : props.contentType,
+            selectedObjects         : [],
+            selectedIds             : [],
+            btnConfig               : true,
+            isControllerError       : false,
+            controllerErrorMessage  : '',
+            isError                 : false,
+            errorMessage            : ''
         }
         this.setParentState    = this._setParentState.bind(this);
     }

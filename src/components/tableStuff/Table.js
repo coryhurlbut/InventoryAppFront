@@ -47,11 +47,11 @@ function Table({ columns, data, ...props }) {
                     {page.map((row, i) => {
                         prepareRow(row)
                         if(
-                            (props.userRole === 'admin' && 
-                            props.contentType !== undefined) || 
-                            (props.userRole === 'custodian' && 
-                            props.contentType !== 'Users' && 
-                            props.contentType !== undefined)
+                            (props.userRole     === 'admin'     && 
+                            props.contentType   !== undefined)  || 
+                            (props.userRole     === 'custodian' && 
+                            props.contentType   !== 'Users'     && 
+                            props.contentType   !== undefined)
                         ) {
                             return(
                                 <tr 

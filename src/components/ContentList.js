@@ -29,18 +29,18 @@ export default class ContentList extends React.Component {
         super(props);
         
         this.state = {
-            isUserContentVisible:       props.isUserContentVisible,
-            isEditControlVisible:       props.isEditControlVisible,
-            isSignItemInOutVisible:     props.isSignItemInOutVisible,
-            contentType:                availableItemsContent.contentType,
-            editControls:               availableItemsContent.editControls,
-            inOrOut:                    availableItemsContent.inOrOut,
-            content:                    [],
-            selectedIds:                [],             //Now holds itemNumber or userName instead of _id
-            selectedObjects:            [],
-            accountRole:                props.accountRole,
-            _isError:                   false,
-            _errorMessage:              ''
+            isUserContentVisible        : props.isUserContentVisible,
+            isEditControlVisible        : props.isEditControlVisible,
+            isSignItemInOutVisible      : props.isSignItemInOutVisible,
+            contentType                 : availableItemsContent.contentType,
+            editControls                : availableItemsContent.editControls,
+            inOrOut                     : availableItemsContent.inOrOut,
+            content                     : [],
+            selectedIds                 : [],             //Now holds itemNumber or userName instead of _id
+            selectedObjects             : [],
+            accountRole                 : props.accountRole,
+            _isError                    : false,
+            _errorMessage               : ''
         };
         
         this.setParentState        =   this._setParentState.bind(this);
@@ -52,10 +52,10 @@ export default class ContentList extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if(this.props !== prevProps) {
             this.setState({
-                isUserContentVisible:   this.props.isUserContentVisible,
-                isEditControlVisible:   this.props.isEditControlVisible,
-                isSignItemInOutVisible: this.props.isSignItemInOutVisible,
-                accountRole:            this.props.accountRole
+                isUserContentVisible    : this.props.isUserContentVisible,
+                isEditControlVisible    : this.props.isEditControlVisible,
+                isSignItemInOutVisible  : this.props.isSignItemInOutVisible,
+                accountRole             : this.props.accountRole
             });
         };
 
@@ -69,7 +69,8 @@ export default class ContentList extends React.Component {
         try {
             this._handleTableDisplay('availableItems');
         } catch(error) {
-            this.setState({_isError: true,
+            this.setState({
+                _isError: true,
                 _errorMessage: error.message
             });
         }
@@ -85,20 +86,20 @@ export default class ContentList extends React.Component {
             
         }else if(objectType === 'unavailableItems'){
             content = await itemController.getUnavailableItems();
-                object = unavailableItemsContent;
+            object = unavailableItemsContent;
         }
         else{
             content = await userController.getAllUsers();
             object = usersContent;
         }
         this.setState({
-            content:            content || null,
-            contentType:        object.contentType,
-            editControls:       object.editControls,
-            inOrOut:            object.inOrOut,
-            columns:            object.columns,
-            selectedIds:        [],
-            selectedObjects:    [],
+            content         : content || null,
+            contentType     : object.contentType,
+            editControls    : object.editControls,
+            inOrOut         : object.inOrOut,
+            columns         : object.columns,
+            selectedIds     : [],
+            selectedObjects : [],
         });
     }
     //TO-DO this can probably be way less code, and also probably be within setParentState method, fix for toggleAllRowsSelected
@@ -115,20 +116,23 @@ export default class ContentList extends React.Component {
     //Callback function passed to table component.
     //Bound to ContentList state to update this state when called by child component.
     _setParentState = (obj) => {
-        let arr = this.state.selectedIds;
-        let objArr = this.state.selectedObjects;
-        let id = obj.itemNumber ? obj.itemNumber : obj.userName; //If obj is an item, take the itemNumber. Otherwise, take the userName
+        let arr     = this.state.selectedIds;
+        let objArr  = this.state.selectedObjects;
+        let id      = obj.itemNumber ? obj.itemNumber : obj.userName; //If obj is an item, take the itemNumber. Otherwise, take the userName
         
         if(arr.includes(id)) {
-            arr = arr.filter(el => el !== id);
-            objArr = objArr.filter(object => object.itemNumber !== id);
-            objArr = objArr.filter(object => object.userName !== id);
+            arr     = arr.filter(el => el !== id);
+            objArr  = objArr.filter(object => object.itemNumber !== id);
+            objArr  = objArr.filter(object => object.userName !== id);
         } else {
             arr.push(id);
             objArr.push(obj);
         };
 
-        this.setState({selectedIds: arr, selectedObjects: objArr});
+        this.setState({ 
+            selectedIds: arr, 
+            selectedObjects: objArr 
+        });
     }
 
     _buildContentList = () => {

@@ -1,13 +1,13 @@
-import React                 from 'react';
+import React                from 'react';
 
-import { Modal }             from '@fluentui/react';
+import { Modal }            from '@fluentui/react';
 
 import { authController,
     userController,
-    adminLogController }     from '../../controllers'
+    adminLogController }    from '../../controllers'
 import { userValidation,
-        sanitizeData,
-        HandleOnChangeEvent } from '../inputValidation';
+    sanitizeData,
+    HandleOnChangeEvent }   from '../inputValidation';
 
 
 
@@ -21,24 +21,23 @@ export default class AddUserModal extends React.Component {
         super(props);
         
         this.state = {
-            isOpen:          props.isOpen,
-            firstName:       '',
-            lastName:        '',
-            userName:        '',
-            password:        '',
-            confirmPassword: '',
-            userRole:        props.userRole,
-            phoneNumber:     '',
-            status:          'active',
-            pwDisabled:      true,
-            pwRequired:      false,
-            userRoleDisabled:false,
-            isSignUp:        props.isSignUp,
-            
-            isControllerError:      false,
-            controllerErrorMessage: '',
-            isError:                false,
-            errorMessage:           ''
+            isOpen                  : props.isOpen,
+            firstName               : '',
+            lastName                : '',
+            userName                : '',
+            password                : '',
+            confirmPassword         : '',
+            userRole                : props.userRole,
+            phoneNumber             : '',
+            status                  : 'active',
+            pwDisabled              : true,
+            pwRequired              : false,
+            userRoleDisabled        : false,
+            isSignUp                : props.isSignUp,
+            isControllerError       : false,
+            controllerErrorMessage  : '',
+            isError                 : false,
+            errorMessage            : ''
         };
 
         if(props.isSignUp) {
@@ -66,8 +65,9 @@ export default class AddUserModal extends React.Component {
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
-            this.setState({ isControllerError: true,
-                            controllerErrorMessage: error.message
+            this.setState({ 
+                isControllerError: true,
+                controllerErrorMessage: error.message
             });
         }
     };
@@ -90,29 +90,31 @@ export default class AddUserModal extends React.Component {
         .then((data) => {
             if (data.status !== undefined && data.status >= 400) throw data;
             
-            this.setState({ isError: false, 
-                            errorMessage: ''
+            this.setState({ 
+                isError: false, 
+                errorMessage: ''
             });
 
             window.location.reload();
             this._dismissModal();
         })
         .catch(async (err) => {  
-            this.setState({ isError: true, 
-                            errorMessage: err.message
+            this.setState({ 
+                isError: true, 
+                errorMessage: err.message
             });          
         });
     }
 
     _addUser = async () => {
         let user = {
-            firstName:      this.state.firstName,
-            lastName:       this.state.lastName,
-            userName:       this.state.userName,
-            password:       this.state.password,
-            userRole:       this.state.userRole,
-            phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
-            status:         this.state.status
+            firstName   : this.state.firstName,
+            lastName    : this.state.lastName,
+            userName    : this.state.userName,
+            password    : this.state.password,
+            userRole    : this.state.userRole,
+            phoneNumber : sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
+            status      : this.state.status
         };
         let returnedUser = {};
 
@@ -120,8 +122,9 @@ export default class AddUserModal extends React.Component {
             .then((data) => {
                 if (data.status !== undefined && data.status >= 400) throw data;
                 
-                this.setState({ isError: false, 
-                                errorMessage: ''
+                this.setState({ 
+                    isError: false, 
+                    errorMessage: ''
                 });
                 returnedUser = data;
 
@@ -129,17 +132,18 @@ export default class AddUserModal extends React.Component {
                 this._dismissModal();
             })
             .catch(async (err) => { 
-                this.setState({ isError: true, 
-                                errorMessage: err.message
+                this.setState({ 
+                    isError: true, 
+                    errorMessage: err.message
                 });          
             });
         
             let log = {
-                    itemId:     'N/A',
-                    userId:     returnedUser.userName,
-                    adminId:    '',
-                    action:     'add',
-                    content:    'user'
+                    itemId      : 'N/A',
+                    userId      : returnedUser.userName,
+                    adminId     : '',
+                    action      : 'add',
+                    content     : 'user'
             };
                 
             await adminLogController.createAdminLog(log);
@@ -148,17 +152,17 @@ export default class AddUserModal extends React.Component {
     _handleUserRoleChange = (event) => {
         if(event.target.value === 'user') {
             this.setState({
-                pwDisabled: true, 
-                pwRequired: false, 
-                password: '',
-                confirmPassword: '',
-                userRole: event.target.value
+                pwDisabled      : true, 
+                pwRequired      : false, 
+                password        : '',
+                confirmPassword : '',
+                userRole        : event.target.value
             });
         } else {
             this.setState({
-                pwDisabled: false, 
-                pwRequired: true, 
-                userRole: event.target.value
+                pwDisabled  : false, 
+                pwRequired  : true, 
+                userRole    : event.target.value
             });
         };
     };

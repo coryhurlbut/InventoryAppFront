@@ -12,19 +12,19 @@ export default class UserEditControls extends React.Component {
         super(props);
 
         this.state = {
-            modal:              null,
-            accountRole:        props.accountRole,
-            selectedIds:        props.selectedIds,
-            selectedObjects:    props.selectedObjects
+            modal           : null,
+            accountRole     : props.accountRole,
+            selectedIds     : props.selectedIds,
+            selectedObjects : props.selectedObjects
         };
     }
 
     componentDidUpdate(prevProps, prevState) {
         if(prevProps !== this.props) {
             this.setState({ 
-                accountRole:        this.props.accountRole,
-                selectedIds:        this.props.selectedIds,
-                selectedObjects:    this.props.selectedObjects
+                accountRole     : this.props.accountRole,
+                selectedIds     : this.props.selectedIds,
+                selectedObjects : this.props.selectedObjects
             });
         };
     }
