@@ -42,23 +42,27 @@ export default class ContentBuilder extends React.Component {
         };
         this._isUsersPending    = false;
         this._isError           = null;
+        this._disableLogin      = false;
     };
 
     async componentDidMount() {
         let auth  = await authController.checkToken();
         let users = await userController.getPendingUsers();
 
-        if(users.length > 0) {
-            this._isUsersPending = true;
-            this.setState({ pendingUsers: users });
-        }
-        
         if(auth === undefined || auth.error !== undefined) {
             this._clearAuth();
         } else if (typeof auth === 'string' && auth.split(' ')[0] === 'TypeError:') {
             this._isError = auth;
         } else {
             this._setAuth(auth);
+        }
+
+        if(users && users.length > 0) {
+            this._isUsersPending = true;
+            this.setState({ pendingUsers: users });
+        }
+        else {
+            this._disableLogin = true;
         }
     };
 
@@ -197,6 +201,7 @@ export default class ContentBuilder extends React.Component {
                     <button 
                         className="logInLogOut"
                         onClick={() => this._showModal('loginLogout')}
+                        disabled={!this._disableLogin}
                     >
                         {BTN_LOGIN}
                     </button>

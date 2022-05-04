@@ -141,36 +141,37 @@ export default class ContentList extends React.Component {
     }
 
     _buildContentList = () => {
-        if(this.state.content.length === 0){
+        if(!this.state.isError){
+            if(this.state.content.length === 0){
+                return(
+                    <p id="noContent">{NO_CONTENT}</p>
+                )
+            }
             return(
-                <p id="noContent">{NO_CONTENT}</p>
-            )
+                <>
+                    <div id="tableModification">
+                        {this._buildEditControls()}
+                        {this.state.isSignItemInOutVisible ? 
+                            <SignItemInOutControls 
+                                inOrOut={this.state.inOrOut} 
+                                selectedIds={this.state.selectedIds} 
+                                selectedObjects={this.state.selectedObjects} 
+                                id={this.state.id} 
+                            /> : 
+                            null
+                        }            
+                    </div>
+                    <Table
+                        columns={this.state.columns}
+                        data={this.state.content}
+                        setParentState={this.setParentState}
+                        parseRowsArray={this._parseRowsArray}
+                        userRole={this.state.accountRole}
+                        contentType={this.state.contentType}
+                    />
+                </>
+            );
         }
-        return(
-            <>
-                <div id="tableModification">
-                    {this._buildEditControls()}
-                    {this.state.isSignItemInOutVisible ? 
-                        <SignItemInOutControls 
-                            inOrOut={this.state.inOrOut} 
-                            selectedIds={this.state.selectedIds} 
-                            selectedObjects={this.state.selectedObjects} 
-                            id={this.state.id} 
-                        /> : 
-                        null
-                    }            
-                </div>
-                <Table
-                    columns={this.state.columns}
-                    data={this.state.content}
-                    setParentState={this.setParentState}
-                    parseRowsArray={this._parseRowsArray}
-                    userRole={this.state.accountRole}
-                    contentType={this.state.contentType}
-                />
-            </>
-        );
-        
     };
 
     _buildEditControls = () => {
@@ -216,14 +217,13 @@ export default class ContentList extends React.Component {
             <>
                 <div>
                     <p className='centerText'>{this.state.errorMessage}</p>
-                    <a href='https://localhost:8000/items/available' className='centerText'>{ERROR_MESSAGE_LINK}</a>
+                    <a href="https://localhost:8000/items/available" className='centerText'>{ERROR_MESSAGE_LINK}</a>
                 </div>
             </>
         );
     }
 
     render() {
-        console.log('render');
         return(
             <div id="contentBody">
                 {this.state.isError ? 
