@@ -19,53 +19,53 @@ export default class HandleOnChangeEvent {
     constructor(args) {
         /* Handles AddItemModal/EditItemModal */
         this.itemErrorList = {
-            itemNumberPrefix:     '',
-            itemNumberIdentifier: '',
-            name:                 '',
-            description:          '',
-            serialNumber:         '',
-            notes:                '',
-            homeLocation:         '',
-            specificLocation:     ''
+            itemNumberPrefix        : '',
+            itemNumberIdentifier    : '',
+            name                    : '',
+            description             : '',
+            serialNumber            : '',
+            notes                   : '',
+            homeLocation            : '',
+            specificLocation        : ''
         };
         this.itemVisited = {
-            itemNumberPrefix:     false,
-            itemNumberIdentifier: false,
-            name:                 false,
-            description:          false,
-            serialNumber:         false,
-            homeLocation:         false,
-            specificLocation:     false
+            itemNumberPrefix        : false,
+            itemNumberIdentifier    : false,
+            name                    : false,
+            description             : false,
+            serialNumber            : false,
+            homeLocation            : false,
+            specificLocation        : false
         };
         /* Handles AddUserModal/EditUserModal */
         this.userErrorList = {
-            firstName:       '',
-            lastName:        '',
-            userName:        '',
-            password:        '',
-            confirmPassword: '',
-            phoneNumber:     ''
+            firstName           : '',
+            lastName            : '',
+            userName            : '',
+            password            : '',
+            confirmPassword     : '',
+            phoneNumber         : ''
         };
         this.userVisited = {
-            firstName:       false,
-            lastName:        false,
-            userName:        false,
-            password:        true,
-            confirmPassword: true,
-            phoneNumber:     false
+            firstName           : false,
+            lastName            : false,
+            userName            : false,
+            password            : true,
+            confirmPassword     : true,
+            phoneNumber         : false
         };
         /* Handles AddUserModal, on the condition a user is signing up */
         this.userSignUpErrorList = {
-            firstName:       '',
-            lastName:        '',
-            userName:        '',
-            phoneNumber:     ''
+            firstName           : '',
+            lastName            : '',
+            userName            : '',
+            phoneNumber         : ''
         };
         this.userSignupVisited = {
-            firstName:       false,
-            lastName:        false,
-            userName:        false,
-            phoneNumber:     false
+            firstName           : false,
+            lastName            : false,
+            userName            : false,
+            phoneNumber         : false
         };
         //Handles isSubmitAvailable when modal is first opened
         this.isFirstOpened = true;
@@ -74,19 +74,19 @@ export default class HandleOnChangeEvent {
         this.modalType = args;
 
         //Checks the return of itemValidation.js and userValidation.js
-        this.handleEvent = this._handleEvent.bind(this);
-        this.handlePassword = this._handlePassword.bind(this);
-        this.handleConfirmPassword = this._handleConfirmPassword.bind(this);
-        this.handleUserRoleChange = this._handleUserRoleChange.bind(this);
+        this.handleEvent            = this._handleEvent.bind(this);
+        this.handlePassword         = this._handlePassword.bind(this);
+        this.handleConfirmPassword  = this._handleConfirmPassword.bind(this);
+        this.handleUserRoleChange   = this._handleUserRoleChange.bind(this);
 
         //Controls user display of the errors
         this.setErrorMessageDisplay = this._setErrorMessageDisplay.bind(this);
-        this.setClassNameIsValid = this._setClassNameIsValid.bind(this);
+        this.setClassNameIsValid    = this._setClassNameIsValid.bind(this);
 
         //Manages if submit should be available given the type of modal we are using
-        this.isAddUserModalSubmitAvailable = this._isAddUserModalSubmitAvailable.bind(this);
-        this.isAddSignUpModalSubmitAvailable = this._isAddSignUpModalSubmitAvailable.bind(this);
-        this.isItemModalSubmitAvailable = this._isItemModalSubmitAvailable.bind(this);
+        this.isAddUserModalSubmitAvailable      = this._isAddUserModalSubmitAvailable.bind(this);
+        this.isAddSignUpModalSubmitAvailable    = this._isAddSignUpModalSubmitAvailable.bind(this);
+        this.isItemModalSubmitAvailable         = this._isItemModalSubmitAvailable.bind(this);
     };
 
     /*
@@ -147,14 +147,14 @@ export default class HandleOnChangeEvent {
     /* If password and confirm password are not needed, remove error messages */
     _handleUserRoleChange = (userRoleSelected) => {
         if(userRoleSelected === 'user') {
-            this.userErrorList['confirmPassword'] = EMPTY_STRING;
-            this.userErrorList['password'] = EMPTY_STRING;
-            this.userVisited['confirmPassword'] = true;
-            this.userVisited['password'] = true;
+            this.userErrorList['confirmPassword']   = EMPTY_STRING;
+            this.userErrorList['password']          = EMPTY_STRING;
+            this.userVisited['confirmPassword']     = true;
+            this.userVisited['password']            = true;
         }
         else {
             this.userVisited['confirmPassword'] = false;
-            this.userVisited['password'] = false;
+            this.userVisited['password']        = false;
         }
     }
 

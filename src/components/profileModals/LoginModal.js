@@ -5,7 +5,7 @@ import { Modal }                    from '@fluentui/react';
 import { loginLogoutController }    from '../../controllers';
 import { AddUserModal }             from '../userModals';
 
-const LOGIN_ATTEMPT_EXCEEDED = 'Max Login Attemp Exceeded. Please try again later.';
+const LOGIN_ATTEMPT_EXCEEDED = 'Max Login Attempts Exceeded. Please try again later.';
 const FAILED_LOGIN_DEFAULT = 'Username/Password is incorrect';
 const BACKEND_GENERATED_ERRORMESSAGES = [
     '"userName" is not allowed to be empty',
@@ -33,12 +33,11 @@ export default class LoginModal extends React.Component{
         super(props);
 
         this.state = {
-            isOpen:       props.isOpen,
-            userName:     '',
-            password:     '',
-
-            isError:                false,
-            errorMessage:           ''
+            isOpen          : props.isOpen,
+            userName        : '',
+            password        : '',
+            isError         : false,
+            errorMessage    : ''
         };
     }
 
@@ -62,12 +61,12 @@ export default class LoginModal extends React.Component{
         .catch(async (err) => {
             if(BACKEND_GENERATED_ERRORMESSAGES.includes(err.message)) {
                 this.setState({
-                    isError: true,
+                    isError     : true,
                     errorMessage: FAILED_LOGIN_DEFAULT
                 });
             } else {
                 this.setState({
-                    isError: true,
+                    isError     : true,
                     errorMessage: err.message
                 });
             }

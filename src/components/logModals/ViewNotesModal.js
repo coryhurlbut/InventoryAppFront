@@ -1,8 +1,11 @@
-import React               from "react";
-import { Modal }           from "@fluentui/react";
-import {Table}                    from '../tableStuff';
-import EditItemModal       from "../itemModals/EditItemModal";
-import { SignItemInModal, SignItemOutModal } from "../itemModals";
+import React                from "react";
+
+import { Modal }            from "@fluentui/react";
+
+import { Table }            from '../tableStuff';
+import EditItemModal        from "../itemModals/EditItemModal";
+import { SignItemInModal, 
+    SignItemOutModal }      from "../itemModals";
 import '../../styles/Modal.css'
 
 const columns = [
@@ -24,12 +27,12 @@ export default class ViewNotesModal extends React.Component{
         super(props);
 
         this.state = {
-            isOpen:             props.isOpen,
-            hideModal:          props.hideModal,
-            content:            props.content,
-            name:               props.name,
-            viewOtherModalBool: null,
-            previousModal:      props.previousModal
+            isOpen              : props.isOpen,
+            hideModal           : props.hideModal,
+            content             : props.content,
+            name                : props.name,
+            viewOtherModalBool  : null,
+            previousModal       : props.previousModal
         }
         this._setParentState = this._setParentState.bind(this);
         this._selectedIds = props.selectedIds;

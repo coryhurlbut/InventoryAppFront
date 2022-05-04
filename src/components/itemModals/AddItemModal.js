@@ -28,21 +28,20 @@ export default class AddItemModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen:                 props.isOpen,
-            itemNumber:             'AAA-AAAAA',
-            itemNumberPrefix:       '',
-            itemNumberIdentifier:   '',
-            name:                   '',
-            description:            '',
-            serialNumber:           '',
-            notes:                  '',
-            homeLocation:           '',
-            specificLocation:       '',
-            available:              true,
-            disabled:               true,
-            
-            isError:      false,
-            errorMessage: ''
+            isOpen                  : props.isOpen,
+            itemNumber              : 'AAA-AAAAA',
+            itemNumberPrefix        : '',
+            itemNumberIdentifier    : '',
+            name                    : '',
+            description             : '',
+            serialNumber            : '',
+            notes                   : '',
+            homeLocation            : '',
+            specificLocation        : '',
+            available               : true,
+            disabled                : true,
+            isError                 : false,
+            errorMessage            : ''
         };
         this.handleInputFields = new HandleOnChangeEvent('itemModalAdd');
     }
@@ -61,25 +60,25 @@ export default class AddItemModal extends React.Component{
             let newNotes = (`${this.state.notes + '`' + currentDateISOString + '`'}`);
     
             item = {
-                itemNumber:         this.state.itemNumber,
-                name:               this.state.name,
-                description:        this.state.description,
-                serialNumber:       this.state.serialNumber,
-                notes:              newNotes,
-                homeLocation:       this.state.homeLocation,
-                specificLocation:   this.state.specificLocation,
-                available:          this.state.available,
+                itemNumber          : this.state.itemNumber,
+                name                : this.state.name,
+                description         : this.state.description,
+                serialNumber        : this.state.serialNumber,
+                notes               : newNotes,
+                homeLocation        : this.state.homeLocation,
+                specificLocation    : this.state.specificLocation,
+                available           : this.state.available,
             };
         } else { //Pass default emptry string
             item = {
-                itemNumber:         this.state.itemNumber,
-                name:               this.state.name,
-                description:        this.state.description,
-                serialNumber:       this.state.serialNumber,
-                notes:              this.state.notes,
-                homeLocation:       this.state.homeLocation,
-                specificLocation:   this.state.specificLocation,
-                available:          this.state.available,
+                itemNumber          : this.state.itemNumber,
+                name                : this.state.name,
+                description         : this.state.description,
+                serialNumber        : this.state.serialNumber,
+                notes               : this.state.notes,
+                homeLocation        : this.state.homeLocation,
+                specificLocation    : this.state.specificLocation,
+                available           : this.state.available,
             };
         }
 
@@ -107,11 +106,11 @@ export default class AddItemModal extends React.Component{
 
         //Uses the new item _id to make a log to the admin log of the new item being added
         let log = {
-            itemId:     returnedItem.itemNumber,
-            userId:     'N/A',
-            adminId:    '',
-            action:     'add',
-            content:    'item'
+            itemId      : returnedItem.itemNumber,
+            userId      : 'N/A',
+            adminId     : '',
+            action      : 'add',
+            content     : 'item'
         };
 
         //TODO: add error handling for log API calls
@@ -139,12 +138,12 @@ export default class AddItemModal extends React.Component{
         if(inputFieldID === 'itemNumberPrefix') {
             this.setState({ 
                 itemNumberPrefix: sanitizeData.sanitizeWhitespace(inputFieldValue),
-                itemNumber: this._createItemNumber(Event)
+                itemNumber      : this._createItemNumber(Event)
             });
         } else if(inputFieldID === 'itemNumberIdentifier') {
             this.setState({ 
                 itemNumberIdentifier: sanitizeData.sanitizeWhitespace(inputFieldValue),
-                itemNumber: this._createItemNumber(Event)
+                itemNumber          : this._createItemNumber(Event)
             });
         } else {
             this.setState({ [inputFieldID]: sanitizeData.sanitizeWhitespace(inputFieldValue) });

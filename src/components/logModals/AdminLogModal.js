@@ -49,13 +49,12 @@ export default class AdminLogModal extends React.Component {
         super(props)
 
         this.state = {
-            isOpen: props.isOpen,
-            content: [],
-
-            isControllerError:      false,
-            controllerErrorMessage: '',
-            isError:                false,
-            errorMessage:           ''
+            isOpen                  : props.isOpen,
+            content                 : [],
+            isControllerError       : false,
+            controllerErrorMessage  : '',
+            isError                 : false,
+            errorMessage            : ''
         };
     }
 

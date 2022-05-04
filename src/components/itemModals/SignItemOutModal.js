@@ -26,18 +26,17 @@ export default class SignItemOutModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen:                 props.isOpen,
-            users:                  [],
-            userId:                 null,
-            userName:               '',
-            notesArray:             [],
-            buttonClicked:          null,
-            viewNotesName:          '',
-
-            isControllerError:      false,
-            controllerErrorMessage: '',
-            isError:                false,
-            errorMessage:           ''
+            isOpen                  : props.isOpen,
+            users                   : [],
+            userId                  : null,
+            userName                : '',
+            notesArray              : [],
+            buttonClicked           : null,
+            viewNotesName           : '',
+            isControllerError       : false,
+            controllerErrorMessage  : '',
+            isError                 : false,
+            errorMessage            : ''
         };
 
         this._selectedIds = props.selectedIds;
@@ -48,9 +47,9 @@ export default class SignItemOutModal extends React.Component{
         try {
             let users = await userController.getAllActiveUsers();
             this.setState({ 
-                users: users, 
-                isControllerError: false, 
-                controllerErrorMessage: '' 
+                users                   : users, 
+                isControllerError       : false, 
+                controllerErrorMessage  : '' 
             });
             this._assignOptionGroup();
         } catch(error) {
@@ -78,11 +77,11 @@ export default class SignItemOutModal extends React.Component{
 
             for(let i = 0; i < this._selectedIds.length; i++) {
                 let info = {
-                    itemId:      this._selectedIds[i],
-                    userId:      this.state.userId,
-                    custodianId: '',
-                    action:      'signed out',
-                    notes:       'test'
+                    itemId      : this._selectedIds[i],
+                    userId      : this.state.userId,
+                    custodianId : '',
+                    action      : 'signed out',
+                    notes       : 'test'
                 };
                 await itemLogController.createItemLog(info);
             };

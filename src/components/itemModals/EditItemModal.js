@@ -32,26 +32,25 @@ export default class EditItemModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen:           props.isOpen,
-            itemNumber:       '',
-            name:             '',
-            description:      '',
-            serialNumber:     '',
-            notes:            '',
-            previousNotes:    '',
-            homeLocation:     '',
-            specificLocation: '',
-            available:        true,
-            viewNotesBool:    null,
-            reload:           props.reload,
-            
-            isControllerError:      false,
-            controllerErrorMessage: '',
-            isError:                false,
-            errorMessage:           ''
+            isOpen                  : props.isOpen,
+            itemNumber              : '',
+            name                    : '',
+            description             : '',
+            serialNumber            : '',
+            notes                   : '',
+            previousNotes           : '',
+            homeLocation            : '',
+            specificLocation        : '',
+            available               : true,
+            viewNotesBool           : null,
+            reload                  : props.reload,
+            isControllerError       : false,
+            controllerErrorMessage  : '',
+            isError                 : false,
+            errorMessage            : ''
         };
-        this._selectedIds = props.selectedIds;
-        this._selectedObjects = props.selectedObjects;
+        this._selectedIds       = props.selectedIds;
+        this._selectedObjects   = props.selectedObjects;
         
         this.handleInputFields = new HandleOnChangeEvent('itemModalEdit');
     }
@@ -72,21 +71,21 @@ export default class EditItemModal extends React.Component{
             this.setState({ notesArrayFinal: MapNotes(notes) })
             
             this.setState({
-                itemNumber:             itemNumber,
-                name:                   name,
-                description:            description,
-                serialNumber:           serialNumber,
-                homeLocation:           homeLocation,
-                specificLocation:       specificLocation,
-                available:              available,
-                previousNotes:          notes
+                itemNumber          : itemNumber,
+                name                : name,
+                description         : description,
+                serialNumber        : serialNumber,
+                homeLocation        : homeLocation,
+                specificLocation    : specificLocation,
+                available           : available,
+                previousNotes       : notes
             });
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
             this.setState({
-                isControllerError: true,
-                controllerErrorMessage: "An error occured while loading. Please refresh and try again."
+                isControllerError       : true,
+                controllerErrorMessage  : "An error occured while loading. Please refresh and try again."
             });
         }
     }
@@ -104,6 +103,17 @@ export default class EditItemModal extends React.Component{
         let currentDateISOString = currentDate.toISOString();
         let updatedNotes;
 
+        item = {
+            itemNumber          : this.state.itemNumber,
+            name                : this.state.name,
+            description         : this.state.description,
+            serialNumber        : this.state.serialNumber,
+            notes               : this.state.notes,
+            homeLocation        : this.state.homeLocation,
+            specificLocation    : this.state.specificLocation,
+            available           : this.state.available,
+        };
+
         //Are there existing notes to append new notes to?
         if(this.state.previousNotes !== '') {
             //Are there notes to append?
@@ -114,50 +124,20 @@ export default class EditItemModal extends React.Component{
                 updatedNotes = (`${this.state.previousNotes}`);
             }
 
-            item = {
-                itemNumber:         this.state.itemNumber,
-                name:               this.state.name,
-                description:        this.state.description,
-                serialNumber:       this.state.serialNumber,
-                notes:              updatedNotes,
-                homeLocation:       this.state.homeLocation,
-                specificLocation:   this.state.specificLocation,
-                available:          this.state.available,
-            };
+            item.notes = updatedNotes;
         } else { //Notes either has information or doesn't
             if(this.state.notes !== '') {
                 updatedNotes = (`${this.state.notes + '`' + currentDateISOString + '`'}`);
-        
-                item = {
-                    itemNumber:         this.state.itemNumber,
-                    name:               this.state.name,
-                    description:        this.state.description,
-                    serialNumber:       this.state.serialNumber,
-                    notes:              updatedNotes,
-                    homeLocation:       this.state.homeLocation,
-                    specificLocation:   this.state.specificLocation,
-                    available:          this.state.available,
-                };
-            } else { //Pass default emptry string
-                item = {
-                    itemNumber:         this.state.itemNumber,
-                    name:               this.state.name,
-                    description:        this.state.description,
-                    serialNumber:       this.state.serialNumber,
-                    notes:              this.state.notes,
-                    homeLocation:       this.state.homeLocation,
-                    specificLocation:   this.state.specificLocation,
-                    available:          this.state.available,
-                };
+                item.notes = updatedNotes;
             }
         }
 
         let log = {
-            itemId:     item.itemNumber,
-            userId:     'N/A',
-            adminId:    '',
-            action:     'edit',
-            content:    'item'
+            itemId      : item.itemNumber,
+            userId      : 'N/A',
+            adminId     : '',
+            action      : 'edit',
+            content     : 'item'
         };
         
         await itemController.updateItem(item)

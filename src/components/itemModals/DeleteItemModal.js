@@ -20,14 +20,14 @@ export default class DeleteItemModal extends React.Component{
         super(props);
         
         this.state = {
-            isOpen:  props.isOpen,
+            isOpen      : props.isOpen,
 
-            isError:      false,
+            isError     : false,
             errorMessage: ''
         };
 
-        this._selectedIds = props.selectedIds;
-        this._selectedObjects = props.selectedObjects;
+        this._selectedIds       = props.selectedIds;
+        this._selectedObjects   = props.selectedObjects;
     }
 
     _dismissModal = () => {
@@ -39,17 +39,17 @@ export default class DeleteItemModal extends React.Component{
         .then( async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
-                isError: false, 
+                isError     : false, 
                 errorMessage: ''
             });
 
             for(let i = 0; i < this._selectedIds.length; i++) {
                 let log = {
-                    itemId:     this._selectedIds[i],
-                    userId:     'N/A',
-                    adminId:    '',
-                    action:     'delete',
-                    content:    'item'
+                    itemId      : this._selectedIds[i],
+                    userId      : 'N/A',
+                    adminId     : '',
+                    action      : 'delete',
+                    content     : 'item'
                 };
 
                 //TODO: add error handling for log API call
@@ -61,7 +61,7 @@ export default class DeleteItemModal extends React.Component{
         })
         .catch(async (err) => {            
             this.setState({ 
-                isError: true, 
+                isError     : true, 
                 errorMessage: err.message
             });
         });

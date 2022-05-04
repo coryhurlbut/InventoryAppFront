@@ -1,10 +1,10 @@
 export default function MapNotes (notes) {
-    let notesArray = [];
+    let notesArray      = [];
     let notesSplitArray = [];
         notesSplitArray = notes.split('`');
-    let notesObject = {
-            notes: '',
-            date: ''
+    let notesObject     = {
+            notes   : '',
+            date    : ''
     };
     for(let i = 0; i < notesSplitArray.length; i++) {
         if(notesSplitArray[i] !== "") {
@@ -14,8 +14,8 @@ export default function MapNotes (notes) {
                 notesObject.date = notesSplitArray[i];
                 notesArray.push(notesObject);
                 notesObject = {
-                    notes: '',
-                    date: ''
+                    notes   : '',
+                    date    : ''
                 }
             }
         }
