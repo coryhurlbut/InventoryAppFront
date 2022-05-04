@@ -179,18 +179,18 @@ export default class AddItemModal extends React.Component{
                                 onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateItemNumberPrefix)}
                             >
                                 <option hidden disabled value="" />
-                                <option id="ituOpt" value="ITU" >ITU</option>
-                                <option id="cstOpt" value="CST" >CST/KM</option>
-                                <option id="afeOpt" value="AFE" >AFE</option>
-                                <option id="cssOpt" value="CSS" >CSS</option>
-                                <option id="supOpt" value="SUP" >SUP</option>
-                                <option id="opsOpt" value="OPS" >OPS</option>
-                                <option id="srmOpt" value="SRM" >SARM</option>
-                                <option id="stuOpt" value="STU" >Student Actions</option>
-                                <option id="regOpt" value="REG" >Registrars</option>
-                                <option id="facOpt" value="FAC" >FacD</option>
-                                <option id="mtlOpt" value="MTL" >MTL</option>
-                                <option id="othOpt" value="OTH" >Other</option>
+                                <option id="ituOpt" value="ITU" label='ITU'/>
+                                <option id="cstOpt" value="CST" label='CST/KM'/>
+                                <option id="afeOpt" value="AFE" label='AFE'/>
+                                <option id="cssOpt" value="CSS" label='CSS'/>
+                                <option id="supOpt" value="SUP" label='SUP'/>
+                                <option id="opsOpt" value="OPS" label='OPS'/>
+                                <option id="srmOpt" value="SRM" label='SARM'/>
+                                <option id="stuOpt" value="STU" label='Student Actions'/>
+                                <option id="regOpt" value="REG" label='Registrars'/>
+                                <option id="facOpt" value="FAC" label='FacD'/>
+                                <option id="mtlOpt" value="MTL" label='MTL'/>
+                                <option id="othOpt" value="OTH" label='Other'/>
                             </select>
                             {this.handleInputFields.setErrorMessageDisplay("itemNumberPrefix")}
                             <input 

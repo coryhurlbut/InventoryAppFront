@@ -4,6 +4,10 @@ import { useTable, usePagination, useRowSelect } from 'react-table';
 
 import '../../styles/Table.css'
 
+const PAGE_OF_DISPLAY = 'Page';
+const PAGE_OF_DISPLAY_NUM = ' of ';
+const GO_TO_PAGE_DISPLAY = '| Go to page:';
+const SHOW_NUMBER_OF_ROWS = 'Show ';
 
 function Table({ columns, data, ...props }) {
     const {
@@ -105,15 +109,15 @@ function Table({ columns, data, ...props }) {
                 </button>
                 {' '}
                 <span>
-                    Page
+                    {PAGE_OF_DISPLAY}
                     {' '}
                     <strong>
-                        {pageIndex + 1} of {pageOptions.length}
+                        {pageIndex + 1} {PAGE_OF_DISPLAY_NUM} {pageOptions.length}
                     </strong>
                     {' '}
                 </span>
                 <span>
-                    | Go to page:{' '}
+                    {GO_TO_PAGE_DISPLAY}{' '}
                     <input
                         type="number"
                         defaultValue={pageIndex + 1}
@@ -133,7 +137,7 @@ function Table({ columns, data, ...props }) {
                 >
                     {[10, 20, 30, 40, 50].map(pageSize => (
                         <option key={pageSize} value={pageSize}>
-                            Show {pageSize}
+                            {SHOW_NUMBER_OF_ROWS} {pageSize}
                         </option>
                     ))}
                 </select>

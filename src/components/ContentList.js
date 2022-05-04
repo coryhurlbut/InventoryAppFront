@@ -20,10 +20,11 @@ import '../styles/Table.css';
 import '../styles/App.css';
 import '../styles/Modal.css';
 
-
 /*
 *   Displays main content. Changes depending on what data is displayed. Available Items, Unavailable Items, or Users.
 */
+const NO_CONTENT = 'No content available';
+const ERROR_MESSAGE_LINK = 'Please Click Here';
 export default class ContentList extends React.Component {
     constructor(props) {
         super(props);
@@ -39,8 +40,8 @@ export default class ContentList extends React.Component {
             selectedIds:                [],             //Now holds itemNumber or userName instead of _id
             selectedObjects:            [],
             accountRole:                props.accountRole,
-            _isError:                   false,
-            _errorMessage:              ''
+            isError:                   false,
+            errorMessage:              ''
         };
         
         this.setParentState        =   this._setParentState.bind(this);
@@ -66,31 +67,35 @@ export default class ContentList extends React.Component {
     };
 
     componentDidMount() {
-        try {
-            this._handleTableDisplay('availableItems');
-        } catch(error) {
-            this.setState({_isError: true,
-                _errorMessage: error.message
-            });
-        }
+        this._handleTableDisplay('availableItems');
     };
 
 
     _handleTableDisplay = async (objectType) => {
         let content;
         let object = {};
+
         if(objectType === 'availableItems'){
             content = await itemController.getAvailableItems();
             object = availableItemsContent;
             
         }else if(objectType === 'unavailableItems'){
             content = await itemController.getUnavailableItems();
-                object = unavailableItemsContent;
+            object = unavailableItemsContent;
         }
         else{
             content = await userController.getAllUsers();
             object = usersContent;
         }
+
+        //Display error, avoid app crashing
+        if(!content){
+            this.setState({
+                isError: true,
+                errorMessage: 'There was an issue during authentication.'
+            });
+        }
+
         this.setState({
             content:            content || null,
             contentType:        object.contentType,
@@ -134,31 +139,31 @@ export default class ContentList extends React.Component {
     _buildContentList = () => {
         if(this.state.content.length === 0){
             return(
-                <p id="noContent">No content available</p>
+                <p id="noContent">{NO_CONTENT}</p>
             )
         }
         return(
             <>
-            <div id="tableModification">
-                {this._buildEditControls()}
-                {this.state.isSignItemInOutVisible ? 
-                    <SignItemInOutControls 
-                        inOrOut={this.state.inOrOut} 
-                        selectedIds={this.state.selectedIds} 
-                        selectedObjects={this.state.selectedObjects} 
-                        id={this.state.id} 
-                    /> : 
-                    null
-                }            
-            </div>
-            <Table
-                columns={this.state.columns}
-                data={this.state.content}
-                setParentState={this.setParentState}
-                parseRowsArray={this._parseRowsArray}
-                userRole={this.state.accountRole}
-                contentType={this.state.contentType}
-            />
+                <div id="tableModification">
+                    {this._buildEditControls()}
+                    {this.state.isSignItemInOutVisible ? 
+                        <SignItemInOutControls 
+                            inOrOut={this.state.inOrOut} 
+                            selectedIds={this.state.selectedIds} 
+                            selectedObjects={this.state.selectedObjects} 
+                            id={this.state.id} 
+                        /> : 
+                        null
+                    }            
+                </div>
+                <Table
+                    columns={this.state.columns}
+                    data={this.state.content}
+                    setParentState={this.setParentState}
+                    parseRowsArray={this._parseRowsArray}
+                    userRole={this.state.accountRole}
+                    contentType={this.state.contentType}
+                />
             </>
         );
         
@@ -206,17 +211,21 @@ export default class ContentList extends React.Component {
         return (
             <>
                 <div>
-                    <p>{this.state._errorMessage}</p>
-                    <p>https://localhost:8000/items/available</p>
+                    <p className='centerText'>{this.state.errorMessage}</p>
+                    <a href='https://localhost:8000/items/available' className='centerText'>{ERROR_MESSAGE_LINK}</a>
                 </div>
             </>
         );
     }
 
     render() {
+        console.log('render');
         return(
             <div id="contentBody">
-                {this.state._isError ? this._renderErrorDisplay() : this._renderContentBody()}
+                {this.state.isError ? 
+                    this._renderErrorDisplay() : 
+                    this._renderContentBody()
+                }
             </div>
         );
     };

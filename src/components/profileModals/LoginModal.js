@@ -14,6 +14,17 @@ const BACKEND_GENERATED_ERRORMESSAGES = [
     '"password" length must be at least 8 characters long'
 ];
 
+const MODAL_HEADER_TITLE = 'Log In';
+const MODAL_HEADER_ERROR_TITLE = 'Max Login Attempt Exceeded';
+
+const INPUT_FIELD_USERNAME = 'Username: ';
+const INPUT_FIELD_PASSWORD = 'Password: ';
+const MODAL_ERROR_MESSAGE = 'Please try again later.';
+
+const BTN_LOGIN = 'Log In';
+const BTN_SIGNUP = 'Sign Up';
+const BTN_CLOSE = 'Close';
+
 /*
 *   Modal for logging in
 */
@@ -71,7 +82,7 @@ export default class LoginModal extends React.Component{
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Log In</h3>
+                    <h3>{MODAL_HEADER_TITLE}</h3>
                 </div>
                 <form onSubmit={(event) => {event.preventDefault();}}>
                     <div className="modalBody">
@@ -80,7 +91,7 @@ export default class LoginModal extends React.Component{
                             null
                         }
                         <fieldset id="modalBody_Username">
-                            <h4 className="inputTitle">Username: </h4>
+                            <h4 className="inputTitle">{INPUT_FIELD_USERNAME}</h4>
                             <input 
                                 type="text" 
                                 key="userName" 
@@ -90,7 +101,7 @@ export default class LoginModal extends React.Component{
                             />
                         </fieldset>
                         <fieldset id="modalBody_Password">
-                            <h4 className="inputTitle">Password: </h4>
+                            <h4 className="inputTitle">{INPUT_FIELD_PASSWORD}</h4>
                             <input 
                                 type="password" 
                                 key="password" 
@@ -101,9 +112,9 @@ export default class LoginModal extends React.Component{
                         </fieldset>
                     </div>
                     <div className="modalFooter">
-                        <button type="submit" onClick={this._login}>Log in</button>
-                        <button type='button' onClick={this._isSigningUp}>Sign Up</button>
-                        <button type="reset" onClick={this._dismissModal}>Close</button>
+                        <button type="submit" onClick={this._login}>{BTN_LOGIN}</button>
+                        <button type='button' onClick={this._isSigningUp}>{BTN_SIGNUP}</button>
+                        <button type="reset" onClick={this._dismissModal}>{BTN_CLOSE}</button>
                     </div>
                 </form>
             </>
@@ -123,15 +134,20 @@ export default class LoginModal extends React.Component{
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Max Login Attempt Exceeded</h3>
+                    <h3>{MODAL_HEADER_ERROR_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     <p>
-                        Please try again later.
+                        {MODAL_ERROR_MESSAGE}
                     </p>
                 </div>
                 <div className="modalFooter">
-                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                    <button 
+                        type="reset" 
+                        onClick={this._dismissModal}
+                    >
+                        {BTN_CLOSE}
+                    </button>
                 </div>
             </>
         );

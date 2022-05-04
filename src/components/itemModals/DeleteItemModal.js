@@ -11,6 +11,7 @@ import { itemController,
 const MODAL_HEADER_TITLE = 'Delete Item';
 
 const MODAL_PROMPT = 'You are about to delete the following:';
+
 const BTN_DELETE = 'Delete';
 const BTN_CLOSE = 'Close';
 

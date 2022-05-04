@@ -9,13 +9,24 @@ import { userValidation,
         sanitizeData,
         HandleOnChangeEvent } from '../inputValidation';
 
-
-
-const roleInfo = "Roles have different permissions and access\n\nUser: Only exists to hold signed out items, and tracking purposes. No password required\n\nCustodian: Can sign items in and out. Password required\n\nAdmin: Full control over items/users, logs, and approving new users. Password required";
-const COMPONENT_DID_MOUNT_ERROR = 'An error occured while loading. Please refresh and try again.';
 /*
 *   Modal for adding a user
 */
+const MODAL_HEADER_TITLE = 'Add User to Database';
+const MODAL_HEADER_ERROR_TITLE = 'Error Has Occured';
+
+const USER_ROLE_INFORMATION = "Roles have different permissions and access\n\nUser: Only exists to hold signed out items, and tracking purposes. No password required\n\nCustodian: Can sign items in and out. Password required\n\nAdmin: Full control over items/users, logs, and approving new users. Password required";
+const USER_ROLE_INFORMATION_ICON = '?';
+
+const INPUT_FIELD_FIRST_NAME = 'First Name';
+const INPUT_FIELD_LAST_NAME = 'Last Name';
+const INPUT_FIELD_USERNAME = 'Username';
+const INPUT_FIELD_USER_ROLE = 'User Role';
+const INPUT_FIELD_PASSWORD = 'Password';
+const INPUT_FIELD_CONFIRM_PASSWORD = 'Confirm Password';
+const INPUT_FIELD_PHONE_NUMBER = 'Phone Number';
+
+const BTN_CLOSE = 'Close';
 export default class AddUserModal extends React.Component {
     constructor(props) {
         super(props);
@@ -200,7 +211,7 @@ export default class AddUserModal extends React.Component {
         return(
             <>
             <div className="modalHeader">
-                <h3>Add User to Database</h3>
+                <h3>{MODAL_HEADER_TITLE}</h3>
             </div>
             <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                 <div className="modalBody">
@@ -208,8 +219,8 @@ export default class AddUserModal extends React.Component {
                         this._renderErrorMessage() :
                         null
                     }
-                    <fieldset>
-                        <h4 className="inputTitle">First Name</h4>
+                    <fieldset className={INPUT_FIELD_FIRST_NAME}>
+                        <h4 className="inputTitle">{INPUT_FIELD_FIRST_NAME}</h4>
                         <input 
                             type="text" 
                             id="firstName" 
@@ -220,8 +231,8 @@ export default class AddUserModal extends React.Component {
                         />
                         { this.handleInputFields.setErrorMessageDisplay("firstName") }
                     </fieldset>
-                    <fieldset>
-                        <h4 className="inputTitle">Last Name</h4>
+                    <fieldset className={INPUT_FIELD_LAST_NAME}>
+                        <h4 className="inputTitle">{INPUT_FIELD_LAST_NAME}</h4>
                         <input 
                             type="text" 
                             id="lastName" 
@@ -232,8 +243,8 @@ export default class AddUserModal extends React.Component {
                         />
                         { this.handleInputFields.setErrorMessageDisplay("lastName") }
                     </fieldset>
-                    <fieldset>
-                        <h4 className="inputTitle">Username</h4>
+                    <fieldset className={INPUT_FIELD_USERNAME}>
+                        <h4 className="inputTitle">{INPUT_FIELD_USERNAME}</h4>
                         <input 
                             type="text" 
                             id="userName"
@@ -247,8 +258,8 @@ export default class AddUserModal extends React.Component {
                     {this.state.isSignUp ? 
                         null :
                         <div>
-                            <fieldset>
-                                <h4 className="inputTitle">User's Role</h4>
+                            <fieldset className={INPUT_FIELD_USER_ROLE}>
+                                <h4 className="inputTitle">{INPUT_FIELD_USER_ROLE}</h4>
                                 <span id='userSelect'>
                                     <select 
                                         disabled={this.state.userRoleDisabled} 
@@ -256,19 +267,18 @@ export default class AddUserModal extends React.Component {
                                         defaultValue={'user'} 
                                         onChange={(Event) => {this._handleChangeEvent(Event)}}
                                     >
-
                                         <option label='' hidden disabled ></option>
-                                        <option value='user'>User</option>
-                                        <option value='custodian'>Custodian</option>
-                                        <option value='admin'>Admin</option>
+                                        <option value='user' label='User'/>
+                                        <option value='custodian' label='Custodian'/>
+                                        <option value='admin' label='Admin'/>
                                     </select>
-                                    <div title={roleInfo} id='roleInformation'>
-                                        ?
+                                    <div title={USER_ROLE_INFORMATION} id='roleInformation'>
+                                        {USER_ROLE_INFORMATION_ICON}
                                     </div>
                                 </span>
                             </fieldset>
-                            <fieldset>
-                                <h4 className="inputTitle">Password</h4>
+                            <fieldset className={INPUT_FIELD_PASSWORD}>
+                                <h4 className="inputTitle">{INPUT_FIELD_PASSWORD}</h4>
                                 <input
                                     type="password"
                                     id="password"
@@ -280,7 +290,7 @@ export default class AddUserModal extends React.Component {
                                 />
                                 { this.handleInputFields.setErrorMessageDisplay("password") }
                             
-                                <h4 className="inputTitle" hidden={this.state.pwDisabled}>Confirm Password</h4>
+                                <h4 className="inputTitle" hidden={this.state.pwDisabled}>{INPUT_FIELD_CONFIRM_PASSWORD}</h4>
                                 <input 
                                     type="password"
                                     id="confirmPassword"
@@ -295,8 +305,8 @@ export default class AddUserModal extends React.Component {
                             </fieldset> 
                         </div>
                     }
-                    <fieldset>
-                        <h4 className="inputTitle">Phone Number</h4>
+                    <fieldset className={INPUT_FIELD_PHONE_NUMBER}>
+                        <h4 className="inputTitle">{INPUT_FIELD_PHONE_NUMBER}</h4>
                         <input
                             type="text" 
                             id="phoneNumber" 
@@ -317,7 +327,12 @@ export default class AddUserModal extends React.Component {
                             !this.handleInputFields.isAddUserModalSubmitAvailable()
                         } 
                     />
-                    <button type="reset" onClick={() => this._dismissModal()}>Close</button>
+                    <button 
+                        type="reset" 
+                        onClick={() => this._dismissModal()}
+                    >
+                        {BTN_CLOSE}
+                    </button>
                 </div>
             </form>
             </>
@@ -338,7 +353,7 @@ export default class AddUserModal extends React.Component {
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Error Has Occured</h3>
+                    <h3>{MODAL_HEADER_ERROR_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     <p className="errorMesage">
@@ -346,7 +361,12 @@ export default class AddUserModal extends React.Component {
                     </p>
                 </div>
                 <div className="modalFooter">
-                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                    <button 
+                        type="reset" 
+                        onClick={this._dismissModal}
+                    >
+                        {BTN_CLOSE}
+                    </button>
                 </div>
             </>
         );
@@ -355,7 +375,10 @@ export default class AddUserModal extends React.Component {
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.state.isControllerError ? this._renderErrorDisplay() : this._renderForm() }
+                { this.state.isControllerError ? 
+                    this._renderErrorDisplay() : 
+                    this._renderForm() 
+                }
             </Modal>
         );
     };

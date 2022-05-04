@@ -11,9 +11,22 @@ import { LoginModal,
 import { displayPresets }       from './contentPresets';
 import profileIcon              from '../styles/Images/profileIcon25x25.jpg';
 import '../styles/App.css';
+
 /*
 *   Builds the page by calling components and passing down what should be visible
 */
+const PENDING_USER_NOTIFICATION = '•';
+
+const PAGE_TITLE = 'Inventory App';
+
+const DROP_DOWN_ACCOUNT_DETAILS = 'Account:';
+
+const BTN_ITEM_LOG = 'View Item Logs';
+const BTN_ADMIN_LOG = 'View Admin Logs';
+const BTN_PENDING_USERS = 'View Pending Users';
+const BTN_LOGOUT = 'Logout';
+const BTN_LOGIN  = 'Login';
+
 export default class ContentBuilder extends React.Component {
     constructor(props) {
         super(props);
@@ -74,6 +87,7 @@ export default class ContentBuilder extends React.Component {
     _hideModal = () => {
         this.setState({_modal: null});
     };
+
     //accepts string parameter to decide which Modal to display
     _showModal = (modalType) => {
         let modal;
@@ -126,7 +140,7 @@ export default class ContentBuilder extends React.Component {
         if(this._isUsersPending){
             return(
                 <span className='PendingUserNotification' id='PendingIcon'>
-                    •
+                    {PENDING_USER_NOTIFICATION}
                 </span>
             )
         }
@@ -137,7 +151,7 @@ export default class ContentBuilder extends React.Component {
             <>
             {this.state._modal}
             <div className="pageHeader">
-                <h2>Inventory App</h2>
+                <h2>{PAGE_TITLE}</h2>
                 {this.state._isLoggedIn ? 
                     <div className="profileContainer Main">
                         <button onClick={() => 
@@ -147,7 +161,7 @@ export default class ContentBuilder extends React.Component {
                         </button>
                         <div className="profileContainer DropDown">
                             <div className="contentContainer Text">
-                                <label>Account:</label>
+                                <label>{DROP_DOWN_ACCOUNT_DETAILS}</label>
                                 <label>{this.state.accountAuth.user.userName}</label>
                             </div>
                             <div className="contentDivider"/>
@@ -156,27 +170,27 @@ export default class ContentBuilder extends React.Component {
                                     hidden={!view.isItemLogVisible} 
                                     onClick={() => this._showModal('itemLog')}
                                 >
-                                    Item Logs
+                                    {BTN_ITEM_LOG}
                                 </button>
                                 <button 
                                     hidden={!view.isAdminLogVisible} 
                                     onClick={() => this._showModal('adminLog')}
                                 >
-                                    Admin Logs
+                                    {BTN_ADMIN_LOG}
                                 </button>
                                 <span className='PendingUserNotification'>
                                     <button 
                                         hidden={!view.isItemLogVisible}
                                         onClick={() => this._showModal('userApproval')}
                                     >
-                                        Pending
+                                        {BTN_PENDING_USERS}
                                     </button>
                                     {this._pendingUsersRedDot()}
                                 </span>
                             </div>
                             <div className="contentDivider"/>
                             <div className="contentContainer Action">
-                                <button onClick={() => this._showModal('loginLogout')}>Logout</button>
+                                <button onClick={() => this._showModal('loginLogout')}>{BTN_LOGOUT}</button>
                             </div>
                         </div>
                     </div> : 
@@ -184,7 +198,7 @@ export default class ContentBuilder extends React.Component {
                         className="logInLogOut"
                         onClick={() => this._showModal('loginLogout')}
                     >
-                        Login
+                        {BTN_LOGIN}
                     </button>
                 }
             </div>

@@ -7,6 +7,13 @@ import { loginLogoutController }    from '../../controllers';
 /*
 *   Modal for logging out
 */
+const MODAL_HEADER_TITLE = 'Log Out';
+
+const MODAL_PROMPT = 'Are you sure you want to Log Out?';
+
+const BTN_LOGOUT = 'Log Out';
+const BTN_CLOSE = 'Close';
+
 export default class LogoutModal extends React.Component{
     constructor(props) {
         super(props);
@@ -55,18 +62,18 @@ export default class LogoutModal extends React.Component{
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
                 <div className="modalHeader">
-                    <h3>Log Out</h3>
+                    <h3>{MODAL_HEADER_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
-                    <p>Are you sure you want to Log Out?</p>
+                    <p className='centerText'>{MODAL_PROMPT}</p>
                 </div>
                 <div className="modalFooter">
-                    <button onClick={this._logout}>Log Out</button>
-                    <button onClick={this._dismissModal}>Close</button>
+                    <button onClick={this._logout}>{BTN_LOGOUT}</button>
+                    <button onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
             </Modal>
         );
