@@ -11,6 +11,16 @@ import MapNotes             from '../utilities/MapNotes';
 /*
 *   Modal for signing out an item
 */
+const VIEW_NOTES = 'View Notes';
+
+const MODAL_HEADER_TITLE = 'Sign Item Out';
+const MODAL_HEADER_ERROR_TITLE = 'Error Has Occured';
+
+const MODAL_PROMPT = 'You are about to sign out: ';
+const CHOOSE_USER_PROMPT = 'Choose a user:';
+
+const BTN_CLOSE = 'Close';
+
 export default class SignItemOutModal extends React.Component{
     constructor(props) {
         super(props);
@@ -128,7 +138,7 @@ export default class SignItemOutModal extends React.Component{
                         id={item.itemNumber.toString()} 
                         onClick={Event => this._viewNotesModal(Event, item.notes)}
                     >
-                        View Notes
+                        {VIEW_NOTES}
                     </button>
                 </span>
             );
@@ -156,13 +166,12 @@ export default class SignItemOutModal extends React.Component{
         });/*This grabs the key attribute from the selected option*/ 
     }
 
-
     /* Builds display for deleting items */
     _renderSignOutNotification = () => {
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Sign Item Out</h3>                    
+                    <h3>{MODAL_HEADER_TITLE}</h3>                    
                 </div>
                 <form onSubmit={this._handleFormSubmit}>
                 <div className="modalBody">
@@ -170,10 +179,10 @@ export default class SignItemOutModal extends React.Component{
                         this._renderErrorMessage() :
                         null
                     }
-                    <h4>You are about to sign out: </h4>
+                    <h4>{MODAL_PROMPT}</h4>
                     {this._displayArray(this._selectedObjects)}
                     <span className='userSelectSigninSignout'>
-                        <label id='labelSelectSignout'>Choose a user:</label>
+                        <label id='labelSelectSignout'>{CHOOSE_USER_PROMPT}</label>
                         <select 
                             name="usersSelect" 
                             id="usersSelect" 
@@ -193,7 +202,7 @@ export default class SignItemOutModal extends React.Component{
                         value="Submit" 
                         disabled={!this._isSumbitAvailable()}
                     />
-                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                    <button type="reset" onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
                 </form>
             </>
@@ -214,13 +223,13 @@ export default class SignItemOutModal extends React.Component{
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Error Has Occured</h3>
+                    <h3>{MODAL_HEADER_ERROR_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     <p className="errorMesage">{this.state.controllerErrorMessage}</p>
                 </div>
                 <div className="modalFooter">
-                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                    <button type="reset" onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
             </>
         );

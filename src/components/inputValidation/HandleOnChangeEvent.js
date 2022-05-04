@@ -12,6 +12,8 @@ import React from 'react';
         immutable
 */
 const EMPTY_STRING = '';
+const EMPTY_LABEL = 'This is filler';
+
 export default class HandleOnChangeEvent {
     //Expected arguments: userModal/itemModal
     constructor(args) {
@@ -168,7 +170,7 @@ export default class HandleOnChangeEvent {
             }
             return(
                 <label className="emptyLabel">
-                    This is filler
+                   {EMPTY_LABEL}
                 </label>
             );
         }  else if(this.modalType === 'userModalAddSignUp') {
@@ -181,7 +183,7 @@ export default class HandleOnChangeEvent {
             }
             return(
                 <label className="emptyLabel">
-                    This is filler
+                    {EMPTY_LABEL}
                 </label>
             );
         } else {
@@ -194,7 +196,7 @@ export default class HandleOnChangeEvent {
             }
             return(
                 <label className="emptyLabel">
-                    This is filler
+                    {EMPTY_LABEL}
                 </label>
             );
         }
@@ -309,6 +311,4 @@ export default class HandleOnChangeEvent {
             return true;
         }
     }
-
 };
-

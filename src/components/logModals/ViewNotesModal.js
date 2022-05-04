@@ -18,6 +18,9 @@ const columns = [
         accessor: 'date'
     }
 ]
+const NO_CONTENT = 'No available notes';
+
+const BTN_CLOSE = 'Close';
 
 export default class ViewNotesModal extends React.Component{
     constructor(props){
@@ -96,7 +99,7 @@ export default class ViewNotesModal extends React.Component{
                     </div>
                     <div id='viewItemNotes'className="modalBody">
                         {this.state.content.length < 1 ? 
-                            <p className="centerText">No available notes</p> : 
+                            <p className="centerText">{NO_CONTENT}</p> : 
                             <Table 
                                 columns={columns} 
                                 data={this.state.content}
@@ -107,7 +110,7 @@ export default class ViewNotesModal extends React.Component{
                     </div>
                     <div className="modalFooter">
                         <button onClick={() => {this._viewOtherModal()}}>
-                            Close
+                            {BTN_CLOSE}
                         </button> 
                     </div>
                 </Modal>
