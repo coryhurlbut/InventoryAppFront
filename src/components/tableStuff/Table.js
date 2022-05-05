@@ -6,8 +6,8 @@ import '../../styles/Table.css'
 
 const PAGE_OF_DISPLAY = 'Page';
 const PAGE_OF_DISPLAY_NUM = ' of ';
-const GO_TO_PAGE_DISPLAY = '| Go to page:';
-const SHOW_NUMBER_OF_ROWS = 'Show ';
+const GO_TO_PAGE_DISPLAY = 'Go to page:';
+const SHOW_NUMBER_OF_ROWS = 'Show: ';
 
 function Table({ columns, data, ...props }) {
     const {
@@ -92,31 +92,7 @@ function Table({ columns, data, ...props }) {
                 </tbody>
             </table>
             <div className="pagination">
-                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                    {'<<'}
-                </button>
-                {' '}
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                    {'<'}
-                </button>
-                {' '}
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
-                    {'>'}
-                </button>
-                {' '}
-                <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                    {'>>'}
-                </button>
-                {' '}
-                <span>
-                    {PAGE_OF_DISPLAY}
-                    {' '}
-                    <strong>
-                        {pageIndex + 1} {PAGE_OF_DISPLAY_NUM} {pageOptions.length}
-                    </strong>
-                    {' '}
-                </span>
-                <span>
+                <span id='left'>
                     {GO_TO_PAGE_DISPLAY}{' '}
                     <input
                         type="number"
@@ -128,8 +104,34 @@ function Table({ columns, data, ...props }) {
                         style={{ width: '100px' }}
                     />
                 </span>
-                {' '}
+                <span id='center'>
+                    <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                        {'|<'}
+                    </button>
+                    {' '}
+                    <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                        {'<'}
+                    </button>
+                    {' '}
+                    <span>
+                        {PAGE_OF_DISPLAY}
+                        {' '}
+                        <strong>
+                            {pageIndex + 1} {PAGE_OF_DISPLAY_NUM} {pageOptions.length}
+                        </strong>
+                        {' '}
+                    </span>
+                    {' '}
+                    <button onClick={() => nextPage()} disabled={!canNextPage}>
+                        {'>'}
+                    </button>
+                    {' '}
+                    <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                        {'>|'}
+                    </button>
+                </span>
                 <select
+                    id='right'
                     value={pageSize}
                     onChange={e => {
                         setPageSize(Number(e.target.value))

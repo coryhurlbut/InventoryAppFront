@@ -21,9 +21,9 @@ const PAGE_TITLE = 'Inventory App';
 
 const DROP_DOWN_ACCOUNT_DETAILS = 'Account:';
 
-const BTN_ITEM_LOG = 'View Item Logs';
-const BTN_ADMIN_LOG = 'View Admin Logs';
-const BTN_PENDING_USERS = 'View Pending Users';
+const BTN_ITEM_LOG = 'Item Logs';
+const BTN_ADMIN_LOG = 'Admin Logs';
+const BTN_PENDING_USERS = 'Pending Users';
 const BTN_LOGOUT = 'Logout';
 const BTN_LOGIN  = 'Login';
 
@@ -46,23 +46,44 @@ export default class ContentBuilder extends React.Component {
     };
 
     async componentDidMount() {
-        let auth  = await authController.checkToken();
-        let users = await userController.getPendingUsers();
+        try {
+            //Is the user signed in?
+            if(this.state._isLoggedIn){
+                let auth  = await authController.checkToken();
+                let users = await userController.getPendingUsers();
 
-        if(auth === undefined || auth.error !== undefined) {
-            this._clearAuth();
-        } else if (typeof auth === 'string' && auth.split(' ')[0] === 'TypeError:') {
-            this._isError = auth;
-        } else {
-            this._setAuth(auth);
-        }
+                if(auth === undefined || auth.error !== undefined) {
+                    this._clearAuth();
+                } else if (typeof auth === 'string' && auth.split(' ')[0] === 'TypeError:') {
+                    this._isError = auth;
+                } else {
+                    this._setAuth(auth);
+                }
 
-        if(users && users.length > 0) {
-            this._isUsersPending = true;
-            this.setState({ pendingUsers: users });
-        }
-        else {
-            this._disableLogin = true;
+                if(users && users.length > 0) {
+                    this._isUsersPending = true;
+                    this.setState({ pendingUsers: users });
+                }
+            } else {
+                let auth  = await authController.checkToken();
+
+                //case to ensure login if backend connection secure
+                if(auth.status === 403){
+                    this._disableLogin = false;
+                } else{
+                    this._disableLogin = true;
+                }
+
+                if(auth === undefined || auth.error !== undefined) {
+                    this._clearAuth();
+                } else if (typeof auth === 'string' && auth.split(' ')[0] === 'TypeError:') {
+                    this._isError = auth;
+                } else {
+                    this._setAuth(auth);
+                }
+            }
+        } catch (error) {
+            console.log("Error", error.message);
         }
     };
 
