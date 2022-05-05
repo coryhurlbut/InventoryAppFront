@@ -18,7 +18,6 @@ import {Table, TableNav }       from './tableStuff';
 import ToggleSwitch             from './utilities/ToggleSwitch';
 import '../styles/Table.css';
 import '../styles/App.css';
-import '../styles/Modal.css';
 
 /*
 *   Displays main content. Changes depending on what data is displayed. Available Items, Unavailable Items, or Users.

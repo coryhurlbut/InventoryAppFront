@@ -4,8 +4,13 @@ import { useTable, usePagination, useRowSelect } from 'react-table';
 
 import '../../styles/Table.css'
 
-const PAGE_OF_DISPLAY = 'Page';
+const PAGE_OF_DISPLAY = 'Page ';
 const PAGE_OF_DISPLAY_NUM = ' of ';
+const PAGE_OF_DISPLAY_FIRST_PAGE = '|<';
+const PAGE_OF_DISPLAY_PREV_PAGE = '<';
+const PAGE_OF_DISPLAY_NEXT_PAGE = '>';
+const PAGE_OF_DISPLAY_LAST_PAGE = '>|';
+
 const GO_TO_PAGE_DISPLAY = 'Go to page:';
 const SHOW_NUMBER_OF_ROWS = 'Show: ';
 
@@ -36,7 +41,7 @@ function Table({ columns, data, ...props }) {
     );
 
     return(
-        <>
+        <div className='tableContainer'>
             <table {...getTableProps()}>
                 <thead>
                     {headerGroups.map(headerGroup => (
@@ -92,8 +97,8 @@ function Table({ columns, data, ...props }) {
                 </tbody>
             </table>
             <div className="pagination">
-                <span id='left'>
-                    {GO_TO_PAGE_DISPLAY}{' '}
+                <span id='leftPagination'>
+                    {GO_TO_PAGE_DISPLAY}
                     <input
                         type="number"
                         defaultValue={pageIndex + 1}
@@ -101,37 +106,30 @@ function Table({ columns, data, ...props }) {
                             const page = e.target.value ? Number(e.target.value) - 1 : 0
                             gotoPage(page)
                         }}
-                        style={{ width: '100px' }}
                     />
                 </span>
-                <span id='center'>
+                <span id='centerPagination'>
                     <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                        {'|<'}
+                        {PAGE_OF_DISPLAY_FIRST_PAGE}
                     </button>
-                    {' '}
                     <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                        {'<'}
+                        {PAGE_OF_DISPLAY_PREV_PAGE}
                     </button>
-                    {' '}
                     <span>
                         {PAGE_OF_DISPLAY}
-                        {' '}
                         <strong>
                             {pageIndex + 1} {PAGE_OF_DISPLAY_NUM} {pageOptions.length}
                         </strong>
-                        {' '}
                     </span>
-                    {' '}
                     <button onClick={() => nextPage()} disabled={!canNextPage}>
-                        {'>'}
+                        {PAGE_OF_DISPLAY_NEXT_PAGE}
                     </button>
-                    {' '}
                     <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                        {'>|'}
+                        {PAGE_OF_DISPLAY_LAST_PAGE}
                     </button>
                 </span>
                 <select
-                    id='right'
+                    id='rightPagination'
                     value={pageSize}
                     onChange={e => {
                         setPageSize(Number(e.target.value))
@@ -144,7 +142,7 @@ function Table({ columns, data, ...props }) {
                     ))}
                 </select>
             </div>
-        </>
+        </div>
     )
 }
 

@@ -13,9 +13,6 @@
   justify-content:flex-start;
   align-items: center;
 }
-.pagination {
-  padding: 0.5rem;
-}
 
 /*Create seperation between table naviation*/
 .itemStyling {
@@ -186,4 +183,68 @@ table::-webkit-scrollbar-thumb {
 table::-webkit-scrollbar-thumb:window-inactive, ::-webkit-scrollbar-button:single-button:window-inactive {
   background-color: transparent;
   border: transparent;
+}
+
+/* Pagination stying*/
+.pagination {
+  padding: 0.5rem;
+  color: #11375c;
+  background-color: #b3b3b3;
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#leftPagination{
+  display: flex;
+  align-items: center;
+}
+#leftPagination input[type=number]{
+  width: 45px;
+  height: auto;
+  margin-left: 5px;
+
+  background-color: #c7c7c7;
+  outline: 1px solid #11375c;
+  border: 1px solid #929292;
+}
+
+#centerPagination{
+  display: flex;
+  align-items: center;
+}
+#centerPagination button{
+  font-weight: bold;
+  color: #787878;
+  padding: 5px;
+  margin: 0;
+
+  background-color: transparent;
+  border-color: transparent;
+  outline:transparent;
+}
+#centerPagination button:hover{
+  color: #013e44;
+  background-color: #787878;
+
+  border-radius: 10px;
+}
+#centerPagination button:disabled{
+  color: #787878;
+  background-color: transparent;
+}
+#centerPagination span{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#rightPagination{
+  width: auto;
+  margin-left: 25.5px;
+  margin-right: 25.5px;
+
+  background-color: #c7c7c7;
+  outline: 1px solid #787878;
+  border: 1px solid #929292;
 }
