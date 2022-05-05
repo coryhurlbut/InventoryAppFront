@@ -10,17 +10,17 @@ export default class SignItemInOutControls extends React.Component {
         super(props);
         
         this.state = {
-            modal:              null,
-            selectedIds:            props.selectedIds,
-            selectedObjects:    props.selectedObjects
+            modal           : null,
+            selectedIds     : props.selectedIds,
+            selectedObjects : props.selectedObjects
         };
     }
 
     componentDidUpdate(prevProps, prevState){
         if(prevProps !== this.props) {
             this.setState({
-                selectedIds:            this.props.selectedIds,
-                selectedObjects:    this.props.selectedObjects
+                selectedIds     : this.props.selectedIds,
+                selectedObjects : this.props.selectedObjects
             });
         };
     }

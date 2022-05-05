@@ -9,17 +9,23 @@ import { userController,
 /*
 *   Modal for deleting a user
 */
+const MODAL_HEADER_TITLE = 'Delete User';
+
+const MODAL_PROMPT = 'You are about to delete the following:';
+
+const BTN_DELETE = 'Delete';
+const BTN_CLOSE = 'Close';
+
 export default class DeleteUserModal extends React.Component {
     constructor(props) {
         super(props);
         
         this.state = {
-            isOpen:                 props.isOpen,
-            selectedIds:            props.selectedIds,
-            selectedObjects:        props.selectedObjects,
-
-            isError:                false,
-            errorMessage:           ''
+            isOpen          : props.isOpen,
+            selectedIds     : props.selectedIds,
+            selectedObjects : props.selectedObjects,
+            isError         : false,
+            errorMessage    : ''
         };
     }
 
@@ -79,7 +85,7 @@ export default class DeleteUserModal extends React.Component {
     _displayArray = (users) => {
         const displayUsers = users.map((user) => 
             <li className="arrayObject" key={user.userName}> 
-                {user.userName}
+                {user.userName} : {user.firstName} {' '} {user.lastName}
             </li>
         );
 
@@ -91,19 +97,19 @@ export default class DeleteUserModal extends React.Component {
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Delete User</h3>
+                    <h3>{MODAL_HEADER_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
-                    <h4>You are about to delete the following:</h4>
+                    <h4>{MODAL_PROMPT}</h4>
                     {this._displayArray(this.state.selectedObjects)}
                 </div>
                 <div className="modalFooter">
-                    <button onClick={this._deleteUser}>Delete</button>
-                    <button onClick={this._dismissModal}>Close</button>
+                    <button onClick={this._deleteUser}>{BTN_DELETE}</button>
+                    <button onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
             </>
         );

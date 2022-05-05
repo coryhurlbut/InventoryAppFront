@@ -20,27 +20,29 @@ import '../styles/Table.css';
 import '../styles/App.css';
 import '../styles/Modal.css';
 
-
 /*
 *   Displays main content. Changes depending on what data is displayed. Available Items, Unavailable Items, or Users.
 */
+const NO_CONTENT = 'No content available';
+const ERROR_MESSAGE_LINK = 'Please Click Here';
+
 export default class ContentList extends React.Component {
     constructor(props) {
         super(props);
         
         this.state = {
-            isUserContentVisible:       props.isUserContentVisible,
-            isEditControlVisible:       props.isEditControlVisible,
-            isSignItemInOutVisible:     props.isSignItemInOutVisible,
-            contentType:                availableItemsContent.contentType,
-            editControls:               availableItemsContent.editControls,
-            inOrOut:                    availableItemsContent.inOrOut,
-            content:                    [],
-            selectedIds:                [],             //Now holds itemNumber or userName instead of _id
-            selectedObjects:            [],
-            accountRole:                props.accountRole,
-            _isError:                   false,
-            _errorMessage:              ''
+            isUserContentVisible        : props.isUserContentVisible,
+            isEditControlVisible        : props.isEditControlVisible,
+            isSignItemInOutVisible      : props.isSignItemInOutVisible,
+            contentType                 : availableItemsContent.contentType,
+            editControls                : availableItemsContent.editControls,
+            inOrOut                     : availableItemsContent.inOrOut,
+            content                     : [],
+            selectedIds                 : [],             //Now holds itemNumber or userName instead of _id
+            selectedObjects             : [],
+            accountRole                 : props.accountRole,
+            isError                    : false,
+            errorMessage               : ''
         };
         
         this.setParentState        =   this._setParentState.bind(this);
@@ -52,10 +54,10 @@ export default class ContentList extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if(this.props !== prevProps) {
             this.setState({
-                isUserContentVisible:   this.props.isUserContentVisible,
-                isEditControlVisible:   this.props.isEditControlVisible,
-                isSignItemInOutVisible: this.props.isSignItemInOutVisible,
-                accountRole:            this.props.accountRole
+                isUserContentVisible    : this.props.isUserContentVisible,
+                isEditControlVisible    : this.props.isEditControlVisible,
+                isSignItemInOutVisible  : this.props.isSignItemInOutVisible,
+                accountRole             : this.props.accountRole
             });
         };
 
@@ -66,18 +68,13 @@ export default class ContentList extends React.Component {
     };
 
     componentDidMount() {
-        try {
-            this._handleTableDisplay('availableItems');
-        } catch(error) {
-            this.setState({_isError: true,
-                _errorMessage: error.message
-            });
-        }
+        this._handleTableDisplay('availableItems');
     };
 
     _handleTableDisplay = async (objectType) => {
         let content;
         let object = {};
+
         if(objectType === 'availableItems'){
             content = await itemController.getAvailableItems();
             object = availableItemsContent;
@@ -90,14 +87,23 @@ export default class ContentList extends React.Component {
             content = await userController.getAllUsers();
             object = usersContent;
         }
+
+        //Display error, avoid app crashing
+        if(!content){
+            this.setState({
+                isError: true,
+                errorMessage: 'There was an issue during authentication.'
+            });
+        }
+
         this.setState({
-            content:            content || null,
-            contentType:        object.contentType,
-            editControls:       object.editControls,
-            inOrOut:            object.inOrOut,
-            columns:            object.columns,
-            selectedIds:        [],
-            selectedObjects:    [],
+            content         : content || null,
+            contentType     : object.contentType,
+            editControls    : object.editControls,
+            inOrOut         : object.inOrOut,
+            columns         : object.columns,
+            selectedIds     : [],
+            selectedObjects : [],
         });
     }
     //TO-DO this can probably be way less code, and also probably be within setParentState method, fix for toggleAllRowsSelected
@@ -114,53 +120,57 @@ export default class ContentList extends React.Component {
     //Callback function passed to table component.
     //Bound to ContentList state to update this state when called by child component.
     _setParentState = (obj) => {
-        let arr = this.state.selectedIds;
-        let objArr = this.state.selectedObjects;
-        let id = obj.itemNumber ? obj.itemNumber : obj.userName; //If obj is an item, take the itemNumber. Otherwise, take the userName
+        let arr     = this.state.selectedIds;
+        let objArr  = this.state.selectedObjects;
+        let id      = obj.itemNumber ? obj.itemNumber : obj.userName; //If obj is an item, take the itemNumber. Otherwise, take the userName
         
         if(arr.includes(id)) {
-            arr = arr.filter(el => el !== id);
-            objArr = objArr.filter(object => object.itemNumber !== id);
-            objArr = objArr.filter(object => object.userName !== id);
+            arr     = arr.filter(el => el !== id);
+            objArr  = objArr.filter(object => object.itemNumber !== id);
+            objArr  = objArr.filter(object => object.userName !== id);
         } else {
             arr.push(id);
             objArr.push(obj);
         };
 
-        this.setState({selectedIds: arr, selectedObjects: objArr});
+        this.setState({ 
+            selectedIds: arr, 
+            selectedObjects: objArr 
+        });
     }
 
     _buildContentList = () => {
-        if(this.state.content.length === 0){
+        if(!this.state.isError){
+            if(this.state.content.length === 0){
+                return(
+                    <p id="noContent">{NO_CONTENT}</p>
+                )
+            }
             return(
-                <p id="noContent">No content available</p>
-            )
+                <>
+                    <div id="tableModification">
+                        {this._buildEditControls()}
+                        {this.state.isSignItemInOutVisible ? 
+                            <SignItemInOutControls 
+                                inOrOut={this.state.inOrOut} 
+                                selectedIds={this.state.selectedIds} 
+                                selectedObjects={this.state.selectedObjects} 
+                                id={this.state.id} 
+                            /> : 
+                            null
+                        }            
+                    </div>
+                    <Table
+                        columns={this.state.columns}
+                        data={this.state.content}
+                        setParentState={this.setParentState}
+                        parseRowsArray={this._parseRowsArray}
+                        userRole={this.state.accountRole}
+                        contentType={this.state.contentType}
+                    />
+                </>
+            );
         }
-        return(
-            <>
-            <div id="tableModification">
-                {this._buildEditControls()}
-                {this.state.isSignItemInOutVisible ? 
-                    <SignItemInOutControls 
-                        inOrOut={this.state.inOrOut} 
-                        selectedIds={this.state.selectedIds} 
-                        selectedObjects={this.state.selectedObjects} 
-                        id={this.state.id} 
-                    /> : 
-                    null
-                }            
-            </div>
-            <Table
-                columns={this.state.columns}
-                data={this.state.content}
-                setParentState={this.setParentState}
-                parseRowsArray={this._parseRowsArray}
-                userRole={this.state.accountRole}
-                contentType={this.state.contentType}
-            />
-            </>
-        );
-        
     };
 
     _buildEditControls = () => {
@@ -188,15 +198,26 @@ export default class ContentList extends React.Component {
         return (
             <>
                 <div id="userControls">
-                        <TableNav
-                            clickFunction={this._handleTableDisplay} 
-                            isUserContentVisible={this.state.isUserContentVisible}
-                        />
-                        <ToggleSwitch />
-                    </div>
-                    <div id="tableBody">
-                        {this._buildContentList()}
-                    </div>
+                    <TableNav
+                        clickFunction={this._handleTableDisplay} 
+                        isUserContentVisible={this.state.isUserContentVisible}
+                    />
+                    <ToggleSwitch />
+                </div>
+                <div id="tableBody">
+                    {this._buildContentList()}
+                </div>
+            </>
+        );
+    }
+
+    _renderErrorDisplay = () => {
+        return (
+            <>
+                <div>
+                    <p className='centerText'>{this.state.errorMessage}</p>
+                    <a href="https://localhost:8000/items/available" className='centerText'>{ERROR_MESSAGE_LINK}</a>
+                </div>
             </>
         );
     }
@@ -204,7 +225,10 @@ export default class ContentList extends React.Component {
     render() {
         return(
             <div id="contentBody">
-                {this.state._isError ? this.state._errorMessage : this._renderContentBody()}
+                {this.state.isError ? 
+                    this._renderErrorDisplay() : 
+                    this._renderContentBody()
+                }
             </div>
         );
     };

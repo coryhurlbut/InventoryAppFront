@@ -76,7 +76,7 @@ class UserController extends AuthController {
                     }
                 })
             } else {
-                if(item.possessedBy === users.userName) {
+                if(item.possessedBy === users[0].userName) {
                     res.status = 'error';
                     res.message = 'Cannot delete or deactivate a user while they have an item signed out';
                     return res;

@@ -10,18 +10,26 @@ import MapNotes             from '../utilities/MapNotes';
 /*
 *   Modal for signing an item in
 */
+const VIEW_NOTES = 'View Notes';
+
+const MODAL_HEADER_TITLE = 'Sign Item In';
+const MODAL_PROMPT = 'You are about to sign back in:';
+
+const BTN_SUBMIT = 'Submit';
+const BTN_CLOSE = 'Close';
+
 export default class SignItemInModal extends React.Component{
     constructor(props) {
         super(props);
         
         this.state = {
-            isOpen:                 props.isOpen,
-            viewNotesModalBool:     null,
-            notesArray:             [],
-            buttonClicked:          null,
-
-            isError:                false,
-            errorMessage:           ''
+            isOpen              : props.isOpen,
+            viewNotesModalBool  : null,
+            notesArray          : [],
+            buttonClicked       : null,
+            viewNotesName       : '',
+            isError             : false,
+            errorMessage        : ''
         };
 
         this._selectedIds = props.selectedIds;
@@ -44,11 +52,11 @@ export default class SignItemInModal extends React.Component{
 
             for(let i = 0; i < this._selectedIds.length; i++) {
                 let info = {
-                    itemId:      this._selectedIds[i],
-                    userId:      'test',
-                    custodianId: '',
-                    action:      'signed in',
-                    notes:       'test'
+                    itemId      : this._selectedIds[i],
+                    userId      : 'test',
+                    custodianId : '',
+                    action      : 'signed in',
+                    notes       : 'test'
                 };
                 await itemLogController.createItemLog(info);
             };
@@ -65,47 +73,29 @@ export default class SignItemInModal extends React.Component{
             });
         });
     }
-    _viewNotesModal = (buttonClicked) => {
-        this.setState({ notesArray: MapNotes(buttonClicked) })
-        this.setState({ viewNotesModalBool: true });
-    }
-    //TODO - make this an imported function
-    _mapNotes = (notes) => {
-        let notesArray = [];
-        let notesSplitArray = [];
-            notesSplitArray = notes.split('`');
-            let notesObject = {
-                notes: '',
-                date: ''
-            };
-            for (let i = 0; i < notesSplitArray.length; i++) {
-                if(notesSplitArray[i] !== ""){
-                    if(i % 2 === 0 || i === 0){
-                        notesObject.notes = notesSplitArray[i];
-                    }else{
-                        notesObject.date = notesSplitArray[i];
-                        notesArray.push(notesObject);
-                        notesObject = {
-                            notes: '',
-                            date: ''
-                        }
-                    }
-                }
-            }
-            return notesArray;
+
+    _viewNotesModal = (Event, buttonClicked) => {
+        this.setState({ notesArray: MapNotes(buttonClicked),
+            viewNotesModalBool: true,
+            viewNotesName: Event.target.id});
     }
 
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
         const displayItem = items.map((item) => {
             return (
-                <span className='sideBySide'>
-                <li className="arrayObject" key={item.itemNumber}> 
-                    {item.name} 
-                </li>
-                <button type='button' key={item._id + 'yo'} id={item.itemNumber} onClick={() => this._viewNotesModal(item.notes)}>
-                    View Notes
-                </button>
+                <span className='displayItemsAndViewNotes' key={item._id}>
+                    <li className="arrayObject"> 
+                        {item.itemNumber} : {item.name}
+                    </li>
+                    <button 
+                        type='button'
+                        className='signinSignout'
+                        id={item.itemNumber} 
+                        onClick={Event => this._viewNotesModal(Event, item.notes)}
+                    >
+                        {VIEW_NOTES}
+                    </button>
                 </span>
             );
         });
@@ -118,19 +108,19 @@ export default class SignItemInModal extends React.Component{
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Sign Item In</h3>
+                    <h3>{MODAL_HEADER_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     {this.state.isError ?
                         this._renderErrorMessage() :
                         null
                     }
-                    <h4>You are about to sign back in:</h4>
+                    <h4>{MODAL_PROMPT}</h4>
                     {this._displayArray(this._selectedObjects)}
                 </div>
                 <div className="modalFooter">
-                    <button onClick={this._signItemsIn}>Submit</button>
-                    <button onClick={this._dismissModal}>Close</button>
+                    <button onClick={this._signItemsIn}>{BTN_SUBMIT}</button>
+                    <button onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
             </>
         );
@@ -148,8 +138,15 @@ export default class SignItemInModal extends React.Component{
     render() {
         if(this.state.viewNotesModalBool){
             return(
-            <ViewNotesModal selectedIds={this._selectedIds} isOpen={true} hideModal={null} content={this.state.notesArray} 
-                name={'temp'} previousModal={'signIn'} selectedObjects={this._selectedObjects}/>
+                <ViewNotesModal 
+                    selectedIds={this._selectedIds} 
+                    isOpen={true} 
+                    hideModal={null} 
+                    content={this.state.notesArray} 
+                    name={`${this.state.viewNotesName}`} 
+                    previousModal={'signIn'} 
+                    selectedObjects={this._selectedObjects}
+                />
             )
         }else{
             return(

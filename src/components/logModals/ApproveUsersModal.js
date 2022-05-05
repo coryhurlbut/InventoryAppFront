@@ -23,24 +23,32 @@ const columns = [
 
 ]
 
+const MODAL_HEADER_TITLE = 'Pending Users';
+const MODAL_HEADER_ERROR_TITLE = 'Error Has Occured';
+
+const NO_CONTENT = 'No available Pending Users';
+
+const BTN_APPROVE = 'Approve';
+const BTN_DENY = 'Deny';
+const BTN_CLOSE = 'Close';
+
 export default class ApproveUsersModal extends React.Component {
     constructor(props){
         super(props)
 
         this.state = {
-            isOpen:          props.isOpen,
-            content:         [],
-            hideModal:       props.hideModal,
-            accountRole:     props.accountRole,
-            contentType:     props.contentType,
-            selectedObjects: [],
-            selectedIds:     [],
-            btnConfig:       true,
-
-            isControllerError:      false,
-            controllerErrorMessage: '',
-            isError:                false,
-            errorMessage:           ''
+            isOpen                  : props.isOpen,
+            content                 : [],
+            hideModal               : props.hideModal,
+            accountRole             : props.accountRole,
+            contentType             : props.contentType,
+            selectedObjects         : [],
+            selectedIds             : [],
+            btnConfig               : true,
+            isControllerError       : false,
+            controllerErrorMessage  : '',
+            isError                 : false,
+            errorMessage            : ''
         }
         this.setParentState    = this._setParentState.bind(this);
     }
@@ -108,7 +116,9 @@ export default class ApproveUsersModal extends React.Component {
     _renderForm = () => {
         return(
             <>
-                <div className="modalHeader">Pending Users</div>
+                <div className="modalHeader">
+                    <h3>{MODAL_HEADER_TITLE}</h3> 
+                </div>
                 <form onSubmit={(Event) => {Event.preventDefault()}}>
                     <div className='modalBody'>
                         {this.state.isError ?
@@ -123,25 +133,25 @@ export default class ApproveUsersModal extends React.Component {
                             contentType={this.state.contentType}
                             setParentState={this.setParentState}
                         />
-                        : <p>There is no pending Users</p>}
+                        : <p className='centerText'>{NO_CONTENT}</p>}
                     </div>
                     <div className="modalFooter">
                         <button 
                             disabled={this.state.selectedIds.length > 0 ? false : true} 
                             onClick={() => this._approveUsers()}
                         >
-                            Approve
+                            {BTN_APPROVE}
                         </button>
                         <button 
                             disabled={this.state.selectedIds.length > 0 ? false : true} 
                             onClick={() => this._denyUsers()}
                         >
-                            Deny
+                            {BTN_DENY}
                         </button>
                         <button 
                             onClick={() => {this.setState({ isOpen: false })}}
                         >
-                            Close
+                            {BTN_CLOSE}
                         </button> 
                     </div>
                 </form>
@@ -163,7 +173,7 @@ export default class ApproveUsersModal extends React.Component {
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Error Has Occured</h3>
+                    <h3>{MODAL_HEADER_ERROR_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     <p className="errorMesage">
@@ -171,7 +181,7 @@ export default class ApproveUsersModal extends React.Component {
                     </p>
                 </div>
                 <div className="modalFooter">
-                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                    <button type="reset" onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
             </>
         );
@@ -180,7 +190,10 @@ export default class ApproveUsersModal extends React.Component {
     render(){
         return(
             <Modal onDismissed={this.props.hideModal} isOpen={this.state.isOpen}>
-                { this.state.isControllerError ? this._renderErrorDisplay() : this._renderForm() }
+                {this.state.isControllerError ? 
+                    this._renderErrorDisplay() : 
+                    this._renderForm() 
+                }
             </Modal>
         )
     }

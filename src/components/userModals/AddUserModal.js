@@ -1,72 +1,86 @@
-import React                 from 'react';
+import React                from 'react';
 
-import { Modal }             from '@fluentui/react';
+import { Modal }            from '@fluentui/react';
 
 import { authController,
     userController,
-    adminLogController }     from '../../controllers'
+    adminLogController }    from '../../controllers'
 import { userValidation,
-        sanitizeData,
-        HandleOnChangeEvent } from '../inputValidation';
+    sanitizeData,
+    HandleOnChangeEvent }   from '../inputValidation';
 
-
-
-const roleInfo = "Roles have different permissions and access\n\nUser: Only exists to hold signed out items, and tracking purposes. No password required\n\nCustodian: Can Sign items in and out. Password required\n\nAdmin: Full control over items/users, logs, and approving new users. Password required";
 /*
 *   Modal for adding a user
 */
+const MODAL_HEADER_TITLE = 'Add User to Database';
+const MODAL_HEADER_ERROR_TITLE = 'Error Has Occured';
+
+const USER_ROLE_INFORMATION = "Roles have different permissions and access\n\nUser: Only exists to hold signed out items, and tracking purposes. No password required\n\nCustodian: Can sign items in and out. Password required\n\nAdmin: Full control over items/users, logs, and approving new users. Password required";
+const USER_ROLE_INFORMATION_ICON = '?';
+
+const INPUT_FIELD_FIRST_NAME = 'First Name';
+const INPUT_FIELD_LAST_NAME = 'Last Name';
+const INPUT_FIELD_USERNAME = 'Username';
+const INPUT_FIELD_USER_ROLE = 'User Role';
+const INPUT_FIELD_PASSWORD = 'Password';
+const INPUT_FIELD_CONFIRM_PASSWORD = 'Confirm Password';
+const INPUT_FIELD_PHONE_NUMBER = 'Phone Number';
+
+const BTN_CLOSE = 'Close';
 export default class AddUserModal extends React.Component {
     constructor(props) {
         super(props);
         
         this.state = {
-            isOpen:          props.isOpen,
-            firstName:       '',
-            lastName:        '',
-            userName:        '',
-            password:        '',
-            confirmPassword: '',
-            userRole:        props.userRole,
-            phoneNumber:     '',
-            status:          'active',
-            pwDisabled:      true,
-            pwRequired:      false,
-            userRoleDisabled:false,
-            isSignUp:        props.isSignUp,
-            
-            isControllerError:      false,
-            controllerErrorMessage: '',
-            isError:                false,
-            errorMessage:           ''
+            isOpen                  : props.isOpen,
+            firstName               : '',
+            lastName                : '',
+            userName                : '',
+            password                : '',
+            confirmPassword         : '',
+            userRole                : props.userRole,
+            phoneNumber             : '',
+            status                  : 'active',
+            pwDisabled              : true,
+            pwRequired              : false,
+            userRoleDisabled        : false,
+            isSignUp                : props.isSignUp,
+            isControllerError       : false,
+            controllerErrorMessage  : '',
+            isError                 : false,
+            errorMessage            : ''
         };
-        this.handleInputFields = new HandleOnChangeEvent('userModal');
+
+        if(props.isSignUp) {
+            this.handleInputFields = new HandleOnChangeEvent('userModalAddSignUp');
+        } else{
+            this.handleInputFields = new HandleOnChangeEvent('userModalAdd');
+        }
     };
 
     /* When a custodian is logged in, 
         allow only the ability to add user roles */
     async componentDidMount() {
         try {
-            let signedInAccount = await authController.getUserInfo();
-
-            //Front end display so it show's user is selected
-            let select = document.getElementById('userRoleSelect');
-            select.value = 'user';
-            this.setState({userRole: 'user'});
-
-            if(this.isSignUp){this.setState({ status: 'pending'})}
-            
-            if(signedInAccount.user.user.userRole === 'custodian') {
-                this.setState({ userRoleDisabled: true });
-            
+            if(this.state.isSignUp) {
+                this.setState({status: 'pending'})
+            } else {
+                let signedInAccount = await authController.getUserInfo();
+                
+                if(signedInAccount.user.user.userRole === 'custodian') {
+                    this.setState({userRoleDisabled: true});
+                }
             }
+            //Have the default value role be user
+            this.setState({userRole: 'user'});
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
-            this.setState({ isControllerError: true,
-                            controllerErrorMessage: 'An error occured while loading. Please refresh and try again.'
+            this.setState({ 
+                isControllerError: true,
+                controllerErrorMessage: error.message
             });
         }
-        
     };
 
     _dismissModal = () => {
@@ -87,29 +101,31 @@ export default class AddUserModal extends React.Component {
         .then((data) => {
             if (data.status !== undefined && data.status >= 400) throw data;
             
-            this.setState({ isError: false, 
-                            errorMessage: ''
+            this.setState({ 
+                isError: false, 
+                errorMessage: ''
             });
 
             window.location.reload();
             this._dismissModal();
         })
         .catch(async (err) => {  
-            this.setState({ isError: true, 
-                            errorMessage: err.message
+            this.setState({ 
+                isError: true, 
+                errorMessage: err.message
             });          
         });
     }
 
     _addUser = async () => {
         let user = {
-            firstName:      this.state.firstName,
-            lastName:       this.state.lastName,
-            userName:       this.state.userName,
-            password:       this.state.password,
-            userRole:       this.state.userRole,
-            phoneNumber:    sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
-            status:         this.state.status
+            firstName   : this.state.firstName,
+            lastName    : this.state.lastName,
+            userName    : this.state.userName,
+            password    : this.state.password,
+            userRole    : this.state.userRole,
+            phoneNumber : sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
+            status      : this.state.status
         };
         let returnedUser = {};
 
@@ -117,8 +133,9 @@ export default class AddUserModal extends React.Component {
             .then((data) => {
                 if (data.status !== undefined && data.status >= 400) throw data;
                 
-                this.setState({ isError: false, 
-                                errorMessage: ''
+                this.setState({ 
+                    isError: false, 
+                    errorMessage: ''
                 });
                 returnedUser = data;
 
@@ -126,17 +143,18 @@ export default class AddUserModal extends React.Component {
                 this._dismissModal();
             })
             .catch(async (err) => { 
-                this.setState({ isError: true, 
-                                errorMessage: err.message
+                this.setState({ 
+                    isError: true, 
+                    errorMessage: err.message
                 });          
             });
         
             let log = {
-                    itemId:     'N/A',
-                    userId:     returnedUser.userName,
-                    adminId:    '',
-                    action:     'add',
-                    content:    'user'
+                    itemId      : 'N/A',
+                    userId      : returnedUser.userName,
+                    adminId     : '',
+                    action      : 'add',
+                    content     : 'user'
             };
                 
             await adminLogController.createAdminLog(log);
@@ -145,22 +163,17 @@ export default class AddUserModal extends React.Component {
     _handleUserRoleChange = (event) => {
         if(event.target.value === 'user') {
             this.setState({
-                pwDisabled: true, 
-                pwRequired: false, 
-                password: '', 
-                userRole: event.target.value
+                pwDisabled      : true, 
+                pwRequired      : false, 
+                password        : '',
+                confirmPassword : '',
+                userRole        : event.target.value
             });
-
-            if(this._returnErrorDetails('password')){
-                this._handleRemoveError('password');
-            } else if(this._returnErrorDetails('confirmPassword')){
-                this._handleRemoveError('confirmPassword');
-            }
         } else {
             this.setState({
-                pwDisabled: false, 
-                pwRequired: true, 
-                userRole: event.target.value
+                pwDisabled  : false, 
+                pwRequired  : true, 
+                userRole    : event.target.value
             });
         };
     };
@@ -174,6 +187,8 @@ export default class AddUserModal extends React.Component {
             this.handleInputFields.handleConfirmPassword(this.state.password, inputFieldValue, methodCall);
         } else if(inputFieldID === 'password') {
             this.handleInputFields.handlePassword(this.state.pwRequired, inputFieldValue, methodCall);
+        } else if(inputFieldID === 'userRoleSelect') {
+            this.handleInputFields.handleUserRoleChange(inputFieldValue);
         } else {
             this.handleInputFields.handleEvent(Event, methodCall);
         }
@@ -200,7 +215,7 @@ export default class AddUserModal extends React.Component {
         return(
             <>
             <div className="modalHeader">
-                <h3>Add User to Database</h3>
+                <h3>{MODAL_HEADER_TITLE}</h3>
             </div>
             <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                 <div className="modalBody">
@@ -208,8 +223,8 @@ export default class AddUserModal extends React.Component {
                         this._renderErrorMessage() :
                         null
                     }
-                    <fieldset>
-                        <h4 className="inputTitle">First Name</h4>
+                    <fieldset className={INPUT_FIELD_FIRST_NAME}>
+                        <h4 className="inputTitle">{INPUT_FIELD_FIRST_NAME}</h4>
                         <input 
                             type="text" 
                             id="firstName" 
@@ -220,8 +235,8 @@ export default class AddUserModal extends React.Component {
                         />
                         { this.handleInputFields.setErrorMessageDisplay("firstName") }
                     </fieldset>
-                    <fieldset>
-                        <h4 className="inputTitle">Last Name</h4>
+                    <fieldset className={INPUT_FIELD_LAST_NAME}>
+                        <h4 className="inputTitle">{INPUT_FIELD_LAST_NAME}</h4>
                         <input 
                             type="text" 
                             id="lastName" 
@@ -232,8 +247,8 @@ export default class AddUserModal extends React.Component {
                         />
                         { this.handleInputFields.setErrorMessageDisplay("lastName") }
                     </fieldset>
-                    <fieldset>
-                        <h4 className="inputTitle">Username</h4>
+                    <fieldset className={INPUT_FIELD_USERNAME}>
+                        <h4 className="inputTitle">{INPUT_FIELD_USERNAME}</h4>
                         <input 
                             type="text" 
                             id="userName"
@@ -247,28 +262,27 @@ export default class AddUserModal extends React.Component {
                     {this.state.isSignUp ? 
                         null :
                         <div>
-                            <fieldset>
-                                <h4 className="inputTitle">User's Role</h4>
+                            <fieldset className={INPUT_FIELD_USER_ROLE}>
+                                <h4 className="inputTitle">{INPUT_FIELD_USER_ROLE}</h4>
                                 <span id='userSelect'>
                                     <select 
                                         disabled={this.state.userRoleDisabled} 
                                         id='userRoleSelect' 
-                                        defaultValue={''} 
-                                        onChange={(Event) => {this._handleChangeEvent(Event, userValidation.validateUserRoleSelect)}}
+                                        defaultValue={'user'} 
+                                        onChange={(Event) => {this._handleChangeEvent(Event)}}
                                     >
-
                                         <option label='' hidden disabled ></option>
-                                        <option value='user'>User</option>
-                                        <option value='custodian'>Custodian</option>
-                                        <option value='admin'>Admin</option>
+                                        <option value='user' label='User'/>
+                                        <option value='custodian' label='Custodian'/>
+                                        <option value='admin' label='Admin'/>
                                     </select>
-                                    <div title={roleInfo} id='roleInformation'>
-                                        ?
+                                    <div title={USER_ROLE_INFORMATION} id='roleInformation'>
+                                        {USER_ROLE_INFORMATION_ICON}
                                     </div>
                                 </span>
                             </fieldset>
-                            <fieldset>
-                                <h4 className="inputTitle">Password</h4>
+                            <fieldset className={INPUT_FIELD_PASSWORD}>
+                                <h4 className="inputTitle">{INPUT_FIELD_PASSWORD}</h4>
                                 <input
                                     type="password"
                                     id="password"
@@ -280,7 +294,7 @@ export default class AddUserModal extends React.Component {
                                 />
                                 { this.handleInputFields.setErrorMessageDisplay("password") }
                             
-                                <h4 className="inputTitle" hidden={this.state.pwDisabled}>Confirm Password</h4>
+                                <h4 className="inputTitle" hidden={this.state.pwDisabled}>{INPUT_FIELD_CONFIRM_PASSWORD}</h4>
                                 <input 
                                     type="password"
                                     id="confirmPassword"
@@ -295,11 +309,12 @@ export default class AddUserModal extends React.Component {
                             </fieldset> 
                         </div>
                     }
-                    <fieldset>
-                        <h4 className="inputTitle">Phone Number</h4>
+                    <fieldset className={INPUT_FIELD_PHONE_NUMBER}>
+                        <h4 className="inputTitle">{INPUT_FIELD_PHONE_NUMBER}</h4>
                         <input
                             type="text" 
                             id="phoneNumber" 
+                            placeholder="000-000-0000"
                             className={ this.handleInputFields.setClassNameIsValid("phoneNumber") ? "valid" : "invalid"}
                             value={this.state.phoneNumber}
                             onChange={(Event) => this._handleChangeEvent(Event, userValidation.validatePhoneNumber)}
@@ -316,7 +331,12 @@ export default class AddUserModal extends React.Component {
                             !this.handleInputFields.isAddUserModalSubmitAvailable()
                         } 
                     />
-                    <button type="reset" onClick={() => this._dismissModal()}>Close</button>
+                    <button 
+                        type="reset" 
+                        onClick={() => this._dismissModal()}
+                    >
+                        {BTN_CLOSE}
+                    </button>
                 </div>
             </form>
             </>
@@ -337,7 +357,7 @@ export default class AddUserModal extends React.Component {
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Error Has Occured</h3>
+                    <h3>{MODAL_HEADER_ERROR_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     <p className="errorMesage">
@@ -345,7 +365,12 @@ export default class AddUserModal extends React.Component {
                     </p>
                 </div>
                 <div className="modalFooter">
-                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                    <button 
+                        type="reset" 
+                        onClick={this._dismissModal}
+                    >
+                        {BTN_CLOSE}
+                    </button>
                 </div>
             </>
         );
@@ -354,7 +379,10 @@ export default class AddUserModal extends React.Component {
     render() {
         return(
             <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                { this.state.isControllerError ? this._renderErrorDisplay() : this._renderForm() }
+                { this.state.isControllerError ? 
+                    this._renderErrorDisplay() : 
+                    this._renderForm() 
+                }
             </Modal>
         );
     };

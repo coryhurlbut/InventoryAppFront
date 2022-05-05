@@ -11,28 +11,39 @@ import { itemValidation,
 /*
 *   Modal for adding an item
 */
+const MODAL_HEADER_TITLE = 'Add Item to database';
+
+const INPUT_FIELD_ITEM_NUMBER = 'Item Number';
+const INPUT_FIELD_NAME = 'Name';
+const INPUT_FIELD_DESCRIPTION = 'Description';
+const INPUT_FIELD_SERIAL_NUMBER = 'Serial Number';
+const INPUT_FIELD_NOTES = 'Notes';
+const INPUT_FIELD_HOME_LOCATION = 'Home Location';
+const INPUT_FIELD_SPECIFIC_LOCATION = 'Specific Location';
+
+const BTN_CLOSE = 'Close';
+
 export default class AddItemModal extends React.Component{
     constructor(props) {
         super(props);
         
         this.state = {
-            isOpen:                 props.isOpen,
-            itemNumber:             'AAA-AAAAA',
-            itemNumberPrefix:       '',
-            itemNumberIdentifier:   '',
-            name:                   '',
-            description:            '',
-            serialNumber:           '',
-            notes:                  '',
-            homeLocation:           '',
-            specificLocation:       '',
-            available:              true,
-            disabled:               true,
-            
-            isError:      false,
-            errorMessage: ''
+            isOpen                  : props.isOpen,
+            itemNumber              : 'AAA-AAAAA',
+            itemNumberPrefix        : '',
+            itemNumberIdentifier    : '',
+            name                    : '',
+            description             : '',
+            serialNumber            : '',
+            notes                   : '',
+            homeLocation            : '',
+            specificLocation        : '',
+            available               : true,
+            disabled                : true,
+            isError                 : false,
+            errorMessage            : ''
         };
-        this.handleInputFields = new HandleOnChangeEvent('addItemModal');
+        this.handleInputFields = new HandleOnChangeEvent('itemModalAdd');
     }
 
     _dismissModal = () => {
@@ -40,22 +51,38 @@ export default class AddItemModal extends React.Component{
     }
 
     _addItem = async () => {
-        let d = Date.now();
-        let now = new Date(d);
-        let now1 = now.toISOString();
+        let item = {};
+        //If the user enters something into notes, date stamp it
+        if(this.state.notes !== '') {
+            let currentDate = new Date();
+            let currentDateISOString = currentDate.toISOString();
+    
+            let newNotes = (`${this.state.notes + '`' + currentDateISOString + '`'}`);
+    
+            item = {
+                itemNumber          : this.state.itemNumber,
+                name                : this.state.name,
+                description         : this.state.description,
+                serialNumber        : this.state.serialNumber,
+                notes               : newNotes,
+                homeLocation        : this.state.homeLocation,
+                specificLocation    : this.state.specificLocation,
+                available           : this.state.available,
+            };
+        } else { //Pass default emptry string
+            item = {
+                itemNumber          : this.state.itemNumber,
+                name                : this.state.name,
+                description         : this.state.description,
+                serialNumber        : this.state.serialNumber,
+                notes               : this.state.notes,
+                homeLocation        : this.state.homeLocation,
+                specificLocation    : this.state.specificLocation,
+                available           : this.state.available,
+            };
+        }
 
-        let newNotes = (`${this.state.notes + '`' + now1 + '`'}`);
-        //Makes call to add item to database and grabs the _id of the newly created item
-        let item = {
-            itemNumber:         this.state.itemNumber,
-            name:               this.state.name,
-            description:        this.state.description,
-            serialNumber:       this.state.serialNumber,
-            notes:              newNotes,
-            homeLocation:       this.state.homeLocation,
-            specificLocation:   this.state.specificLocation,
-            available:          this.state.available
-        };
+
         let returnedItem = {};
 
         await itemController.createItem(item)
@@ -79,11 +106,11 @@ export default class AddItemModal extends React.Component{
 
         //Uses the new item _id to make a log to the admin log of the new item being added
         let log = {
-            itemId:     returnedItem.itemNumber,
-            userId:     'N/A',
-            adminId:    '',
-            action:     'add',
-            content:    'item'
+            itemId      : returnedItem.itemNumber,
+            userId      : 'N/A',
+            adminId     : '',
+            action      : 'add',
+            content     : 'item'
         };
 
         //TODO: add error handling for log API calls
@@ -111,12 +138,12 @@ export default class AddItemModal extends React.Component{
         if(inputFieldID === 'itemNumberPrefix') {
             this.setState({ 
                 itemNumberPrefix: sanitizeData.sanitizeWhitespace(inputFieldValue),
-                itemNumber: this._createItemNumber(Event)
+                itemNumber      : this._createItemNumber(Event)
             });
         } else if(inputFieldID === 'itemNumberIdentifier') {
             this.setState({ 
                 itemNumberIdentifier: sanitizeData.sanitizeWhitespace(inputFieldValue),
-                itemNumber: this._createItemNumber(Event)
+                itemNumber          : this._createItemNumber(Event)
             });
         } else {
             this.setState({ [inputFieldID]: sanitizeData.sanitizeWhitespace(inputFieldValue) });
@@ -133,7 +160,7 @@ export default class AddItemModal extends React.Component{
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Add Item to database</h3>
+                    <h3>{MODAL_HEADER_TITLE}</h3>
                 </div>
                 <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                     <div className="modalBody">
@@ -141,8 +168,8 @@ export default class AddItemModal extends React.Component{
                             this._renderErrorMessage() :
                             null
                         }
-                        <fieldset>
-                            <h4 className="inputTitle">Item Number</h4>
+                        <fieldset className={INPUT_FIELD_ITEM_NUMBER}>
+                            <h4 className="inputTitle">{INPUT_FIELD_ITEM_NUMBER}</h4>
                             <select 
                                 id="itemNumberPrefix" 
                                 defaultValue="" 
@@ -151,18 +178,18 @@ export default class AddItemModal extends React.Component{
                                 onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateItemNumberPrefix)}
                             >
                                 <option hidden disabled value="" />
-                                <option id="ituOpt" value="ITU" >ITU</option>
-                                <option id="cstOpt" value="CST" >CST/KM</option>
-                                <option id="afeOpt" value="AFE" >AFE</option>
-                                <option id="cssOpt" value="CSS" >CSS</option>
-                                <option id="supOpt" value="SUP" >SUP</option>
-                                <option id="opsOpt" value="OPS" >OPS</option>
-                                <option id="srmOpt" value="SRM" >SARM</option>
-                                <option id="stuOpt" value="STU" >Student Actions</option>
-                                <option id="regOpt" value="REG" >Registrars</option>
-                                <option id="facOpt" value="FAC" >FacD</option>
-                                <option id="mtlOpt" value="MTL" >MTL</option>
-                                <option id="othOpt" value="OTH" >Other</option>
+                                <option id="ituOpt" value="ITU" label='ITU'/>
+                                <option id="cstOpt" value="CST" label='CST/KM'/>
+                                <option id="afeOpt" value="AFE" label='AFE'/>
+                                <option id="cssOpt" value="CSS" label='CSS'/>
+                                <option id="supOpt" value="SUP" label='SUP'/>
+                                <option id="opsOpt" value="OPS" label='OPS'/>
+                                <option id="srmOpt" value="SRM" label='SARM'/>
+                                <option id="stuOpt" value="STU" label='Student Actions'/>
+                                <option id="regOpt" value="REG" label='Registrars'/>
+                                <option id="facOpt" value="FAC" label='FacD'/>
+                                <option id="mtlOpt" value="MTL" label='MTL'/>
+                                <option id="othOpt" value="OTH" label='Other'/>
                             </select>
                             {this.handleInputFields.setErrorMessageDisplay("itemNumberPrefix")}
                             <input 
@@ -176,8 +203,8 @@ export default class AddItemModal extends React.Component{
                             />
                             {this.handleInputFields.setErrorMessageDisplay("itemNumberIdentifier")}
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Name</h4>
+                        <fieldset className={INPUT_FIELD_NAME}>
+                            <h4 className="inputTitle">{INPUT_FIELD_NAME}</h4>
                             <input 
                                 type="text" 
                                 id="name"
@@ -188,8 +215,8 @@ export default class AddItemModal extends React.Component{
                             />
                             {this.handleInputFields.setErrorMessageDisplay("name")}
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Description</h4>
+                        <fieldset className={INPUT_FIELD_DESCRIPTION}>
+                            <h4 className="inputTitle">{INPUT_FIELD_DESCRIPTION}</h4>
                             <input 
                                 type="text" 
                                 id="description" 
@@ -200,8 +227,8 @@ export default class AddItemModal extends React.Component{
                             />
                             {this.handleInputFields.setErrorMessageDisplay("description")}
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Serial Number</h4>
+                        <fieldset className={INPUT_FIELD_SERIAL_NUMBER}>
+                            <h4 className="inputTitle">{INPUT_FIELD_SERIAL_NUMBER}</h4>
                             <input 
                                 type="text" 
                                 id="serialNumber" 
@@ -212,8 +239,8 @@ export default class AddItemModal extends React.Component{
                             />
                             {this.handleInputFields.setErrorMessageDisplay("serialNumber")}
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Notes</h4>
+                        <fieldset className={INPUT_FIELD_NOTES}>
+                            <h4 className="inputTitle">{INPUT_FIELD_NOTES}</h4>
                             <textarea
                                 type="text"
                                 id="notes"
@@ -224,11 +251,11 @@ export default class AddItemModal extends React.Component{
                                 value={this.state.notes} 
                                 onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
                                 onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
-                                ></textarea>
+                            />
                             {this.handleInputFields.setErrorMessageDisplay("notes")}
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Home Location</h4>
+                        <fieldset className={INPUT_FIELD_HOME_LOCATION}>
+                            <h4 className="inputTitle">{INPUT_FIELD_HOME_LOCATION}</h4>
                             <input 
                                 type="text" 
                                 id="homeLocation" 
@@ -239,8 +266,8 @@ export default class AddItemModal extends React.Component{
                             />
                             {this.handleInputFields.setErrorMessageDisplay("homeLocation")}
                         </fieldset>
-                        <fieldset>
-                            <h4 className="inputTitle">Specific Location</h4>
+                        <fieldset className={INPUT_FIELD_SPECIFIC_LOCATION}>
+                            <h4 className="inputTitle">{INPUT_FIELD_SPECIFIC_LOCATION}</h4>
                             <input 
                                 type="text" 
                                 id="specificLocation" 
@@ -259,7 +286,7 @@ export default class AddItemModal extends React.Component{
                             disabled={!this.handleInputFields.isItemModalSubmitAvailable()}
                         />
                         <button type="reset" onClick={this._dismissModal}>
-                            Close
+                            {BTN_CLOSE}
                         </button>
                     </div>
                 </form>

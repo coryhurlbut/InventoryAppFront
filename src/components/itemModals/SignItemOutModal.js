@@ -11,22 +11,32 @@ import MapNotes             from '../utilities/MapNotes';
 /*
 *   Modal for signing out an item
 */
+const VIEW_NOTES = 'View Notes';
+
+const MODAL_HEADER_TITLE = 'Sign Item Out';
+const MODAL_HEADER_ERROR_TITLE = 'Error Has Occured';
+
+const MODAL_PROMPT = 'You are about to sign out: ';
+const CHOOSE_USER_PROMPT = 'Choose a user:';
+
+const BTN_CLOSE = 'Close';
+
 export default class SignItemOutModal extends React.Component{
     constructor(props) {
         super(props);
         
         this.state = {
-            isOpen:                 props.isOpen,
-            users:                  [],
-            userId:                 null,
-            userName:               '',
-            notesArray:             [],
-            buttonClicked:          null,
-
-            isControllerError:      false,
-            controllerErrorMessage: '',
-            isError:                false,
-            errorMessage:           ''
+            isOpen                  : props.isOpen,
+            users                   : [],
+            userId                  : null,
+            userName                : '',
+            notesArray              : [],
+            buttonClicked           : null,
+            viewNotesName           : '',
+            isControllerError       : false,
+            controllerErrorMessage  : '',
+            isError                 : false,
+            errorMessage            : ''
         };
 
         this._selectedIds = props.selectedIds;
@@ -37,9 +47,9 @@ export default class SignItemOutModal extends React.Component{
         try {
             let users = await userController.getAllActiveUsers();
             this.setState({ 
-                users: users, 
-                isControllerError: false, 
-                controllerErrorMessage: '' 
+                users                   : users, 
+                isControllerError       : false, 
+                controllerErrorMessage  : '' 
             });
             this._assignOptionGroup();
         } catch(error) {
@@ -67,11 +77,11 @@ export default class SignItemOutModal extends React.Component{
 
             for(let i = 0; i < this._selectedIds.length; i++) {
                 let info = {
-                    itemId:      this._selectedIds[i],
-                    userId:      this.state.userId,
-                    custodianId: '',
-                    action:      'signed out',
-                    notes:       'test'
+                    itemId      : this._selectedIds[i],
+                    userId      : this.state.userId,
+                    custodianId : '',
+                    action      : 'signed out',
+                    notes       : 'test'
                 };
                 await itemLogController.createItemLog(info);
             };
@@ -107,22 +117,29 @@ export default class SignItemOutModal extends React.Component{
             };
         };
     }
-    _viewNotesModal = (buttonClicked) => {
-        this.setState({ notesArray: MapNotes(buttonClicked) })
-        this.setState({ viewNotesModalBool: true });
+
+    _viewNotesModal = (Event, buttonClicked) => {
+        this.setState({ notesArray: MapNotes(buttonClicked),
+            viewNotesModalBool: true,
+            viewNotesName: Event.target.id});
     }
     
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
         const displayItem = items.map((item) => {
             return (
-                <span className='sideBySide'>
-                <li className="arrayObject" key={item.itemNumber}> 
-                    {item.name} 
-                </li>
-                <button type='button' key={item._id + 'yo'} id={item.itemNumber} onClick={() => this._viewNotesModal(item.notes)}>
-                    View Notes
-                </button>
+                <span className='displayItemsAndViewNotes' key={item._id}>
+                    <li className="arrayObject"> 
+                        {item.itemNumber} : {item.name}
+                    </li>
+                    <button 
+                        type='button'
+                        className='signinSignout'
+                        id={item.itemNumber.toString()} 
+                        onClick={Event => this._viewNotesModal(Event, item.notes)}
+                    >
+                        {VIEW_NOTES}
+                    </button>
                 </span>
             );
         });
@@ -149,13 +166,12 @@ export default class SignItemOutModal extends React.Component{
         });/*This grabs the key attribute from the selected option*/ 
     }
 
-
     /* Builds display for deleting items */
     _renderSignOutNotification = () => {
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Sign Item Out</h3>                    
+                    <h3>{MODAL_HEADER_TITLE}</h3>                    
                 </div>
                 <form onSubmit={this._handleFormSubmit}>
                 <div className="modalBody">
@@ -163,20 +179,22 @@ export default class SignItemOutModal extends React.Component{
                         this._renderErrorMessage() :
                         null
                     }
-                    <h4>You are about to sign out: </h4>
+                    <h4>{MODAL_PROMPT}</h4>
                     {this._displayArray(this._selectedObjects)}
-                    <label>Choose a user: </label>
-                    <select 
-                        name="usersSelect" 
-                        id="usersSelect" 
-                        defaultValue={""} 
-                        onChange={this._handleDropdownChange} 
-                    > 
-                        <option label="" hidden disabled />
-                        <optgroup label="Users" id="userGroup" />
-                        <optgroup label="Custodians" id="custodianGroup" />
-                        <optgroup label="Admins" id="adminGroup" />
-                    </select>
+                    <span className='userSelectSigninSignout'>
+                        <label id='labelSelectSignout'>{CHOOSE_USER_PROMPT}</label>
+                        <select 
+                            name="usersSelect" 
+                            id="usersSelect" 
+                            defaultValue={""} 
+                            onChange={this._handleDropdownChange} 
+                        > 
+                            <option label="" hidden disabled />
+                            <optgroup label="Users" id="userGroup" />
+                            <optgroup label="Custodians" id="custodianGroup" />
+                            <optgroup label="Admins" id="adminGroup" />
+                        </select>
+                    </span>
                 </div>
                 <div className="modalFooter">
                     <input 
@@ -184,7 +202,7 @@ export default class SignItemOutModal extends React.Component{
                         value="Submit" 
                         disabled={!this._isSumbitAvailable()}
                     />
-                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                    <button type="reset" onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
                 </form>
             </>
@@ -205,13 +223,13 @@ export default class SignItemOutModal extends React.Component{
         return(
             <>
                 <div className="modalHeader">
-                    <h3>Error Has Occured</h3>
+                    <h3>{MODAL_HEADER_ERROR_TITLE}</h3>
                 </div>
                 <div className="modalBody">
                     <p className="errorMesage">{this.state.controllerErrorMessage}</p>
                 </div>
                 <div className="modalFooter">
-                    <button type="reset" onClick={this._dismissModal}>Close</button>
+                    <button type="reset" onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
             </>
         );
@@ -220,13 +238,23 @@ export default class SignItemOutModal extends React.Component{
     render() {
         if(this.state.viewNotesModalBool){
             return(
-            <ViewNotesModal selectedIds={this._selectedIds} isOpen={true} hideModal={null} content={this.state.notesArray} 
-                name={'temp'} previousModal={'signOut'} selectedObjects={this._selectedObjects}/>
+                <ViewNotesModal 
+                    selectedIds={this._selectedIds} 
+                    isOpen={true} 
+                    hideModal={null} 
+                    content={this.state.notesArray} 
+                    name={`${this.state.viewNotesName}`} 
+                    previousModal={'signOut'} 
+                    selectedObjects={this._selectedObjects}
+                />
             )
         }else{
             return(
                 <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                    {this.state.isControllerError ? this._renderErrorDisplay() : this._renderSignOutNotification()}
+                    {this.state.isControllerError ? 
+                        this._renderErrorDisplay() : 
+                        this._renderSignOutNotification()
+                    }
                 </Modal>
             );
         }
