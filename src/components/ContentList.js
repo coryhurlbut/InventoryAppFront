@@ -70,7 +70,6 @@ export default class ContentList extends React.Component {
         this._handleTableDisplay('availableItems');
     };
 
-
     _handleTableDisplay = async (objectType) => {
         let content;
         let object = {};
