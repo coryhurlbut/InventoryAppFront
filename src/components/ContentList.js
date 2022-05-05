@@ -75,7 +75,6 @@ export default class ContentList extends React.Component {
         }
     };
 
-
     _handleTableDisplay = async (objectType) => {
         let content;
         let object = {};
@@ -85,7 +84,7 @@ export default class ContentList extends React.Component {
             
         }else if(objectType === 'unavailableItems'){
             content = await itemController.getUnavailableItems();
-                object = unavailableItemsContent;
+            object = unavailableItemsContent;
         }
         else{
             content = await userController.getAllUsers();
