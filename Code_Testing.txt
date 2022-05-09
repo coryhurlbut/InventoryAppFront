@@ -11,3 +11,48 @@ Jest: https://jestjs.io/
         fileName.test.js
     Execution:
         npm test
+
+
+INSTALLING THE LIBRARY:
+npm install @testing-library/react react-test-renderer jest-dom --save-dev
+
+//ids for testing format
+data-testid=""
+
+Folder structer:
+components > userModals > __test__ > componentFileName.test.js (AddUserModal.test.js)
+
+TEST FILE TEMPLATE:
+
+import React from 'react';
+import ReactDom from 'react-dom';
+import componentFileName from './../componentFileName                                               //import AddUserModal from './../AddUserModal';
+import { isTSAnyKeyword } from '@babel/types';
+
+import { render, cleanup } from '@testing-library/react';
+import "jest-dom/extend-expect";
+
+import renderer from 'react-test-renderer';
+
+afterEach(cleanup);
+
+it("renders without crashing", ()=>{
+    const div = document.createElement("div");
+    ReactDom.render(<componentFileName></componentFileName>, div);                                  //ReactDom.render(<AddUserModal></AddUserModal>, div);
+    ReactDom.unmountComponentAtNode(div);
+});
+
+it("renders button correctly", ()=>{
+    const { getByTestId } = render(<componentFileName anyTestingProps=''></componentFileName>);     //render(<AddUserModal isOpen=true userRole='user' isSignUp=false ></AddUserModal>);
+    expect(getByTestId(data-testid_Value));
+});
+
+//snapshot testing
+it("matches snapshot", ()=>{
+    //virtual DOM object
+    const tree = renderer.create(<componentFileName anyTestingProps=''></componentFileName>).toJSON();
+    expect(tree).toMatchSnapShot;
+});
+
+EXECUTING THE TESTS:
+npm test

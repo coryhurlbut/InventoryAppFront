@@ -7,10 +7,6 @@ import { itemLogController }    from '../../controllers';
 
 const columns = [
     {
-        Header: 'ID',
-        accessor: '_id',
-    },
-    {
         Header: 'Item ID',
         accessor: 'itemId',
     },
