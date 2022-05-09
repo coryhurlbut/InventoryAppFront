@@ -24,6 +24,9 @@ const INPUT_FIELD_PASSWORD = 'Password';
 const INPUT_FIELD_CONFIRM_PASSWORD = 'Confirm Password';
 const INPUT_FIELD_PHONE_NUMBER = 'Phone Number';
 
+const PASSWORD_INFORMATION = 'Password must be atleast 8 characters long\n\nMust have one Uppercase/lowercase\n\nMust have one special character';
+const INFORMATION_ICON = '?';
+
 const BTN_RESET_PASSWORD = 'Reset';
 const BTN_CLOSE = 'Close';
 
@@ -339,7 +342,7 @@ export default class EditUserModal extends React.Component {
                     {this.handleInputFields.setErrorMessageDisplay("userRole")}
                     <fieldset className={INPUT_FIELD_PASSWORD}>
                         <h4 className="inputTitle">{INPUT_FIELD_PASSWORD}</h4>
-                        <span>
+                        <span id='passwordInput'>
                             <input 
                                 type="password"
                                 id="password"
@@ -349,6 +352,8 @@ export default class EditUserModal extends React.Component {
                                 onChange={(Event) => this._handleChangeEvent(Event, userValidation.validatePassword)}
                                 onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validatePassword)}
                             />
+                                {this.state.pwDisabled ? null : <div title={PASSWORD_INFORMATION} id='passwordInformation'>{INFORMATION_ICON}</div>}
+                                
                             <button 
                                 hidden={!this.state.resetBtn} 
                                 onClick={(event) => {event.preventDefault(); this._allowPasswordReset()}}

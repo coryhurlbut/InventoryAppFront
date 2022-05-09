@@ -23,7 +23,7 @@ const DROP_DOWN_ACCOUNT_DETAILS = 'Account:';
 
 const BTN_ITEM_LOG = 'Item Logs';
 const BTN_ADMIN_LOG = 'Admin Logs';
-const BTN_PENDING_USERS = 'Pending Users';
+const BTN_PENDING_USERS = 'Pending';
 const BTN_LOGOUT = 'Logout';
 const BTN_LOGIN  = 'Login';
 

@@ -16,7 +16,10 @@ const MODAL_HEADER_TITLE = 'Add User to Database';
 const MODAL_HEADER_ERROR_TITLE = 'Error Has Occured';
 
 const USER_ROLE_INFORMATION = "Roles have different permissions and access\n\nUser: Only exists to hold signed out items, and tracking purposes. No password required\n\nCustodian: Can sign items in and out. Password required\n\nAdmin: Full control over items/users, logs, and approving new users. Password required";
-const USER_ROLE_INFORMATION_ICON = '?';
+
+const PASSWORD_INFORMATION = 'Password must be atleast 8 characters long\n\nMust have one Uppercase/lowercase\n\nMust have one special character';
+
+const INFORMATION_ICON = '?';
 
 const INPUT_FIELD_FIRST_NAME = 'First Name';
 const INPUT_FIELD_LAST_NAME = 'Last Name';
@@ -276,24 +279,28 @@ export default class AddUserModal extends React.Component {
                                         <option value='custodian' label='Custodian'/>
                                         <option value='admin' label='Admin'/>
                                     </select>
-                                    <div title={USER_ROLE_INFORMATION} id='roleInformation'>
-                                        {USER_ROLE_INFORMATION_ICON}
+                                    <div title={USER_ROLE_INFORMATION} id='passwordInformation'>
+                                        {INFORMATION_ICON}
                                     </div>
                                 </span>
                             </fieldset>
                             <fieldset className={INPUT_FIELD_PASSWORD}>
                                 <h4 className="inputTitle">{INPUT_FIELD_PASSWORD}</h4>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    className={ this.handleInputFields.setClassNameIsValid("password") ? "valid" : "invalid"}
-                                    disabled={this.state.pwDisabled}
-                                    value={this.state.password} 
-                                    onChange={(Event) => this._handleChangeEvent(Event, userValidation.validatePassword)}
-                                    onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validatePassword)}
-                                />
+                                <span id='passwordInput'>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        className={ this.handleInputFields.setClassNameIsValid("password") ? "valid" : "invalid"}
+                                        disabled={this.state.pwDisabled}
+                                        value={this.state.password} 
+                                        onChange={(Event) => this._handleChangeEvent(Event, userValidation.validatePassword)}
+                                        onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validatePassword)}
+                                    />
+                                    <div title={PASSWORD_INFORMATION} id='roleInformation'>
+                                        {this.state.pwDisabled ? null : INFORMATION_ICON}
+                                    </div>
+                                </span>
                                 { this.handleInputFields.setErrorMessageDisplay("password") }
-                            
                                 <h4 className="inputTitle" hidden={this.state.pwDisabled}>{INPUT_FIELD_CONFIRM_PASSWORD}</h4>
                                 <input 
                                     type="password"

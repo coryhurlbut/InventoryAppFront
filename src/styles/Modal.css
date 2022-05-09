@@ -179,6 +179,17 @@ ul li::marker{
     padding-bottom: 5px;
     margin-bottom: 5px;
 }
+#passwordInput{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+#passwordInformation{
+    padding-left: 12px;
+    font-weight: bolder;
+    font-size: large;
+    margin: 0;
+}
 #roleInformation {
     padding-left: 12px;
     font-weight: bolder;
