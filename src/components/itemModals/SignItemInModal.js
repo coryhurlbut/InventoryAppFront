@@ -24,11 +24,7 @@ export default class SignItemInModal extends React.Component{
         
         this.state = {
             isOpen              : props.isOpen,
-            viewNotesModalBool  : null,
-            notesArray          : [],
-            buttonClicked       : null,
             modal               : null,
-            viewNotesName       : '',
             isError             : false,
             errorMessage        : ''
         };
@@ -148,24 +144,10 @@ export default class SignItemInModal extends React.Component{
     };
 
     render() {
-        // if(this.state.viewNotesModalBool){
-        //     return(
-        //         <ViewNotesModal 
-        //             selectedIds={this._selectedIds} 
-        //             isOpen={true} 
-        //             hideModal={null} 
-        //             content={this.state.notesArray} 
-        //             name={`${this.state.viewNotesName}`} 
-        //             previousModal={'signIn'} 
-        //             selectedObjects={this._selectedObjects}
-        //         />
-        //     )
-        // }else{
-            return(
-                <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                    {this._renderSignInNotification()}
-                </Modal>
-            );
-        
+        return(
+            <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
+                {this._renderSignInNotification()}
+            </Modal>
+        );
     }
 }

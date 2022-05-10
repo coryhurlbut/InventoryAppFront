@@ -7,7 +7,7 @@ import { itemController,
 import { itemValidation,
     sanitizeData,
     HandleOnChangeEvent }   from '../inputValidation';
-import { ViewNotesModal, ViewNoteModal }   from '../logModals';
+import { ViewNoteModal }   from '../logModals';
 import MapNotes             from '../utilities/MapNotes';
 
 /*
@@ -42,7 +42,6 @@ export default class EditItemModal extends React.Component{
             homeLocation            : '',
             specificLocation        : '',
             available               : true,
-            viewNotesBool           : null,
             reload                  : props.reload,
             isControllerError       : false,
             controllerErrorMessage  : '',
