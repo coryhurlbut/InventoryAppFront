@@ -33,6 +33,7 @@ function ViewNoteModal({selectedIds, selectedObjects, content, name, ...props}){
     }
     const setModalIsOpenToFalse = () => {
         setModalIsOpen(false);
+        props.hideModal();
     }
 
   return (
