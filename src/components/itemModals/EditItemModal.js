@@ -7,7 +7,7 @@ import { itemController,
 import { itemValidation,
     sanitizeData,
     HandleOnChangeEvent }   from '../inputValidation';
-import { ViewNotesModal }   from '../logModals';
+import { ViewNoteModal }   from '../logModals';
 import MapNotes             from '../utilities/MapNotes';
 
 /*
@@ -42,12 +42,12 @@ export default class EditItemModal extends React.Component{
             homeLocation            : '',
             specificLocation        : '',
             available               : true,
-            viewNotesBool           : null,
             reload                  : props.reload,
             isControllerError       : false,
             controllerErrorMessage  : '',
             isError                 : false,
-            errorMessage            : ''
+            errorMessage            : '',
+            modal                   : null
         };
         this._selectedIds       = props.selectedIds;
         this._selectedObjects   = props.selectedObjects;
@@ -162,8 +162,20 @@ export default class EditItemModal extends React.Component{
     }
 
     _openNotesModal = () => {
-        this.setState({ viewNotesBool: true });
+        this.setState({
+            modal: <ViewNoteModal 
+                selectedIds={this._selectedIds}
+                selectedObjects={this.selectedObjects}
+                isOpen={true} 
+                content={this.state.notesArrayFinal} 
+                name={`${this.state.name}`} 
+                hideModal={this._hideModal}
+                />
+        });
     }
+    _hideModal = () => {
+        this.setState({modal: null});
+    };
     
     _handleChangeEvent = (Event, methodCall) => {
         let inputFieldID = Event.target.id;
@@ -257,6 +269,7 @@ export default class EditItemModal extends React.Component{
                             </span>
                             {this.handleInputFields.setErrorMessageDisplay("notes")}
                         </fieldset>
+                        {this.state.modal}
                         <fieldset className={INPUT_FIELD_HOME_LOCATION}>
                             <h4 className="inputTitle">{INPUT_FIELD_HOME_LOCATION}</h4>
                             <input 
@@ -325,24 +338,11 @@ export default class EditItemModal extends React.Component{
     }
 
     render() {
-        if(this.state.viewNotesBool) {
-            return(
-                <ViewNotesModal 
-                    selectedIds={this._selectedIds} 
-                    isOpen={true} 
-                    hideModal={null} 
-                    content={this.state.notesArrayFinal} 
-                    name={`${this.state.name}`} 
-                    previousModal={'editItem'}
-                />
-            );
-        }
-        else{
-            return(
-                <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                    {this.state.isControllerError ? this._renderErrorDisplay() : this._renderForm()}
-                </Modal>
-            );
-        }
+        return(
+            <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
+                {this.state.isControllerError ? this._renderErrorDisplay() : this._renderForm()}
+            </Modal>
+        );
+        
     }
 }
