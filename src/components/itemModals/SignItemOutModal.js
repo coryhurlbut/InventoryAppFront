@@ -5,7 +5,7 @@ import { Modal }            from '@fluentui/react';
 import { itemController, 
         itemLogController,
         userController }    from '../../controllers';
-import { ViewNotesModal }   from '../logModals';
+import { ViewNoteModal }   from '../logModals';
 import MapNotes             from '../utilities/MapNotes';
 
 /*
@@ -32,6 +32,7 @@ export default class SignItemOutModal extends React.Component{
             userName                : '',
             notesArray              : [],
             buttonClicked           : null,
+            modal                   : null,
             viewNotesName           : '',
             isControllerError       : false,
             controllerErrorMessage  : '',
@@ -117,11 +118,20 @@ export default class SignItemOutModal extends React.Component{
             };
         };
     }
-
-    _viewNotesModal = (Event, buttonClicked) => {
-        this.setState({ notesArray: MapNotes(buttonClicked),
-            viewNotesModalBool: true,
-            viewNotesName: Event.target.id});
+    _openNotesModal = (Event, buttonClicked) => {
+        this.setState({
+            modal: <ViewNoteModal 
+                selectedIds={this._selectedIds}
+                selectedObjects={this.selectedObjects}
+                isOpen={true} 
+                content={MapNotes(buttonClicked)} 
+                name={`${Event.target.id}`} 
+                hideModal={this._hideModal}
+                />
+        });
+    }
+    _hideModal = () => {
+        this.setState({modal: null});
     }
     
     /* Loops through the array of items and displays them as a list */
@@ -136,7 +146,7 @@ export default class SignItemOutModal extends React.Component{
                         type='button'
                         className='signinSignout'
                         id={item.itemNumber.toString()} 
-                        onClick={Event => this._viewNotesModal(Event, item.notes)}
+                        onClick={Event => this._openNotesModal(Event, item.notes)}
                     >
                         {VIEW_NOTES}
                     </button>
@@ -196,6 +206,7 @@ export default class SignItemOutModal extends React.Component{
                         </select>
                     </span>
                 </div>
+                {this.state.modal}
                 <div className="modalFooter">
                     <input 
                         type="submit" 
@@ -236,27 +247,13 @@ export default class SignItemOutModal extends React.Component{
     }
 
     render() {
-        if(this.state.viewNotesModalBool){
-            return(
-                <ViewNotesModal 
-                    selectedIds={this._selectedIds} 
-                    isOpen={true} 
-                    hideModal={null} 
-                    content={this.state.notesArray} 
-                    name={`${this.state.viewNotesName}`} 
-                    previousModal={'signOut'} 
-                    selectedObjects={this._selectedObjects}
-                />
-            )
-        }else{
-            return(
-                <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
-                    {this.state.isControllerError ? 
-                        this._renderErrorDisplay() : 
-                        this._renderSignOutNotification()
-                    }
-                </Modal>
-            );
-        }
+        return(
+            <Modal isOpen={this.state.isOpen} onDismissed={this.props.hideModal}>
+                {this.state.isControllerError ? 
+                    this._renderErrorDisplay() : 
+                    this._renderSignOutNotification()
+                }
+            </Modal>
+        );
     }
 }
