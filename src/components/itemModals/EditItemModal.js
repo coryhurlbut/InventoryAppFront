@@ -7,7 +7,7 @@ import { itemController,
 import { itemValidation,
     sanitizeData,
     HandleOnChangeEvent }   from '../inputValidation';
-import { ViewNotesModal }   from '../logModals';
+import { ViewNotesModal, ViewNoteModal }   from '../logModals';
 import MapNotes             from '../utilities/MapNotes';
 
 /*
@@ -327,10 +327,10 @@ export default class EditItemModal extends React.Component{
     render() {
         if(this.state.viewNotesBool) {
             return(
-                <ViewNotesModal 
-                    selectedIds={this._selectedIds} 
+                <ViewNoteModal 
+                    selectedIds={this._selectedIds}
+                    selectedObjects={this.selectedObjects}
                     isOpen={true} 
-                    hideModal={null} 
                     content={this.state.notesArrayFinal} 
                     name={`${this.state.name}`} 
                     previousModal={'editItem'}
