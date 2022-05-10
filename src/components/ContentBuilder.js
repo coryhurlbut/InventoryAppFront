@@ -220,7 +220,8 @@ export default class ContentBuilder extends React.Component {
                         </div>
                     </div> : 
                     <button 
-                        className="logInLogOut"
+                        data-testid="btnLogin"
+                        id="btnLogin"
                         onClick={() => this._showModal('loginLogout')}
                         disabled={!this._disableLogin}
                     >
