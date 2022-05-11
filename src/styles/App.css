@@ -114,7 +114,7 @@ body {
 }
 
 /* Floats loginLogout button to the right in main header*/
-.logInLogOut {
+#btnLogin {
     margin: 10px;
     padding: 3px;
 
@@ -124,7 +124,7 @@ body {
     color: #787878;
     text-transform: uppercase;
 }
-.logInLogOut:hover {
+#btnLogin:hover {
     border: 1px solid #013e44;
 
     font-weight: bold;
