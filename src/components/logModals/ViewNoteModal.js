@@ -41,7 +41,7 @@ function ViewNoteModal({selectedIds, selectedObjects, content, name, ...props}){
         <div className='modalHeader'>
             {name}
         </div>
-        <div id='viewItemNotes'className="modalBody">
+        <div id='viewItemNotes' className="modalBody">
             {content.length < 1 ? 
                 <p className="centerText">{NO_CONTENT}</p> : 
                 <Table 

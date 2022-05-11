@@ -117,7 +117,7 @@ export const displayPresets = {
     custodian: {
         isUserContentVisible    : true,
         isSignItemInOutVisible  : true,
-        isEditControlVisible    : false,
+        isEditControlVisible    : true,
         isLoggedIn              : true,
         isItemLogVisible        : true,
         isAdminLogVisible       : false

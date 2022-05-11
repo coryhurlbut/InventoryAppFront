@@ -179,7 +179,8 @@ export default class ContentList extends React.Component {
             return(
                 <ItemEditControls 
                     selectedIds={this.state.selectedIds} 
-                    selectedObjects={this.state.selectedObjects} 
+                    selectedObjects={this.state.selectedObjects}
+                    accountRole={this.state.accountRole} 
                 />
             );
         } else if(this.state.editControls === 'UserEditControls') {

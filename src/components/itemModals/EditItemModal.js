@@ -47,7 +47,8 @@ export default class EditItemModal extends React.Component{
             controllerErrorMessage  : '',
             isError                 : false,
             errorMessage            : '',
-            modal                   : null
+            modal                   : null,
+            accountRole             : props.accountRole
         };
         this._selectedIds       = props.selectedIds;
         this._selectedObjects   = props.selectedObjects;
@@ -199,12 +200,12 @@ export default class EditItemModal extends React.Component{
                     <h3>{MODAL_HEADER_TITLE}</h3>
                 </div>
                 <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
-                    <div className="modalBody">
+                    {this.state.accountRole === 'admin' ? <div><div className="modalBody">
                         {this.state.isError ?
                             this._renderErrorMessage() :
                             null
                         }
-                        <fieldset className={INPUT_FIELD_ITEM_NUMBER}>
+                         <fieldset className={INPUT_FIELD_ITEM_NUMBER}>
                             <h4 className="inputTitle">{INPUT_FIELD_ITEM_NUMBER}</h4>
                             <input 
                                 type="text" 
@@ -293,7 +294,7 @@ export default class EditItemModal extends React.Component{
                                 onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateSpecificLocation)} 
                             />
                             {this.handleInputFields.setErrorMessageDisplay("specificLocation")}
-                        </fieldset>
+                        </fieldset>onClick={this._openNotesModal}
                     </div>
                     <div className="modalFooter">
                         <input type='submit' 
@@ -303,7 +304,44 @@ export default class EditItemModal extends React.Component{
                         <button type="reset" onClick={this._dismissModal}>
                             {BTN_CLOSE}
                         </button>
-                    </div>
+                    </div></div> : <div>{this.state.isError ?
+                            this._renderErrorMessage() :
+                            null
+                        }
+                        <div className='modalBody'>
+                            <fieldset className={INPUT_FIELD_NOTES}>
+                                <h4 className="inputTitle">{INPUT_FIELD_NOTES}</h4>
+                                <span className='sideBySide'>
+                                    <textarea
+                                        type="text"
+                                        id="notes"
+                                        rows='2'
+                                        cols='21'
+                                        maxLength={100}
+                                        className={this.handleInputFields.setClassNameIsValid("notes") ? "valid" : "invalid"}
+                                        value={this.state.notes} 
+                                        onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
+                                        onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
+                                    />
+                                    <button type='button' onClick={this._openNotesModal}>
+                                        {VIEW_NOTES}
+                                    </button>
+                                </span>
+                                {this.handleInputFields.setErrorMessageDisplay("notes")}
+                            </fieldset>
+                            </div>
+                            {this.state.modal}
+                                <div className="modalFooter">
+                                    <input type='submit' 
+                                        value='Submit' 
+                                        disabled={!this.handleInputFields.isItemModalSubmitAvailable()} 
+                                    />
+                                    <button type="reset" onClick={this._dismissModal}>
+                                        {BTN_CLOSE}
+                                    </button>
+                                </div>
+                        </div>
+                        }
                 </form>
             </>
         );
