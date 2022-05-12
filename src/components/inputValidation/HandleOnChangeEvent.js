@@ -3,14 +3,6 @@
 */
 import React from 'react';
 
-/*
-    state variables: 
-        handled by the component
-        mutable
-    prop variables: 
-        data is managed by parent components (ItemModals, UserModals, ...)
-        immutable
-*/
 const EMPTY_STRING = '';
 const EMPTY_LABEL = 'This is filler';
 
@@ -227,17 +219,21 @@ export default class HandleOnChangeEvent {
      */
 
     /* submit button disabled -> false / submit button enabled -> true */
-    _isItemModalSubmitAvailable = () => {
+    _isItemModalSubmitAvailable = (oldItem, newItem) => {
         if(this.isFirstOpened){
             return false;
         } else {
             let errorList = this.itemErrorList;
             let isVisitedList = this.itemVisited;
-        
+
             if(this.modalType === 'itemModalEdit') {
+                if(JSON.stringify(oldItem) === JSON.stringify(newItem)){
+                    
+                    return false;
+                }
                 //Prefix and Identifier aren't fields in EditItemModal, only AddItemModal
                 for(let errorItem in errorList) {
-                    if(errorItem !== 'itemNumberPrefix' && errorItem !== 'itemNumberIdentifier' && errorList[errorItem] !== EMPTY_STRING) {
+                    if(errorItem !== 'itemNumberPrefix' && errorItem !== 'itemNumberIdentifier' && errorList[errorItem] !== EMPTY_STRING ) {
                         return false;
                     }
                 }
@@ -260,14 +256,15 @@ export default class HandleOnChangeEvent {
         }
     }
     /* submit button disabled -> false / submit button enabled -> true */
-    _isAddUserModalSubmitAvailable = () => {
+    _isAddUserModalSubmitAvailable = (oldUser, newUser) => {
         if(this.isFirstOpened) {
             return false;
         } else {
             let errorList = this.userErrorList;
             let isVisitedList = this.userVisited;
-            
+            console.log(newUser.password)
             if(this.modalType === 'userModalAdd') {
+                
                 //Checks to makes sure each field is touched to submit
                 for(let inputField in isVisitedList) {
                     if(!isVisitedList[inputField]) {
@@ -275,7 +272,8 @@ export default class HandleOnChangeEvent {
                     }
                 }
             } else {
-                if(!isVisitedList['password'] || !isVisitedList['confirmPassword']) {
+                if(JSON.stringify(oldUser) === JSON.stringify(newUser) || 
+                   newUser.password !== newUser.confirmPassword){
                     return false;
                 }
             }

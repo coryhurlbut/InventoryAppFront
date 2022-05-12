@@ -54,20 +54,12 @@ test("renders button correctly", ()=>{
     expect(getByTestId(data-testid_Value));
 });
 
-test('on initial render, need to sign in', ()=>{
-    render(<componentFileName/ >);
-});
-
-//snapshot testing
-it("matches snapshot", ()=>{
-    //virtual DOM object
-    const tree = renderer.create(<componentFileName anyTestingProps=''></componentFileName>).toJSON();
-    expect(tree).toMatchSnapShot;
-});
-
-ANOTHER TEMPLATE: 
-test('loads and displays greeting', async () => {
-  // Arrange
+test('on initial render, need to sign in', ()=>{state variables: 
+        handled by the component
+        mutable
+    prop variables: 
+        data is managed by parent components (ItemModals, UserModals, ...)
+        immutable
   // Act
   // Assert
 })
