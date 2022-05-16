@@ -262,7 +262,6 @@ export default class HandleOnChangeEvent {
         } else {
             let errorList = this.userErrorList;
             let isVisitedList = this.userVisited;
-            console.log(newUser.password)
             if(this.modalType === 'userModalAdd') {
                 
                 //Checks to makes sure each field is touched to submit

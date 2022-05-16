@@ -152,7 +152,7 @@ export default class EditUserModal extends React.Component {
             userName    : this.state.userName,
             password    : this.state.password,
             userRole    : this.state.userRole,
-            phoneNumber : sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
+            phoneNumber : sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber),
             status      : this.state.status,
             hasPassword : this.state.hasPassword
         };
