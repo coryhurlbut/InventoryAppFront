@@ -827,3 +827,10 @@ React Coding Standards:
             4.5.3 git reset --hard HEAD^
                 > reverts the last made commit in the current check-out branch
             4.5.4 git push 
+
+state variables: 
+handled by the component
+mutable
+prop variables: 
+data is managed by parent components (ItemModals, UserModals, ...)
+immutable

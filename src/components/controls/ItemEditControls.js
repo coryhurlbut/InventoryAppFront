@@ -17,7 +17,8 @@ export default class ItemEditControls extends React.Component {
         this.state = {
             modal           : null,
             selectedIds     : props.selectedIds,
-            selectedObjects : props.selectedObjects
+            selectedObjects : props.selectedObjects,
+            accountRole     : props.accountRole
         };
     }
 
@@ -46,6 +47,7 @@ export default class ItemEditControls extends React.Component {
                 hideModal={this.hideModal}
                 selectedIds={this.state.selectedIds} 
                 selectedObjects={this.state.selectedObjects}
+                accountRole={this.state.accountRole}
             />
         });
     }
@@ -85,21 +87,32 @@ export default class ItemEditControls extends React.Component {
     render() {
         return (
             <div className="Edit_Controls">
+<<<<<<< HEAD
                 <button onClick={this._addItem}>
                     {BTN_ADD_ITEM_TXT}
                 </button>
+=======
+                {this.state.accountRole === 'admin' ? <button onClick={this._addItem}>
+                    Add Item
+                </button> : null}
+>>>>>>> 63c59b077a8c8d9a97d17d6b088054ca5e41a350
                 <button 
                     onClick={this._editItem} 
                     disabled={this._disableButton("Edit")}
                 >
                     {BTN_EDIT_ITEM_TXT}
                 </button>
-                <button 
+                {this.state.accountRole === 'admin' ? <button 
                     onClick={this._deleteItem} 
                     disabled={this._disableButton("Delete")}
                 >
+<<<<<<< HEAD
                     {BTN_DELETE_ITEM_TXT}
                 </button>
+=======
+                    Delete Item
+                </button> : null}
+>>>>>>> 63c59b077a8c8d9a97d17d6b088054ca5e41a350
                 {this.state.modal}
             </div>
         );

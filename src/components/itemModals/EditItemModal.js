@@ -27,27 +27,42 @@ const INPUT_FIELD_SPECIFIC_LOCATION = 'Specific Location';
 
 const BTN_CLOSE = 'Close';
 
+let notes = '';
+
 export default class EditItemModal extends React.Component{
     constructor(props) {
         super(props);
         
         this.state = {
             isOpen                  : props.isOpen,
-            itemNumber              : '',
-            name                    : '',
-            description             : '',
-            serialNumber            : '',
-            notes                   : '',
-            previousNotes           : '',
-            homeLocation            : '',
-            specificLocation        : '',
-            available               : true,
             reload                  : props.reload,
             isControllerError       : false,
             controllerErrorMessage  : '',
             isError                 : false,
             errorMessage            : '',
-            modal                   : null
+            modal                   : null,
+            accountRole             : props.accountRole,
+            notesArrayFinal         : null,
+            oldItem                 : {
+                itemNumber: '',
+                name: '',
+                description: '',
+                serialNumber: '',
+                notes: '',
+                homeLocation: '',
+                specificLocation: '',
+                available: ''
+            },
+            newItem                 : {
+                itemNumber: '',
+                name: '',
+                description: '',
+                serialNumber: '',
+                notes: '',
+                homeLocation: '',
+                specificLocation: '',
+                available: ''
+            }
         };
         this._selectedIds       = props.selectedIds;
         this._selectedObjects   = props.selectedObjects;
@@ -58,27 +73,29 @@ export default class EditItemModal extends React.Component{
     async componentDidMount() {
         try {
             const res = await itemController.getItemByItemNumber(this._selectedIds[0]);
-            const {
-                itemNumber,
-                name,
-                description,
-                serialNumber,
-                notes,
-                homeLocation,
-                specificLocation,
-                available 
-            } = res[0];
-            this.setState({ notesArrayFinal: MapNotes(notes) })
-            
-            this.setState({
-                itemNumber          : itemNumber,
-                name                : name,
-                description         : description,
-                serialNumber        : serialNumber,
-                homeLocation        : homeLocation,
-                specificLocation    : specificLocation,
-                available           : available,
-                previousNotes       : notes
+            notes = res[0].notes;
+            this.setState({ 
+                notesArrayFinal: MapNotes(notes),
+                oldItem: {
+                    itemNumber: res[0].itemNumber,
+                    name: res[0].name,
+                    description: res[0].description,
+                    serialNumber: res[0].serialNumber,
+                    notes: '',
+                    homeLocation: res[0].homeLocation,
+                    specificLocation: res[0].specificLocation,
+                    available: res[0].available
+                },
+                newItem: {
+                    itemNumber: res[0].itemNumber,
+                    name: res[0].name,
+                    description: res[0].description,
+                    serialNumber: res[0].serialNumber,
+                    notes: '',
+                    homeLocation: res[0].homeLocation,
+                    specificLocation: res[0].specificLocation,
+                    available: res[0].available
+                },
             });
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
@@ -104,30 +121,30 @@ export default class EditItemModal extends React.Component{
         let updatedNotes;
 
         item = {
-            itemNumber          : this.state.itemNumber,
-            name                : this.state.name,
-            description         : this.state.description,
-            serialNumber        : this.state.serialNumber,
-            notes               : this.state.notes,
-            homeLocation        : this.state.homeLocation,
-            specificLocation    : this.state.specificLocation,
-            available           : this.state.available,
-        };
+            itemNumber: this.state.newItem.itemNumber,
+            name: this.state.newItem.name,
+            description: this.state.newItem.description,
+            serialNumber: this.state.newItem.serialNumber,
+            notes: this.state.newItem.notes,
+            homeLocation: this.state.newItem.homeLocation,
+            specificLocation: this.state.newItem.specificLocation,
+            available: this.state.newItem.available
+        }
 
         //Are there existing notes to append new notes to?
-        if(this.state.previousNotes !== '') {
+        if(notes !== '') {
             //Are there notes to append?
                 //If not, pass just the already existing notes
-            if(this.state.notes !== '') {
-                updatedNotes = (`${this.state.previousNotes + this.state.notes + '`' + currentDateISOString + '`'}`);
+            if(this.state.newItem.notes !== '') {
+                updatedNotes = (`${notes + this.state.newItem.notes + '`' + currentDateISOString + '`'}`);
             } else {
-                updatedNotes = (`${this.state.previousNotes}`);
+                updatedNotes = (`${notes}`);
             }
 
             item.notes = updatedNotes;
         } else { //Notes either has information or doesn't
-            if(this.state.notes !== '') {
-                updatedNotes = (`${this.state.notes + '`' + currentDateISOString + '`'}`);
+            if(this.state.newItem.notes !== '') {
+                updatedNotes = (`${this.state.newItem.notes + '`' + currentDateISOString + '`'}`);
                 item.notes = updatedNotes;
             }
         }
@@ -183,7 +200,14 @@ export default class EditItemModal extends React.Component{
 
         this.handleInputFields.handleEvent(Event, methodCall);
 
-        this.setState({ [inputFieldID]: sanitizeData.sanitizeWhitespace(inputFieldValue) });
+        this.setState({ [inputFieldID]: sanitizeData.sanitizeWhitespace(inputFieldValue)});
+
+        this.setState(prevState => ({
+            newItem:{
+                ...prevState.newItem,
+                [inputFieldID]: sanitizeData.sanitizeWhitespace(inputFieldValue)
+            }
+        }));
     }
 
     _handleFormSubmit = (event) => {
@@ -199,18 +223,18 @@ export default class EditItemModal extends React.Component{
                     <h3>{MODAL_HEADER_TITLE}</h3>
                 </div>
                 <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
-                    <div className="modalBody">
+                    {this.state.accountRole === 'admin' ? <div><div className="modalBody">
                         {this.state.isError ?
                             this._renderErrorMessage() :
                             null
                         }
-                        <fieldset className={INPUT_FIELD_ITEM_NUMBER}>
+                         <fieldset className={INPUT_FIELD_ITEM_NUMBER}>
                             <h4 className="inputTitle">{INPUT_FIELD_ITEM_NUMBER}</h4>
                             <input 
                                 type="text" 
                                 id="itemNumber"
                                 disabled
-                                value={this.state.itemNumber}
+                                value={this.state.newItem.itemNumber}
                             />
                         </fieldset>
                         <fieldset className={INPUT_FIELD_NAME}>
@@ -219,7 +243,7 @@ export default class EditItemModal extends React.Component{
                                 type="text" 
                                 id="name"
                                 className={this.handleInputFields.setClassNameIsValid("name") ? "valid" : "invalid"}
-                                value={this.state.name} 
+                                value={this.state.newItem.name} 
                                 onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateName)}
                                 onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateName)}
                             />
@@ -231,7 +255,7 @@ export default class EditItemModal extends React.Component{
                                 type="text" 
                                 id="description" 
                                 className={ this.handleInputFields.setClassNameIsValid("description") ? "valid" : "invalid"}
-                                value={this.state.description}
+                                value={this.state.newItem.description}
                                 onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateDescription)}
                                 onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateDescription)}
                             />
@@ -243,7 +267,7 @@ export default class EditItemModal extends React.Component{
                                 type="text" 
                                 id="serialNumber" 
                                 className={ this.handleInputFields.setClassNameIsValid("serialNumber") ? "valid" : "invalid"}
-                                value={this.state.serialNumber} 
+                                value={this.state.newItem.serialNumber} 
                                 onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateSerialNumber)}
                                 onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateSerialNumber)}
                             />
@@ -259,7 +283,7 @@ export default class EditItemModal extends React.Component{
                                     cols='21'
                                     maxLength={100}
                                     className={this.handleInputFields.setClassNameIsValid("notes") ? "valid" : "invalid"}
-                                    value={this.state.notes} 
+                                    value={this.state.newItem.notes} 
                                     onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
                                     onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
                                 />
@@ -276,7 +300,7 @@ export default class EditItemModal extends React.Component{
                                 type="text" 
                                 id="homeLocation" 
                                 className={ this.handleInputFields.setClassNameIsValid("homeLocation") ? "valid" : "invalid"}
-                                value={this.state.homeLocation} 
+                                value={this.state.newItem.homeLocation} 
                                 onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateHomeLocation)}
                                 onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateHomeLocation)}
                             />
@@ -287,8 +311,8 @@ export default class EditItemModal extends React.Component{
                             <input 
                                 type="text" 
                                 id="specificLocation" 
-                                className={ this.handleInputFields.setClassNameIsValid("specificLocation") ? "valid" : "invalid"}
-                                value={this.state.specificLocation} 
+                                className={this.handleInputFields.setClassNameIsValid("specificLocation") ? "valid" : "invalid"}
+                                value={this.state.newItem.specificLocation} 
                                 onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateSpecificLocation)}
                                 onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateSpecificLocation)} 
                             />
@@ -298,12 +322,49 @@ export default class EditItemModal extends React.Component{
                     <div className="modalFooter">
                         <input type='submit' 
                             value='Submit' 
-                            disabled={!this.handleInputFields.isItemModalSubmitAvailable()} 
+                            disabled={!this.handleInputFields.isItemModalSubmitAvailable(this.state.oldItem, this.state.newItem)} 
                         />
                         <button type="reset" onClick={this._dismissModal}>
                             {BTN_CLOSE}
                         </button>
-                    </div>
+                    </div></div> : <div>{this.state.isError ?
+                            this._renderErrorMessage() :
+                            null
+                        }
+                        <div className='modalBody'>
+                            <fieldset className={INPUT_FIELD_NOTES}>
+                                <h4 className="inputTitle">{INPUT_FIELD_NOTES}</h4>
+                                <span className='sideBySide'>
+                                    <textarea
+                                        type="text"
+                                        id="notes"
+                                        rows='2'
+                                        cols='21'
+                                        maxLength={100}
+                                        className={this.handleInputFields.setClassNameIsValid("notes") ? "valid" : "invalid"}
+                                        value={this.state.newItem.notes} 
+                                        onChange={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
+                                        onBlur={(Event) => this._handleChangeEvent(Event, itemValidation.validateNotes)}
+                                    />
+                                    <button type='button' onClick={this._openNotesModal}>
+                                        {VIEW_NOTES}
+                                    </button>
+                                </span>
+                                {this.handleInputFields.setErrorMessageDisplay("notes")}
+                            </fieldset>
+                            </div>
+                            {this.state.modal}
+                                <div className="modalFooter">
+                                    <input type='submit' 
+                                        value='Submit' 
+                                        disabled={!this.handleInputFields.isItemModalSubmitAvailable(this.state.oldItem, this.state.newItem)} 
+                                    />
+                                    <button type="reset" onClick={this._dismissModal}>
+                                        {BTN_CLOSE}
+                                    </button>
+                                </div>
+                        </div>
+                        }
                 </form>
             </>
         );

@@ -23,7 +23,16 @@ const INPUT_FIELD_USER_STATUS = 'Status';
 const INPUT_FIELD_PASSWORD = 'Password';
 const INPUT_FIELD_CONFIRM_PASSWORD = 'Confirm Password';
 const INPUT_FIELD_PHONE_NUMBER = 'Phone Number';
-
+let oldUser = {
+    firstName: '',
+    lastName: '',
+    userName: '',
+    password: '',
+    confirmPassword: '',
+    userRole: '',
+    phoneNumber: '',
+    status: ''
+};
 const PASSWORD_INFORMATION = 'Password must be atleast 8 characters long\n\nMust have one Uppercase/lowercase\n\nMust have one special character';
 const INFORMATION_ICON = '?';
 
@@ -55,7 +64,17 @@ export default class EditUserModal extends React.Component {
             isControllerError       : false,
             controllerErrorMessage  : '',
             isError                 : false,
-            errorMessage            : ''
+            errorMessage            : '',
+            newUser                 : {
+                firstName: '',
+                lastName: '',
+                userName: '',
+                password: '',
+                confirmPassword: '',
+                userRole: '',
+                phoneNumber: '',
+                status: ''
+            }
         };
         this.handleInputFields = new HandleOnChangeEvent('userModalEdit');
     };
@@ -67,24 +86,33 @@ export default class EditUserModal extends React.Component {
     async componentDidMount() {
         try {
             let res = await userController.getUserByUserName(this.state.selectedIds[0]);
-            let thisUser = res[0];
+            oldUser = {
+                firstName: res[0].firstName,
+                lastName: res[0].lastName,
+                userName: res[0].userName,
+                password: '',
+                confirmPassword: '',
+                userRole: res[0].userRole,
+                phoneNumber: res[0].phoneNumber,
+                status: res[0].status
+            }
             //Disables userRole dropdown if the selected user is the user logged in
-            if(res.adminUserName === thisUser.userName) {
+            if(res.adminUserName === oldUser.userName) {
                 this.setState({ userRoleDisabled: true });
             };
 
             //Sets the userRole select tag to the user's role
             let selectUserRole = document.getElementById("userRoleSelect");
-            selectUserRole.value = thisUser.userRole;
+            selectUserRole.value = oldUser.userRole;
 
             //Sets the status select tag to the user's status
             let selectUserStatus = document.getElementById("selectUserStatus");
-            selectUserStatus.value = thisUser.status;
+            selectUserStatus.value = oldUser.status;
 
             /* Will set password reset button to show and track that 
                 the user has a password already if they were originally
                 a custodian or admin.*/
-            if(thisUser.userRole !== 'user') {
+            if(oldUser.userRole !== 'user') {
                 this.setState({ 
                     resetBtn: true, 
                     hasPassword: true
@@ -92,13 +120,16 @@ export default class EditUserModal extends React.Component {
             };
 
             this.setState({
-                firstName   : thisUser.firstName, 
-                lastName    : thisUser.lastName,
-                userName    : thisUser.userName,
-                userRole    : thisUser.userRole,
-                phoneNumber : thisUser.phoneNumber,
-                userId      : thisUser.userId,
-                status      : thisUser.status
+                newUser:{
+                firstName   : oldUser.firstName, 
+                lastName    : oldUser.lastName,
+                userName    : oldUser.userName,
+                password    : '',
+                confirmPassword: '',
+                userRole    : oldUser.userRole,
+                phoneNumber : oldUser.phoneNumber,
+                userId      : oldUser.userId,
+                status      : oldUser.status}
             });
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
@@ -121,18 +152,18 @@ export default class EditUserModal extends React.Component {
             userName    : this.state.userName,
             password    : this.state.password,
             userRole    : this.state.userRole,
-            phoneNumber : sanitizeData.sanitizePhoneNumber(this.state.phoneNumber),
+            phoneNumber : sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber),
             status      : this.state.status,
             hasPassword : this.state.hasPassword
         };
-
+        this.setState({newUser:{ phoneNumber: sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber)}});
         //Checks if items are signed out to user if admin is trying to deactivate the account.
-        if(user.status === 'inactive') {
+        if(this.state.newUser.status === 'inactive') {
             let unavailableItems = await itemController.getUnavailableItems();
 
             //Controller function takes an array so we have to put the user into an array.
             let userToCheck = [];
-            userToCheck.push(user);
+            userToCheck.push(this.state.newUser);
 
             //Checks if any user that is going to get deleted has any items signed out
             let res = await userController.checkSignouts(userToCheck, unavailableItems);
@@ -158,7 +189,7 @@ export default class EditUserModal extends React.Component {
             content : 'user'
         };
 
-        await userController.updateUser(user)
+        await userController.updateUser(this.state.newUser)
         .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
             this.setState({ 
@@ -181,27 +212,27 @@ export default class EditUserModal extends React.Component {
 
     _handleUserRoleChange = (Event) => {
         if(Event.target.value === 'user') {
-            this.setState({ 
+            this.setState({newUser:{ 
                 password        : '',
-                confirmPassword : '',
+                confirmPassword : ''},
                 userRole        : Event.target.value, 
                 pwRequired      : false, 
                 pwDisabled      : true, 
                 resetBtn        : false 
             });
         } else if(Event.target.value !== 'user' && !this.state.hasPassword){
-            this.setState({ 
+            this.setState({newUser:{ 
                 password        : '', 
-                confirmPassword : '',
+                confirmPassword : ''},
                 userRole        : Event.target.value, 
                 pwRequired      : true, 
                 pwDisabled      : false, 
                 resetBtn        : false 
             });
         } else {
-            this.setState({
+            this.setState({newUser:{
                 password        : '',
-                confirmPassword : '',
+                confirmPassword : ''},
                 userRole        : Event.target.value, 
                 pwRequired      : false, 
                 pwDisabled      : true, 
@@ -224,7 +255,7 @@ export default class EditUserModal extends React.Component {
 
         //Handles the error validation
         if(inputFieldID === 'confirmPassword'){
-            this.handleInputFields.handleConfirmPassword(this.state.password, inputFieldValue, methodCall);
+            this.handleInputFields.handleConfirmPassword(this.state.newUser.password, inputFieldValue, methodCall);
         } else if(inputFieldID === 'password') {
             this.handleInputFields.handlePassword(this.state.pwRequired, inputFieldValue, methodCall);
         }  else if(inputFieldID === 'userRoleSelect') {
@@ -234,10 +265,14 @@ export default class EditUserModal extends React.Component {
         }
 
         if(inputFieldID === 'userRoleSelect') {
-            this.setState({ userRole: sanitizeData.sanitizeWhitespace(inputFieldValue)});
+            this.setState(prevState => ({ newUser:{...prevState.newUser, 
+                userRole: sanitizeData.sanitizeWhitespace(inputFieldValue)}}));
             this._handleUserRoleChange(Event);
         } else {
-            this.setState({ [inputFieldID]: sanitizeData.sanitizeWhitespace(inputFieldValue) });
+            this.setState(prevState => ({
+                newUser:{
+                    ...prevState.newUser,
+                    [inputFieldID]: sanitizeData.sanitizeWhitespace(inputFieldValue) }}));
         }
     }
 
@@ -265,7 +300,7 @@ export default class EditUserModal extends React.Component {
                             type="text" 
                             id="firstName"
                             className={ this.handleInputFields.setClassNameIsValid("firstName") ? "valid" : "invalid"}
-                            value={this.state.firstName} 
+                            value={this.state.newUser.firstName} 
                             onChange={(Event) => this._handleChangeEvent(Event, userValidation.validateFirstName)}
                             onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validateFirstName)}
                         />
@@ -277,7 +312,7 @@ export default class EditUserModal extends React.Component {
                             type="text" 
                             id="lastName"
                             className={ this.handleInputFields.setClassNameIsValid("lastName") ? "valid" : "invalid"}
-                            value={this.state.lastName}
+                            value={this.state.newUser.lastName}
                             onChange={(Event) => this._handleChangeEvent(Event, userValidation.validateLastName)}
                             onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validateLastName)}
                         />
@@ -289,7 +324,7 @@ export default class EditUserModal extends React.Component {
                             type="text" 
                             id="userName"
                             disabled
-                            value={this.state.userName}
+                            value={this.state.newUser.userName}
                         />
                      </fieldset>
                     <div className="sideBySide">
@@ -324,7 +359,7 @@ export default class EditUserModal extends React.Component {
                                     disabled={this.state.userRoleDisabled} 
                                     id="selectUserStatus" 
                                     className="valid"
-                                    onChange={(Event) => this.setState({status: Event.target.value})}
+                                    onChange={(Event) => this.setState({newUser:{ status: Event.target.value}})}
                                 >
                                     <option 
                                         id="activeOpt" 
@@ -348,7 +383,7 @@ export default class EditUserModal extends React.Component {
                                 id="password"
                                 className={ this.handleInputFields.setClassNameIsValid("password") ? "valid" : "invalid"}
                                 disabled={this.state.pwDisabled}
-                                value={this.state.password} 
+                                value={this.state.newUser.password} 
                                 onChange={(Event) => this._handleChangeEvent(Event, userValidation.validatePassword)}
                                 onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validatePassword)}
                             />
@@ -368,7 +403,7 @@ export default class EditUserModal extends React.Component {
                                 id="confirmPassword"
                                 className={ this.handleInputFields.setClassNameIsValid("confirmPassword") ? "valid" : "invalid"}
                                 hidden={this.state.pwDisabled}
-                                value={this.state.confirmPassword} 
+                                value={this.state.newUser.confirmPassword} 
                                 onChange={(Event) => this._handleChangeEvent(Event, userValidation.validateConfirmPassword)}
                                 onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validateConfirmPassword)}
                             />
@@ -381,7 +416,7 @@ export default class EditUserModal extends React.Component {
                             id="phoneNumber"
                             placeholder="000-000-0000"
                             className={ this.handleInputFields.setClassNameIsValid("phoneNumber") ? "valid" : "invalid"}
-                            value={this.state.phoneNumber}
+                            value={this.state.newUser.phoneNumber}
                             onChange={(Event) => this._handleChangeEvent(Event, userValidation.validatePhoneNumber)}
                             onBlur={(Event) => this._handleChangeEvent(Event, userValidation.validatePhoneNumber)}
                         />
@@ -392,7 +427,7 @@ export default class EditUserModal extends React.Component {
                     <input 
                         type='submit'
                         value='Submit'
-                        disabled={!this.handleInputFields.isAddUserModalSubmitAvailable()}
+                        disabled={!this.handleInputFields.isAddUserModalSubmitAvailable(oldUser, this.state.newUser)}
                     />
                     <button type="reset" onClick={this._dismissModal}>{BTN_CLOSE}</button>
                 </div>
