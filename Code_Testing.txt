@@ -1,5 +1,7 @@
 Source Material:
     https://reactjs.org/docs/testing.html
+    https://reactjs.org/docs/testing-environments.html
+    https://testing-library.com/docs/example-codesandbox
     https://jestjs.io/docs/getting-started
     https://flatteredwithflutter.com/unit-testing-in-react/
     https://www.smashingmagazine.com/2020/06/practical-guide-testing-react-applications-jest/
@@ -71,6 +73,14 @@ test('loads and displays greeting', async () => {
   // Act
   // Assert
 })
+
+//Assertion
+const expected = value;
+const actual = value;
+
+test("assertion statement", ()=>{
+    expect(actual).toBe(expected);
+});
 
 EXECUTING THE TESTS:
 npm test
