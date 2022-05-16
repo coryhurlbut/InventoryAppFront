@@ -7,6 +7,9 @@ import { AddItemModal,
 /*
 *   Displays the buttons for adding, deleting and editing items
 */
+const BTN_ADD_ITEM_TXT = 'Add Item';
+const BTN_EDIT_ITEM_TXT = 'Edit Item';
+const BTN_DELETE_ITEM_TXT = 'Delete Item';
 export default class ItemEditControls extends React.Component {
     constructor(props) {
         super(props);
@@ -62,23 +65,40 @@ export default class ItemEditControls extends React.Component {
         this.setState({ modal: null });
     }
 
+    _disableButton = (btnSelected) => {
+        try {
+            if(this.state.selectedIds.length){
+                if(btnSelected === 'Edit') {
+                    return !(this.state.selectedIds.length === 1);
+                } else {
+                    return !(this.state.selectedIds.length > 0);
+                }
+            } else {
+                return true;
+            }
+            
+        } catch (error) {
+            alert("An error has occured. Contact Admin.");
+        }
+    }
+
     render() {
         return (
             <div className="Edit_Controls">
                 <button onClick={this._addItem}>
-                    Add Item
+                    {BTN_ADD_ITEM_TXT}
                 </button>
                 <button 
                     onClick={this._editItem} 
-                    disabled={this.state.selectedIds.length === 1 ? false : true}
+                    disabled={this._disableButton("Edit")}
                 >
-                    Edit Item
+                    {BTN_EDIT_ITEM_TXT}
                 </button>
                 <button 
                     onClick={this._deleteItem} 
-                    disabled={this.state.selectedIds.length > 0 ? false : true}
+                    disabled={this._disableButton("Delete")}
                 >
-                    Delete Item
+                    {BTN_DELETE_ITEM_TXT}
                 </button>
                 {this.state.modal}
             </div>
