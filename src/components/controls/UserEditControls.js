@@ -69,6 +69,22 @@ export default class UserEditControls extends React.Component {
         this.setState({ modal: null });
     }
 
+    _disableButton = (btnSelected) => {
+        try {
+            if(this.state.selectedIds.length){
+                if(btnSelected === 'Edit') {
+                    return !(this.state.selectedIds.length === 1);
+                } else {
+                    return !(this.state.selectedIds.length > 0);
+                }
+            } else {
+                return true;
+            }
+        } catch (error) {
+            alert("An error has occured. Contact Admin.");
+        }
+    }
+
     _buildButtons = () => {
         if(this.state.accountRole === 'custodian') {
             return(
@@ -87,13 +103,13 @@ export default class UserEditControls extends React.Component {
                     </button>
                     <button 
                         onClick={this._editUser} 
-                        disabled={this.state.selectedIds.length === 1 ? false : true}
+                        disabled={this._disableButton('Edit')}
                     >
                         {BTN_EDIT_USER_TXT}
                     </button>
                     <button 
                         onClick={this._deleteUser} 
-                        disabled={this.state.selectedIds.length > 0 ? false : true}
+                        disabled={this._disableButton('Delete')}
                     >
                         {BTN_DELETE_USER_TXT}
                     </button>

@@ -51,12 +51,24 @@ export default class SignItemInOutControls extends React.Component {
         });
     }
 
+    _disableButton = () => {
+        try {
+            if(this.state.selectedIds.length){
+                return !(this.state.selectedIds.length > 0);
+            } else {
+                return true;
+            }
+        } catch (error) {
+            alert("An error has occured. Contact Admin.");
+        }
+    }
+
     _buildButton = () => {
         if(this.props.inOrOut === 'Sign Item In') {
             return (
                 <button 
                     onClick={this._signItemIn} 
-                    disabled={this.state.selectedIds.length > 0 ? false : true}
+                    disabled={this._disableButton()}
                 >
                     {this.props.inOrOut}
                 </button>
@@ -65,7 +77,7 @@ export default class SignItemInOutControls extends React.Component {
             return (
                 <button 
                     onClick={this._signItemOut} 
-                    disabled={this.state.selectedIds.length > 0 ? false : true}
+                    disabled={this._disableButton()}
                 >
                     {this.props.inOrOut}
                 </button>

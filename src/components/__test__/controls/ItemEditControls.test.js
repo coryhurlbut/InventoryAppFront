@@ -1,4 +1,3 @@
-// __tests__/ContentList.test.js
 import React from 'react';
 import ItemEditControls from './../../controls/ItemEditControls'
 import { isTSAnyKeyword } from '@babel/types';
@@ -17,27 +16,51 @@ test("renders without proper props passed", ()=>{
     render(<ItemEditControls/>);
 });
 
-test("testing enable/disable of Edit/Delete with no selection", ()=>{
-    let passedProps = [];
-    const { getByText} = render(<ItemEditControls selectedIds={passedProps} />);
+test("Admin Role: enable/disable of Edit/Delete with no selection", ()=>{
+    let passedProps_selectedIds = [];
+    let passedProps_AccountRole = "admin";
+    const { getByText} = render(<ItemEditControls selectedIds={passedProps_selectedIds} accountRole={passedProps_AccountRole}/>);
 
     expect(getByText("Add Item").closest('button')).not.toBeDisabled();
     expect(getByText("Edit Item").closest('button')).toBeDisabled();
     expect(getByText("Delete Item").closest('button')).toBeDisabled();
 });
-test("testing enable/disable of Edit/Delete with one selection", ()=>{
-    let passedProps = ["01"];
-    const { getByText} = render(<ItemEditControls selectedIds={passedProps} />);
+test("Admin Role: enable/disable of Edit/Delete with one selection", ()=>{
+    let passedProps_selectedIds = ["01"];
+    let passedProps_AccountRole = "admin";
+    const { getByText} = render(<ItemEditControls selectedIds={passedProps_selectedIds} accountRole={passedProps_AccountRole}/>);
 
     expect(getByText("Add Item").closest('button')).not.toBeDisabled();
     expect(getByText("Edit Item").closest('button')).not.toBeDisabled();
     expect(getByText("Delete Item").closest('button')).not.toBeDisabled();
 });
-test("testing enable/disable of Edit/Delete with two selection", ()=>{
-    let passedProps = ["00","01"];
-    const { getByText} = render(<ItemEditControls selectedIds={passedProps}/>);
+test("Admin Role: enable/disable of Edit/Delete with two selection", ()=>{
+    let passedProps_selectedIds = ["00","01"];
+    let passedProps_AccountRole = "admin";
+    const { getByText} = render(<ItemEditControls selectedIds={passedProps_selectedIds} accountRole={passedProps_AccountRole}/>);
 
     expect(getByText("Add Item").closest('button')).not.toBeDisabled();
     expect(getByText("Edit Item").closest('button')).toBeDisabled();
     expect(getByText("Delete Item").closest('button')).not.toBeDisabled();
+});
+test("Non-Admin Role: enable/disable of Edit/Delete with no selection", ()=>{
+    let passedProps_selectedIds = [];
+    let passedProps_AccountRole = "custodian";
+    const { getByText} = render(<ItemEditControls selectedIds={passedProps_selectedIds} accountRole={passedProps_AccountRole}/>);
+
+    expect(getByText("Edit Item").closest('button')).toBeDisabled();
+});
+test("Non-Admin Role: enable/disable of Edit/Delete with one selection", ()=>{
+    let passedProps_selectedIds = ["01"];
+    let passedProps_AccountRole = "custodian";
+    const { getByText} = render(<ItemEditControls selectedIds={passedProps_selectedIds} accountRole={passedProps_AccountRole}/>);
+
+    expect(getByText("Edit Item").closest('button')).not.toBeDisabled();
+});
+test("Non-Admin Role: enable/disable of Edit/Delete with two selection", ()=>{
+    let passedProps_selectedIds = ["00","01"];
+    let passedProps_AccountRole = "custodian";
+    const { getByText} = render(<ItemEditControls selectedIds={passedProps_selectedIds} accountRole={passedProps_AccountRole}/>);
+
+    expect(getByText("Edit Item").closest('button')).toBeDisabled();
 });
