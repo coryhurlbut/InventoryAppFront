@@ -26,7 +26,8 @@ export default class ItemEditControls extends React.Component {
         if(prevProps !== this.props) {
             this.setState({
                 selectedIds     : this.props.selectedIds,
-                selectedObjects : this.props.selectedObjects
+                selectedObjects : this.props.selectedObjects,
+                accountRole     : this.props.accountRole
             });
         };
     }
