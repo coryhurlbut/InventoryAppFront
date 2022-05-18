@@ -147,18 +147,6 @@ export default class ContentList extends React.Component {
             }
             return(
                 <>
-                    <div id="tableModification">
-                        {this._buildEditControls()}
-                        {this.state.isSignItemInOutVisible ? 
-                            <SignItemInOutControls 
-                                inOrOut={this.state.inOrOut} 
-                                selectedIds={this.state.selectedIds} 
-                                selectedObjects={this.state.selectedObjects} 
-                                id={this.state.id} 
-                            /> : 
-                            null
-                        }            
-                    </div>
                     <Table
                         columns={this.state.columns}
                         data={this.state.content}
@@ -205,6 +193,18 @@ export default class ContentList extends React.Component {
                     <ToggleSwitch />
                 </div>
                 <div id="tableBody">
+                    <div id="tableModification">
+                        {this._buildEditControls()}
+                        {this.state.isSignItemInOutVisible ? 
+                            <SignItemInOutControls 
+                                inOrOut={this.state.inOrOut} 
+                                selectedIds={this.state.selectedIds} 
+                                selectedObjects={this.state.selectedObjects} 
+                                id={this.state.id} 
+                            /> : 
+                            null
+                        }            
+                    </div>
                     {this._buildContentList()}
                 </div>
             </>
