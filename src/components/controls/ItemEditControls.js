@@ -88,27 +88,25 @@ export default class ItemEditControls extends React.Component {
     render() {
         return (
             <div className="Edit_Controls">
-                {this.state.accountRole === 'admin' ? 
-                    <button onClick={this._addItem}>
-                        {BTN_ADD_ITEM_TXT}
-                    </button> : 
-                    null
-                }
+                <button 
+                    onClick={this._addItem}
+                    hidden={this.state.accountRole === 'custodian'}
+                >
+                    {BTN_ADD_ITEM_TXT}
+                </button>
                 <button 
                     onClick={this._editItem} 
                     disabled={this._disableButton("Edit")}
                 >
                     {BTN_EDIT_ITEM_TXT}
                 </button>
-                {this.state.accountRole === 'admin' ? 
-                    <button 
-                        onClick={this._deleteItem} 
-                        disabled={this._disableButton("Delete")}
-                    >
-                        {BTN_DELETE_ITEM_TXT}
-                    </button> : 
-                    null
-                }
+                <button 
+                    onClick={this._deleteItem} 
+                    disabled={this._disableButton("Delete")}
+                    hidden={this.state.accountRole === 'custodian'}
+                >
+                    {BTN_DELETE_ITEM_TXT}
+                </button>
                 {this.state.modal}
             </div>
         );

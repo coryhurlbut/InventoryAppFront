@@ -1,5 +1,5 @@
 import React from 'react';
-import SignItemInOutControls from './../../controls/SignItemInOutControls'
+import SignItemInOutControls from './../../controls/SignItemInOutControls';
 import { isTSAnyKeyword } from '@babel/types';
 
 import {render, fireEvent, waitFor, screen, cleanup, getQueriesForElement} from '@testing-library/react';

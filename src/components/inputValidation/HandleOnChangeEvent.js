@@ -59,9 +59,6 @@ export default class HandleOnChangeEvent {
             userName            : false,
             phoneNumber         : false
         };
-        //Handles isSubmitAvailable when modal is first opened
-        this.isFirstOpened = true;
-
         //distinguish between userModals and itemModals 
         this.modalType = args;
 
@@ -115,7 +112,6 @@ export default class HandleOnChangeEvent {
             }
             this.itemVisited[inputFieldID] = true;
         }
-        this.isFirstOpened = false;
     };
     /* Special Case */
     _handleConfirmPassword = (userPassword, confirmPassword, methodCall) => {
@@ -220,86 +216,29 @@ export default class HandleOnChangeEvent {
 
     /* submit button disabled -> false / submit button enabled -> true */
     _isItemModalSubmitAvailable = (oldItem, newItem) => {
-        if(this.isFirstOpened){
-            return false;
-        } else {
-            let errorList = this.itemErrorList;
-            let isVisitedList = this.itemVisited;
+        let errorList = this.itemErrorList;
+        let isVisitedList = this.itemVisited;
 
-            if(this.modalType === 'itemModalEdit') {
-                if(JSON.stringify(oldItem) === JSON.stringify(newItem)){
-                    
-                    return false;
-                }
-                //Prefix and Identifier aren't fields in EditItemModal, only AddItemModal
-                for(let errorItem in errorList) {
-                    if(errorItem !== 'itemNumberPrefix' && errorItem !== 'itemNumberIdentifier' && errorList[errorItem] !== EMPTY_STRING ) {
-                        return false;
-                    }
-                }
-                return true;
-            } else {
-                //Checks for Error Messages
-                for(let errorItem in errorList) {
-                    if(errorList[errorItem] !== EMPTY_STRING) {
-                        return false;
-                    }
-                }
-                //Checks if each field has been touched to submit
-                for(let inputField in isVisitedList) {
-                    if(!isVisitedList[inputField]) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-    }
-    /* submit button disabled -> false / submit button enabled -> true */
-    _isAddUserModalSubmitAvailable = (oldUser, newUser) => {
-        if(this.isFirstOpened) {
-            return false;
-        } else {
-            let errorList = this.userErrorList;
-            let isVisitedList = this.userVisited;
-            if(this.modalType === 'userModalAdd') {
+        if(this.modalType === 'itemModalEdit') {
+            if(JSON.stringify(oldItem) === JSON.stringify(newItem)){
                 
-                //Checks to makes sure each field is touched to submit
-                for(let inputField in isVisitedList) {
-                    if(!isVisitedList[inputField]) {
-                        return false;
-                    }
-                }
-            } else {
-                if(JSON.stringify(oldUser) === JSON.stringify(newUser) || 
-                   newUser.password !== newUser.confirmPassword){
-                    return false;
-                }
+                return false;
             }
-            //Checks if any errors exist, if so, don't submit
+            //Prefix and Identifier aren't fields in EditItemModal, only AddItemModal
             for(let errorItem in errorList) {
-                if(errorList[errorItem] !== EMPTY_STRING) {
+                if(errorItem !== 'itemNumberPrefix' && errorItem !== 'itemNumberIdentifier' && errorList[errorItem] !== EMPTY_STRING ) {
                     return false;
                 }
             }
             return true;
-        }
-    }
-    /* submit button disabled -> false / submit button enabled -> true */
-    _isAddSignUpModalSubmitAvailable = () => {
-        if(this.isFirstOpened) {
-            return false;
         } else {
-            let errorList = this.userSignUpErrorList;
-            let isVisitedList = this.userSignupVisited;
-
-            //Checks if any errors exist, if so, don't submit
+            //Checks for Error Messages
             for(let errorItem in errorList) {
                 if(errorList[errorItem] !== EMPTY_STRING) {
                     return false;
                 }
             }
-            //Checks to makes sure each field is touched to submit
+            //Checks if each field has been touched to submit
             for(let inputField in isVisitedList) {
                 if(!isVisitedList[inputField]) {
                     return false;
@@ -307,5 +246,50 @@ export default class HandleOnChangeEvent {
             }
             return true;
         }
+    }
+    /* submit button disabled -> false / submit button enabled -> true */
+    _isAddUserModalSubmitAvailable = (oldUser, newUser) => {
+        let errorList = this.userErrorList;
+        let isVisitedList = this.userVisited;
+        if(this.modalType === 'userModalAdd') {
+            
+            //Checks to makes sure each field is touched to submit
+            for(let inputField in isVisitedList) {
+                if(!isVisitedList[inputField]) {
+                    return false;
+                }
+            }
+        } else {
+            if(JSON.stringify(oldUser) === JSON.stringify(newUser) || 
+                newUser.password !== newUser.confirmPassword){
+                return false;
+            }
+        }
+        //Checks if any errors exist, if so, don't submit
+        for(let errorItem in errorList) {
+            if(errorList[errorItem] !== EMPTY_STRING) {
+                return false;
+            }
+        }
+        return true;
+    }
+    /* submit button disabled -> false / submit button enabled -> true */
+    _isAddSignUpModalSubmitAvailable = () => {
+        let errorList = this.userSignUpErrorList;
+        let isVisitedList = this.userSignupVisited;
+
+        //Checks if any errors exist, if so, don't submit
+        for(let errorItem in errorList) {
+            if(errorList[errorItem] !== EMPTY_STRING) {
+                return false;
+            }
+        }
+        //Checks to makes sure each field is touched to submit
+        for(let inputField in isVisitedList) {
+            if(!isVisitedList[inputField]) {
+                return false;
+            }
+        }
+        return true;
     }
 };

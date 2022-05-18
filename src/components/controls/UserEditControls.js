@@ -86,37 +86,31 @@ export default class UserEditControls extends React.Component {
     }
 
     _buildButtons = () => {
-        if(this.state.accountRole === 'custodian') {
-            return(
-                <div className='Edit_Controls'>
-                    <button onClick={this._addUser}>
-                        {BTN_ADD_USER_TXT}
-                    </button>
-                    {this.state.modal}
-                </div>
-            )
-        } else {
-            return(
-                <div className="Edit_Controls">
-                    <button onClick={this._addUser}>
-                        {BTN_ADD_USER_TXT}
-                    </button>
-                    <button 
-                        onClick={this._editUser} 
-                        disabled={this._disableButton('Edit')}
-                    >
-                        {BTN_EDIT_USER_TXT}
-                    </button>
-                    <button 
-                        onClick={this._deleteUser} 
-                        disabled={this._disableButton('Delete')}
-                    >
-                        {BTN_DELETE_USER_TXT}
-                    </button>
-                    {this.state.modal}
-                </div>
-            );
-        };
+        return(
+            <div className="Edit_Controls">
+                <button 
+                    onClick={this._addUser}
+                    hidden={!(this.state.accountRole !== 'user')}
+                >
+                    {BTN_ADD_USER_TXT}
+                </button>
+                <button 
+                    onClick={this._editUser} 
+                    disabled={this._disableButton('Edit')}
+                    hidden={this.state.accountRole === 'custodian'}
+                >
+                    {BTN_EDIT_USER_TXT}
+                </button>
+                <button 
+                    onClick={this._deleteUser} 
+                    disabled={this._disableButton('Delete')}
+                    hidden={this.state.accountRole === 'custodian'}
+                >
+                    {BTN_DELETE_USER_TXT}
+                </button>
+                {this.state.modal}
+            </div>
+        );
     }
 
     render() {
