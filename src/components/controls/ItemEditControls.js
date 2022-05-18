@@ -78,6 +78,7 @@ export default class ItemEditControls extends React.Component {
             } else {
                 return true;
             }
+            
         } catch (error) {
             alert("An error has occured. Contact Admin.");
         }
