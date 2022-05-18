@@ -162,7 +162,7 @@ export default class AddItemModal extends React.Component{
                 <div className="modalHeader">
                     <h3>{MODAL_HEADER_TITLE}</h3>
                 </div>
-                <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
+                <form data-testid="form" onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                     <div className="modalBody">
                         {this.state.isError ?
                             this._renderErrorMessage() :

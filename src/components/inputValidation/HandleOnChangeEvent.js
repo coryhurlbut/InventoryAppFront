@@ -221,7 +221,6 @@ export default class HandleOnChangeEvent {
 
         if(this.modalType === 'itemModalEdit') {
             if(JSON.stringify(oldItem) === JSON.stringify(newItem)){
-                
                 return false;
             }
             //Prefix and Identifier aren't fields in EditItemModal, only AddItemModal
@@ -251,8 +250,8 @@ export default class HandleOnChangeEvent {
     _isAddUserModalSubmitAvailable = (oldUser, newUser) => {
         let errorList = this.userErrorList;
         let isVisitedList = this.userVisited;
+
         if(this.modalType === 'userModalAdd') {
-            
             //Checks to makes sure each field is touched to submit
             for(let inputField in isVisitedList) {
                 if(!isVisitedList[inputField]) {
