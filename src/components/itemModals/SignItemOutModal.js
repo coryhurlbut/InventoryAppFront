@@ -133,25 +133,29 @@ export default class SignItemOutModal extends React.Component{
     
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
-        const displayItem = items.map((item) => {
-            return (
-                <span className='displayItemsAndViewNotes' key={item._id}>
-                    <li className="arrayObject"> 
-                        {item.itemNumber} : {item.name}
-                    </li>
-                    <button 
-                        type='button'
-                        className='signinSignout'
-                        id={item.itemNumber.toString()} 
-                        onClick={Event => this._openNotesModal(Event, item.notes)}
-                    >
-                        {VIEW_NOTES}
-                    </button>
-                </span>
-            );
-        });
-
-        return <ul>{displayItem}</ul>;
+        try {
+            const displayItem = items.map((item) => {
+                return (
+                    <span className='displayItemsAndViewNotes' key={item._id}>
+                        <li className="arrayObject"> 
+                            {item.itemNumber} : {item.name}
+                        </li>
+                        <button 
+                            type='button'
+                            className='signinSignout'
+                            id={item.itemNumber.toString()} 
+                            onClick={Event => this._openNotesModal(Event, item.notes)}
+                        >
+                            {VIEW_NOTES}
+                        </button>
+                    </span>
+                );
+            });
+    
+            return <ul>{displayItem}</ul>;
+        } catch (error) {
+            alert("An error has occured. Contact Admin.");
+        }
     }
 
     /* Useability Feature:

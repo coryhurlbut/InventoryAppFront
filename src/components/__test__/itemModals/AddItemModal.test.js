@@ -29,3 +29,13 @@ test("Submitable: Add Item to Database", ()=>{
     const { getByTestId } = render(<AddItemModal isOpen={true}/>);
     Simulate.submit(getByTestId('form'));
 });
+
+/* 
+test("", () => {
+    const { getByText, getByLabelText} = render(<AddItemModal isOpen={true}/>);
+
+    const input = getByText("Name").closest("input");
+    fireEvent.change(input, { target: { value: "" } });
+
+    fireEvent.click(getByText("Submit").closest('input'));
+});*/

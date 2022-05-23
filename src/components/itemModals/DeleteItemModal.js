@@ -69,13 +69,17 @@ export default class DeleteItemModal extends React.Component{
 
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
-        const displayItem = items.map((item) => {
-            return <li className="arrayObject" key={item.itemNumber}> 
-                {item.itemNumber} : {item.name}
-            </li>
-        });
-
-        return <ul>{displayItem}</ul>;
+        try {
+            const displayItem = items.map((item) => {
+                return <li className="arrayObject" key={item.itemNumber}> 
+                    {item.itemNumber} : {item.name}
+                </li>
+            });
+    
+            return <ul>{displayItem}</ul>;
+        } catch (error) {
+            alert("An error has occured. Contact Admin.");
+        }
     }
 
     /* Builds display for deleting items */
