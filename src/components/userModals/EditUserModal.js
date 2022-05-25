@@ -131,7 +131,6 @@ export default class EditUserModal extends React.Component {
                 userId      : oldUser.userId,
                 status      : oldUser.status}
             });
-            console.log("didMount",this.state.newUser);
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
@@ -147,7 +146,6 @@ export default class EditUserModal extends React.Component {
     }
 
     _editUser = async () => {
-        console.log(this.state.newUser);
         /*let user = {
             firstName   : this.state.firstName,
             lastName    : this.state.lastName,
@@ -194,7 +192,7 @@ export default class EditUserModal extends React.Component {
             action  : 'edit',
             content : 'user'
         };
-        console.log(this.state.newUser);
+        
         await userController.updateUser(this.state.newUser)
         .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
