@@ -25,6 +25,9 @@ import '../styles/App.css';
 const NO_CONTENT = 'No content available';
 const ERROR_MESSAGE_LINK = 'Please Click Here';
 
+const CERTIFICATE_REDIRECT = "https://ec2-15-205-215-189.us-gov-west-1.compute.amazonaws.com:8000/";
+const CERTIFICATE_REDIRECT_LOCAL = "https://localhost:8000/items/available";
+
 export default class ContentList extends React.Component {
     constructor(props) {
         super(props);
@@ -216,7 +219,7 @@ export default class ContentList extends React.Component {
             <>
                 <div>
                     <p className='centerText'>{this.state.errorMessage}</p>
-                    <a href="https://localhost:8000/items/available" className='centerText'>{ERROR_MESSAGE_LINK}</a>
+                    <a href={CERTIFICATE_REDIRECT} className='centerText'>{ERROR_MESSAGE_LINK}</a>
                 </div>
             </>
         );

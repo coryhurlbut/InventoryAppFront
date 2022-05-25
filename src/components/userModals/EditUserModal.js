@@ -157,6 +157,7 @@ export default class EditUserModal extends React.Component {
             hasPassword : this.state.hasPassword
         };
         this.setState({newUser:{ phoneNumber: sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber)}});
+        console.log(this.state.newUser.phoneNumber);
         //Checks if items are signed out to user if admin is trying to deactivate the account.
         if(this.state.newUser.status === 'inactive') {
             let unavailableItems = await itemController.getUnavailableItems();
