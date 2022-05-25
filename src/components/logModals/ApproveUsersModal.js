@@ -126,14 +126,15 @@ export default class ApproveUsersModal extends React.Component {
                             null
                         }
                         {this.state.content.length >= 1 ? 
-                        <Table
-                            columns={columns} 
-                            data={this.state.content} 
-                            userRole={this.state.accountRole} 
-                            contentType={this.state.contentType}
-                            setParentState={this.setParentState}
-                        />
-                        : <p className='centerText'>{NO_CONTENT}</p>}
+                            <Table
+                                columns={columns} 
+                                data={this.state.content} 
+                                userRole={this.state.accountRole} 
+                                contentType={this.state.contentType}
+                                setParentState={this.setParentState}
+                            />
+                            : <p className='centerText'>{NO_CONTENT}</p>
+                        }
                     </div>
                     <div className="modalFooter">
                         <button 

@@ -131,6 +131,7 @@ export default class EditUserModal extends React.Component {
                 userId      : oldUser.userId,
                 status      : oldUser.status}
             });
+            console.log("didMount",this.state.newUser);
         } catch(error) {
             //If user trys interacting with the modal before everything can properly load
             //TODO: loading page icon instead of this
@@ -146,7 +147,8 @@ export default class EditUserModal extends React.Component {
     }
 
     _editUser = async () => {
-        let user = {
+        console.log(this.state.newUser);
+        /*let user = {
             firstName   : this.state.firstName,
             lastName    : this.state.lastName,
             userName    : this.state.userName,
@@ -155,8 +157,12 @@ export default class EditUserModal extends React.Component {
             phoneNumber : sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber),
             status      : this.state.status,
             hasPassword : this.state.hasPassword
-        };
-        this.setState({newUser:{ phoneNumber: sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber)}});
+        };*/
+        //this.setState({newUser:{ phoneNumber: sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber)}});
+        this.setState(prevState => ({
+            newUser:{
+                ...prevState.newUser,
+                phoneNumber: sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber)}}));
         //Checks if items are signed out to user if admin is trying to deactivate the account.
         if(this.state.newUser.status === 'inactive') {
             let unavailableItems = await itemController.getUnavailableItems();
@@ -188,7 +194,7 @@ export default class EditUserModal extends React.Component {
             action  : 'edit',
             content : 'user'
         };
-
+        console.log(this.state.newUser);
         await userController.updateUser(this.state.newUser)
         .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
@@ -212,27 +218,36 @@ export default class EditUserModal extends React.Component {
 
     _handleUserRoleChange = (Event) => {
         if(Event.target.value === 'user') {
-            this.setState({newUser:{ 
-                password        : '',
-                confirmPassword : ''},
+            this.setState(prevState => ({
+                newUser:{
+                    ...prevState.newUser,
+                    password:        '',
+                    confirmPassword: '' }}));
+            this.setState({
                 userRole        : Event.target.value, 
                 pwRequired      : false, 
                 pwDisabled      : true, 
                 resetBtn        : false 
             });
         } else if(Event.target.value !== 'user' && !this.state.hasPassword){
-            this.setState({newUser:{ 
-                password        : '', 
-                confirmPassword : ''},
+            this.setState(prevState => ({
+                newUser:{
+                    ...prevState.newUser,
+                    password:        '',
+                    confirmPassword: '' }}));
+            this.setState({
                 userRole        : Event.target.value, 
                 pwRequired      : true, 
                 pwDisabled      : false, 
                 resetBtn        : false 
             });
         } else {
-            this.setState({newUser:{
-                password        : '',
-                confirmPassword : ''},
+            this.setState(prevState => ({
+                newUser:{
+                    ...prevState.newUser,
+                    password:        '',
+                    confirmPassword: '' }}));
+            this.setState({
                 userRole        : Event.target.value, 
                 pwRequired      : false, 
                 pwDisabled      : true, 
@@ -359,7 +374,10 @@ export default class EditUserModal extends React.Component {
                                     disabled={this.state.userRoleDisabled} 
                                     id="selectUserStatus" 
                                     className="valid"
-                                    onChange={(Event) => this.setState({newUser:{ status: Event.target.value}})}
+                                    onChange={(Event) => this.setState(prevState => ({
+                                        newUser:{
+                                            ...prevState.newUser,
+                                            status: Event.target.value}}))}
                                 >
                                     <option 
                                         id="activeOpt" 
