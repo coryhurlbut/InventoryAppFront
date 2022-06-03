@@ -18,6 +18,7 @@ import {Table, TableNav }       from './tableStuff';
 import ToggleSwitch             from './utilities/ToggleSwitch';
 import '../styles/Table.css';
 import '../styles/App.css';
+import GenerateReport from './utilities/GenerateReport';
 
 /*
 *   Displays main content. Changes depending on what data is displayed. Available Items, Unavailable Items, or Users.
@@ -43,13 +44,14 @@ export default class ContentList extends React.Component {
             selectedIds                 : [],             //Now holds itemNumber or userName instead of _id
             selectedObjects             : [],
             accountRole                 : props.accountRole,
-            isError                    : false,
-            errorMessage               : ''
+            isError                     : false,
+            errorMessage                : ''
         };
         
         this.setParentState        =   this._setParentState.bind(this);
         this.parseRowsArray        =   this._parseRowsArray.bind(this);
         this.handleTableDisplay    =   this._handleTableDisplay.bind(this);
+        this.allItems = [];
     };
 
     // Will update component props if parent props change
@@ -185,6 +187,16 @@ export default class ContentList extends React.Component {
         };
     };
 
+    _getAllItemsForReport = async() => {
+        this.allItems = await itemController.getAllItems();
+        return(
+        <GenerateReport 
+            items={this.allItems}
+            isOpen={true}
+        />
+        )
+    }
+
     _renderContentBody = () => {
         return (
             <>
@@ -193,7 +205,9 @@ export default class ContentList extends React.Component {
                         clickFunction={this._handleTableDisplay} 
                         isUserContentVisible={this.state.isUserContentVisible}
                     />
-                    <ToggleSwitch />
+                    <button onClick={this._getAllItemsForReport}>
+                        GenerateReport
+                    </button>
                 </div>
                 <div id="tableBody">
                     <div id="tableModification">
