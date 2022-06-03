@@ -18,7 +18,7 @@ import {Table, TableNav }       from './tableStuff';
 import ToggleSwitch             from './utilities/ToggleSwitch';
 import '../styles/Table.css';
 import '../styles/App.css';
-import GenerateReport from './utilities/GenerateReport';
+import GenerateReport           from './utilities/GenerateReport';
 
 /*
 *   Displays main content. Changes depending on what data is displayed. Available Items, Unavailable Items, or Users.
@@ -45,7 +45,8 @@ export default class ContentList extends React.Component {
             selectedObjects             : [],
             accountRole                 : props.accountRole,
             isError                     : false,
-            errorMessage                : ''
+            errorMessage                : '',
+            modal                       : null
         };
         
         this.setParentState        =   this._setParentState.bind(this);
@@ -189,12 +190,12 @@ export default class ContentList extends React.Component {
 
     _getAllItemsForReport = async() => {
         this.allItems = await itemController.getAllItems();
-        return(
-        <GenerateReport 
-            items={this.allItems}
-            isOpen={true}
-        />
-        )
+        this.setState({
+            modal: <GenerateReport 
+                items={this.allItems}
+                isOpen={true}
+            />
+        })
     }
 
     _renderContentBody = () => {
@@ -233,7 +234,7 @@ export default class ContentList extends React.Component {
             <>
                 <div>
                     <p className='centerText'>{this.state.errorMessage}</p>
-                    <a href={CERTIFICATE_REDIRECT} className='centerText'>{ERROR_MESSAGE_LINK}</a>
+                    <a href={CERTIFICATE_REDIRECT_LOCAL} className='centerText'>{ERROR_MESSAGE_LINK}</a>
                 </div>
             </>
         );
@@ -242,6 +243,7 @@ export default class ContentList extends React.Component {
     render() {
         return(
             <div id="contentBody">
+                {this.state.modal}
                 {this.state.isError ? 
                     this._renderErrorDisplay() : 
                     this._renderContentBody()
