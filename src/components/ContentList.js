@@ -234,7 +234,7 @@ export default class ContentList extends React.Component {
             <>
                 <div>
                     <p className='centerText'>{this.state.errorMessage}</p>
-                    <a href={CERTIFICATE_REDIRECT_LOCAL} className='centerText'>{ERROR_MESSAGE_LINK}</a>
+                    <a href={CERTIFICATE_REDIRECT} className='centerText'>{ERROR_MESSAGE_LINK}</a>
                 </div>
             </>
         );
