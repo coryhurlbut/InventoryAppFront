@@ -6,6 +6,11 @@ import {AuthController} from './AuthController';
 */
 class ItemController extends AuthController {
 
+    //gets all items
+    async getAllItems(){
+        return await genericController.request('items', {method: 'GET'});
+    }
+
     //Gets all available items
     async getAvailableItems() {
         return await genericController.request('items/available', {method: 'GET'});

@@ -1,6 +1,6 @@
 //Settings for which data is displaying in the table
 
-const availableItemsColumns = [
+export const availableItemsColumns = [
     {
         Header  : 'Item Number',
         accessor: 'itemNumber'
@@ -131,3 +131,4 @@ export const displayPresets = {
         isAdminLogVisible       : true
     }
 };
+
