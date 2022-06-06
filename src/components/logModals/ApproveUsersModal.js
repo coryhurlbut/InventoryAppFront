@@ -1,28 +1,16 @@
-import React          from 'react';
+import React                  from 'react';
 
-import { Modal }      from '@fluentui/react';
+import { Modal }              from '@fluentui/react';
 
-import userController from '../../controllers/UserController';
-import {Table}        from '../tableStuff';
+import { approveUserColumns } from '../contentPresets';
+import userController         from '../../controllers/UserController';
+import {Table}                from '../tableStuff';
 import '../../styles/Modal.css'
 
-const columns = [
-    {
-        Header: 'First Name',
-        accessor: 'firstName',
-    },{
-        Header: 'Last Name',
-        accessor: 'lastName',
-    },{
-        Header: 'Username',
-        accessor: 'userName'
-    },{
-        Header: 'Phone Number',
-        accessor: 'phoneNumber',
-    }
-
-]
-
+/*
+ * A modal for the logged in admin to view all non-users who requested account through home page
+    requests are viewed from the top right dropdown via the Pending button
+ */
 const MODAL_HEADER_TITLE = 'Pending Users';
 const MODAL_HEADER_ERROR_TITLE = 'Error Has Occured';
 
@@ -52,7 +40,7 @@ export default class ApproveUsersModal extends React.Component {
         }
         this.setParentState    = this._setParentState.bind(this);
     }
-
+    //grabs all users from user table where status equals pending
     async componentDidMount() {
         try {
             let users = await userController.getPendingUsers();
@@ -70,6 +58,8 @@ export default class ApproveUsersModal extends React.Component {
         window.location.reload();
     }
 
+    //database call to update selected user's status to 'active', thus making them a legit user, and will 
+    //now show up on tables in app
     _approveUsers = async () =>{
         await userController.activateUsers(this.state.selectedIds)
         .then(() => {
@@ -83,6 +73,7 @@ export default class ApproveUsersModal extends React.Component {
         });
     }
 
+    //simply delete requesting users from table in database
     _denyUsers = async () => {
         await userController.deleteUsers(this.state.selectedIds)
         .then(() => {
@@ -96,6 +87,7 @@ export default class ApproveUsersModal extends React.Component {
         });
     }
 
+    //function to set state of selected items 
     _setParentState = (user) => {
         let arr = this.state.selectedIds;
         let objArr = this.state.selectedObjects;
@@ -127,7 +119,7 @@ export default class ApproveUsersModal extends React.Component {
                         }
                         {this.state.content.length >= 1 ? 
                             <Table
-                                columns={columns} 
+                                columns={approveUserColumns} 
                                 data={this.state.content} 
                                 userRole={this.state.accountRole} 
                                 contentType={this.state.contentType}

@@ -2,39 +2,12 @@ import React                    from 'react';
 
 import { Modal }                from '@fluentui/react';
 
-
+import { adminLogColumns }      from '../contentPresets';
 import { adminLogController }   from '../../controllers';
 import {Table}                  from '../tableStuff';
 
 import '../../styles/Modal.css'
 
-
-const columns = [
-    {
-        Header: 'Item ID',
-        accessor: 'itemId',
-    },
-    {
-        Header: 'User ID',
-        accessor: 'userId',
-    },
-    {
-        Header: 'Admin ID',
-        accessor: 'adminId'
-    },
-    {
-        Header: 'Action taken',
-        accessor: 'action',
-    },
-    {
-        Header: 'Content',
-        accessor: 'content'
-    },
-    {
-        Header: 'Date',
-        accessor: 'date'
-    }
-];
 
 /*
 *   Displays log of admin actions (add, edit, delete of items and users)
@@ -57,7 +30,7 @@ export default class AdminLogModal extends React.Component {
             errorMessage            : ''
         };
     }
-
+    //grabs all admin logs from database
     async componentDidMount() {
         try {
             let logData = await adminLogController.getAllAdminLogs();
@@ -73,7 +46,7 @@ export default class AdminLogModal extends React.Component {
     _dismissModal = () => {
         this.setState({ isOpen: false });
     }
-
+    //successful database fetch + no errors
     _renderAdminLog = () => {
         return(
             <>
@@ -83,7 +56,7 @@ export default class AdminLogModal extends React.Component {
                         this._renderErrorMessage() :
                         null
                     }
-                    <Table columns={columns} data={this.state.content} />
+                    <Table columns={adminLogColumns} data={this.state.content} />
                 </div>
                 <div className="modalFooter">
                     <button onClick={this._dismissModal}>{BTN_CLOSE}</button>

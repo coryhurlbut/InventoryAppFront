@@ -4,29 +4,7 @@ import { Modal }                from '@fluentui/react';
 
 import { Table }                from '../tableStuff';
 import { itemLogController }    from '../../controllers';
-
-const columns = [
-    {
-        Header: 'Item ID',
-        accessor: 'itemId',
-    },
-    {
-        Header: 'Custodian ID',
-        accessor: 'custodianId',
-    },
-    {
-        Header: 'Action taken',
-        accessor: 'action',
-    },
-    {
-        Header: 'Notes',
-        accessor: 'notes'
-    },
-    {
-        Header: 'Date',
-        accessor: 'date'
-    }   
-];
+import { itemLogColumns }       from '../contentPresets';
 
 /*
 *   Displays log of items signed in and out
@@ -50,6 +28,7 @@ export default class ItemLogModal extends React.Component {
         };
     }
 
+    //get all documents from ItemLog table in database
     async componentDidMount() {
         try {
             let logData = await itemLogController.getAllItemLogs();
@@ -66,6 +45,7 @@ export default class ItemLogModal extends React.Component {
         this.setState({ isOpen: false });
     }
 
+    //successful render
     _renderItemLog = () => {
         return(
             <>
@@ -75,7 +55,7 @@ export default class ItemLogModal extends React.Component {
                         this._renderErrorMessage() :
                         null
                     }
-                    <Table columns={columns} data={this.state.content} />
+                    <Table columns={itemLogColumns} data={this.state.content} />
                 </div>
                 <div className="modalFooter">
                     <button onClick={this._dismissModal}>{BTN_CLOSE}</button>

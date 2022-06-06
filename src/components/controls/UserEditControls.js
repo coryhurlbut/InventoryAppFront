@@ -23,6 +23,7 @@ export default class UserEditControls extends React.Component {
         };
     }
 
+    //assigns passed props to state variables, which are selected items from table and role of logged in user
     componentDidUpdate(prevProps, prevState) {
         if(prevProps !== this.props) {
             this.setState({ 
@@ -33,6 +34,9 @@ export default class UserEditControls extends React.Component {
         };
     }
     
+    /**
+     * different methods to render appropriate modals based on what button was clicked
+     */
     _addUser = () => {
         this.setState({
             modal: <AddUserModal 
@@ -65,26 +69,14 @@ export default class UserEditControls extends React.Component {
         });
     }
 
+    //we set modal to null to avoid soft crashing the page
     hideModal = () => {
         this.setState({ modal: null });
     }
 
-    _disableButton = (btnSelected) => {
-        try {
-            if(this.state.selectedIds.length){
-                if(btnSelected === 'Edit') {
-                    return !(this.state.selectedIds.length === 1);
-                } else {
-                    return !(this.state.selectedIds.length > 0);
-                }
-            } else {
-                return true;
-            }
-        } catch (error) {
-            alert("An error has occured. Contact Admin.");
-        }
-    }
-
+    /**
+     * render which displays the actual buttons and also relies on turnary operators to configure proper button availability based on selected items
+     */
     _buildButtons = () => {
         return(
             <div className="Edit_Controls">
@@ -96,14 +88,14 @@ export default class UserEditControls extends React.Component {
                 </button>
                 <button 
                     onClick={this._editUser} 
-                    disabled={this._disableButton('Edit')}
+                    disabled={this.state.selectedIds === undefined || this.state.selectedIds.length !== 1}
                     hidden={this.state.accountRole === 'custodian'}
                 >
                     {BTN_EDIT_USER_TXT}
                 </button>
                 <button 
                     onClick={this._deleteUser} 
-                    disabled={this._disableButton('Delete')}
+                    disabled={this.state.selectedIds === undefined || this.state.selectedIds.length === 0}
                     hidden={this.state.accountRole === 'custodian'}
                 >
                     {BTN_DELETE_USER_TXT}

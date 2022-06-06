@@ -85,6 +85,84 @@ const usersColumns = [
     }
 ];
 
+export const adminLogColumns = [
+    {
+        Header: 'Item ID',
+        accessor: 'itemId',
+    },
+    {
+        Header: 'User ID',
+        accessor: 'userId',
+    },
+    {
+        Header: 'Admin ID',
+        accessor: 'adminId'
+    },
+    {
+        Header: 'Action taken',
+        accessor: 'action',
+    },
+    {
+        Header: 'Content',
+        accessor: 'content'
+    },
+    {
+        Header: 'Date',
+        accessor: 'date'
+    }
+];
+
+export const itemLogColumns = [
+    {
+        Header: 'Item ID',
+        accessor: 'itemId',
+    },
+    {
+        Header: 'Custodian ID',
+        accessor: 'custodianId',
+    },
+    {
+        Header: 'Action taken',
+        accessor: 'action',
+    },
+    {
+        Header: 'Notes',
+        accessor: 'notes'
+    },
+    {
+        Header: 'Date',
+        accessor: 'date'
+    }   
+];
+
+export const viewNoteColumns = [
+    {
+        Header: "Notes",
+        accessor: "notes"
+    },
+    {
+        Header: "Date",
+        accessor: 'date'
+    }
+]
+
+export const approveUserColumns = [
+    {
+        Header: 'First Name',
+        accessor: 'firstName',
+    },{
+        Header: 'Last Name',
+        accessor: 'lastName',
+    },{
+        Header: 'Username',
+        accessor: 'userName'
+    },{
+        Header: 'Phone Number',
+        accessor: 'phoneNumber',
+    }
+
+];
+
 export const availableItemsContent = {
     contentType : "Available Items",
     editControls: "ItemEditControls",

@@ -70,6 +70,11 @@ export default class EditItemModal extends React.Component{
         this.handleInputFields = new HandleOnChangeEvent('itemModalEdit');
     }
 
+    /**
+     * TODO: possible rework on logic, we have to make an old item and new item object from database
+     * to allow view notes modal to pop up properly, and all the edit item information to be remembered
+     * This is also to track notes from database from view notes and the notes the user added
+     */
     async componentDidMount() {
         try {
             const res = await itemController.getItemByItemNumber(this._selectedIds[0]);
@@ -114,6 +119,8 @@ export default class EditItemModal extends React.Component{
         }
     }
 
+    //method to call database for editing an item, there is also variables to create a time stamp
+    //for a successful note entry
     _editItem = async () => {
         let item = {};
         let currentDate = new Date();
@@ -149,6 +156,7 @@ export default class EditItemModal extends React.Component{
             }
         }
 
+        //log for the edit event
         let log = {
             itemId      : item.itemNumber,
             userId      : 'N/A',
@@ -156,7 +164,7 @@ export default class EditItemModal extends React.Component{
             action      : 'edit',
             content     : 'item'
         };
-        
+        //database call
         await itemController.updateItem(item)
         .then(async (auth) => {
             if(auth.status !== undefined && auth.status >= 400) throw auth;
@@ -178,6 +186,7 @@ export default class EditItemModal extends React.Component{
         });
     }
 
+    //calls viewnote modal component ontop of edit item modal
     _openNotesModal = () => {
         this.setState({
             modal: <ViewNoteModal 
@@ -190,6 +199,7 @@ export default class EditItemModal extends React.Component{
                 />
         });
     }
+
     _hideModal = () => {
         this.setState({modal: null});
     };

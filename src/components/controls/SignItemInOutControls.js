@@ -16,6 +16,7 @@ export default class SignItemInOutControls extends React.Component {
         };
     }
 
+    //handles passed in props telling the sign in/out which items were selected
     componentDidUpdate(prevProps, prevState){
         if(prevProps !== this.props) {
             this.setState({
@@ -25,10 +26,14 @@ export default class SignItemInOutControls extends React.Component {
         };
     }
 
+    //we set modal to null to avoid soft crashing the page
     hideModal = () => {
         this.setState({ modal: null });
     }
 
+    /**
+     * Two functions to handle which modal to render
+     */
     _signItemIn = () => {
         this.setState({
             modal: <SignItemInModal 
@@ -51,24 +56,14 @@ export default class SignItemInOutControls extends React.Component {
         });
     }
 
-    _disableButton = () => {
-        try {
-            if(this.state.selectedIds.length){
-                return !(this.state.selectedIds.length > 0);
-            } else {
-                return true;
-            }
-        } catch (error) {
-            alert("An error has occured. Contact Admin.");
-        }
-    }
-
+    //if no errors, renders the button dependent on which table view is present, and doesnt render anything if items arent
+    //whats being viewed. also utilizes ternery operators to configure buttons for selected items
     _buildButton = () => {
         if(this.props.inOrOut === 'Sign Item In') {
             return (
                 <button 
                     onClick={this._signItemIn} 
-                    disabled={this._disableButton()}
+                    disabled={this.state.selectedIds === undefined || this.state.selectedIds.length < 1}
                 >
                     {this.props.inOrOut}
                 </button>
@@ -77,7 +72,7 @@ export default class SignItemInOutControls extends React.Component {
             return (
                 <button 
                     onClick={this._signItemOut} 
-                    disabled={this._disableButton()}
+                    disabled={this.state.selectedIds === undefined || this.state.selectedIds.length < 1}
                 >
                     {this.props.inOrOut}
                 </button>
