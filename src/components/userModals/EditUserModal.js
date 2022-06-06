@@ -146,17 +146,6 @@ export default class EditUserModal extends React.Component {
     }
 
     _editUser = async () => {
-        /*let user = {
-            firstName   : this.state.firstName,
-            lastName    : this.state.lastName,
-            userName    : this.state.userName,
-            password    : this.state.password,
-            userRole    : this.state.userRole,
-            phoneNumber : sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber),
-            status      : this.state.status,
-            hasPassword : this.state.hasPassword
-        };*/
-        //this.setState({newUser:{ phoneNumber: sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber)}});
         this.setState(prevState => ({
             newUser:{
                 ...prevState.newUser,
