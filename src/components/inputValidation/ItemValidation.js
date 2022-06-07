@@ -2,15 +2,6 @@ import validator 		from "validator";
 
 import { sanitizeData } from "."
 
-/*
-Item Input Fields:
-	name:               this.state.name,
-	description:        this.state.description,
-	serialNumber:       this.state.serialNumber,
-	notes:              this.state.notes,
-	homeLocation:       this.state.homeLocation,
-	specificLocation:   this.state.specificLocation,
-*/
 const OUTPUT_ITEM_NUMBER_PREFIX = 'Please select the itemNumber prefix';
 const OUTPUT_ITEM_NUMBER_IDENTIFIER_EMPTY = 'Please provide a 5 digit identifier';
 const OUTPUT_ITEM_NUMBER_IDENTIFIER_LENGTH = 'Item Number identifier must be 5 characters';
@@ -34,16 +25,34 @@ const OUTPUT_SPECIFIC_LOCATION_LENGTH = 'Specific Location cannot exceed 15 char
 
 const CONTENT_RESTRICTION_ALPHANUMERIC = 'Enter only a-z/A-Z/0-9';
 
+/*	Used for the itemModals to ensure backend requirements are met
+	Item Input Fields:
+		name:               this.state.name,
+		description:        this.state.description,
+		serialNumber:       this.state.serialNumber,
+		notes:              this.state.notes,
+		homeLocation:       this.state.homeLocation,
+		specificLocation:   this.state.specificLocation,
+	Return:
+		False - meaning no error in user input was found
+		Specific String - tailored error message to display to the userlabs 
+*/
 class ItemValidation {
-	
-	/* Validates data and produces errors*/
+	/* 
+		itemNumber Prefix is a dropdown, default is set to an empty string
+	*/
 	validateItemNumberPrefix(itemNumberPrefix) {
 		if(itemNumberPrefix === '') {
 			return OUTPUT_ITEM_NUMBER_PREFIX;
 		};
 		return false;
 	}
-
+	/* 
+		itemNumber Identifier is user input:
+			cannot be emtpy
+			Allowed numbers and letters
+			set length of 5 characters
+	*/
 	validateItemNumberIdentifier(itemNumberIdentifier) {
 		let sanitizedItemNumber = sanitizeData.sanitizeWhitespace(itemNumberIdentifier);
 		
@@ -56,7 +65,12 @@ class ItemValidation {
 		};
 		return false;
 	}
-	
+	/* 
+		name is user input:
+			cannot be emtpy
+			Allowed numbers and letters, exception first instance of a space and a dash
+			Max length of 25 characters
+	*/
 	validateName(name) {
 		let santizedName = sanitizeData.sanitizeWhitespace(name);
 		if(validator.isEmpty(santizedName)) {
@@ -68,7 +82,12 @@ class ItemValidation {
 		};
 		return false;
 	}
-
+	/* 
+		Description is user input:
+			cannot be emtpy
+			Allowed numbers and letters, exception all space and dash characters
+			Max length of 25 characters
+	*/
 	validateDescription(description) {
 		let santizedDescription = sanitizeData.sanitizeWhitespace(description);
 
@@ -81,7 +100,12 @@ class ItemValidation {
 		};
 		return false;
 	}
-
+	/* 
+		Serial Number is user input:
+			cannot be emtpy
+			Allowed numbers and letters, exception all dash characters
+			Max length of 25 characters
+	*/
 	validateSerialNumber(serialNumber) {
 		let santizedSerialNum = sanitizeData.sanitizeWhitespace(serialNumber);
 
@@ -94,7 +118,12 @@ class ItemValidation {
 		};
 		return false;
 	}
-
+	/* 
+		Notes is user input:
+			Can be empty
+			Allowed numbers and letters, exception all space, dash, comma, period, apostrophe, and colon characters
+			Max length of 100 characters
+	*/
 	validateNotes(notes) {
 		let santizedNotes = sanitizeData.sanitizeWhitespace(notes);
 
@@ -108,7 +137,12 @@ class ItemValidation {
 		};
 		return false;
 	}
-
+	/* 
+		Home Location is user input:
+			cannot be emtpy
+			Allowed numbers and letters, exception all space and dash characters
+			Max length of 15 characters
+	*/
 	validateHomeLocation(homeLocation) {
 		let santizedHomeLoc = sanitizeData.sanitizeWhitespace(homeLocation);
 
@@ -121,7 +155,12 @@ class ItemValidation {
 		};
 		return false;
 	}
-
+	/* 
+		Specific Location is user input:
+			cannot be emtpy
+			Allowed numbers and letters, exception all space and dash characters
+			Max length of 15 characters
+	*/
 	validateSpecificLocation(specificLocation) {
 		let santizedLocation= sanitizeData.sanitizeWhitespace(specificLocation);
 

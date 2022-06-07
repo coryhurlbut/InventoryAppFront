@@ -1,6 +1,13 @@
 import validator from "validator";
 
+/* 
+    Takes user input and preps it for the database
+*/
 class SanitizeData{
+    /* 
+        Removes any tailing and leading whitespace
+            user can't just input whitespace and submit anything
+    */
     sanitizeWhitespace(data) {
         if(validator.trim(data).length === 0) {
             let sanData = validator.trim(data);
@@ -9,7 +16,11 @@ class SanitizeData{
 
         return data;
     }
-
+    /* 
+        Given the various ways a user can input a phone number
+        take what they give and put it into the format:
+            xxx-xxx-xxx
+    */
     sanitizePhoneNumber(data) {
         let cleanData       = data;
         let formatter       = "-";
@@ -31,7 +42,9 @@ class SanitizeData{
         
         return databaseReady;
     }
-
+    /* 
+        TODO: why is this here?
+    */
     sanitizeName(data) {
         return data;
     }

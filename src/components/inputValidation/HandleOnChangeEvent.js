@@ -1,13 +1,21 @@
-/*
-    Class to handle onChange and onBlur events for input field validation
-*/
 import React from 'react';
 
 const EMPTY_STRING = '';
 const EMPTY_LABEL = 'This is filler';
 
+/*
+    Class to handle onChange and onBlur events for input field validation in 
+    both user and item modals
+        -Tracks which input field has an error
+        -Tracks when submit should and should not be available
+        -Has additional special case for userModal isSignup is true
+*/
 export default class HandleOnChangeEvent {
-    //Expected arguments: userModal/itemModal
+    /*
+        Expected arguments: 
+            -userModalAdd/userModalEdit/userModalAddSignUp
+            -itemModalAdd/itemModalEdit
+    */
     constructor(args) {
         /* Handles AddItemModal/EditItemModal */
         this.itemErrorList = {
@@ -78,10 +86,14 @@ export default class HandleOnChangeEvent {
         this.isItemModalSubmitAvailable         = this._isItemModalSubmitAvailable.bind(this);
     };
 
-    /*
-    Cases to deal with:
-        is there an error in the value: set error message
-        is there not an error in the value: remove error -> set to empty string
+    /*  Arguments:
+            Event of the onchange or onblur
+            input validation method needed for the input field that triggered the event
+        Cases to deal with:
+            -is there an error in the value: set error message
+            -is there not an error in the value: remove error -> set to empty string
+        Returns:
+            nothing, tracks the error messages and other functions return to the user
     */
     _handleEvent = (Event, methodCall) => {
         const inputFieldID = Event.target.id;
@@ -113,7 +125,7 @@ export default class HandleOnChangeEvent {
             this.itemVisited[inputFieldID] = true;
         }
     };
-    /* Special Case */
+    /* Special Case - handling password options */
     _handleConfirmPassword = (userPassword, confirmPassword, methodCall) => {
         if(!methodCall(userPassword, confirmPassword)) {
             this.userErrorList['confirmPassword'] = EMPTY_STRING;
@@ -122,7 +134,7 @@ export default class HandleOnChangeEvent {
         }
         this.userVisited['confirmPassword'] = true;
     }
-    /* Special Case */
+    /* Special Case - handling password options */
     _handlePassword = (isRequired, password, methodCall) => {
         if(!methodCall(isRequired, password)) {
             this.userErrorList['password'] = EMPTY_STRING;
@@ -132,7 +144,10 @@ export default class HandleOnChangeEvent {
         this.userVisited['password'] = true;
     }
 
-    /* If password and confirm password are not needed, remove error messages */
+    /* 
+        Special Case - handling password options
+            If password and confirm password are not needed, remove error messages 
+    */
     _handleUserRoleChange = (userRoleSelected) => {
         if(userRoleSelected === 'user') {
             this.userErrorList['confirmPassword']   = EMPTY_STRING;
@@ -146,7 +161,13 @@ export default class HandleOnChangeEvent {
         }
     }
 
-    /* Handles special case of password and confirm password */
+    /* 
+        Controls the error output for isSignup true/false/ and itemModals
+
+        Returns:
+            specific input field's error message
+            an empty label that is hidden to prevent unnecessary changing of modal size
+    */
     _setErrorMessageDisplay = (inputFieldID, isDisabled = false) => {
         if(this.modalType === 'userModalAdd' || this.modalType === 'userModalEdit') {
             if(this.userErrorList[inputFieldID] !== EMPTY_STRING) {
@@ -189,23 +210,21 @@ export default class HandleOnChangeEvent {
             );
         }
     };
-    /* Classname -> valid if true / invalid if false */
+    /*
+        The input fields the users can interact with have two possible values to determining CSS styling
+        These values are determined if an error message is associated with the input field
+        
+        Returns:
+            true - valid className will be assigned in modal
+            false - invalid className will be assigned in modal
+    */
     _setClassNameIsValid = (inputFieldID) => {
         if(this.modalType === 'userModalAdd' || this.modalType === 'userModalEdit') {
-            if(this.userErrorList[inputFieldID] === EMPTY_STRING) {
-                return true;
-            }
-            return false;
+            return (this.userErrorList[inputFieldID] === EMPTY_STRING);
         } else if(this.modalType === 'userModalAddSignUp') {
-            if(this.userSignUpErrorList[inputFieldID] === EMPTY_STRING) {
-                return true;
-            }
-            return false;
+            return (this.userSignUpErrorList[inputFieldID] === EMPTY_STRING);
         } else {
-            if(this.itemErrorList[inputFieldID] === EMPTY_STRING) {
-                return true;
-            }
-            return false;
+            return (this.itemErrorList[inputFieldID] === EMPTY_STRING);
         }
     }
 
@@ -214,12 +233,19 @@ export default class HandleOnChangeEvent {
      *  Edit modals, since they already have data, just need an errorMesage check
      */
 
-    /* submit button disabled -> false / submit button enabled -> true */
+    /* 
+        Determines if the user has inputed any errors/visited all the fields
+
+        Returns:
+            false - submit button disabled
+            true - submit button available 
+    */
     _isItemModalSubmitAvailable = (oldItem, newItem) => {
         let errorList = this.itemErrorList;
         let isVisitedList = this.itemVisited;
 
         if(this.modalType === 'itemModalEdit') {
+            //Checks if the user has made any modification to the previous values
             if(JSON.stringify(oldItem) === JSON.stringify(newItem)){
                 return false;
             }
@@ -246,7 +272,13 @@ export default class HandleOnChangeEvent {
             return true;
         }
     }
-    /* submit button disabled -> false / submit button enabled -> true */
+    /* 
+        Determines if the user has inputed any errors/visited all the fields
+
+        Returns:
+            false - submit button disabled
+            true - submit button available 
+    */
     _isAddUserModalSubmitAvailable = (oldUser, newUser) => {
         let errorList = this.userErrorList;
         let isVisitedList = this.userVisited;
@@ -258,7 +290,8 @@ export default class HandleOnChangeEvent {
                     return false;
                 }
             }
-        } else {
+        } else { //userModalEdit
+            //Checks if the user has made any modification to the previous values
             if(JSON.stringify(oldUser) === JSON.stringify(newUser) || 
                 newUser.password !== newUser.confirmPassword){
                 return false;
@@ -272,7 +305,13 @@ export default class HandleOnChangeEvent {
         }
         return true;
     }
-    /* submit button disabled -> false / submit button enabled -> true */
+    /* 
+        Determines if the user has inputed any errors/visited all the fields
+
+        Returns:
+            false - submit button disabled
+            true - submit button available 
+    */
     _isAddSignUpModalSubmitAvailable = () => {
         let errorList = this.userSignUpErrorList;
         let isVisitedList = this.userSignupVisited;
