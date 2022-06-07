@@ -11,6 +11,8 @@ import { userValidation,
 
 /*
 *   Modal for editing a user
+    TODO: this and edititem modal has some small issues, basically just getting
+    rid of unused variables and duplicates
 */
 const MODAL_HEADER_TITLE = 'Edit User';
 const MODAL_HEADER_ERROR_TITLE = 'Error Has Occured';
@@ -145,18 +147,8 @@ export default class EditUserModal extends React.Component {
         this.setState({ isOpen: false });
     }
 
+    //method to call database for sending user edits
     _editUser = async () => {
-        /*let user = {
-            firstName   : this.state.firstName,
-            lastName    : this.state.lastName,
-            userName    : this.state.userName,
-            password    : this.state.password,
-            userRole    : this.state.userRole,
-            phoneNumber : sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber),
-            status      : this.state.status,
-            hasPassword : this.state.hasPassword
-        };*/
-        //this.setState({newUser:{ phoneNumber: sanitizeData.sanitizePhoneNumber(this.state.newUser.phoneNumber)}});
         this.setState(prevState => ({
             newUser:{
                 ...prevState.newUser,

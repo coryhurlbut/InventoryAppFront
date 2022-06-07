@@ -29,6 +29,7 @@ export default class LogoutModal extends React.Component{
         this.setState({ isOpen: false });
     }
 
+    //method to logout
     _logout = async () => {
         await loginLogoutController.logout(this.props.accountAuth)
         .then(() => {

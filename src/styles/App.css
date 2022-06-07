@@ -1,6 +1,6 @@
 /* Dark Mode for SSgt Glass*/
 html {
-    background-color: #2c2b2b;
+    background-color: #242424;
     /*background-color: #4d4d4d;*/
 }
 /* working around user agent stylesheet */
@@ -98,6 +98,7 @@ body {
 }
 .contentContainer {
     width: auto;
+    min-width: 125px;
     display: flex;
     justify-content: space-evenly;
     align-items: flex-start;

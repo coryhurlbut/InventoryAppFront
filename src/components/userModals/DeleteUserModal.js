@@ -34,6 +34,7 @@ export default class DeleteUserModal extends React.Component {
     }
     
     _deleteUser = async () => {
+        //grabs all unavailable/signed out items
         let unavailableItems = await itemController.getUnavailableItems();
         
         //Checks if any user that is going to get deleted has any items signed out
@@ -59,6 +60,8 @@ export default class DeleteUserModal extends React.Component {
                 errorMessage: ''
             });
 
+            //we need to loop since there is a strong possibility of multiple users being deleted
+            //which each require a log event
             for(let i = 0; i < this.state.selectedIds.length; i++) {
                 let log = {
                     itemId:     'N/A',
@@ -83,13 +86,17 @@ export default class DeleteUserModal extends React.Component {
 
     /* Loops through the array of items and displays them as a list */
     _displayArray = (users) => {
-        const displayUsers = users.map((user) => 
-            <li className="arrayObject" key={user.userName}> 
-                {user.userName} : {user.firstName} {' '} {user.lastName}
-            </li>
-        );
+        try {
+            const displayUsers = users.map((user) => 
+                <li className="arrayObject" key={user.userName}> 
+                    {user.userName} : {user.firstName} {' '} {user.lastName}
+                </li>
+            );
 
-        return <ul>{displayUsers}</ul>;
+            return <ul>{displayUsers}</ul>;
+        } catch (error) {
+            alert("An error has occured. Contact Admin.");
+        }
     }
 
     /* Builds display for deleting users */

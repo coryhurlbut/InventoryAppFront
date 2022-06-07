@@ -40,6 +40,7 @@ export default class ContentBuilder extends React.Component {
             _isDropdownActive   : false,
             pendingUsers        : null
         };
+        //boolean for displaying red notification 
         this._isUsersPending    = false;
         this._isError           = null;
         this._disableLogin      = false;
@@ -171,6 +172,8 @@ export default class ContentBuilder extends React.Component {
         }
     }
 
+    //builds the profile icon and drop down on top right of screen, with appropriate buttons 
+    //based on account role
     _buildContent = (view) => {
         return (
             <>
