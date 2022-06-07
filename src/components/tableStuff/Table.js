@@ -4,6 +4,7 @@ import { useTable, usePagination, useRowSelect } from 'react-table';
 
 import '../../styles/Table.css'
 
+//symbols for pagination
 const PAGE_OF_DISPLAY = 'Page ';
 const PAGE_OF_DISPLAY_NUM = ' of ';
 const PAGE_OF_DISPLAY_FIRST_PAGE = '|<';
@@ -14,6 +15,7 @@ const PAGE_OF_DISPLAY_LAST_PAGE = '>|';
 const GO_TO_PAGE_DISPLAY = 'Go to page:';
 const SHOW_NUMBER_OF_ROWS = 'Show: ';
 
+//takes in the content, column schema, and role information to config table
 function Table({ columns, data, ...props }) {
     const {
         getTableProps,
@@ -34,8 +36,10 @@ function Table({ columns, data, ...props }) {
     } = useTable({
             columns,
             data,
+            //allows pagination to properly begin at page 1
             initialState: { pageIndex: 0 },
         },
+        //useTable methods
         usePagination,
         useRowSelect
     );
@@ -44,6 +48,7 @@ function Table({ columns, data, ...props }) {
         <div className='tableContainer'>
             <table {...getTableProps()}>
                 <thead>
+                    {/* a map loop to create header for each column index */}
                     {headerGroups.map(headerGroup => (
                                 <tr {...headerGroup.getHeaderGroupProps()}>
                                     {headerGroup.headers.map(column => (
@@ -56,6 +61,7 @@ function Table({ columns, data, ...props }) {
                     }
                 </thead>
                 <tbody {...getTableBodyProps()}>
+                    {/* another map loop to create the role */}
                     {page.map((row, i) => {
                         prepareRow(row)
                         if(

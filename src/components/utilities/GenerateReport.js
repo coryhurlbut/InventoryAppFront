@@ -3,15 +3,18 @@ import React from 'react';
 import { Table } from '../tableStuff';
 import {availableItemsColumns} from '../contentPresets';
 import { useState } from 'react';
+
 import '../../styles/Modal.css';
 
-
-
+/**
+ * A modal for generating a simple table will all items, to be used for an inventory report
+ */
 const NO_CONTENT = 'No available notes';
 
 const BTN_CLOSE = 'Close';
 
 const GenerateReport = ({items, ...props}) => {
+    //useState for closing/opening modal
     const [modalIsOpen, setModalIsOpen] = useState(props.isOpen);
 
     const setModalIsOpenToFalse = () => {

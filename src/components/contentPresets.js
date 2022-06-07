@@ -1,4 +1,5 @@
 //Settings for which data is displaying in the table
+//usually can be exported to component from here for neatness
 
 export const availableItemsColumns = [
     {

@@ -65,6 +65,9 @@ export default class AddUserModal extends React.Component {
         allow only the ability to add user roles */
     async componentDidMount() {
         try {
+            //checks isSignUp boolean to properly config add user modal to be more of a user sign up modal
+            //since they send basically the same information to database aside from pending status
+            //isSignUp = true also means that no one is logged in
             if(this.state.isSignUp) {
                 this.setState({status: 'pending'})
             } else {
@@ -90,6 +93,10 @@ export default class AddUserModal extends React.Component {
         this.setState({ isOpen: false });
     }
 
+    //TODO: Possibly combine addpendinguser and adduser, simple parameters could differentiate which API is called
+    //juice might not be worth the squeeze tho
+    //separate method for calling database since some details are different from when a cust/admin
+    //add a user
     _addPendingUser = async () => {
         let userRegister = {
             firstName:      this.state.firstName,
@@ -120,6 +127,7 @@ export default class AddUserModal extends React.Component {
         });
     }
 
+    //method for adding user to database and creating log
     _addUser = async () => {
         let user = {
             firstName   : this.state.firstName,
@@ -152,6 +160,7 @@ export default class AddUserModal extends React.Component {
                 });          
             });
         
+            //log object to database
             let log = {
                     itemId      : 'N/A',
                     userId      : returnedUser.userName,
@@ -213,7 +222,10 @@ export default class AddUserModal extends React.Component {
         }
     };
 
-    /* Builds user input form */
+    /* Builds user input form 
+    form will build differently depending on if isSignUp is true/false
+    a user signing up will not see all fields
+    */
     _renderForm = () => {
         return(
             <>

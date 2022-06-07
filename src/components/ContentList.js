@@ -15,17 +15,18 @@ import {
     usersContent 
 }                               from './contentPresets';
 import {Table, TableNav }       from './tableStuff';
-import ToggleSwitch             from './utilities/ToggleSwitch';
 import '../styles/Table.css';
 import '../styles/App.css';
 import GenerateReport           from './utilities/GenerateReport';
 
 /*
-*   Displays main content. Changes depending on what data is displayed. Available Items, Unavailable Items, or Users.
+*   Displays main content. Changes depending on what data is displayed.
+     Available Items, Unavailable Items, or Users.
 */
 const NO_CONTENT = 'No content available';
 const ERROR_MESSAGE_LINK = 'Please Click Here';
 
+//prod and dev environment urls
 const CERTIFICATE_REDIRECT = "https://ec2-15-205-215-189.us-gov-west-1.compute.amazonaws.com:8000/";
 const CERTIFICATE_REDIRECT_LOCAL = "https://localhost:8000/items/available";
 
@@ -41,14 +42,13 @@ export default class ContentList extends React.Component {
             editControls                : availableItemsContent.editControls,
             inOrOut                     : availableItemsContent.inOrOut,
             content                     : [],
-            selectedIds                 : [],             //Now holds itemNumber or userName instead of _id
+            selectedIds                 : [],     //Now holds itemNumber or userName instead of _id
             selectedObjects             : [],
             accountRole                 : props.accountRole,
             isError                     : false,
             errorMessage                : '',
             modal                       : null
         };
-        
         this.setParentState        =   this._setParentState.bind(this);
         this.parseRowsArray        =   this._parseRowsArray.bind(this);
         this.handleTableDisplay    =   this._handleTableDisplay.bind(this);
@@ -72,10 +72,12 @@ export default class ContentList extends React.Component {
         };
     };
 
+    //has table show available on default page load
     componentDidMount() {
         this._handleTableDisplay('availableItems');
     };
 
+    //configures what is displayed on the table
     _handleTableDisplay = async (objectType) => {
         let content;
         let object = {};
@@ -144,6 +146,7 @@ export default class ContentList extends React.Component {
         });
     }
 
+    //builds table and content assuming there are entries to display
     _buildContentList = () => {
         if(!this.state.isError){
             if(this.state.content.length === 0){
@@ -166,6 +169,8 @@ export default class ContentList extends React.Component {
         }
     };
 
+    //builds the add/edit/delete/ sign in/out buttons also passing accountrole to 
+    //buttons, accountrole dictates what is shown
     _buildEditControls = () => {
         if(this.state.editControls === 'ItemEditControls' &&
             this.state.isEditControlVisible
@@ -188,6 +193,7 @@ export default class ContentList extends React.Component {
         };
     };
 
+    //renders modal to display table showing all database items
     _getAllItemsForReport = async() => {
         this.allItems = await itemController.getAllItems();
         this.setState({
@@ -198,6 +204,8 @@ export default class ContentList extends React.Component {
         })
     }
 
+    //sends boolean to dictate whether items can be signed in or out, and checks role
+    //for privelege
     _renderContentBody = () => {
         return (
             <>
