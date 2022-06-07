@@ -83,7 +83,7 @@ export default class ContentBuilder extends React.Component {
                 }
             }
         } catch (error) {
-            console.log("Error", error.message);
+            alert("An error has occured. Contact Admin.");
         }
     };
 

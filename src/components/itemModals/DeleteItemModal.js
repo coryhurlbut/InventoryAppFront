@@ -21,11 +21,9 @@ export default class DeleteItemModal extends React.Component{
         
         this.state = {
             isOpen      : props.isOpen,
-
             isError     : false,
             errorMessage: ''
         };
-
         this._selectedIds       = props.selectedIds;
         this._selectedObjects   = props.selectedObjects;
     }
@@ -34,6 +32,7 @@ export default class DeleteItemModal extends React.Component{
         this.setState({ isOpen: false });
     }
 
+    //function to call database for 1: deleted selected items & 2: adding a log for delete event with relevant info
     _deleteItem = async () => {
         await itemController.deleteItems(this._selectedIds)
         .then( async (auth) => {
@@ -43,6 +42,8 @@ export default class DeleteItemModal extends React.Component{
                 errorMessage: ''
             });
 
+            //we need to loop since there is a strong possibility of multiple items being deleted
+            //which each require a log event
             for(let i = 0; i < this._selectedIds.length; i++) {
                 let log = {
                     itemId      : this._selectedIds[i],
@@ -69,13 +70,17 @@ export default class DeleteItemModal extends React.Component{
 
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
-        const displayItem = items.map((item) => {
-            return <li className="arrayObject" key={item.itemNumber}> 
-                {item.itemNumber} : {item.name}
-            </li>
-        });
-
-        return <ul>{displayItem}</ul>;
+        try {
+            const displayItem = items.map((item) => {
+                return <li className="arrayObject" key={item.itemNumber}> 
+                    {item.itemNumber} : {item.name}
+                </li>
+            });
+    
+            return <ul>{displayItem}</ul>;
+        } catch (error) {
+            alert("An error has occured. Contact Admin.");
+        }
     }
 
     /* Builds display for deleting items */

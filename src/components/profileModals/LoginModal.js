@@ -45,6 +45,7 @@ export default class LoginModal extends React.Component{
         this.setState({isOpen: false});
     }
 
+    //login function to run username password to database and perform login
     _login = async () => {
         await loginLogoutController.login(this.state.userName, this.state.password)
         .then((auth) => {
@@ -73,10 +74,12 @@ export default class LoginModal extends React.Component{
         });
     }
 
+    //method to set issignup = true to allow correct modal to be displayed on re-render
     _isSigningUp = () => {
         this.setState({ isSignUp: true });
     }
 
+    //successful render method
     _renderLoginForm = () => {
         return(
             <>

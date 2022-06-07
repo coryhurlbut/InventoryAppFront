@@ -29,6 +29,7 @@ export default class AddItemModal extends React.Component{
         
         this.state = {
             isOpen                  : props.isOpen,
+            //item number set to all A's allows a preset to exist before being assigned
             itemNumber              : 'AAA-AAAAA',
             itemNumberPrefix        : '',
             itemNumberIdentifier    : '',
@@ -50,6 +51,7 @@ export default class AddItemModal extends React.Component{
         this.setState({ isOpen: false });
     }
 
+    //function to format and make database call to add item to items table
     _addItem = async () => {
         let item = {};
         //If the user enters something into notes, date stamp it
@@ -57,6 +59,7 @@ export default class AddItemModal extends React.Component{
             let currentDate = new Date();
             let currentDateISOString = currentDate.toISOString();
     
+            //format for creating note
             let newNotes = (`${this.state.notes + '`' + currentDateISOString + '`'}`);
     
             item = {
@@ -69,7 +72,7 @@ export default class AddItemModal extends React.Component{
                 specificLocation    : this.state.specificLocation,
                 available           : this.state.available,
             };
-        } else { //Pass default emptry string
+        } else { //Pass default empty string
             item = {
                 itemNumber          : this.state.itemNumber,
                 name                : this.state.name,
@@ -82,7 +85,7 @@ export default class AddItemModal extends React.Component{
             };
         }
 
-
+        //used to document log
         let returnedItem = {};
 
         await itemController.createItem(item)
@@ -117,6 +120,7 @@ export default class AddItemModal extends React.Component{
         await adminLogController.createAdminLog(log);
     }
 
+    //ex. creates ITU in item number ITU-CAM02
     _createItemNumber = (event) => {
         let itemNumArray = this.state.itemNumber.split("-");
 
@@ -129,6 +133,7 @@ export default class AddItemModal extends React.Component{
         return `${itemNumArray[0]}-${itemNumArray[1].toUpperCase()}`;
     }
 
+    
     _handleChangeEvent = (Event, methodCall) => {
         let inputFieldID = Event.target.id;
         let inputFieldValue = Event.target.value;
@@ -162,7 +167,7 @@ export default class AddItemModal extends React.Component{
                 <div className="modalHeader">
                     <h3>{MODAL_HEADER_TITLE}</h3>
                 </div>
-                <form onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
+                <form data-testid="form" onSubmit={(Event) => {this._handleFormSubmit(Event);}}>
                     <div className="modalBody">
                         {this.state.isError ?
                             this._renderErrorMessage() :

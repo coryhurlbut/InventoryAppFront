@@ -1,5 +1,7 @@
 Source Material:
     https://reactjs.org/docs/testing.html
+    https://reactjs.org/docs/testing-environments.html
+    https://testing-library.com/docs/example-codesandbox
     https://jestjs.io/docs/getting-started
     https://flatteredwithflutter.com/unit-testing-in-react/
     https://www.smashingmagazine.com/2020/06/practical-guide-testing-react-applications-jest/
@@ -54,23 +56,23 @@ test("renders button correctly", ()=>{
     expect(getByTestId(data-testid_Value));
 });
 
-test('on initial render, need to sign in', ()=>{
-    render(<componentFileName/ >);
-});
-
-//snapshot testing
-it("matches snapshot", ()=>{
-    //virtual DOM object
-    const tree = renderer.create(<componentFileName anyTestingProps=''></componentFileName>).toJSON();
-    expect(tree).toMatchSnapShot;
-});
-
-ANOTHER TEMPLATE: 
-test('loads and displays greeting', async () => {
-  // Arrange
+test('on initial render, need to sign in', ()=>{state variables: 
+        handled by the component
+        mutable
+    prop variables: 
+        data is managed by parent components (ItemModals, UserModals, ...)
+        immutable
   // Act
   // Assert
 })
+
+//Assertion
+const expected = value;
+const actual = value;
+
+test("assertion statement", ()=>{
+    expect(actual).toBe(expected);
+});
 
 EXECUTING THE TESTS:
 npm test

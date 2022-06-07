@@ -36,11 +36,10 @@ export default class SignItemOutModal extends React.Component{
             isError                 : false,
             errorMessage            : ''
         };
-
         this._selectedIds = props.selectedIds;
         this._selectedObjects = props.selectedObjects;
     }
-
+    //must make a database call of all active users to populate dropdown to select who signs what out
     async componentDidMount(){
         try {
             let users = await userController.getAllActiveUsers();
@@ -64,6 +63,7 @@ export default class SignItemOutModal extends React.Component{
         this.setState({ isOpen: false });
     }
 
+    //database call to change 'available' field to true, thus making the item available again
     _signItemsOut = async () => {
         await itemController.signItemOut(this._selectedIds, this.state.userName)
         .then( async (auth) => {
@@ -72,7 +72,8 @@ export default class SignItemOutModal extends React.Component{
                 isError: false,
                 errorMessage: ''
             });
-
+            //we need to loop since there is a strong possibility of multiple items being deleted
+            //which each require a log event
             for(let i = 0; i < this._selectedIds.length; i++) {
                 let info = {
                     itemId      : this._selectedIds[i],
@@ -115,6 +116,8 @@ export default class SignItemOutModal extends React.Component{
             };
         };
     }
+
+    //calls viewnote modal component ontop of sign item out modal
     _openNotesModal = (Event, buttonClicked) => {
         this.setState({
             modal: <ViewNoteModal 
@@ -127,31 +130,36 @@ export default class SignItemOutModal extends React.Component{
                 />
         });
     }
+    
     _hideModal = () => {
         this.setState({modal: null});
     }
     
     /* Loops through the array of items and displays them as a list */
     _displayArray = (items) => {
-        const displayItem = items.map((item) => {
-            return (
-                <span className='displayItemsAndViewNotes' key={item._id}>
-                    <li className="arrayObject"> 
-                        {item.itemNumber} : {item.name}
-                    </li>
-                    <button 
-                        type='button'
-                        className='signinSignout'
-                        id={item.itemNumber.toString()} 
-                        onClick={Event => this._openNotesModal(Event, item.notes)}
-                    >
-                        {VIEW_NOTES}
-                    </button>
-                </span>
-            );
-        });
-
-        return <ul>{displayItem}</ul>;
+        try {
+            const displayItem = items.map((item) => {
+                return (
+                    <span className='displayItemsAndViewNotes' key={item._id}>
+                        <li className="arrayObject"> 
+                            {item.itemNumber} : {item.name}
+                        </li>
+                        <button 
+                            type='button'
+                            className='signinSignout'
+                            id={item.itemNumber.toString()} 
+                            onClick={Event => this._openNotesModal(Event, item.notes)}
+                        >
+                            {VIEW_NOTES}
+                        </button>
+                    </span>
+                );
+            });
+    
+            return <ul>{displayItem}</ul>;
+        } catch (error) {
+            alert("An error has occured. Contact Admin.");
+        }
     }
 
     /* Useability Feature:

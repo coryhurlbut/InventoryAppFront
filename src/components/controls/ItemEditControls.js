@@ -7,6 +7,10 @@ import { AddItemModal,
 /*
 *   Displays the buttons for adding, deleting and editing items
 */
+const BTN_ADD_ITEM_TXT = 'Add Item';
+const BTN_EDIT_ITEM_TXT = 'Edit Item';
+const BTN_DELETE_ITEM_TXT = 'Delete Item';
+
 export default class ItemEditControls extends React.Component {
     constructor(props) {
         super(props);
@@ -15,18 +19,24 @@ export default class ItemEditControls extends React.Component {
             modal           : null,
             selectedIds     : props.selectedIds,
             selectedObjects : props.selectedObjects,
-            accountRole     : props.accountRole
+            accountRole     : props.accountRole,
         };
     }
 
+    //accepts passed props and assigns them to local state variables
     componentDidUpdate(prevProps, prevState) {
         if(prevProps !== this.props) {
             this.setState({
                 selectedIds     : this.props.selectedIds,
-                selectedObjects : this.props.selectedObjects
+                selectedObjects : this.props.selectedObjects,
+                accountRole     : this.props.accountRole
             });
         };
     }
+    
+    /**
+     * A function for each button present, which then calls the associated modal
+     */
 
     _addItem = () => {
         this.setState({
@@ -60,28 +70,36 @@ export default class ItemEditControls extends React.Component {
         });
     }
 
+    //we set modal to null to avoid soft crashing the page
     hideModal = () => {
         this.setState({ modal: null });
     }
-
+    
+    /**
+     * render which displays the actual buttons and also relies on turnary operators to configure proper button availability based on selected items
+     */
     render() {
         return (
             <div className="Edit_Controls">
-                {this.state.accountRole === 'admin' ? <button onClick={this._addItem}>
-                    Add Item
-                </button> : null}
+                <button 
+                    onClick={this._addItem}
+                    hidden={this.state.accountRole === 'custodian'}
+                >
+                    {BTN_ADD_ITEM_TXT}
+                </button>
                 <button 
                     onClick={this._editItem} 
-                    disabled={this.state.selectedIds.length === 1 ? false : true}
+                    disabled={this.state.selectedIds === undefined || this.state.selectedIds.length !== 1}
                 >
-                    Edit Item
+                    {BTN_EDIT_ITEM_TXT}
                 </button>
-                {this.state.accountRole === 'admin' ? <button 
+                <button 
                     onClick={this._deleteItem} 
-                    disabled={this.state.selectedIds.length > 0 ? false : true}
+                    disabled={this.state.selectedIds === undefined || this.state.selectedIds.length === 0}
+                    hidden={this.state.accountRole === 'custodian'}
                 >
-                    Delete Item
-                </button> : null}
+                    {BTN_DELETE_ITEM_TXT}
+                </button>
                 {this.state.modal}
             </div>
         );

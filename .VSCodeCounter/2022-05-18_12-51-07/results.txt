@@ -1,0 +1,86 @@
+Date : 2022-05-18 12:51:07
+Directory : /home/williamglass/inventory-app-front-end
+Total : 47 files,  20292 codes, 446 comments, 541 blanks, all 21279 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          3 |     16,192 |          0 |          3 |     16,195 |
+| JavaScript |         37 |      3,584 |        357 |        423 |      4,364 |
+| CSS        |          5 |        458 |         66 |         81 |        605 |
+| Markdown   |          1 |         38 |          0 |         33 |         71 |
+| HTML       |          1 |         20 |         23 |          1 |         44 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                        | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                           |         47 |     20,292 |        446 |        541 |     21,279 |
+| public                                                                                      |          2 |         45 |         23 |          2 |         70 |
+| src                                                                                         |         42 |      4,042 |        423 |        504 |      4,969 |
+| src/components                                                                              |         25 |      3,138 |        211 |        322 |      3,671 |
+| src/components/Controls                                                                     |          3 |        213 |          9 |         25 |        247 |
+| src/components/InputValidation                                                              |          3 |        181 |         19 |         36 |        236 |
+| src/components/ItemModals                                                                   |          6 |        902 |         80 |         97 |      1,079 |
+| src/components/LogModals                                                                    |          2 |        120 |          7 |         14 |        141 |
+| src/components/ProfileModals                                                                |          2 |        109 |          6 |         10 |        125 |
+| src/components/UserModals                                                                   |          4 |      1,064 |         78 |         94 |      1,236 |
+| src/controllers                                                                             |          8 |        309 |        109 |         79 |        497 |
+| src/styles                                                                                  |          5 |        458 |         66 |         81 |        605 |
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                    | language   | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /home/williamglass/inventory-app-front-end/README.md                                        | Markdown   |         38 |          0 |         33 |         71 |
+| /home/williamglass/inventory-app-front-end/package-lock.json                                | JSON       |     16,118 |          0 |          1 |     16,119 |
+| /home/williamglass/inventory-app-front-end/package.json                                     | JSON       |         49 |          0 |          1 |         50 |
+| /home/williamglass/inventory-app-front-end/public/index.html                                | HTML       |         20 |         23 |          1 |         44 |
+| /home/williamglass/inventory-app-front-end/public/manifest.json                             | JSON       |         25 |          0 |          1 |         26 |
+| /home/williamglass/inventory-app-front-end/src/App.js                                       | JavaScript |         14 |          0 |          3 |         17 |
+| /home/williamglass/inventory-app-front-end/src/ErrorBoundary.js                             | JavaScript |         30 |          5 |          6 |         41 |
+| /home/williamglass/inventory-app-front-end/src/components/ContentBuilder.js                 | JavaScript |        139 |          3 |         14 |        156 |
+| /home/williamglass/inventory-app-front-end/src/components/ContentList.js                    | JavaScript |        189 |          7 |         19 |        215 |
+| /home/williamglass/inventory-app-front-end/src/components/ContentPresets.js                 | JavaScript |        129 |          2 |          6 |        137 |
+| /home/williamglass/inventory-app-front-end/src/components/Controls/ItemEditControls.js      | JavaScript |         68 |          3 |          8 |         79 |
+| /home/williamglass/inventory-app-front-end/src/components/Controls/SignItemInOutControls.js | JavaScript |         61 |          3 |          7 |         71 |
+| /home/williamglass/inventory-app-front-end/src/components/Controls/UserEditControls.js      | JavaScript |         84 |          3 |         10 |         97 |
+| /home/williamglass/inventory-app-front-end/src/components/InputValidation/itemValidation.js | JavaScript |         77 |         10 |         16 |        103 |
+| /home/williamglass/inventory-app-front-end/src/components/InputValidation/sanitizeData.js   | JavaScript |         32 |          8 |         11 |         51 |
+| /home/williamglass/inventory-app-front-end/src/components/InputValidation/userValidation.js | JavaScript |         72 |          1 |          9 |         82 |
+| /home/williamglass/inventory-app-front-end/src/components/ItemModals/AddItemModal.js        | JavaScript |        281 |         25 |         30 |        336 |
+| /home/williamglass/inventory-app-front-end/src/components/ItemModals/DeleteItemModal.js     | JavaScript |         90 |          6 |         11 |        107 |
+| /home/williamglass/inventory-app-front-end/src/components/ItemModals/EditItemModal.js       | JavaScript |        292 |         25 |         28 |        345 |
+| /home/williamglass/inventory-app-front-end/src/components/ItemModals/SignItemInModal.js     | JavaScript |         88 |          8 |         11 |        107 |
+| /home/williamglass/inventory-app-front-end/src/components/ItemModals/SignItemOutModal.js    | JavaScript |        139 |         13 |         16 |        168 |
+| /home/williamglass/inventory-app-front-end/src/components/ItemModals/index.js               | JavaScript |         12 |          3 |          1 |         16 |
+| /home/williamglass/inventory-app-front-end/src/components/LogModals/AdminLogModal.js        | JavaScript |         60 |          3 |          7 |         70 |
+| /home/williamglass/inventory-app-front-end/src/components/LogModals/ItemLogModal.js         | JavaScript |         60 |          4 |          7 |         71 |
+| /home/williamglass/inventory-app-front-end/src/components/ProfileModals/LoginModal.js       | JavaScript |         72 |          3 |          5 |         80 |
+| /home/williamglass/inventory-app-front-end/src/components/ProfileModals/LogoutModal.js      | JavaScript |         37 |          3 |          5 |         45 |
+| /home/williamglass/inventory-app-front-end/src/components/Table.js                          | JavaScript |         72 |          0 |          4 |         76 |
+| /home/williamglass/inventory-app-front-end/src/components/ToggleSwitch.js                   | JavaScript |         20 |          0 |          3 |         23 |
+| /home/williamglass/inventory-app-front-end/src/components/UserModals/AddUserModal.js        | JavaScript |        456 |         30 |         39 |        525 |
+| /home/williamglass/inventory-app-front-end/src/components/UserModals/DeleteUserModal.js     | JavaScript |         98 |          7 |         13 |        118 |
+| /home/williamglass/inventory-app-front-end/src/components/UserModals/EditUserModal.js       | JavaScript |        502 |         38 |         41 |        581 |
+| /home/williamglass/inventory-app-front-end/src/components/UserModals/index.js               | JavaScript |          8 |          3 |          1 |         12 |
+| /home/williamglass/inventory-app-front-end/src/controllers/AdminLogController.js            | JavaScript |         22 |          9 |          7 |         38 |
+| /home/williamglass/inventory-app-front-end/src/controllers/AuthController.js                | JavaScript |        110 |         31 |         24 |        165 |
+| /home/williamglass/inventory-app-front-end/src/controllers/GenericController.js             | JavaScript |         25 |         21 |          7 |         53 |
+| /home/williamglass/inventory-app-front-end/src/controllers/ItemController.js                | JavaScript |         34 |         16 |         11 |         61 |
+| /home/williamglass/inventory-app-front-end/src/controllers/ItemLogController.js             | JavaScript |         22 |          9 |          7 |         38 |
+| /home/williamglass/inventory-app-front-end/src/controllers/LoginLogoutController.js         | JavaScript |         31 |          5 |          7 |         43 |
+| /home/williamglass/inventory-app-front-end/src/controllers/UserController.js                | JavaScript |         53 |         16 |         15 |         84 |
+| /home/williamglass/inventory-app-front-end/src/controllers/index.js                         | JavaScript |         12 |          2 |          1 |         15 |
+| /home/williamglass/inventory-app-front-end/src/index.js                                     | JavaScript |         14 |          4 |          2 |         20 |
+| /home/williamglass/inventory-app-front-end/src/registerServiceWorker.js                     | JavaScript |         79 |         28 |         11 |        118 |
+| /home/williamglass/inventory-app-front-end/src/styles/App.css                               | CSS        |         96 |         23 |         19 |        138 |
+| /home/williamglass/inventory-app-front-end/src/styles/ErrorBoundary.css                     | CSS        |         11 |          0 |          1 |         12 |
+| /home/williamglass/inventory-app-front-end/src/styles/Modal.css                             | CSS        |        143 |         19 |         29 |        191 |
+| /home/williamglass/inventory-app-front-end/src/styles/ToggleSwitch.css                      | CSS        |         73 |          3 |          5 |         81 |
+| /home/williamglass/inventory-app-front-end/src/styles/table.css                             | CSS        |        135 |         21 |         27 |        183 |
+| Total                                                                                       |            |     20,292 |        446 |        541 |     21,279 |
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

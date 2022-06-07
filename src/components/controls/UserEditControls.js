@@ -23,6 +23,7 @@ export default class UserEditControls extends React.Component {
         };
     }
 
+    //assigns passed props to state variables, which are selected items from table and role of logged in user
     componentDidUpdate(prevProps, prevState) {
         if(prevProps !== this.props) {
             this.setState({ 
@@ -33,6 +34,9 @@ export default class UserEditControls extends React.Component {
         };
     }
     
+    /**
+     * different methods to render appropriate modals based on what button was clicked
+     */
     _addUser = () => {
         this.setState({
             modal: <AddUserModal 
@@ -65,42 +69,40 @@ export default class UserEditControls extends React.Component {
         });
     }
 
+    //we set modal to null to avoid soft crashing the page
     hideModal = () => {
         this.setState({ modal: null });
     }
 
+    /**
+     * render which displays the actual buttons and also relies on turnary operators to configure proper button availability based on selected items
+     */
     _buildButtons = () => {
-        if(this.state.accountRole === 'custodian') {
-            return(
-                <div className='Edit_Controls'>
-                    <button onClick={this._addUser}>
-                        {BTN_ADD_USER_TXT}
-                    </button>
-                    {this.state.modal}
-                </div>
-            )
-        } else {
-            return(
-                <div className="Edit_Controls">
-                    <button onClick={this._addUser}>
-                        {BTN_ADD_USER_TXT}
-                    </button>
-                    <button 
-                        onClick={this._editUser} 
-                        disabled={this.state.selectedIds.length === 1 ? false : true}
-                    >
-                        {BTN_EDIT_USER_TXT}
-                    </button>
-                    <button 
-                        onClick={this._deleteUser} 
-                        disabled={this.state.selectedIds.length > 0 ? false : true}
-                    >
-                        {BTN_DELETE_USER_TXT}
-                    </button>
-                    {this.state.modal}
-                </div>
-            );
-        };
+        return(
+            <div className="Edit_Controls">
+                <button 
+                    onClick={this._addUser}
+                    hidden={!(this.state.accountRole !== 'user')}
+                >
+                    {BTN_ADD_USER_TXT}
+                </button>
+                <button 
+                    onClick={this._editUser} 
+                    disabled={this.state.selectedIds === undefined || this.state.selectedIds.length !== 1}
+                    hidden={this.state.accountRole === 'custodian'}
+                >
+                    {BTN_EDIT_USER_TXT}
+                </button>
+                <button 
+                    onClick={this._deleteUser} 
+                    disabled={this.state.selectedIds === undefined || this.state.selectedIds.length === 0}
+                    hidden={this.state.accountRole === 'custodian'}
+                >
+                    {BTN_DELETE_USER_TXT}
+                </button>
+                {this.state.modal}
+            </div>
+        );
     }
 
     render() {

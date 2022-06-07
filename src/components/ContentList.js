@@ -18,12 +18,16 @@ import {Table, TableNav }       from './tableStuff';
 import ToggleSwitch             from './utilities/ToggleSwitch';
 import '../styles/Table.css';
 import '../styles/App.css';
+import GenerateReport           from './utilities/GenerateReport';
 
 /*
 *   Displays main content. Changes depending on what data is displayed. Available Items, Unavailable Items, or Users.
 */
 const NO_CONTENT = 'No content available';
 const ERROR_MESSAGE_LINK = 'Please Click Here';
+
+const CERTIFICATE_REDIRECT = "https://ec2-15-205-215-189.us-gov-west-1.compute.amazonaws.com:8000/";
+const CERTIFICATE_REDIRECT_LOCAL = "https://localhost:8000/items/available";
 
 export default class ContentList extends React.Component {
     constructor(props) {
@@ -40,13 +44,15 @@ export default class ContentList extends React.Component {
             selectedIds                 : [],             //Now holds itemNumber or userName instead of _id
             selectedObjects             : [],
             accountRole                 : props.accountRole,
-            isError                    : false,
-            errorMessage               : ''
+            isError                     : false,
+            errorMessage                : '',
+            modal                       : null
         };
         
         this.setParentState        =   this._setParentState.bind(this);
         this.parseRowsArray        =   this._parseRowsArray.bind(this);
         this.handleTableDisplay    =   this._handleTableDisplay.bind(this);
+        this.allItems = [];
     };
 
     // Will update component props if parent props change
@@ -147,18 +153,6 @@ export default class ContentList extends React.Component {
             }
             return(
                 <>
-                    <div id="tableModification">
-                        {this._buildEditControls()}
-                        {this.state.isSignItemInOutVisible ? 
-                            <SignItemInOutControls 
-                                inOrOut={this.state.inOrOut} 
-                                selectedIds={this.state.selectedIds} 
-                                selectedObjects={this.state.selectedObjects} 
-                                id={this.state.id} 
-                            /> : 
-                            null
-                        }            
-                    </div>
                     <Table
                         columns={this.state.columns}
                         data={this.state.content}
@@ -194,6 +188,16 @@ export default class ContentList extends React.Component {
         };
     };
 
+    _getAllItemsForReport = async() => {
+        this.allItems = await itemController.getAllItems();
+        this.setState({
+            modal: <GenerateReport 
+                items={this.allItems}
+                isOpen={true}
+            />
+        })
+    }
+
     _renderContentBody = () => {
         return (
             <>
@@ -202,9 +206,23 @@ export default class ContentList extends React.Component {
                         clickFunction={this._handleTableDisplay} 
                         isUserContentVisible={this.state.isUserContentVisible}
                     />
-                    <ToggleSwitch />
+                    <button onClick={this._getAllItemsForReport}>
+                        GenerateReport
+                    </button>
                 </div>
                 <div id="tableBody">
+                    <div id="tableModification">
+                        {this._buildEditControls()}
+                        {this.state.isSignItemInOutVisible ? 
+                            <SignItemInOutControls 
+                                inOrOut={this.state.inOrOut} 
+                                selectedIds={this.state.selectedIds} 
+                                selectedObjects={this.state.selectedObjects} 
+                                id={this.state.id} 
+                            /> : 
+                            null
+                        }            
+                    </div>
                     {this._buildContentList()}
                 </div>
             </>
@@ -216,7 +234,7 @@ export default class ContentList extends React.Component {
             <>
                 <div>
                     <p className='centerText'>{this.state.errorMessage}</p>
-                    <a href="https://localhost:8000/items/available" className='centerText'>{ERROR_MESSAGE_LINK}</a>
+                    <a href={CERTIFICATE_REDIRECT} className='centerText'>{ERROR_MESSAGE_LINK}</a>
                 </div>
             </>
         );
@@ -225,6 +243,7 @@ export default class ContentList extends React.Component {
     render() {
         return(
             <div id="contentBody">
+                {this.state.modal}
                 {this.state.isError ? 
                     this._renderErrorDisplay() : 
                     this._renderContentBody()
