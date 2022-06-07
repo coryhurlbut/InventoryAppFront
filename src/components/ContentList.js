@@ -26,6 +26,8 @@ import GenerateReport           from './utilities/GenerateReport';
 const NO_CONTENT = 'No content available';
 const ERROR_MESSAGE_LINK = 'Please Click Here';
 
+const BTN_GENERATE_ITEM_REPORT = "GenerateReport";
+
 export default class ContentList extends React.Component {
     constructor(props) {
         super(props);
@@ -211,7 +213,7 @@ export default class ContentList extends React.Component {
                         isUserContentVisible={this.state.isUserContentVisible}
                     />
                     <button onClick={this._getAllItemsForReport}>
-                        GenerateReport
+                        {BTN_GENERATE_ITEM_REPORT}
                     </button>
                 </div>
                 <div id="tableBody">
